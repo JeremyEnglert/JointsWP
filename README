@@ -1,26 +1,15 @@
-/******************************************************************
-JointsWP
-A blank, mobile first WordPress theme using Foundation 4
-_______________________________________________________________
+A blank, Foundation 5 WordPress theme
 
-Theme description here
+Learn More: www.jointswp.com
+Demo: www.jointswp.com/demo
 
-Developed by Jeremy Englert
-http://jengl.com
+A combination of Foundation 5 by @zurb and Bones by @eddiemachado.
+Start with a Solid Foundation
 
-License: WTFPL
-License URI: http://sam.zoy.org/wtfpl/
+JointsWP is a WordPress theme built with Foundation 5, giving you all the power and flexibility you need to build complex, mobile friendly websites without having to start from scratch. This includes a grid system (far superior to the grid found in Bootstrap), basic styling for common elements, Javascript features such as drop down modals and much, much more.
+Developers Love Joints (don’t we all?)
 
-Special thanks to:
-Eddie Bones - PUT DESCRIPTION HERE
-Zurb Foundation - PUT DESCRIPTION HERE
+This theme is meant to be your starting point, not the end product. No need to use child themes (though you can). Feel free to chop up, slice up, murder or improve any part of it you want. This theme is yours.
+HTML5 + Sass
 
-Submit Bugs & or Fixes:
-https://github.com/JeremyEnglert/JointsWP
-
-******************************************************************/
-
-/* .5 beta release */
-- Early beta release
-- Foundation 4.0.9
-- Sass and CSS versions
+A CSS version is coming soon. But while you wait, why not take a stab at learning Sass?
