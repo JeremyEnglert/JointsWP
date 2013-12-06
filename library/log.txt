@@ -1,0 +1,16 @@
+/******************************************************************
+JointsWP
+A blank, mobile first WordPress theme using Foundation 4
+_______________________________________________________________
+
+Theme description here
+
+Developed by Jeremy Englert
+http://jengl.com
+
+******************************************************************/
+
+/* .5 beta release */
+- Early beta release
+- Foundation 4.0.9
+- Sass and CSS versions
