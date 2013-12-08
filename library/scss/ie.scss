@@ -17,8 +17,8 @@ import the mixins file so SASS can understand the variables.
 */
 
 /* import mixins */
+@import "foundation";
 @import "mixins";
-
 @import "medium";
 @import "large";
 @import "xlarge";
