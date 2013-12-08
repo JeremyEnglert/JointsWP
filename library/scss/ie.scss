@@ -10,23 +10,18 @@ without the media queries. No need to worry about editing anything!
 ******************************************************************/
 
 /*
-Remember, all the BASE styles are called already since IE can
+Remember, all the base styles are called already since IE can
 read those. Below, we need to import only the stuff IE can't 
 understand (what's inside the media queries). We also need to
 import the mixins file so SASS can understand the variables.
 */
 
-/* import mixins */
 @import "foundation";
 @import "mixins";
 @import "medium";
 @import "large";
 @import "xlarge";
 @import "xxlarge";
-
-/* 
-you can call the larger styles if you want, but there's really no need 
-*/
 
 
 /******************************************************************
