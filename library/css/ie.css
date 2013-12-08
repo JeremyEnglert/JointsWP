@@ -5465,7 +5465,7 @@ USAGE: @include transition(all 0.2s ease-in-out);
 /*********************
 CSS3 GRADIENTS
 Be careful with these since they can
-really slow down your CSS. Don't overdue it.
+really slow down your CSS. Don't overdo it.
 *********************/
 /* @include css-gradient(#dfdfdf,#f8f8f8); */
 /*********************
