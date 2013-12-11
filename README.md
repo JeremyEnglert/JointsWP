@@ -1,4 +1,4 @@
-Find out more here: www.jointswp.com
+Find out more here: www.jointswp.com  
 Demo: www.jointswp.com/demo
 
 ### A blank, Foundation 5 WordPress theme 
