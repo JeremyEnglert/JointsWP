@@ -52,7 +52,7 @@ body {
   color: #222222;
   padding: 0;
   margin: 0;
-  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   font-style: normal;
   line-height: 1;
@@ -1468,7 +1468,7 @@ select {
       color: #222222;
       padding: 1rem;
       display: block;
-      font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+      font-family: "Open Sans", Arial, sans-serif;
       font-size: 1rem; }
       .accordion dd > a:hover {
         background: #e2e2e2; }
@@ -1886,7 +1886,7 @@ select {
 
 button, .button {
   cursor: pointer;
-  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   line-height: normal;
   margin: 0 0 1.25rem;
@@ -3033,7 +3033,7 @@ kbd {
 
 .label {
   font-weight: normal;
-  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   text-align: center;
   text-decoration: none;
   line-height: 1;
@@ -3414,7 +3414,7 @@ ul.pagination {
     color: #eeeeee;
     font-weight: normal;
     font-size: 1rem;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+    font-family: "Open Sans", Arial, sans-serif; }
   .pricing-table .price {
     background-color: #f6f6f6;
     padding: 0.9375rem 1.25rem;
@@ -3422,7 +3422,7 @@ ul.pagination {
     color: #333333;
     font-weight: normal;
     font-size: 2rem;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+    font-family: "Open Sans", Arial, sans-serif; }
   .pricing-table .description {
     background-color: white;
     padding: 0.9375rem;
@@ -3552,7 +3552,7 @@ ul.pagination {
   padding: 0.875rem 0;
   list-style-type: none;
   list-style-position: inside;
-  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+  font-family: "Open Sans", Arial, sans-serif; }
   .side-nav li {
     margin: 0 0 0.4375rem 0;
     font-size: 0.875rem; }
@@ -3562,7 +3562,7 @@ ul.pagination {
     .side-nav li.active > a:first-child {
       color: #4d4d4d;
       font-weight: normal;
-      font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+      font-family: "Open Sans", Arial, sans-serif; }
     .side-nav li.divider {
       border-top: 1px solid;
       height: 0;
@@ -3673,7 +3673,7 @@ ul.pagination {
     display: inline;
     margin-left: 1rem;
     margin-bottom: 0.625rem;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-family: "Open Sans", Arial, sans-serif;
     font-weight: normal;
     font-size: 0.875rem;
     color: #999999; }
@@ -3909,7 +3909,7 @@ table {
       padding-right: 2rem;
       padding-bottom: 1.0625rem;
       padding-left: 2rem;
-      font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+      font-family: "Open Sans", Arial, sans-serif;
       font-size: 1rem; }
       .tabs dd > a:hover {
         background: #e2e2e2; }
@@ -4107,7 +4107,7 @@ p {
 
 /* Default header styles */
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Open Sans", Arial, sans-serif;
   font-weight: 300;
   font-style: normal;
   color: #222222;
@@ -4512,7 +4512,7 @@ meta.foundation-mq-topbar {
     color: white;
     padding: 12px 0 12px 0;
     padding-left: 15px;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-family: "Open Sans", Arial, sans-serif;
     font-size: 0.8125rem;
     font-weight: normal;
     background: #333333; }
@@ -4862,7 +4862,7 @@ ul.off-canvas-list {
     display: block;
     padding: 0.66667rem;
     color: rgba(255, 255, 255, 0.7);
-    border-bottom: 1px solid #262626; }
+    border-bottom: none; }
 
 .move-right > .inner-wrap {
   -webkit-transform: translate3d(250px, 0, 0);
@@ -5629,6 +5629,118 @@ You can add some advanced styles here if you like. This kicks in
 on larger screens.
 
 ******************************************************************/
+[class*="gallery-columns-"] {
+  display: block;
+  padding: 0;
+  margin: 0 -0.625rem;
+  *zoom: 1; }
+  [class*="gallery-columns-"]:before, [class*="gallery-columns-"]:after {
+    content: " ";
+    display: table; }
+  [class*="gallery-columns-"]:after {
+    clear: both; }
+  [class*="gallery-columns-"] > .gallery-item {
+    display: inline;
+    height: auto;
+    float: left;
+    padding: 0 0.625rem 1.25rem; }
+
+.gallery-columns-1 > .gallery-item {
+  width: 100%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-1 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-1 > .gallery-item:nth-of-type(1n+1) {
+    clear: both; }
+
+.gallery-columns-2 > .gallery-item {
+  width: 50%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-2 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-2 > .gallery-item:nth-of-type(2n+1) {
+    clear: both; }
+
+.gallery-columns-3 > .gallery-item {
+  width: 33.33333%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-3 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-3 > .gallery-item:nth-of-type(3n+1) {
+    clear: both; }
+
+.gallery-columns-4 > .gallery-item {
+  width: 25%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-4 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-4 > .gallery-item:nth-of-type(4n+1) {
+    clear: both; }
+
+.gallery-columns-5 > .gallery-item {
+  width: 20%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-5 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-5 > .gallery-item:nth-of-type(5n+1) {
+    clear: both; }
+
+.gallery-columns-6 > .gallery-item {
+  width: 16.66667%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-6 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-6 > .gallery-item:nth-of-type(6n+1) {
+    clear: both; }
+
+.gallery-columns-7 > .gallery-item {
+  width: 14.28571%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-7 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-7 > .gallery-item:nth-of-type(7n+1) {
+    clear: both; }
+
+.gallery-columns-8 > .gallery-item {
+  width: 12.5%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-8 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-8 > .gallery-item:nth-of-type(8n+1) {
+    clear: both; }
+
+.gallery-columns-9 > .gallery-item {
+  width: 11.11111%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-9 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-9 > .gallery-item:nth-of-type(9n+1) {
+    clear: both; }
+
+.gallery-columns-10 > .gallery-item {
+  width: 10%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-10 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-10 > .gallery-item:nth-of-type(10n+1) {
+    clear: both; }
+
+.gallery-columns-11 > .gallery-item {
+  width: 9.09091%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-11 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-11 > .gallery-item:nth-of-type(11n+1) {
+    clear: both; }
+
+.gallery-columns-12 > .gallery-item {
+  width: 8.33333%;
+  padding: 0 0.625rem 1.25rem; }
+  .gallery-columns-12 > .gallery-item:nth-of-type(n) {
+    clear: none; }
+  .gallery-columns-12 > .gallery-item:nth-of-type(12n+1) {
+    clear: both; }
+
 /******************************************************************
 ADDITIONAL IE FIXES
 These fixes are now ONLY seen by IE, so you don't have to worry
