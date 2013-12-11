@@ -22,13 +22,23 @@
 								<section class="entry-content clearfix" itemprop="articleBody">
 									<?php the_content(); ?>
 								</section> <!-- end article section -->
+
+								<?php wp_link_pages(array(
+									'before'           => '<ul class="pagination">' . __( '<li class="unavaliable">Pages:</li>' ),
+									'after'            => '</ul>',
+									'link_before'      => '<li>',
+									'link_after'       => '</li>',
+									// 'next_or_number'   => 'number',
+									// 'nextpagelink'     => __( '<li>' ),
+									// 'previouspagelink' => __( 'Previous page' ),
+									// 'pagelink'         => '<li>%</li>',
+									'echo'             => 1
+								)); ?>
 						
 								<footer class="article-footer">
 									<?php the_tags('<p class="tags"><span class="tags-title">' . __('Tags:', 'jointstheme') . '</span> ', ', ', '</p>'); ?>
 							
 								</footer> <!-- end article footer -->
-					
-								<?php comments_template(); ?>
 					
 							</article> <!-- end article -->
 					

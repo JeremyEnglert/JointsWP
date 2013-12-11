@@ -365,6 +365,26 @@ function joints_page_navi($before = '', $after = '') {
 } /* end page navi */
 
 /*********************
+PAGE LINKS
+*********************/
+
+// Numeric Page Links (built into the theme by default)
+function joints_page_links() {
+  $defaults = array(
+      'before'           => '<ul class="pagination">' . __( '<li class="unavaliable">Pages:</li>' ),
+      'after'            => '</ul>',
+      'link_before'      => '',
+      'link_after'       => '',
+      'next_or_number'   => 'number',
+      'separator'        => ' ',
+      'nextpagelink'     => __( 'Next page' ),
+      'previouspagelink' => __( 'Previous page' ),
+      'pagelink'         => '%',
+      'echo'             => 1
+    );
+} /* end page links */
+
+/*********************
 RANDOM CLEANUP ITEMS
 *********************/
 
