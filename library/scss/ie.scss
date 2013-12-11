@@ -16,12 +16,14 @@ understand (what's inside the media queries). We also need to
 import the mixins file so SASS can understand the variables.
 */
 
+@import "settings";
 @import "foundation";
 @import "mixins";
 @import "medium";
 @import "large";
 @import "xlarge";
 @import "xxlarge";
+@import "joints";
 
 
 /******************************************************************
