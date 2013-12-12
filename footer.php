@@ -23,13 +23,6 @@
 		<!-- all js scripts are loaded in library/joints.php -->
 		<?php wp_footer(); ?>
 
-<script>
-	(function(jQuery) {
-		jQuery(document).foundation();
-	})(jQuery);
-</script>
-
-
 	</body>
 
 </html> <!-- end page -->
