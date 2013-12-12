@@ -14,16 +14,12 @@
 							    <h1><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h1>
 							    	<p class="byline"><?php
                     printf(__('Posted by <span class="author">%3$s</span> on <time class="updated" datetime="%1$s" pubdate>%2$s</time>. -- %4$s', 'jointstheme'), get_the_time('Y-m-j'), get_the_time(get_option('date_format')), joints_get_the_author_posts_link(), get_the_category_list(', '));?></p>							
-
 						    </header> <!-- end article header -->
 					
-						    <section class="entry-content clearfix">
-							    <?php the_content(); ?>
-						    </section> <!-- end article section -->
+								<?php get_template_part( 'partials/entry', 'content' ); ?>
 						
 						    <footer class="article-footer">
     							<p class="tags"><?php the_tags('<span class="tags-title">' . __('Tags:', 'jointstheme') . '</span> ', ', ', ''); ?></p>
-
 						    </footer> <!-- end article footer -->
 						    
 						    <?php // comments_template(); // uncomment if you want to use them ?>
@@ -45,17 +41,7 @@
 					
 					    <?php else : ?>
 					    
-					        <article id="post-not-found" class="hentry clearfix">
-					            <header class="article-header">
-					        	    <h1><?php _e("Oops, Post Not Found!", "jointstheme"); ?></h1>
-					        	</header>
-					            <section class="entry-content">
-					        	    <p><?php _e("Uh Oh. Something is missing. Try double checking things.", "jointstheme"); ?></p>
-					        	</section>
-					        	<footer class="article-footer">
-					        	    <p><?php _e("This is the error message in the index.php template.", "jointstheme"); ?></p>
-					        	</footer>
-					        </article>
+    						<?php get_template_part( 'partials', 'not-found' ); ?>
 					
 					    <?php endif; ?>
 			

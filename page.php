@@ -16,13 +16,10 @@
 						
 						    </header> <!-- end article header -->
 					
-						    <section class="entry-content clearfix" itemprop="articleBody">
-							    <?php the_content(); ?>
-							</section> <!-- end article section -->
+                <?php get_template_part( 'partials/entry', 'content' ); ?>
 						
 						    <footer class="article-footer">
                   <?php the_tags('<span class="tags">' . __('Tags:', 'jointstheme') . '</span> ', ', ', ''); ?>
-							
 						    </footer> <!-- end article footer -->
 						    
 						    <?php comments_template(); ?>
@@ -31,18 +28,8 @@
 					
 					    <?php endwhile; else : ?>
 					
-    					    <article id="post-not-found" class="hentry clearfix">
-    					    	<header class="article-header">
-    					    		<h1><?php _e("Oops, Post Not Found!", "jointstheme"); ?></h1>
-    					    	</header>
-    					    	<section class="entry-content">
-    					    		<p><?php _e("Uh Oh. Something is missing. Try double checking things.", "jointstheme"); ?></p>
-    					    	</section>
-    					    	<footer class="article-footer">
-    					    	    <p><?php _e("This is the error message in the page.php template.", "jointstheme"); ?></p>
-    					    	</footer>
-    					    </article>
-					
+              	<?php get_template_part( 'partials', 'not-found' ); ?>
+
 					    <?php endif; ?>
 			
     				</div> <!-- end #main -->

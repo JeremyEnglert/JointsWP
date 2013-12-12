@@ -26,20 +26,13 @@ single-bookmarks.php
 					    <article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
 						
 						    <header class="article-header">
-							
 							    <h1 class="single-title custom-post-type-title"><?php the_title(); ?></h1>
-						
 						    </header> <!-- end article header -->
 					
-						    <section class="entry-content clearfix">
-							
-							    <?php the_content(); ?>
-					
-						    </section> <!-- end article section -->
+                <?php get_template_part( 'partials/entry', 'content' ); ?>
 						
 						    <footer class="article-header">
 							    <p class="tags"><?php echo get_the_term_list( get_the_ID(), 'custom_tag', '<span class="tags-title">' . __('Custom Tags:', 'jointstheme') . '</span> ', ', ' ) ?></p>
-							
 						    </footer> <!-- end article footer -->
 						
 						    <?php comments_template(); ?>
@@ -50,17 +43,7 @@ single-bookmarks.php
 					
 					    <?php else : ?>
 					
-        					<article id="post-not-found" class="hentry clearfix">
-        						<header class="article-header">
-        							<h1><?php _e("Oops, Post Not Found!", "jointstheme"); ?></h1>
-        						</header>
-        						<section class="entry-content">
-        							<p><?php _e("Uh Oh. Something is missing. Try double checking things.", "jointstheme"); ?></p>
-        						</section>
-        						<footer class="article-footer">
-        						    <p><?php _e("This is the error message in the single-custom_type.php template.", "jointstheme"); ?></p>
-        						</footer>
-        					</article>
+                <?php get_template_part( 'partials', 'not-found' ); ?>
 					
 					    <?php endif; ?>
 			
