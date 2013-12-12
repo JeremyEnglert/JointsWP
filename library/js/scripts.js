@@ -105,3 +105,10 @@ jQuery(document).ready(function($) {
 	w.addEventListener( "orientationchange", restoreZoom, false );
 	w.addEventListener( "devicemotion", checkTilt, false );
 })( this );
+
+/*
+ * Load up Foundation
+ */
+(function(jQuery) {
+  jQuery(document).foundation();
+})(jQuery);
