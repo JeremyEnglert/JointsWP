@@ -43,7 +43,7 @@ single-bookmarks.php
 					
 					    <?php else : ?>
 					
-                <?php get_template_part( 'partials', 'not-found' ); ?>
+                <?php get_template_part( 'partials/not', 'found' ); ?>
 					
 					    <?php endif; ?>
 			
