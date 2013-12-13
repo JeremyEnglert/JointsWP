@@ -22,7 +22,6 @@ Template Name: Full Width (No Sidebar)
 
 					    <?php endif; ?>
 
-			
     				</div> <!-- end #main -->
 				    
 				</div> <!-- end #inner-content -->
