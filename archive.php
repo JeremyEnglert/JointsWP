@@ -43,31 +43,9 @@
 
 					    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
-					    <article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
-						
-						    <header class="article-header">
-							
-							    <h2><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
-							    <p class="byline"><?php
-                    printf(__('Posted by <span class="author">%3$s</span> on <time class="updated" datetime="%1$s" pubdate>%2$s</time>. -- %4$s', 'jointstheme'), get_the_time('Y-m-j'), get_the_time(get_option('date_format')), joints_get_the_author_posts_link(), get_the_category_list(', '));?></p>		
-						
-						    </header> <!-- end article header -->
+					    	<?php get_template_part( 'partials/loop', 'archive' ); ?>
 					
-						    <section class="entry-content clearfix">
-						
-							    <?php the_post_thumbnail( 'joints-thumb-300' ); ?>
-						
-							    <?php the_excerpt(); ?>
-					
-						    </section> <!-- end article section -->
-						
-						    <footer class="article-footer">
-							
-						    </footer> <!-- end article footer -->
-					
-					    </article> <!-- end article -->
-					
-					    <?php endwhile; ?>	
+					    <?php endwhile; ?>		
 					
 					        <?php if (function_exists('joints_page_navi')) { ?>
 						        <?php joints_page_navi(); ?>
@@ -82,7 +60,7 @@
 					
 					    <?php else : ?>
 					
-    						<?php get_template_part( 'partials/not', 'found' ); ?>
+    						<?php get_template_part( 'partials/missing', 'content' ); ?>
 					
 					    <?php endif; ?>
 			

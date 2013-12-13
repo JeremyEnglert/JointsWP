@@ -8,29 +8,14 @@
 
 					    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
-					    <article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
-						
-						    <header class="article-header">
-							    <h1><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h1>
-							    	<p class="byline"><?php
-                    printf(__('Posted by <span class="author">%3$s</span> on <time class="updated" datetime="%1$s" pubdate>%2$s</time>. -- %4$s', 'jointstheme'), get_the_time('Y-m-j'), get_the_time(get_option('date_format')), joints_get_the_author_posts_link(), get_the_category_list(', '));?></p>							
-						    </header> <!-- end article header -->
-					
-								<?php get_template_part( 'partials/entry', 'content' ); ?>
-						
-						    <footer class="article-footer">
-    							<p class="tags"><?php the_tags('<span class="tags-title">' . __('Tags:', 'jointstheme') . '</span> ', ', ', ''); ?></p>
-						    </footer> <!-- end article footer -->
-						    
-						    <?php // comments_template(); // uncomment if you want to use them ?>
-					
-					    </article> <!-- end article -->
+					    	<?php get_template_part( 'partials/loop', 'archive' ); ?>
 					
 					    <?php endwhile; ?>	
 					
 					        <?php if (function_exists('joints_page_navi')) { ?>
 					            <?php joints_page_navi(); ?>
 					        <?php } else { ?>
+					        
 					            <nav class="wp-prev-next">
 					                <ul class="clearfix">
 					        	        <li class="prev-link"><?php next_posts_link(__('&laquo; Older Entries', "jointstheme")) ?></li>
@@ -41,7 +26,7 @@
 					
 					    <?php else : ?>
 					    
-    						<?php get_template_part( 'partials', 'not-found' ); ?>
+    						<?php get_template_part( 'partials/missing', 'content' ); ?>
 					
 					    <?php endif; ?>
 			

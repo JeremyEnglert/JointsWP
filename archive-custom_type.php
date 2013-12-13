@@ -48,7 +48,7 @@
 					
 					    <?php else : ?>
 					
-                <?php get_template_part( 'partials/not', 'found' ); ?>
+                <?php get_template_part( 'partials/missing', 'content' ); ?>
 					
 					    <?php endif; ?>
 			

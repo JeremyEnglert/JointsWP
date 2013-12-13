@@ -14,27 +14,16 @@ Template Name: Full Width (No Sidebar)
 
 					    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
-					    <article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-						
-						    <header class="article-header">
-							    <h1 class="page-title" itemprop="headline"><?php the_title(); ?></h1>
-						    </header> <!-- end article header -->
+					    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
-                <?php get_template_part( 'partials/entry', 'content' ); ?>
-						
-						    <footer class="article-footer">
-                  <?php the_tags('<span class="tags">' . __('Tags:', 'jointstheme') . '</span> ', ', ', ''); ?>
-						    </footer> <!-- end article footer -->
-						    
-						    <?php comments_template(); ?>
-					
-					    </article> <!-- end article -->
-					
+					    	<?php get_template_part( 'partials/loop', 'page' ); ?>
+					    					
 					    <?php endwhile; else : ?>
 					
-                <?php get_template_part( 'partials/not', 'found' ); ?>
-					
+					   		<?php get_template_part( 'partials/missing', 'content' ); ?>
+
 					    <?php endif; ?>
+
 			
     				</div> <!-- end #main -->
 				    
