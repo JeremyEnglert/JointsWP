@@ -14,26 +14,8 @@ remember less is more.
 ******************************************************************/
 
 /*********************
-CLEARFIXIN'
-*********************/
-
-// Contain floats: nicolasgallagher.com/micro-clearfix-hack/
-.clearfix {
-  zoom: 1;
-	&:before, &:after { content: ""; display: table; }
-	&:after { clear: both; }
-}
-
-/*********************
 TOOLS
 *********************/
-
-// BORDER-BOX ALL THE THINGS! (http://paulirish.com/2012/box-sizing-border-box-ftw/)
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing:    border-box;
-	box-sizing:         border-box;
-}
 
 // http://www.zeldman.com/2012/03/01/replacing-the-9999px-hack-new-image-replacement/
 .image-replacement {
@@ -49,28 +31,10 @@ Need help w/ choosing your colors? Try this site out:
 http://0to255.com/
 *********************/
 
-$alert-yellow:      #ebe16f;
-$alert-red:         #fbe3e4;
-$alert-green:       #e6efc2;
-$alert-blue:        #d5edf8;
-
-$black:             #000;
-$white:             #fff;
-
-/*
-Here's a great tutorial on how to
-use color variables properly:
-http://sachagreif.com/sass-color-variables/
-*/
-
 
 /*********************
 TYPOGRAPHY
 *********************/
-
-$sans-serif:        "Helvetica Neue", Helvetica, Arial, sans-serif;
-$serif:             "Georgia", Cambria, Times New Roman, Times, serif;
-
 
 /* 	To embed your own fonts, use this syntax
 	and place your fonts inside the
@@ -99,43 +63,6 @@ http://simplebits.com/notebook/2008/08/14/ampersands-2/
 span.amp {
   font-family: Baskerville,'Goudy Old Style',Palatino,'Book Antiqua',serif !important;
   font-style: italic;
-}
-
-// text alignment
-.text-left   { text-align: left; }
-.text-center { text-align: center; }
-.text-right  { text-align: right; }
-
-
-// alerts and notices
-%alert {
-	margin: 10px;
-	padding: 5px 18px;
-	border: 1px solid;
-}
-
-.alert-help {
-	@extend %alert;
-	border-color: darken($alert-yellow, 5%);
-	background: $alert-yellow;
-}
-
-.alert-info {
-	@extend %alert;
-	border-color: darken($alert-blue, 5%);
-	background: $alert-blue;
-}
-
-.alert-error {
-	@extend %alert;
-	border-color: darken($alert-red, 5%);
-	background: $alert-red;
-}
-
-.alert-success {
-	@extend %alert;
-	border-color: darken($alert-green, 5%);
-	background: $alert-green;
 }
 
 /*********************
@@ -175,17 +102,4 @@ really slow down your CSS. Don't overdo it.
 	background-image: linear-gradient(to bottom, $from, $to);
 }
 
-/*********************
-BOX SIZING
-*********************/
-
-/* @include box-sizing(border-box); */
-/* NOTE: value of "padding-box" is only supported in Gecko. So
-probably best not to use it. I mean, were you going to anyway? */
-@mixin box-sizing($type: border-box) {
-	-webkit-box-sizing: $type;
-	-moz-box-sizing:    $type;
-	-ms-box-sizing:     $type;
-	box-sizing:         $type;
-}
 
