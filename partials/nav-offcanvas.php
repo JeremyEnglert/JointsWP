@@ -1,5 +1,5 @@
 <div class="large-12 columns show-for-small-only">
-	<div class="contain-to-grid sticky">
+	<div class="contain-to-grid">
 		<nav class="tab-bar">
 			<section class="middle tab-bar-section">
 				<h1 class="title"><?php bloginfo('name'); ?></h1>
