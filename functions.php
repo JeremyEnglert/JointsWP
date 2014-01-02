@@ -6,7 +6,9 @@ just edit things like thumbnail sizes, header images,
 sidebars, comments, ect.
 */
 
-/************* INCLUDE NEEDED FILES ***************/
+/*********************
+INCLUDE NEEDED FILES
+*********************/
 
 /*
 1. library/joints.php
@@ -43,7 +45,9 @@ require_once('library/custom-post-type.php'); // you can disable this if you lik
 */
 // require_once('library/translation/translation.php'); // this comes turned off by default
 
-/************* THUMBNAIL SIZE OPTIONS *************/
+/*********************
+THUMNAIL SIZE OPTIONS
+*********************/
 
 // Thumbnail sizes
 add_image_size( 'joints-thumb-600', 600, 150, true );
@@ -65,10 +69,77 @@ for the 600 x 100 image:
 <?php the_post_thumbnail( 'joints-thumb-600' ); ?>
 
 You can change the names and dimensions to whatever
-you like. Enjoy!
+you like. 
 */
 
-/************* ACTIVE SIDEBARS ********************/
+
+/*********************
+MENUS & NAVIGATION
+*********************/
+// registering wp3+ menus
+register_nav_menus(
+	array(
+		'main-nav' => __( 'The Main Menu' ),   // main nav in header
+		'footer-links' => __( 'Footer Links' ) // secondary nav in footer
+	)
+);
+
+// the main menu
+function joints_main_nav() {
+	// display the wp3 menu if available
+    wp_nav_menu(array(
+    	'container' => false,                           // remove nav container
+    	'container_class' => '',           // class of container (should you choose to use it)
+    	'menu' => __( 'The Main Menu', 'jointstheme' ),  // nav name
+    	'menu_class' => '',         // adding custom nav class
+    	'theme_location' => 'main-nav',                 // where it's located in the theme
+    	'before' => '',                                 // before the menu
+        'after' => '',                                  // after the menu
+        'link_before' => '',                            // before each link
+        'link_after' => '',                             // after each link
+    	'fallback_cb' => 'joints_main_nav_fallback'      // fallback function
+	));
+} /* end joints main nav */
+
+// the footer menu (should you choose to use one)
+function joints_footer_links() {
+	// display the wp3 menu if available
+    wp_nav_menu(array(
+    	'container' => '',                              // remove nav container
+    	'container_class' => 'footer-links clearfix',   // class of container (should you choose to use it)
+    	'menu' => __( 'Footer Links', 'jointstheme' ),   // nav name
+    	'menu_class' => 'nav footer-nav clearfix',      // adding custom nav class
+    	'theme_location' => 'footer-links',             // where it's located in the theme
+    	'before' => '',                                 // before the menu
+        'after' => '',                                  // after the menu
+        'link_before' => '',                            // before each link
+        'link_after' => '',                             // after each link
+        'depth' => 0,                                   // limit the depth of the nav
+    	'fallback_cb' => 'joints_footer_links_fallback'  // fallback function
+	));
+} /* end joints footer link */
+
+// this is the fallback for header menu
+function joints_main_nav_fallback() {
+	wp_page_menu( array(
+		'show_home' => true,
+    	'menu_class' => 'top-bar top-bar-section',      // adding custom nav class
+		'include'     => '',
+		'exclude'     => '',
+		'echo'        => true,
+        'link_before' => '',                            // before each link
+        'link_after' => ''                             // after each link
+	) );
+}
+
+// this is the fallback for footer menu
+function joints_footer_links_fallback() {
+	/* you can put a default here if you like */
+}
+
+/*********************
+SIDEBARS
+*********************/
 
 // Sidebars & Widgetizes Areas
 function joints_register_sidebars() {
@@ -108,18 +179,9 @@ function joints_register_sidebars() {
 	*/
 } // don't remove this bracket!
 
-/************* CUSTOM NAV MENUS *****************/
-
-// registering wp3+ menus
-register_nav_menus(
-	array(
-		'main-nav' => __( 'The Main Menu' ),   // main nav in header
-		'footer-links' => __( 'Footer Links' ) // secondary nav in footer
-	)
-);
-
-
-/************* COMMENT LAYOUT *********************/
+/*********************
+COMMENT LAYOUT
+*********************/
 
 // Comment Layout
 function joints_comments($comment, $args, $depth) {
@@ -155,20 +217,6 @@ function joints_comments($comment, $args, $depth) {
 	<!-- </li> is added by WordPress automatically -->
 <?php
 } // don't remove this bracket!
-
-/************* SEARCH FORM LAYOUT *****************/
-
-// Search Form
-function joints_wpsearch($form) {
-	$form = '<form role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
-	<label class="screen-reader-text" for="s">' . __('Search for:', 'jointstheme') . '</label>
-	<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="'.esc_attr__('Search the Site...','jointstheme').'" />
-	<input type="submit" id="searchsubmit" class="button" value="'. esc_attr__('Search') .'" />
-	</form>';
-	return $form;
-} // don't remove this bracket!
-
-
 
 ?>
 

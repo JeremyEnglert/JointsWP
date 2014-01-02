@@ -217,64 +217,6 @@ function joints_theme_support() {
 
 } /* end joints theme support */
 
-
-/*********************
-MENUS & NAVIGATION
-*********************/
-
-// the main menu
-function joints_main_nav() {
-	// display the wp3 menu if available
-    wp_nav_menu(array(
-    	'container' => false,                           // remove nav container
-    	'container_class' => '',           // class of container (should you choose to use it)
-    	'menu' => __( 'The Main Menu', 'jointstheme' ),  // nav name
-    	'menu_class' => '',         // adding custom nav class
-    	'theme_location' => 'main-nav',                 // where it's located in the theme
-    	'before' => '',                                 // before the menu
-        'after' => '',                                  // after the menu
-        'link_before' => '',                            // before each link
-        'link_after' => '',                             // after each link
-    	'fallback_cb' => 'joints_main_nav_fallback'      // fallback function
-	));
-} /* end joints main nav */
-
-// the footer menu (should you choose to use one)
-function joints_footer_links() {
-	// display the wp3 menu if available
-    wp_nav_menu(array(
-    	'container' => '',                              // remove nav container
-    	'container_class' => 'footer-links clearfix',   // class of container (should you choose to use it)
-    	'menu' => __( 'Footer Links', 'jointstheme' ),   // nav name
-    	'menu_class' => 'nav footer-nav clearfix',      // adding custom nav class
-    	'theme_location' => 'footer-links',             // where it's located in the theme
-    	'before' => '',                                 // before the menu
-        'after' => '',                                  // after the menu
-        'link_before' => '',                            // before each link
-        'link_after' => '',                             // after each link
-        'depth' => 0,                                   // limit the depth of the nav
-    	'fallback_cb' => 'joints_footer_links_fallback'  // fallback function
-	));
-} /* end joints footer link */
-
-// this is the fallback for header menu
-function joints_main_nav_fallback() {
-	wp_page_menu( array(
-		'show_home' => true,
-    	'menu_class' => 'top-bar top-bar-section',      // adding custom nav class
-		'include'     => '',
-		'exclude'     => '',
-		'echo'        => true,
-        'link_before' => '',                            // before each link
-        'link_after' => ''                             // after each link
-	) );
-}
-
-// this is the fallback for footer menu
-function joints_footer_links_fallback() {
-	/* you can put a default here if you like */
-}
-
 /*********************
 RELATED POSTS FUNCTION
 *********************/
@@ -363,6 +305,20 @@ function joints_page_navi($before = '', $after = '') {
 	}
 	echo '</ul></nav>'.$after."";
 } /* end page navi */
+
+/*********************
+SEARCH FORM LAYOUT WITH FOUNDATION BUTTONS
+*********************/
+
+// Search Form
+function joints_wpsearch($form) {
+	$form = '<form role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
+	<label class="screen-reader-text" for="s">' . __('Search for:', 'jointstheme') . '</label>
+	<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="'.esc_attr__('Search the Site...','jointstheme').'" />
+	<input type="submit" id="searchsubmit" class="button" value="'. esc_attr__('Search') .'" />
+	</form>';
+	return $form;
+} // don't remove this bracket!
 
 /*********************
 RANDOM CLEANUP ITEMS
