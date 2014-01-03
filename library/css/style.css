@@ -5873,7 +5873,7 @@ the other stylesheets. Remember, keep it light: Speed is Important.
 */
 /******************************************************************
 
-Stylesheet: Base Mobile Stylesheet
+Stylesheet: Base/Small Stylesheet
 
 Be light and don't over style since everything here will be
 loaded by mobile devices. You want to keep it as minimal as
@@ -6245,46 +6245,18 @@ view.
 /* end .footer-links */
 /*
 MEDIUM
-This is for devices like the Galaxy Note or something that's
-larger than an iPhone but smaller than a tablet. Let's call them
-tweeners.
 */
 @media only screen and (min-width: 40.063em) {
   /******************************************************************
   
-  Stylesheet: 481px and Up Stylesheet
+  Stylesheet: Nediun Stylesheet
   
-  This stylesheet is loaded for larger devices. It's set to 
-  481px because at 480px it would load on a landscaped iPhone.
-  This isn't ideal because then you would be loading all those
-  extra styles on that same mobile connection. 
-  
-  A word of warning. This size COULD be a larger mobile device,
-  so you still want to keep it pretty light and simply expand
-  upon your base.scss styles.
+  Styles apply to 40.063em and up.
   
   ******************************************************************/
   /*********************
   NAVIGATION STYLES
   *********************/
-  /* .menu is clearfixed inside mixins.scss */
-  .menu {
-    /* end .menu ul */ }
-    .menu ul {
-      /* end .menu ul li */
-      /* highlight current page */
-      /* end current highlighters */ }
-      .menu ul li {
-        /*
-        plan your menus and drop-downs wisely.
-        */ }
-        .menu ul li a {
-          /*
-          you can use hover styles here even though this size
-          has the possibility of being a mobile device.
-          */ }
-
-  /* end .menu */
   /*********************
   POSTS & CONTENT STYLES
   *********************/
@@ -6330,13 +6302,9 @@ you can add resource intensive styles.
 @media only screen and (min-width: 64.063em) {
   /******************************************************************
   
-  Stylesheet: 768px and Up
+  Stylesheet: Large Stylesheet
   
-  Here's where you can start getting into the good stuff.
-  This size will work on iPads, other tablets, and desktops.
-  So you can start working with more styles, background images,
-  and other resources. You'll also notice the grid starts to
-  come into play. Have fun!
+  Styles apply to 64.063em and up.
   
   ******************************************************************/
   /*********************
@@ -6354,11 +6322,6 @@ you can add resource intensive styles.
   /*********************
   NAVIGATION STYLES
   *********************/
-  .nav {
-    /* highlight current page */
-    /* end current highlighters */ }
-
-  /* end .nav.footer-nav */
   /*********************
   SIDEBARS & ASIDES
   *********************/
@@ -6398,30 +6361,25 @@ you can add resource intensive styles.
   /* end .footer-links */ }
 /*
 XLARGE
-This is the average viewing window. So Desktops, Laptops, and
-in general anyone not viewing on a mobile device. Here's where
-you can add resource intensive styles.
 */
 @media only screen and (min-width: 90.063) {
   /******************************************************************
   
-  Stylesheet: 1280px and Up
+  Stylesheet: X-Large Stylesheet
   
-  This is the desktop size. It's larger than an iPad so it will only
-  be seen on the Desktop. 
+  Styles apply to 90.063em and up.
+  
   
   ******************************************************************/ }
 /*
 XXLARGE
-This is for the larger monitors and possibly full screen viewers.
 */
 @media only screen and (min-width: 120.063em) {
   /******************************************************************
   
-  Stylesheet: 1440px and Up
+  Stylesheet: XX-Large Stylesheet
   
-  You can add some advanced styles here if you like. This kicks in
-  on larger screens.
+  Styles apply to 120.063em and up.
   
   ******************************************************************/ }
 /*

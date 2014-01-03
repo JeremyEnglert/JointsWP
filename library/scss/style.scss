@@ -13,7 +13,7 @@ of the styles inside media queries.
 // IMPORTING STYLES
 //
 
-// import overrides
+// import foundation overrides
 @import "settings";
 
 // import normalize
@@ -41,13 +41,10 @@ the other stylesheets. Remember, keep it light: Speed is Important.
 
 /*
 MEDIUM
-This is for devices like the Galaxy Note or something that's
-larger than an iPhone but smaller than a tablet. Let's call them
-tweeners.
 */
 @media only screen and (min-width: 40.063em) {
 
-	// styles in 481up.scss
+	// styles in medium.scss
 	@import "medium";
 
 } // end of media query
@@ -60,31 +57,27 @@ you can add resource intensive styles.
 */
 @media only screen and (min-width: 64.063em) {
 
-	// styles in 768up.scss
+	// styles in large.scss
 	@import "large";
 
 } // end of media query
 
 /*
 XLARGE
-This is the average viewing window. So Desktops, Laptops, and
-in general anyone not viewing on a mobile device. Here's where
-you can add resource intensive styles.
 */
 @media only screen and (min-width: 90.063) {
 
-	// styles in 1030up.scss
+	// styles in xlarge.scss
 	@import "xlarge";
 
 } // end of media query
 
 /*
 XXLARGE
-This is for the larger monitors and possibly full screen viewers.
 */
 @media only screen and (min-width: 120.063em) {
 
-	// styles in 1240up.scss
+	// styles in xxlarge.scss
 	@import "xxlarge";
 
 } // end of media query
