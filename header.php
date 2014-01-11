@@ -52,7 +52,7 @@
 						
 						<?php get_template_part( 'partials/nav', 'topbar' ); ?>
 						
-						<?php get_template_part( 'partials/nav', 'offcanvas-sidebar' ); ?>
+						<?php get_template_part( 'partials/nav', 'offcanvas' ); ?>
 						
 					</div> <!-- end #inner-header -->
 	
