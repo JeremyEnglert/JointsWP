@@ -23,14 +23,14 @@ library/joints.php
 	- custom google+ integration
 	- adding custom fields to user profiles
 */
-require_once('library/joints.php'); // if you remove this, Joints will break
+require_once(get_template_directory().'/library/joints.php'); // if you remove this, Joints will break
 /*
 library/custom-post-type.php
 	- an example custom post type
 	- example custom taxonomy (like categories)
 	- example custom taxonomy (like tags)
 */
-require_once('library/custom-post-type.php'); // you can disable this if you like
+require_once(get_template_directory().'/library/custom-post-type.php'); // you can disable this if you like
 /*
 library/admin.php
 	- removing some default WordPress dashboard widgets
@@ -38,12 +38,12 @@ library/admin.php
 	- adding custom login css
 	- changing text in footer of admin
 */
-// require_once('library/admin.php'); // this comes turned off by default
+// require_once(get_template_directory().'/library/admin.php'); // this comes turned off by default
 /*
 library/translation/translation.php
 	- adding support for other languages
 */
-// require_once('library/translation/translation.php'); // this comes turned off by default
+// require_once(get_template_directory().'/library/translation/translation.php'); // this comes turned off by default
 
 /*********************
 THUMNAIL SIZE OPTIONS
