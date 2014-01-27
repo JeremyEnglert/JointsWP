@@ -122,16 +122,16 @@ function joints_scripts_and_styles() {
   if (!is_admin()) {
 
     // modernizr (without media query polyfill)
-    wp_register_script( 'joints-modernizr', get_stylesheet_directory_uri() . '/library/js/vendor/custom.modernizr.js', array(), '2.5.3', false );
+    wp_register_script( 'joints-modernizr', get_template_directory_uri() . '/library/js/vendor/custom.modernizr.js', array(), '2.5.3', false );
     
     // adding Foundation scripts file in the footer
     wp_register_script( 'foundation-js', get_template_directory_uri() . '/library/js/foundation.min.js', array( 'jquery' ), '', true );
    
     // register main stylesheet
-    wp_register_style( 'joints-stylesheet', get_stylesheet_directory_uri() . '/library/css/style.css', array(), '', 'all' );
+    wp_register_style( 'joints-stylesheet', get_template_directory_uri() . '/library/css/style.css', array(), '', 'all' );
     
     // register foundation icons
-    wp_register_style( 'foundation-icons', get_stylesheet_directory_uri() . '/library/css/icons/foundation-icons.css', array(), '', 'all' );
+    wp_register_style( 'foundation-icons', get_template_directory_uri() . '/library/css/icons/foundation-icons.css', array(), '', 'all' );
 
     // comment reply script for threaded comments
     if ( is_singular() AND comments_open() AND (get_option('thread_comments') == 1)) {
@@ -139,7 +139,7 @@ function joints_scripts_and_styles() {
     }
 
     //adding scripts file in the footer
-    wp_register_script( 'joints-js', get_stylesheet_directory_uri() . '/library/js/scripts.js', array( 'jquery' ), '', true );
+    wp_register_script( 'joints-js', get_template_directory_uri() . '/library/js/scripts.js', array( 'jquery' ), '', true );
 
     // enqueue styles and scripts
     wp_enqueue_script( 'joints-modernizr' );
@@ -181,17 +181,6 @@ function joints_theme_support() {
 	// default thumb size
 	set_post_thumbnail_size(125, 125, true);
 
-	// wp custom background (thx to @bransonwerner for update)
-	add_theme_support( 'custom-background',
-	    array(
-	    'default-image' => '',  // background image default
-	    'default-color' => '', // background color default (dont add the #)
-	    'wp-head-callback' => '_custom_background_cb',
-	    'admin-head-callback' => '',
-	    'admin-preview-callback' => ''
-	    )
-	);
-
 	// rss 
 	add_theme_support('automatic-feed-links');
 
@@ -216,64 +205,6 @@ function joints_theme_support() {
 	add_theme_support( 'menus' );
 
 } /* end joints theme support */
-
-
-/*********************
-MENUS & NAVIGATION
-*********************/
-
-// the main menu
-function joints_main_nav() {
-	// display the wp3 menu if available
-    wp_nav_menu(array(
-    	'container' => false,                           // remove nav container
-    	'container_class' => '',           // class of container (should you choose to use it)
-    	'menu' => __( 'The Main Menu', 'jointstheme' ),  // nav name
-    	'menu_class' => '',         // adding custom nav class
-    	'theme_location' => 'main-nav',                 // where it's located in the theme
-    	'before' => '',                                 // before the menu
-        'after' => '',                                  // after the menu
-        'link_before' => '',                            // before each link
-        'link_after' => '',                             // after each link
-    	'fallback_cb' => 'joints_main_nav_fallback'      // fallback function
-	));
-} /* end joints main nav */
-
-// the footer menu (should you choose to use one)
-function joints_footer_links() {
-	// display the wp3 menu if available
-    wp_nav_menu(array(
-    	'container' => '',                              // remove nav container
-    	'container_class' => 'footer-links clearfix',   // class of container (should you choose to use it)
-    	'menu' => __( 'Footer Links', 'jointstheme' ),   // nav name
-    	'menu_class' => 'nav footer-nav clearfix',      // adding custom nav class
-    	'theme_location' => 'footer-links',             // where it's located in the theme
-    	'before' => '',                                 // before the menu
-        'after' => '',                                  // after the menu
-        'link_before' => '',                            // before each link
-        'link_after' => '',                             // after each link
-        'depth' => 0,                                   // limit the depth of the nav
-    	'fallback_cb' => 'joints_footer_links_fallback'  // fallback function
-	));
-} /* end joints footer link */
-
-// this is the fallback for header menu
-function joints_main_nav_fallback() {
-	wp_page_menu( array(
-		'show_home' => true,
-    	'menu_class' => 'top-bar top-bar-section',      // adding custom nav class
-		'include'     => '',
-		'exclude'     => '',
-		'echo'        => true,
-        'link_before' => '',                            // before each link
-        'link_after' => ''                             // after each link
-	) );
-}
-
-// this is the fallback for footer menu
-function joints_footer_links_fallback() {
-	/* you can put a default here if you like */
-}
 
 /*********************
 RELATED POSTS FUNCTION
@@ -365,6 +296,53 @@ function joints_page_navi($before = '', $after = '') {
 } /* end page navi */
 
 /*********************
+ADD FOUNDATION FEATURES TO WORDPRESS
+*********************/
+// Add "has-dropdown" CSS class to navigation menu items that have children in a submenu.
+function nav_menu_item_parent_classing( $classes, $item )
+{
+    global $wpdb;
+    
+$has_children = $wpdb -> get_var( "SELECT COUNT(meta_id) FROM {$wpdb->prefix}postmeta WHERE meta_key='_menu_item_menu_item_parent' AND meta_value='" . $item->ID . "'" );
+    
+    if ( $has_children > 0 )
+    {
+        array_push( $classes, "has-dropdown" );
+    }
+    
+    return $classes;
+}
+ 
+add_filter( "nav_menu_css_class", "nav_menu_item_parent_classing", 10, 2 );
+
+//Deletes empty classes and changes the sub menu class name
+    function change_submenu_class($menu) {
+        $menu = preg_replace('/ class="sub-menu"/',' class="dropdown"',$menu);
+        return $menu;
+    }
+    add_filter ('wp_nav_menu','change_submenu_class');
+
+
+//Use the active class of the ZURB Foundation for the current menu item. (From: https://github.com/milohuang/reverie/blob/master/functions.php)
+function required_active_nav_class( $classes, $item ) {
+    if ( $item->current == 1 || $item->current_item_ancestor == true ) {
+        $classes[] = 'active';
+    }
+    return $classes;
+}
+add_filter( 'nav_menu_css_class', 'required_active_nav_class', 10, 2 );
+
+// Search Form
+function joints_wpsearch($form) {
+	$form = '<form role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
+	<label class="screen-reader-text" for="s">' . __('Search for:', 'jointstheme') . '</label>
+	<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="'.esc_attr__('Search the Site...','jointstheme').'" />
+	<input type="submit" id="searchsubmit" class="button" value="'. esc_attr__('Search') .'" />
+	</form>';
+	return $form;
+} // don't remove this bracket!
+
+/*********************
 RANDOM CLEANUP ITEMS
 *********************/
 
@@ -398,31 +376,5 @@ function joints_get_the_author_posts_link() {
 	return $link;
 }
 
-// Add "has-dropdown" CSS class to navigation menu items that have children in a submenu.
-function nav_menu_item_parent_classing( $classes, $item )
-{
-    global $wpdb;
-    
-$has_children = $wpdb -> get_var( "SELECT COUNT(meta_id) FROM {$wpdb->prefix}postmeta WHERE meta_key='_menu_item_menu_item_parent' AND meta_value='" . $item->ID . "'" );
-    
-    if ( $has_children > 0 )
-    {
-        array_push( $classes, "has-dropdown" );
-    }
-    
-    return $classes;
-}
- 
-add_filter( "nav_menu_css_class", "nav_menu_item_parent_classing", 10, 2 );
 
-	
-
-//Deletes empty classes and changes the sub menu class name
-    function change_submenu_class($menu) {
-        $menu = preg_replace('/ class="sub-menu"/',' class="dropdown"',$menu);
-        return $menu;
-    }
-    add_filter ('wp_nav_menu','change_submenu_class');
-    
 ?>
- 

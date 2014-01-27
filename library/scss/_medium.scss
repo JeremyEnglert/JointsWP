@@ -1,15 +1,8 @@
 /******************************************************************
 
-Stylesheet: 481px and Up Stylesheet
+Stylesheet: Nediun Stylesheet
 
-This stylesheet is loaded for larger devices. It's set to 
-481px because at 480px it would load on a landscaped iPhone.
-This isn't ideal because then you would be loading all those
-extra styles on that same mobile connection. 
-
-A word of warning. This size COULD be a larger mobile device,
-so you still want to keep it pretty light and simply expand
-upon your base.scss styles.
+Styles apply to 40.063em and up.
 
 ******************************************************************/
 
@@ -19,53 +12,6 @@ upon your base.scss styles.
 NAVIGATION STYLES
 *********************/
 
-.nav {
-	
-}
-
-	/* .menu is clearfixed inside mixins.scss */
-	.menu {
-		ul {
-			li {
-				a {
-					
-					/*
-					you can use hover styles here even though this size
-					has the possibility of being a mobile device.
-					*/
-					&:hover, &:focus {
-					
-					}
-				}
-				
-				&:first-child {}
-				&:last-child {}
-				
-				/*
-				plan your menus and drop-downs wisely.
-				*/
-				ul.sub-menu,
-				ul.children {
-					li {
-						a {
-							&:hover,
-							&:focus {}
-							&:link {}
-						}
-						&:first-child {}
-						&:last-child {}
-					}
-				}
-			} /* end .menu ul li */
-			
-			/* highlight current page */
-			li.current-menu-item, 
-			li.current_page_item,
-			li.current-page-ancestor {
-				a {}
-			}  /* end current highlighters */
-		} /* end .menu ul */
-	} /* end .menu */
 
 /*********************
 POSTS & CONTENT STYLES

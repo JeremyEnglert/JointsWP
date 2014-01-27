@@ -1,12 +1,8 @@
 /******************************************************************
 
-Stylesheet: 768px and Up
+Stylesheet: Large Stylesheet
 
-Here's where you can start getting into the good stuff.
-This size will work on iPads, other tablets, and desktops.
-So you can start working with more styles, background images,
-and other resources. You'll also notice the grid starts to
-come into play. Have fun!
+Styles apply to 64.063em and up.
 
 ******************************************************************/
 
@@ -36,17 +32,6 @@ HEADER STYLES
 /*********************
 NAVIGATION STYLES
 *********************/
-
-
-.nav {
-	/* highlight current page */
-	li.current-menu-item,
-	li.current_page_item,
-	li.current-page-ancestor {
-		a {}
-	}  /* end current highlighters */
-
-} /* end .nav.footer-nav */
 
 /*********************
 SIDEBARS & ASIDES
