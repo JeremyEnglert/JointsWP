@@ -12,5 +12,5 @@ http://jengl.com
 
 /* .5 beta release */
 - Early beta release
-- Foundation 4.0.9
+- Foundation 5.0.3
 - Sass and CSS versions

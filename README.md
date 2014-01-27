@@ -11,3 +11,6 @@ JointsWP is a blank WordPress theme built with [Foundation 5](http://foundation.
 This theme is meant to be your starting point, not the end product. No need to use child themes (though you can).  It is not full of shortcodes (that you’ll probably never use) or functions that you’ll probably end up removing anyway. And the features it does have, can be easily removed without breaking the rest of the theme.
 
 Feel free to chop up, slice up, murder or improve any part of it you want. This theme is yours, literally.
+
+### Info
+Currently using Foundation Version 5.0.3
