@@ -31,6 +31,8 @@ library/custom-post-type.php
 	- example custom taxonomy (like tags)
 */
 require_once('library/custom-post-type.php'); // you can disable this if you like
+require_once('library/custom-post-type-accordion.php'); // you can disable this if you like
+
 /*
 library/admin.php
 	- removing some default WordPress dashboard widgets
@@ -108,7 +110,7 @@ function joints_footer_links() {
     	'container' => '',                              // remove nav container
     	'container_class' => 'footer-links clearfix',   // class of container (should you choose to use it)
     	'menu' => __( 'Footer Links', 'jointstheme' ),   // nav name
-    	'menu_class' => 'nav footer-nav clearfix',      // adding custom nav class
+    	'menu_class' => 'sub-nav',      // adding custom nav class
     	'theme_location' => 'footer-links',             // where it's located in the theme
     	'before' => '',                                 // before the menu
         'after' => '',                                  // after the menu
@@ -147,6 +149,16 @@ function joints_register_sidebars() {
 		'id' => 'sidebar1',
 		'name' => __('Sidebar 1', 'jointstheme'),
 		'description' => __('The first (primary) sidebar.', 'jointstheme'),
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<h4 class="widgettitle">',
+		'after_title' => '</h4>',
+	));
+
+	register_sidebar(array(
+		'id' => 'offcanvas',
+		'name' => __('Offcanvas', 'jointstheme'),
+		'description' => __('The offcanvas sidebar.', 'jointstheme'),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',
