@@ -30,8 +30,7 @@ library/custom-post-type.php
 	- example custom taxonomy (like categories)
 	- example custom taxonomy (like tags)
 */
-require_once('library/custom-post-type.php'); // you can disable this if you like
-require_once('library/custom-post-type-accordion.php'); // you can disable this if you like
+require_once(get_template_directory().'library/custom-post-type-accordion.php'); // you can disable this if you like
 require_once(get_template_directory().'/library/custom-post-type.php'); // you can disable this if you like
 /*
 library/admin.php
