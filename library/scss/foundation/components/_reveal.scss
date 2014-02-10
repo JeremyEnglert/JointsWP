@@ -13,7 +13,7 @@ $reveal-overlay-bg-old: #000 !default;
 
 // We use these to control the style of the modal itself.
 $reveal-modal-bg: #fff !default;
-$reveal-position-top: 50px !default;
+$reveal-position-top: rem-calc(100) !default;
 $reveal-default-width: 80% !default;
 $reveal-modal-padding: rem-calc(20) !default;
 $reveal-box-shadow: 0 0 10px rgba(#000,.4) !default;
@@ -137,17 +137,22 @@ $close-reveal-modal-class: "close-reveal-modal" !default;
     // Reveal Modals
     .reveal-modal-bg { @include reveal-bg; }
 
-    .#{$reveal-modal-class} {
+    dialog, .#{$reveal-modal-class} {
       @include reveal-modal-base;
       @include reveal-modal-style;
 
       .#{$close-reveal-modal-class} { @include reveal-close; }
     }
 
+    dialog[open] {
+	display:block;
+	visibility: visible;
+    }
+
     @media #{$medium-up} {
 
-      .#{$reveal-modal-class} {
-        @include reveal-modal-style(false, rem-calc(30), false, $box-shadow: false, $top-offset: rem-calc(100));
+      dialog, .#{$reveal-modal-class} {
+        @include reveal-modal-style(false, $reveal-modal-padding * 1.5, false, $box-shadow: false, $top-offset: $reveal-position-top);
 
         &.tiny  { @include reveal-modal-base(false, 30%); }
         &.small { @include reveal-modal-base(false, 40%); }
@@ -159,7 +164,7 @@ $close-reveal-modal-class: "close-reveal-modal" !default;
 
     // Reveal Print Styles
     @media print {
-      .#{$reveal-modal-class} {background: #fff !important;}
+      dialog, .#{$reveal-modal-class} {background: #fff !important;}
     }
   }
 }

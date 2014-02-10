@@ -13,7 +13,7 @@ $joyride-tip-border: solid 1px #555 !default;
 $joyride-tip-radius: 4px !default;
 $joyride-tip-position-offset: 22px !default;
 
-// Here, we're setting the tip dont styles
+// Here, we're setting the tip font styles
 $joyride-tip-font-color: #fff !default;
 $joyride-tip-font-size: rem-calc(14) !default;
 $joyride-tip-header-weight: bold !default;
@@ -185,7 +185,7 @@ $joyride-screenfill: rgba(0,0,0,0.5) !default;
     }
 
 
-    /* Styles for screens that are atleast 768px; */
+    /* Styles for screens that are at least 768px; */
     @media #{$small} {
       .joyride-tip-guide { width: $joyride-tip-default-width; #{$default-float}: inherit;
         .joyride-nub {
