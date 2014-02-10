@@ -1,6 +1,6 @@
 <div class="large-12 columns show-for-medium-up">
 	<div class="sticky">
-	
+		
 		<!-- If you want to use the more traditional "fixed" navigation.
 		 simply replace "sticky" with "fixed" -->
 	
@@ -30,6 +30,9 @@
 			<section class="left-small">
 				<a class="left-off-canvas-toggle menu-icon" ><span></span></a>
 			</section>
+			<section class="right-small">
+				<a class="right-off-canvas-toggle menu-icon" ><span></span></a>
+			</section>			
 		</nav>
 	</div>
 </div>
@@ -40,5 +43,13 @@
 			<?php joints_main_nav(); ?>    
 	</ul>
 </aside>
+
+<aside class="right-off-canvas-menu show-for-small-only">
+	<ul class="off-canvas-list">
+		<li><label>Sidebar</label></li>
+			<?php get_sidebar('offcanvas'); ?>   
+	</ul>
+</aside>
+
 			
 <a class="exit-off-canvas"></a>

@@ -31,7 +31,7 @@
 
 		<?php wp_head(); ?>
 		
-		<!-- drop Google Analytics Here -->
+		<!-- Drop Google Analytics here -->
 		<!-- end analytics -->
 
 	</head>
@@ -46,14 +46,19 @@
 	
 					<div id="inner-header" class="row">
 						<div class="large-12 columns">
-							<p id="logo"><a href="<?php echo home_url(); ?>" rel="nofollow"><?php bloginfo('name'); ?></a></p>
-							<p class="description"><?php  bloginfo('description'); ?></p>
-						</div>
+							<h1><a href="<?php echo home_url(); ?>" rel="nofollow"><?php bloginfo('name'); ?></a></>
+							<small><?php  bloginfo('description'); ?></small></h1>
+						</div>					
 						
-						<?php get_template_part( 'partials/nav', 'topbar' ); ?>
+						 <?php  get_template_part( 'partials/nav', 'offcanvas' ); ?> 
 						
-						<?php get_template_part( 'partials/nav', 'offcanvas' ); ?>
+						 <?php // get_template_part( 'partials/nav', 'topbar' ); ?>
+						 
+						 <?php // get_template_part( 'partials/nav', 'offcanvas-sidebar' ); ?>  								
 						
+						<!-- You only need to use one of the above navigations.
+							 Offcanvas-sidebar adds a sidebar to a "right" offcanavas menus. -->
+										
 					</div> <!-- end #inner-header -->
 	
 				</header> <!-- end header -->
