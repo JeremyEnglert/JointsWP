@@ -17,11 +17,11 @@ of the styles inside media queries.
 // import normalize
 @import "normalize";
 
-// import foundation overrides
-@import "settings";
-
 // import mixins
 @import "mixins";
+
+// import foundation overrides
+@import "settings";
 
 // foundation.scss
 @import "foundation";
