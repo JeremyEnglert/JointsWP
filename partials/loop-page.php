@@ -1,4 +1,4 @@
-<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article" itemscope itemtype="http://schema.org/WebPage">
 						
 	<header class="article-header">
 		<h1 class="page-title"><?php the_title(); ?></h1>
