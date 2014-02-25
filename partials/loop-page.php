@@ -10,9 +10,9 @@
 	</section> <!-- end article section -->
 						
 	<footer class="article-footer">
-		<p class="clearfix"><?php the_tags('<span class="tags">' . __('Tags:', 'jointstheme') . '</span> ', ', ', ''); ?></p>
+		
 	</footer> <!-- end article footer -->
 						    
-	<?php comments_template(); ?>
+	<?php //comments_template(); ?>
 					
 </article> <!-- end article -->
