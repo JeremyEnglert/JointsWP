@@ -195,6 +195,16 @@ function joints_theme_support() {
 
 	// wp menus
 	add_theme_support( 'menus' );
+	
+	//html5 support (http://themeshaper.com/2013/08/01/html5-support-in-wordpress-core/)
+	add_theme_support( 'html5', 
+	         array( 
+	         	'comment-list', 
+	         	'comment-form', 
+	         	'search-form', 
+	         ) 
+	);
+	
 
 } /* end joints theme support */
 
