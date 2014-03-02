@@ -1,3 +1,7 @@
+// Foundation by ZURB
+// foundation.zurb.com
+// Licensed under MIT Open Source
+
 @import "global";
 
 // @variables
@@ -79,7 +83,7 @@ $preloader-class: "preloader" !default;
       .orbit-container { background-color: transparent;
 
         // Show images when .orbit-container is loaded
-        li { display: block;
+        ul li { display: block;
 
           .orbit-caption { display: block; }
         }
