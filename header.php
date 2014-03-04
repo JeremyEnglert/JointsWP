@@ -56,7 +56,7 @@
 							</h1>
 						</div>
 
-						 <?php  get_template_part( 'partials/nav', 'offcanvas' ); ?>
+						 <?php get_template_part( 'partials/nav', 'offcanvas' ); ?>
 
 						 <?php // get_template_part( 'partials/nav', 'topbar' ); ?>
 
