@@ -121,11 +121,16 @@ function joints_scripts_and_styles() {
   global $wp_styles; // call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
   if (!is_admin()) {
 
+	wp_deregister_script('jquery');
+	
+// modernizr (without media query polyfill)
+    wp_enqueue_script( 'jquery', get_stylesheet_directory_uri() . '/bower_components/foundation/js/vendor/jquery.js', array(), '2.1.0', false );
+    
     // modernizr (without media query polyfill)
-    wp_enqueue_script( 'joints-modernizr', get_stylesheet_directory_uri() . '/library/js/vendor/modernizr.js', array(), '2.5.3', false );
+    wp_enqueue_script( 'modernizr', get_stylesheet_directory_uri() . '/bower_components/foundation/js/vendor/modernizr.js', array(), '2.5.3', false );
     
     // adding Foundation scripts file in the footer
-    wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/library/js/foundation.min.js', array( 'jquery' ), '', true );
+    wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/bower_components/foundation/js/foundation.min.js', array( 'jquery' ), '', true );
    
     // register main stylesheet
     wp_enqueue_style( 'joints-stylesheet', get_template_directory_uri() . '/library/css/style.css', array(), '', 'all' );
@@ -149,15 +154,6 @@ function joints_scripts_and_styles() {
     wp_enqueue_script( 'joints-js' );
 
   }
-}
-
-    
-//Replace jQuery with Google CDN jQuery
-if (!is_admin()) add_action("wp_enqueue_scripts", "my_jquery_enqueue", 11);
-function my_jquery_enqueue() {
-   wp_deregister_script('jquery');
-   wp_register_script('jquery', "http" . ($_SERVER['SERVER_PORT'] == 443 ? "s" : "") . "://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js", false, null);
-   wp_enqueue_script('jquery');
 }
 
 /*********************
@@ -275,9 +271,9 @@ function joints_page_navi($before = '', $after = '') {
 	echo $before.'<nav class="page-navigation"><ul class="pagination">'."";
 	if ($start_page >= 2 && $pages_to_show < $max_page) {
 		$first_page_text = __( "First", 'jointstheme' );
-		echo '<li class="bpn-first-page-link"><a href="'.get_pagenum_link().'" title="'.$first_page_text.'">'.$first_page_text.'</a></li>';
+		echo '<li><a href="'.get_pagenum_link().'" title="'.$first_page_text.'">'.$first_page_text.'</a></li>';
 	}
-	echo '<li class="bpn-prev-link">';
+	echo '<li>';
 	previous_posts_link('<<');
 	echo '</li>';
 	for($i = $start_page; $i  <= $end_page; $i++) {
@@ -287,12 +283,12 @@ function joints_page_navi($before = '', $after = '') {
 			echo '<li><a href="'.get_pagenum_link($i).'">'.$i.'</a></li>';
 		}
 	}
-	echo '<li class="bpn-next-link">';
+	echo '<li>';
 	next_posts_link('>>');
 	echo '</li>';
 	if ($end_page < $max_page) {
 		$last_page_text = __( "Last", 'jointstheme' );
-		echo '<li class="bpn-last-page-link"><a href="'.get_pagenum_link($max_page).'" title="'.$last_page_text.'">'.$last_page_text.'</a></li>';
+		echo '<li><a href="'.get_pagenum_link($max_page).'" title="'.$last_page_text.'">'.$last_page_text.'</a></li>';
 	}
 	echo '</ul></nav>'.$after."";
 } /* end page navi */
