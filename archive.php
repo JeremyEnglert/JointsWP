@@ -60,7 +60,7 @@
 					
 					    <?php else : ?>
 					
-    						<?php get_template_part( 'partials/missing', 'content' ); ?>
+    						<?php get_template_part( 'partials/content', 'missing' ); ?>
 					
 					    <?php endif; ?>
 			

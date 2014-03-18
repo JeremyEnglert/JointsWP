@@ -18,7 +18,7 @@ Template Name: Full Width (No Sidebar)
 					    					
 					    <?php endwhile; else : ?>
 					
-					   		<?php get_template_part( 'partials/missing', 'content' ); ?>
+					   		<?php get_template_part( 'partials/content', 'missing' ); ?>
 
 					    <?php endif; ?>
 

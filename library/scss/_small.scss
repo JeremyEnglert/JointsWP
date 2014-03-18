@@ -12,9 +12,7 @@ and will be used across all viewports.
 /*********************
 GENERAL STYLES
 *********************/
-body {
-
-}
+body {}
 
 /********************
 WORDPRESS BODY CLASSES
@@ -61,11 +59,6 @@ style a page via class
 LAYOUT & GRID STYLES
 *********************/
 
-.wrap {
-	width: 96%;
-	margin: 0 auto;
-}
-
 /*********************
 LINK STYLES
 *********************/
@@ -75,8 +68,7 @@ a, a:visited {
 
 	/*adds highlight on hover */
 	&:hover, &:focus {
-		background: $primary-color;
-		color: #fff;
+
 	}
 
 	/* on click */
@@ -98,9 +90,7 @@ a, a:visited {
 /******************************************************************
 H1, H2, H3, H4, H5 P STYLES
 ******************************************************************/
-p {
-	font-family: "Open Sans";
-}
+p {}
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
 	/*
@@ -144,197 +134,190 @@ HEADER STYLES
 			li {
 				list-style: none;
 			}
-			.off-canvas-list {
-				ul {
-					margin-left: 0;
-					.dropdown {
-						margin-left: 20px;
-					}
-				}
-			}
 		}
 }
-
-	#logo {
-    margin: 0.57em 0 0.17em;
-    font-size: $h1-font-size;
-    font-weight: bold;
-    }
-
+    
 /*********************
 NAVIGATION STYLES
 *********************/
-
-/*
-all navs have a .nav class applied via
-the wp_menu function; this is so we can
-easily write one group of styles for
-the navs on the site so our css is cleaner
-and more scalable.
-*/
 .top-bar {
 	.title-area {
 		z-index: 1;
 	}
 } 
 
+.off-canvas-list {
+	ul {
+		margin-left: 0;
+		li {
+			a {
+				border-bottom: 0px;
+			}
+		}
+		.dropdown {
+			margin-left: 20px;
+		}
+	}
+}
+
 /*********************
 POSTS & CONTENT STYLES
 *********************/
 
 #content {
-
+	/*adds highlight on hover */
+	a:hover, a:focus {
+		background: $primary-color;
+		color: #fff;
+	}
 }
 
-		.hentry {
+.hentry {
 
-			header {}
+	header {}
 
-			footer {}
+	footer {}
 
-		} /* end .hentry */
+} /* end .hentry */
 
-		.single-title,
-		.page-title {}
+.single-title,
+.page-title {}
 
-		.single-title {}
+.single-title {}
 
-		.page-title {}
+.page-title {}
 
-		.archive-title { }
+.archive-title { }
 
-		/* want to style individual post classes? Booya! */
-		.post-id {}         /* post by id (i.e. post-3) */
-		.post {}            /* general post style */
-		.page {}            /* general article on a page style */
-		.attachment {}      /* general style on an attatchment */
-		.sticky {}          /* sticky post style */
-		.hentry {}          /* hentry class */
-		.category-slug {}   /* style by category (i.e. category-videos) */
-		.tag-slug {}        /* style by tag (i.e. tag-news) */
+/* want to style individual post classes? Booya! */
+.post-id {}         /* post by id (i.e. post-3) */
+.post {}            /* general post style */
+.page {}            /* general article on a page style */
+.attachment {}      /* general style on an attatchment */
+.sticky {}          /* sticky post style */
+.hentry {}          /* hentry class */
+.category-slug {}   /* style by category (i.e. category-videos) */
+.tag-slug {}        /* style by tag (i.e. tag-news) */
 
-		/* post meta */
-		.byline {
-			color: #999;
+/* post meta */
+.byline {
+	color: #999;
+	time {}
+}
 
-			time {}
+/* entry content */
+.entry-content {
+
+	p {}
+
+	ul, ol, table, dl {}
+
+	ul, ol {
+
+		li {}
+
 		}
 
-		/* entry content */
-		.entry-content {
+	ul {
 
-			p {}
+		li {}
 
+		}
 
-			ul, ol, table, dl {}
+	ol {
 
-			ul, ol {
+		li {}
 
-				li {}
+		}
 
-			}
+	blockquote {
 
-			ul {
+		&:before {}
 
-				li {}
+		}
 
-			}
+	dl {}
 
-			ol {
+	dt {}
 
-				li {}
+	dd {
+		margin-left: 0;
+		font-size: 0.9em;
+		color: #787878;
+		margin-bottom: 1.5em;
+		}
 
-			}
+	img {
+		max-width: 100%;
+		height: auto;
+		}
 
-			blockquote {
+		/*
+		image alignment on a screen this size may be
+		a bit difficult. It's set to start aligning
+		and floating images at the next breakpoint,
+		but it's up to you. Feel free to change it up.
+		*/
+	.alignleft, img.alignleft {}
+	.alignright, img.alignright {}
+	.aligncenter, img.aligncenter {}
 
-				&:before {}
+	video, object {
+		max-width: 100%;
+		height: auto;
+		}
 
-			}
+	pre {
+		background: #eee;
+		border: 1px solid #cecece;
+		padding: 10px;
+		}
 
-			dl {}
+} /* end .entry-content */
 
-			dt {}
+.wp-caption {
+	max-width: 100%;
+	background: #eee;
+	padding: 5px;
 
-			dd {
-				margin-left: 0;
-				font-size: 0.9em;
-				color: #787878;
-				margin-bottom: 1.5em;
-			}
+	/* images inside wp-caption */
+	img {
+		max-width: 100%;
+		margin-bottom: 0;
+		width: 100%;
+		}
 
-			img {
-				max-width: 100%;
-				height: auto;
-			}
+	p.wp-caption-text {
+		font-size: 0.85em;
+		margin: 4px 0 7px;
+		text-align: center;
+		}
 
-			/*
-			image alignment on a screen this size may be
-			a bit difficult. It's set to start aligning
-			and floating images at the next breakpoint,
-			but it's up to you. Feel free to change it up.
-			*/
-			.alignleft, img.alignleft {}
-			.alignright, img.alignright {}
-			.aligncenter, img.aligncenter {}
+} /* end .wp-caption */
 
-			video, object {
-				max-width: 100%;
-				height: auto;
-			}
+/* image gallery styles */
+	.gallery {
 
-			pre {
-				background: #eee;
-				border: 1px solid #cecece;
-				padding: 10px;
-			}
+		dl {
 
-		} /* end .entry-content */
+			a {}
 
-		.wp-caption {
-			max-width: 100%;
-			background: #eee;
-			padding: 5px;
+			img {}
 
-			/* images inside wp-caption */
-			img {
-				max-width: 100%;
-				margin-bottom: 0;
-				width: 100%;
-			}
+		}
 
-			p.wp-caption-text {
-				font-size: 0.85em;
-				margin: 4px 0 7px;
-				text-align: center;
-			}
+		dt {}
 
-		} /* end .wp-caption */
+		dd {}
 
-		/* image gallery styles */
-		.gallery {
+} /* end .gallery */
 
-			dl {
-
-				a {}
-
-				img {}
-
-			}
-
-			dt {}
-
-			dd {}
-
-		} /* end .gallery */
-
-		/* gallery caption styles */
-		.gallery-caption {}
-
-		.size-full {}
-		.size-large {}
-		.size-medium {}
-		.size-thumbnail {}
+/* gallery caption styles */
+.gallery-caption {}
+.size-full {}
+.size-large {}
+.size-medium {}
+.size-thumbnail {}
 
 /******************************************************************
 PAGE NAVI STYLES
@@ -648,6 +631,11 @@ SIDEBARS & ASIDES
 
 	}
 
+#sidebar-offcanvas {
+	.widgettitle {
+		color: #fff;
+	}	
+}
 /*********************
 FOOTER STYLES
 *********************/
@@ -678,3 +666,19 @@ FOOTER STYLES
 
 
 	.copyright { }
+	
+/*********************
+FOUNDATION STYLES
+*********************/
+.clearing-assembled.clearing-blackout a:hover {
+	background: none;
+}
+
+/*********************
+PLUGIN STYLES
+*********************/
+// Makes Gravity Forms play nice with Foundation Form styles
+.gform_body ul {
+    list-style: none outside none;
+    margin: 0;
+}

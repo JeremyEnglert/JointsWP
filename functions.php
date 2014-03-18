@@ -30,6 +30,7 @@ library/custom-post-type.php
 	- example custom taxonomy (like categories)
 	- example custom taxonomy (like tags)
 */
+require_once(get_template_directory().'/library/custom-post-type-accordion.php'); // you can disable this if you like
 require_once(get_template_directory().'/library/custom-post-type.php'); // you can disable this if you like
 /*
 library/admin.php
@@ -44,34 +45,6 @@ library/translation/translation.php
 	- adding support for other languages
 */
 // require_once(get_template_directory().'/library/translation/translation.php'); // this comes turned off by default
-
-/*********************
-THUMNAIL SIZE OPTIONS
-*********************/
-
-// Thumbnail sizes
-add_image_size( 'joints-thumb-600', 600, 150, true );
-add_image_size( 'joints-thumb-300', 300, 100, true );
-/*
-to add more sizes, simply copy a line from above
-and change the dimensions & name. As long as you
-upload a "featured image" as large as the biggest
-set width or height, all the other sizes will be
-auto-cropped.
-
-To call a different size, simply change the text
-inside the thumbnail function.
-
-For example, to call the 300 x 300 sized image,
-we would use the function:
-<?php the_post_thumbnail( 'joints-thumb-300' ); ?>
-for the 600 x 100 image:
-<?php the_post_thumbnail( 'joints-thumb-600' ); ?>
-
-You can change the names and dimensions to whatever
-you like. 
-*/
-
 
 /*********************
 MENUS & NAVIGATION
@@ -108,7 +81,7 @@ function joints_footer_links() {
     	'container' => '',                              // remove nav container
     	'container_class' => 'footer-links clearfix',   // class of container (should you choose to use it)
     	'menu' => __( 'Footer Links', 'jointstheme' ),   // nav name
-    	'menu_class' => 'nav footer-nav clearfix',      // adding custom nav class
+    	'menu_class' => 'sub-nav',      // adding custom nav class
     	'theme_location' => 'footer-links',             // where it's located in the theme
     	'before' => '',                                 // before the menu
         'after' => '',                                  // after the menu
@@ -147,6 +120,16 @@ function joints_register_sidebars() {
 		'id' => 'sidebar1',
 		'name' => __('Sidebar 1', 'jointstheme'),
 		'description' => __('The first (primary) sidebar.', 'jointstheme'),
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<h4 class="widgettitle">',
+		'after_title' => '</h4>',
+	));
+
+	register_sidebar(array(
+		'id' => 'offcanvas',
+		'name' => __('Offcanvas', 'jointstheme'),
+		'description' => __('The offcanvas sidebar.', 'jointstheme'),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',

@@ -8,19 +8,20 @@ and is called at the beginning, after that we call the rest
 of the styles inside media queries.
 ******************************************************************/
 
+@import "//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700";
 
 //
 // IMPORTING STYLES
 //
-
-// import foundation overrides
-@import "settings";
 
 // import normalize
 @import "normalize";
 
 // import mixins
 @import "mixins";
+
+// import foundation overrides
+@import "settings";
 
 // foundation.scss
 @import "foundation";

@@ -1,5 +1,9 @@
-<div class="large-12 columns show-for-medium-up">
-	<div class="contain-to-grid sticky">
+<div class="large-12 columns">
+	<div class="sticky">
+	
+	<!-- If you want to use the more traditional "fixed" navigation.
+		 simply replace "sticky" with "fixed" -->
+
 		<nav class="top-bar" data-topbar>
 			<ul class="title-area">
 				<!-- Title Area -->
