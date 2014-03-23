@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import "//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700";
 /******************************************************************
 
 Stylesheet: Main Stylesheet
@@ -8,8 +9,7 @@ the separate media queries. The base mobile goes outside any query
 and is called at the beginning, after that we call the rest
 of the styles inside media queries.
 ******************************************************************/
-@import "//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700";
-/*! normalize.css v3.0.0 | MIT License | git.io/normalize */
+/* normalize.css v3.0.0 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
  * 2. Prevent iOS text size adjust after orientation change, without disabling
@@ -323,7 +323,7 @@ input[type="search"]::-webkit-search-decoration {
  * Define consistent border, margin, and padding.
  */
 fieldset {
-  border: 1px solid #c0c0c0;
+  border: 1px solid silver;
   margin: 0 2px;
   padding: 0.35em 0.625em 0.75em; }
 
@@ -416,7 +416,7 @@ use the best ampersand
 http://simplebits.com/notebook/2008/08/14/ampersands-2/
 */
 span.amp {
-  font-family: Baskerville,'Goudy Old Style',Palatino,'Book Antiqua',serif !important;
+  font-family: Baskerville, "Goudy Old Style", Palatino, "Book Antiqua", serif !important;
   font-style: italic; }
 
 /*********************
@@ -435,7 +435,7 @@ really slow down your CSS. Don't overdo it.
 *********************/
 /* @include css-gradient(#dfdfdf,#f8f8f8); */
 meta.foundation-version {
-  font-family: "/5.2.0/"; }
+  font-family: "/5.2.1/"; }
 
 meta.foundation-mq-small {
   font-family: "/only screen and (max-width: 40em)/";
@@ -598,105 +598,129 @@ select {
   .columns.small-uncentered {
     margin-left: 0;
     margin-right: 0;
-    float: left; }
+    float: left !important; }
 
   .column.small-uncentered.opposite,
   .columns.small-uncentered.opposite {
     float: right; }
 
   .small-push-0 {
+    position: relative;
     left: 0%;
     right: auto; }
 
   .small-pull-0 {
+    position: relative;
     right: 0%;
     left: auto; }
 
   .small-push-1 {
+    position: relative;
     left: 8.33333%;
     right: auto; }
 
   .small-pull-1 {
+    position: relative;
     right: 8.33333%;
     left: auto; }
 
   .small-push-2 {
+    position: relative;
     left: 16.66667%;
     right: auto; }
 
   .small-pull-2 {
+    position: relative;
     right: 16.66667%;
     left: auto; }
 
   .small-push-3 {
+    position: relative;
     left: 25%;
     right: auto; }
 
   .small-pull-3 {
+    position: relative;
     right: 25%;
     left: auto; }
 
   .small-push-4 {
+    position: relative;
     left: 33.33333%;
     right: auto; }
 
   .small-pull-4 {
+    position: relative;
     right: 33.33333%;
     left: auto; }
 
   .small-push-5 {
+    position: relative;
     left: 41.66667%;
     right: auto; }
 
   .small-pull-5 {
+    position: relative;
     right: 41.66667%;
     left: auto; }
 
   .small-push-6 {
+    position: relative;
     left: 50%;
     right: auto; }
 
   .small-pull-6 {
+    position: relative;
     right: 50%;
     left: auto; }
 
   .small-push-7 {
+    position: relative;
     left: 58.33333%;
     right: auto; }
 
   .small-pull-7 {
+    position: relative;
     right: 58.33333%;
     left: auto; }
 
   .small-push-8 {
+    position: relative;
     left: 66.66667%;
     right: auto; }
 
   .small-pull-8 {
+    position: relative;
     right: 66.66667%;
     left: auto; }
 
   .small-push-9 {
+    position: relative;
     left: 75%;
     right: auto; }
 
   .small-pull-9 {
+    position: relative;
     right: 75%;
     left: auto; }
 
   .small-push-10 {
+    position: relative;
     left: 83.33333%;
     right: auto; }
 
   .small-pull-10 {
+    position: relative;
     right: 83.33333%;
     left: auto; }
 
   .small-push-11 {
+    position: relative;
     left: 91.66667%;
     right: auto; }
 
   .small-pull-11 {
+    position: relative;
     right: 91.66667%;
     left: auto; }
 
@@ -803,105 +827,129 @@ select {
   .columns.medium-uncentered {
     margin-left: 0;
     margin-right: 0;
-    float: left; }
+    float: left !important; }
 
   .column.medium-uncentered.opposite,
   .columns.medium-uncentered.opposite {
     float: right; }
 
   .medium-push-0 {
+    position: relative;
     left: 0%;
     right: auto; }
 
   .medium-pull-0 {
+    position: relative;
     right: 0%;
     left: auto; }
 
   .medium-push-1 {
+    position: relative;
     left: 8.33333%;
     right: auto; }
 
   .medium-pull-1 {
+    position: relative;
     right: 8.33333%;
     left: auto; }
 
   .medium-push-2 {
+    position: relative;
     left: 16.66667%;
     right: auto; }
 
   .medium-pull-2 {
+    position: relative;
     right: 16.66667%;
     left: auto; }
 
   .medium-push-3 {
+    position: relative;
     left: 25%;
     right: auto; }
 
   .medium-pull-3 {
+    position: relative;
     right: 25%;
     left: auto; }
 
   .medium-push-4 {
+    position: relative;
     left: 33.33333%;
     right: auto; }
 
   .medium-pull-4 {
+    position: relative;
     right: 33.33333%;
     left: auto; }
 
   .medium-push-5 {
+    position: relative;
     left: 41.66667%;
     right: auto; }
 
   .medium-pull-5 {
+    position: relative;
     right: 41.66667%;
     left: auto; }
 
   .medium-push-6 {
+    position: relative;
     left: 50%;
     right: auto; }
 
   .medium-pull-6 {
+    position: relative;
     right: 50%;
     left: auto; }
 
   .medium-push-7 {
+    position: relative;
     left: 58.33333%;
     right: auto; }
 
   .medium-pull-7 {
+    position: relative;
     right: 58.33333%;
     left: auto; }
 
   .medium-push-8 {
+    position: relative;
     left: 66.66667%;
     right: auto; }
 
   .medium-pull-8 {
+    position: relative;
     right: 66.66667%;
     left: auto; }
 
   .medium-push-9 {
+    position: relative;
     left: 75%;
     right: auto; }
 
   .medium-pull-9 {
+    position: relative;
     right: 75%;
     left: auto; }
 
   .medium-push-10 {
+    position: relative;
     left: 83.33333%;
     right: auto; }
 
   .medium-pull-10 {
+    position: relative;
     right: 83.33333%;
     left: auto; }
 
   .medium-push-11 {
+    position: relative;
     left: 91.66667%;
     right: auto; }
 
   .medium-pull-11 {
+    position: relative;
     right: 91.66667%;
     left: auto; }
 
@@ -999,98 +1047,122 @@ select {
     float: left; }
 
   .push-0 {
+    position: relative;
     left: 0%;
     right: auto; }
 
   .pull-0 {
+    position: relative;
     right: 0%;
     left: auto; }
 
   .push-1 {
+    position: relative;
     left: 8.33333%;
     right: auto; }
 
   .pull-1 {
+    position: relative;
     right: 8.33333%;
     left: auto; }
 
   .push-2 {
+    position: relative;
     left: 16.66667%;
     right: auto; }
 
   .pull-2 {
+    position: relative;
     right: 16.66667%;
     left: auto; }
 
   .push-3 {
+    position: relative;
     left: 25%;
     right: auto; }
 
   .pull-3 {
+    position: relative;
     right: 25%;
     left: auto; }
 
   .push-4 {
+    position: relative;
     left: 33.33333%;
     right: auto; }
 
   .pull-4 {
+    position: relative;
     right: 33.33333%;
     left: auto; }
 
   .push-5 {
+    position: relative;
     left: 41.66667%;
     right: auto; }
 
   .pull-5 {
+    position: relative;
     right: 41.66667%;
     left: auto; }
 
   .push-6 {
+    position: relative;
     left: 50%;
     right: auto; }
 
   .pull-6 {
+    position: relative;
     right: 50%;
     left: auto; }
 
   .push-7 {
+    position: relative;
     left: 58.33333%;
     right: auto; }
 
   .pull-7 {
+    position: relative;
     right: 58.33333%;
     left: auto; }
 
   .push-8 {
+    position: relative;
     left: 66.66667%;
     right: auto; }
 
   .pull-8 {
+    position: relative;
     right: 66.66667%;
     left: auto; }
 
   .push-9 {
+    position: relative;
     left: 75%;
     right: auto; }
 
   .pull-9 {
+    position: relative;
     right: 75%;
     left: auto; }
 
   .push-10 {
+    position: relative;
     left: 83.33333%;
     right: auto; }
 
   .pull-10 {
+    position: relative;
     right: 83.33333%;
     left: auto; }
 
   .push-11 {
+    position: relative;
     left: 91.66667%;
     right: auto; }
 
   .pull-11 {
+    position: relative;
     right: 91.66667%;
     left: auto; } }
 @media only screen and (min-width: 64.063em) {
@@ -1104,105 +1176,129 @@ select {
   .columns.large-uncentered {
     margin-left: 0;
     margin-right: 0;
-    float: left; }
+    float: left !important; }
 
   .column.large-uncentered.opposite,
   .columns.large-uncentered.opposite {
     float: right; }
 
   .large-push-0 {
+    position: relative;
     left: 0%;
     right: auto; }
 
   .large-pull-0 {
+    position: relative;
     right: 0%;
     left: auto; }
 
   .large-push-1 {
+    position: relative;
     left: 8.33333%;
     right: auto; }
 
   .large-pull-1 {
+    position: relative;
     right: 8.33333%;
     left: auto; }
 
   .large-push-2 {
+    position: relative;
     left: 16.66667%;
     right: auto; }
 
   .large-pull-2 {
+    position: relative;
     right: 16.66667%;
     left: auto; }
 
   .large-push-3 {
+    position: relative;
     left: 25%;
     right: auto; }
 
   .large-pull-3 {
+    position: relative;
     right: 25%;
     left: auto; }
 
   .large-push-4 {
+    position: relative;
     left: 33.33333%;
     right: auto; }
 
   .large-pull-4 {
+    position: relative;
     right: 33.33333%;
     left: auto; }
 
   .large-push-5 {
+    position: relative;
     left: 41.66667%;
     right: auto; }
 
   .large-pull-5 {
+    position: relative;
     right: 41.66667%;
     left: auto; }
 
   .large-push-6 {
+    position: relative;
     left: 50%;
     right: auto; }
 
   .large-pull-6 {
+    position: relative;
     right: 50%;
     left: auto; }
 
   .large-push-7 {
+    position: relative;
     left: 58.33333%;
     right: auto; }
 
   .large-pull-7 {
+    position: relative;
     right: 58.33333%;
     left: auto; }
 
   .large-push-8 {
+    position: relative;
     left: 66.66667%;
     right: auto; }
 
   .large-pull-8 {
+    position: relative;
     right: 66.66667%;
     left: auto; }
 
   .large-push-9 {
+    position: relative;
     left: 75%;
     right: auto; }
 
   .large-pull-9 {
+    position: relative;
     right: 75%;
     left: auto; }
 
   .large-push-10 {
+    position: relative;
     left: 83.33333%;
     right: auto; }
 
   .large-pull-10 {
+    position: relative;
     right: 83.33333%;
     left: auto; }
 
   .large-push-11 {
+    position: relative;
     left: 91.66667%;
     right: auto; }
 
   .large-pull-11 {
+    position: relative;
     right: 91.66667%;
     left: auto; }
 
@@ -1300,98 +1396,122 @@ select {
     float: left; }
 
   .push-0 {
+    position: relative;
     left: 0%;
     right: auto; }
 
   .pull-0 {
+    position: relative;
     right: 0%;
     left: auto; }
 
   .push-1 {
+    position: relative;
     left: 8.33333%;
     right: auto; }
 
   .pull-1 {
+    position: relative;
     right: 8.33333%;
     left: auto; }
 
   .push-2 {
+    position: relative;
     left: 16.66667%;
     right: auto; }
 
   .pull-2 {
+    position: relative;
     right: 16.66667%;
     left: auto; }
 
   .push-3 {
+    position: relative;
     left: 25%;
     right: auto; }
 
   .pull-3 {
+    position: relative;
     right: 25%;
     left: auto; }
 
   .push-4 {
+    position: relative;
     left: 33.33333%;
     right: auto; }
 
   .pull-4 {
+    position: relative;
     right: 33.33333%;
     left: auto; }
 
   .push-5 {
+    position: relative;
     left: 41.66667%;
     right: auto; }
 
   .pull-5 {
+    position: relative;
     right: 41.66667%;
     left: auto; }
 
   .push-6 {
+    position: relative;
     left: 50%;
     right: auto; }
 
   .pull-6 {
+    position: relative;
     right: 50%;
     left: auto; }
 
   .push-7 {
+    position: relative;
     left: 58.33333%;
     right: auto; }
 
   .pull-7 {
+    position: relative;
     right: 58.33333%;
     left: auto; }
 
   .push-8 {
+    position: relative;
     left: 66.66667%;
     right: auto; }
 
   .pull-8 {
+    position: relative;
     right: 66.66667%;
     left: auto; }
 
   .push-9 {
+    position: relative;
     left: 75%;
     right: auto; }
 
   .pull-9 {
+    position: relative;
     right: 75%;
     left: auto; }
 
   .push-10 {
+    position: relative;
     left: 83.33333%;
     right: auto; }
 
   .pull-10 {
+    position: relative;
     right: 83.33333%;
     left: auto; }
 
   .push-11 {
+    position: relative;
     left: 91.66667%;
     right: auto; }
 
   .pull-11 {
+    position: relative;
     right: 91.66667%;
     left: auto; } }
 .accordion {
@@ -3266,7 +3386,7 @@ button, .button {
   margin-bottom: 1rem;
   overflow: hidden; }
   .flex-video.widescreen {
-    padding-bottom: 56.55%; }
+    padding-bottom: 56.34%; }
   .flex-video.vimeo {
     padding-top: 0; }
   .flex-video iframe,
@@ -3330,7 +3450,7 @@ select {
   background-color: #fafafa;
   background-image: url("data:image/svg+xml;base64, PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI2cHgiIGhlaWdodD0iM3B4IiB2aWV3Qm94PSIwIDAgNiAzIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA2IDMiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwb2x5Z29uIHBvaW50cz0iNS45OTIsMCAyLjk5MiwzIC0wLjAwOCwwICIvPjwvc3ZnPg==");
   background-repeat: no-repeat;
-  background-position: center right 3%;
+  background-position: 97% center;
   border: 1px solid #cccccc;
   padding: 0.5rem;
   font-size: 0.875rem;
@@ -3352,6 +3472,7 @@ select::-ms-expand {
 
   select:hover {
     background: #f3f3f3; } }
+
 /* Attach elements to the beginning or end of an input */
 .prefix,
 .postfix {
@@ -3785,9 +3906,9 @@ label.error {
   text-decoration: none;
   font-size: 24px;
   font-weight: normal;
-  line-height: .5 !important; }
+  line-height: 0.5 !important; }
   .joyride-close-tip:hover, .joyride-close-tip:focus {
-    color: #eee !important; }
+    color: #eeeeee !important; }
 
 .joyride-modal-bg {
   position: fixed;
@@ -3806,9 +3927,9 @@ label.error {
   position: absolute;
   border-radius: 3px;
   z-index: 102;
-  -moz-box-shadow: 0 0 30px #ffffff;
-  -webkit-box-shadow: 0 0 15px #ffffff;
-  box-shadow: 0 0 15px #ffffff; }
+  -moz-box-shadow: 0 0 30px white;
+  -webkit-box-shadow: 0 0 15px white;
+  box-shadow: 0 0 15px white; }
 
 .joyride-expose-cover {
   background: transparent;
@@ -3907,24 +4028,28 @@ kbd {
 
   to {
     -webkit-transform: rotate(360deg); } }
+
 @-moz-keyframes rotate {
   from {
     -moz-transform: rotate(0deg); }
 
   to {
     -moz-transform: rotate(360deg); } }
+
 @-o-keyframes rotate {
   from {
     -o-transform: rotate(0deg); }
 
   to {
     -o-transform: rotate(360deg); } }
+
 @keyframes rotate {
   from {
     transform: rotate(0deg); }
 
   to {
     transform: rotate(360deg); } }
+
 /* Orbit Graceful Loading */
 .slideshow-wrapper {
   position: relative; }
@@ -3953,7 +4078,7 @@ kbd {
   margin-top: -20px;
   margin-left: -20px;
   border: solid 3px;
-  border-color: #555 #fff;
+  border-color: #555555 white;
   -webkit-border-radius: 1000px;
   border-radius: 1000px;
   -webkit-animation-name: rotate;
@@ -3990,9 +4115,9 @@ kbd {
     .orbit-container .orbit-slides-container.fade > * {
       -webkit-transform: translate3d(0, 0, 0);
       opacity: 0.01;
-      transition: opacity .25s ease-in-out;
-      -moz-transition: opacity .25s ease-in-out;
-      -webkit-transition: opacity .25s ease-in-out; }
+      transition: opacity 0.25s ease-in-out;
+      -moz-transition: opacity 0.25s ease-in-out;
+      -webkit-transition: opacity 0.25s ease-in-out; }
       .orbit-container .orbit-slides-container.fade > *.animate-in {
         opacity: 1;
         z-index: 20;
@@ -4086,7 +4211,7 @@ kbd {
     left: 10px;
     font-size: 12px;
     color: white;
-    background: transparent;
+    background: rgba(0, 0, 0, 0);
     z-index: 10; }
     .orbit-container .orbit-slide-number span {
       font-weight: 700;
@@ -4113,7 +4238,7 @@ kbd {
       right: 0;
       width: 11px;
       height: 14px;
-      border: solid 4px #fff;
+      border: solid 4px white;
       border-top: none;
       border-bottom: none; }
     .orbit-container .orbit-timer.paused > span {
@@ -4123,9 +4248,9 @@ kbd {
       height: 14px;
       border: inset 8px;
       border-right-style: solid;
-      border-color: transparent transparent transparent #fff; }
+      border-color: transparent transparent transparent white; }
       .orbit-container .orbit-timer.paused > span.dark {
-        border-color: transparent transparent transparent #333; }
+        border-color: transparent transparent transparent #333333; }
   .orbit-container:hover .orbit-timer > span {
     display: block; }
   .orbit-container .orbit-prev,
@@ -4471,7 +4596,7 @@ dialog, .reveal-modal {
   visibility: hidden;
   display: none;
   position: absolute;
-  z-index: 99;
+  z-index: 100;
   width: 100vw;
   top: 0;
   left: 0;
@@ -4518,7 +4643,13 @@ dialog[open] {
 
 @media only screen and (min-width: 40.063em) {
   dialog, .reveal-modal {
-    padding: 1.875rem; } }
+    padding: 1.875rem; }
+  dialog.full, .reveal-modal.full {
+    top: 0;
+    left: 0;
+    height: 100vh;
+    min-height: 100vh;
+    margin-left: 0 !important; } }
   @media only screen and (min-width: 40.063em) and (min-width: 40.063em) {
     dialog, .reveal-modal {
       top: 6.25rem; } }
@@ -4543,13 +4674,6 @@ dialog[open] {
       margin-left: -47.5%;
       width: 95%; } }
 
-@media only screen and (min-width: 40.063em) {
-  dialog.full, .reveal-modal.full {
-    top: 0;
-    left: 0;
-    height: 100vh;
-    min-height: 100vh;
-    margin-left: 0 !important; } }
   @media only screen and (min-width: 40.063em) and (min-width: 40.063em) {
     dialog.full, .reveal-modal.full {
       margin-left: -50vw;
@@ -4557,7 +4681,7 @@ dialog[open] {
 
 @media print {
   dialog, .reveal-modal {
-    background: #fff !important; } }
+    background: white !important; } }
 .side-nav {
   display: block;
   margin: 0;
@@ -4871,6 +4995,7 @@ div.switch {
 
   to {
     position: relative; } }
+
 table {
   background: white;
   margin-bottom: 1.25rem;
@@ -4960,7 +5085,8 @@ table {
     padding: 0.9375rem 0;
     width: 100%; }
     .tabs-content > .content.active {
-      display: block; }
+      display: block;
+      float: none; }
     .tabs-content > .content.contained {
       padding: 0.9375rem; }
   .tabs-content.vertical {
@@ -5987,7 +6113,7 @@ blockquote p {
 @media print {
   * {
     background: transparent !important;
-    color: #000 !important;
+    color: black !important;
     /* Black prints faster: h5bp.com/s */
     box-shadow: none !important;
     text-shadow: none !important; }
@@ -6009,7 +6135,7 @@ blockquote p {
 
   pre,
   blockquote {
-    border: 1px solid #999;
+    border: 1px solid #999999;
     page-break-inside: avoid; }
 
   thead {
@@ -6025,6 +6151,7 @@ blockquote p {
 
   @page {
     margin: 0.5cm; }
+
   p,
   h2,
   h3 {
@@ -6264,15 +6391,15 @@ blockquote p {
   .tab-bar .menu-icon span {
     position: absolute;
     display: block;
-    width: 1rem;
     height: 0;
-    left: 0.8125rem;
-    top: 0.3125rem;
-    -webkit-box-shadow: 1px 10px 1px 1px white, 1px 16px 1px 1px white, 1px 22px 1px 1px white;
-    box-shadow: 0 10px 0 1px white, 0 16px 0 1px white, 0 22px 0 1px white; }
+    width: 1rem;
+    top: 0.9375rem;
+    left: 0.90625rem;
+    -webkit-box-shadow: 1px 0px 1px 1px white, 1px 7px 1px 1px white, 1px 14px 1px 1px white;
+    box-shadow: 0 0px 0 1px white, 0 7px 0 1px white, 0 14px 0 1px white; }
   .tab-bar .menu-icon:hover span {
-    -webkit-box-shadow: 1px 10px 1px 1px #b3b3b3, 1px 16px 1px 1px #b3b3b3, 1px 22px 1px 1px #b3b3b3;
-    box-shadow: 0 10px 0 1px #b3b3b3, 0 16px 0 1px #b3b3b3, 0 22px 0 1px #b3b3b3; }
+    -webkit-box-shadow: 1px 0px 1px 1px #b3b3b3, 1px 7px 1px 1px #b3b3b3, 1px 14px 1px 1px #b3b3b3;
+    box-shadow: 0 0px 0 1px #b3b3b3, 0 7px 0 1px #b3b3b3, 0 14px 0 1px #b3b3b3; }
 
 .left-off-canvas-menu {
   -webkit-backface-visibility: hidden;
@@ -6355,7 +6482,7 @@ ul.off-canvas-list {
   left: 0;
   right: 0;
   z-index: 1002;
-  -webkit-tap-highlight-color: transparent; }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   @media only screen and (min-width: 40.063em) {
     .move-right .exit-off-canvas:hover {
       background: rgba(255, 255, 255, 0.05); } }
@@ -6379,7 +6506,7 @@ ul.off-canvas-list {
   left: 0;
   right: 0;
   z-index: 1002;
-  -webkit-tap-highlight-color: transparent; }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   @media only screen and (min-width: 40.063em) {
     .move-left .exit-off-canvas:hover {
       background: rgba(255, 255, 255, 0.05); } }
@@ -7378,7 +7505,7 @@ be set to display none.
     -ms-filter: none !important; }
 
   a, a:visited {
-    color: #444 !important;
+    color: #444444 !important;
     text-decoration: underline; }
     a:after, a:visited:after {
       content: " (" attr(href) ")"; }
@@ -7391,7 +7518,7 @@ be set to display none.
     content: ""; }
 
   pre, blockquote {
-    border: 1px solid #999;
+    border: 1px solid #999999;
     page-break-inside: avoid; }
 
   thead {
@@ -7405,6 +7532,7 @@ be set to display none.
 
   @page {
     margin: 0.5cm; }
+
   p, h2, h3 {
     orphans: 3;
     widows: 3; }
@@ -7419,3 +7547,4 @@ be set to display none.
   .respond-form,
   nav {
     display: none; } }
+ }
