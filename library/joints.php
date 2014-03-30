@@ -121,9 +121,10 @@ function joints_scripts_and_styles() {
   global $wp_styles; // call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
   if (!is_admin()) {
 
+	// removes WP version of jQuery
 	wp_deregister_script('jquery');
 	
-// modernizr (without media query polyfill)
+	// loads jQuery 2.1.0
     wp_enqueue_script( 'jquery', get_template_directory_uri() . '/bower_components/foundation/js/vendor/jquery.js', array(), '2.1.0', false );
     
     // modernizr (without media query polyfill)
