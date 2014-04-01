@@ -13,7 +13,7 @@ single-bookmarks.php
 */
 ?>
 
-<?php get_header(); ?>
+<?php get_template_part( 'partials/header', 'main' ); ?>
 			
 			<div id="content">
 
@@ -39,4 +39,4 @@ single-bookmarks.php
     
 			</div> <!-- end #content -->
 
-<?php get_footer(); ?>
+<?php get_template_part( 'partials/footer', 'main' ); ?>
