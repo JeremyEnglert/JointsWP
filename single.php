@@ -1,5 +1,5 @@
-<?php get_header(); ?>
-			
+<?php get_template_part( 'partials/header', 'main' ); ?>
+
 			<div id="content">
 
 				<div id="inner-content" class="row clearfix">
@@ -23,5 +23,5 @@
 				</div> <!-- end #inner-content -->
     
 			</div> <!-- end #content -->
-
-<?php get_footer(); ?>
+			
+<?php get_template_part( 'partials/footer', 'main' ); ?>
