@@ -33,7 +33,11 @@ single-bookmarks.php
 			
 					</div> <!-- end #main -->
     
-					<?php get_sidebar(); ?>
+					<div id="sidebar1" class="sidebar large-4 medium-4 columns" role="complementary">
+    
+				    	<?php get_sidebar(); ?>
+				    
+					</div>
 
 				</div> <!-- end #inner-content -->
     
