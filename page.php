@@ -1,4 +1,4 @@
-<?php get_header(); ?>
+<?php get_template_part( 'partials/header', 'main' ); ?>
 			
 			<div id="content">
 			
@@ -17,11 +17,15 @@
 					    <?php endif; ?>
 			
     				</div> <!-- end #main -->
+    				
+    				<div id="sidebar1" class="sidebar large-4 medium-4 columns" role="complementary">
     
-				    <?php get_sidebar(); ?>
+				    	<?php get_sidebar(); ?>
+				    
+					</div>
 				    
 				</div> <!-- end #inner-content -->
     
 			</div> <!-- end #content -->
-
-<?php get_footer(); ?>
+			
+<?php get_template_part( 'partials/footer', 'main' ); ?>

@@ -13,8 +13,8 @@ taxonomy-shoes.php
 */
 ?>
 
-<?php get_header(); ?>
-			
+<?php get_template_part( 'partials/header', 'main' ); ?>
+	
 			<div id="content">
 			
 				<div id="inner-content" class="row clearfix">
@@ -66,10 +66,14 @@ taxonomy-shoes.php
 			
 				    </div> <!-- end #main -->
     
-				    <?php get_sidebar(); ?>
+				    <div id="sidebar1" class="sidebar large-4 medium-4 columns" role="complementary">
+    
+				    	<?php get_sidebar(); ?>
+				    
+					</div>
 				    
 				</div> <!-- end #inner-content -->
     
 			</div> <!-- end #content -->
 
-<?php get_footer(); ?>
+<?php get_template_part( 'partials/footer', 'main' ); ?>
