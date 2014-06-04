@@ -1,0 +1,23 @@
+{
+  "name": "JointsWP",
+  "homepage": "http://jointswp.com/",
+  "authors": [
+    "Jeremy Englert"
+  ],
+  "description": "A blank WordPress theme built with Foundation 5, giving you all the power and flexibility you need to build complex, mobile friendly websites without having to start from scratch.",
+  "keywords": [
+    "wordpress",
+    "foundation"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation": "~5.2.1"
+  }
+}
