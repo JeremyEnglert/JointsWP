@@ -96,7 +96,7 @@ function joints_footer_links() {
 function joints_main_nav_fallback() {
 	wp_page_menu( array(
 		'show_home' => true,
-    	'menu_class' => 'top-bar top-bar-section',      // adding custom nav class
+    	'menu_class' => '',      // adding custom nav class
 		'include'     => '',
 		'exclude'     => '',
 		'echo'        => true,
