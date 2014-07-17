@@ -302,13 +302,19 @@ function nav_menu_item_parent_classing( $classes, $item )
 {
     global $wpdb;
     
-$has_children = $wpdb -> get_var( "SELECT COUNT(meta_id) FROM {$wpdb->prefix}postmeta WHERE meta_key='_menu_item_menu_item_parent' AND meta_value='" . $item->ID . "'" );
-    
-    if ( $has_children > 0 )
-    {
+    if ( 
+        !property_exists( $item, 'classes' ) 
+        || !is_array( $item->classes )
+    ) {
+        return $classes;
+    }
+
+    $has_children = in_array( 'menu-item-has-children', $item->classes );
+
+    if ( $has_children ) {
         array_push( $classes, "has-dropdown" );
     }
-    
+
     return $classes;
 }
  
