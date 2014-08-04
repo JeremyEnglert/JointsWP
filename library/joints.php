@@ -74,22 +74,10 @@ function joints_head_cleanup() {
 	remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
 	// WP version
 	remove_action( 'wp_head', 'wp_generator' );
-  // remove WP version from css
-  add_filter( 'style_loader_src', 'joints_remove_wp_ver_css_js', 9999 );
-  // remove Wp version from scripts
-  add_filter( 'script_loader_src', 'joints_remove_wp_ver_css_js', 9999 );
-
 } /* end Joints head cleanup */
 
 // remove WP version from RSS
 function joints_rss_version() { return ''; }
-
-// remove WP version from scripts
-function joints_remove_wp_ver_css_js( $src ) {
-    if ( strpos( $src, 'ver=' ) )
-        $src = remove_query_arg( 'ver', $src );
-    return $src;
-}
 
 // remove injected CSS for recent comments widget
 function joints_remove_wp_widget_recent_comments_style() {
@@ -120,6 +108,7 @@ SCRIPTS & ENQUEUEING
 function joints_scripts_and_styles() {
   global $wp_styles; // call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
   if (!is_admin()) {
+    $theme_version = wp_get_theme()->Version;
 
 	// removes WP version of jQuery
 	wp_deregister_script('jquery');
@@ -131,13 +120,13 @@ function joints_scripts_and_styles() {
     wp_enqueue_script( 'modernizr', get_template_directory_uri() . '/bower_components/foundation/js/vendor/modernizr.js', array(), '2.5.3', false );
     
     // adding Foundation scripts file in the footer
-    wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/bower_components/foundation/js/foundation.min.js', array( 'jquery' ), '', true );
+    wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/bower_components/foundation/js/foundation.min.js', array( 'jquery' ), $theme_version, true );
    
     // register main stylesheet
-    wp_enqueue_style( 'joints-stylesheet', get_template_directory_uri() . '/library/css/style.css', array(), '', 'all' );
+    wp_enqueue_style( 'joints-stylesheet', get_template_directory_uri() . '/library/css/style.css', array(), $theme_version, 'all' );
     
     // register foundation icons
-    wp_enqueue_style( 'foundation-icons', get_template_directory_uri() . '/library/css/icons/foundation-icons.css', array(), '', 'all' );
+    wp_enqueue_style( 'foundation-icons', get_template_directory_uri() . '/library/css/icons/foundation-icons.css', array(), $theme_version, 'all' );
 
     // comment reply script for threaded comments
     if ( is_singular() AND comments_open() AND (get_option('thread_comments') == 1)) {
@@ -145,7 +134,7 @@ function joints_scripts_and_styles() {
     }
 
     //adding scripts file in the footer
-    wp_enqueue_script( 'joints-js', get_template_directory_uri() . '/library/js/scripts.js', array( 'jquery' ), '', true );
+    wp_enqueue_script( 'joints-js', get_template_directory_uri() . '/library/js/scripts.js', array( 'jquery' ), $theme_version, true );
 
     /*
     I recommend using a plugin to call jQuery
