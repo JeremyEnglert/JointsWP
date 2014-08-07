@@ -16,6 +16,6 @@ Feel free to chop up, slice up, murder or improve any part of it you want. This 
 JointsWP supports Bower, which allows you to update the included libraries (under `bower_components`) with a single command. If you're new to Bower and don't have it installed, see [Bower.io](http://bower.io/) for installation instructions. 
 
 From the command line, navigate to your main theme directory. Then run:
-  bower update
+`bower update`
 
 That's it! You should see bower go through and update your packages to their newest version.
