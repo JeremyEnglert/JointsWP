@@ -3,7 +3,6 @@
 	<header class="article-header">
 		<h2><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
 		<?php get_template_part( 'partials/content', 'byline' ); ?>
-		</p>							
 	</header> <!-- end article header -->
 					
 	<section class="entry-content clearfix" itemprop="articleBody">
