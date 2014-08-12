@@ -56,7 +56,7 @@ $accordion-content-active-bg-color: #fff !default;
     @warn "`#{$active_class}` isn't a valid string. A valid string is needed to correctly be interpolated as a CSS class. CSS classes cannot start with a number or consist of only numbers. CSS will not be generated for the active state of this navigation component."
   }
   @else {
-    &.#{ $active_class } > a {
+    &.#{$active_class} > a {
       background: $active-bg;
     }
   }
