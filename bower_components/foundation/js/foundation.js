@@ -98,6 +98,9 @@
     var self = this,
         should_bind_events = !S(this).data(this.attr_name(true));
 
+    if (typeof method === 'string') {
+      return this[method].call(this, options);
+    }
 
     if (S(this.scope).is('[' + this.attr_name() +']')) {
       S(this.scope).data(this.attr_name(true) + '-init', $.extend({}, this.settings, (options || method), this.data_options(S(this.scope))));
@@ -116,11 +119,6 @@
         }
       });
     }
-    // # Patch to fix #5043 to move this *after* the if/else clause in order for Backbone and similar frameworks to have improved control over event binding and data-options updating. 
-    if (typeof method === 'string') {
-      return this[method].call(this, options);
-    }
-
   };
 
   var single_image_loaded = function (image, callback) {
@@ -278,7 +276,7 @@
   window.Foundation = {
     name : 'Foundation',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     media_queries : {
       small : S('.foundation-mq-small').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
@@ -532,7 +530,7 @@
       //    Class (String): Class name for the generated <meta> tag
       register_media : function (media, media_class) {
         if(Foundation.media_queries[media] === undefined) {
-          $('head').append('<meta class="' + media_class + '"/>');
+          $('head').append('<meta class="' + media_class + '">');
           Foundation.media_queries[media] = removeQuotes($('.' + media_class).css('font-family'));
         }
       },
@@ -618,7 +616,7 @@
   Foundation.libs.abide = {
     name : 'abide',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     settings : {
       live_validate : true,
@@ -629,7 +627,7 @@
         alpha: /^[a-zA-Z]+$/,
         alpha_numeric : /^[a-zA-Z0-9]+$/,
         integer: /^[-+]?\d+$/,
-        number: /^[-+]?\d*(?:[\.\,]\d+)?$/,
+        number: /^[-+]?\d*(?:\.\d+)?$/,
 
         // amex, visa, diners
         card : /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/,
@@ -715,19 +713,19 @@
           settings = form.data(this.attr_name(true) + '-init') || {},
           submit_event = /submit/.test(e.type);
 
-      form.trigger('validated').trigger('validated.fndtn.abide');
+      form.trigger('validated');
       // Has to count up to make sure the focus gets applied to the top error
       for (var i=0; i < validation_count; i++) {
         if (!validations[i] && (submit_event || is_ajax)) {
           if (settings.focus_on_invalid) els[i].focus();
-          form.trigger('invalid').trigger('invalid.fndtn.abide');
+          form.trigger('invalid');
           this.S(els[i]).closest('[data-' + this.attr_name(true) + ']').attr(this.invalid_attr, '');
           return false;
         }
       }
 
       if (submit_event || is_ajax) {
-        form.trigger('valid').trigger('valid.fndtn.abide');
+        form.trigger('valid');
       }
 
       form.removeAttr(this.invalid_attr);
@@ -918,7 +916,7 @@
   Foundation.libs.accordion = {
     name : 'accordion',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     settings : {
       active_class: 'active',
@@ -953,11 +951,7 @@
 
         if (settings.toggleable && target.is(active_content)) {
           target.parent('dd').toggleClass(settings.active_class, false);
-          target.toggleClass(settings.active_class, false);
-          settings.callback(target);
-          target.triggerHandler('toggled', [accordion]);
-          accordion.triggerHandler('toggled', [target]);
-          return;
+          return target.toggleClass(settings.active_class, false);
         }
 
         if (!settings.multi_expand) {
@@ -967,8 +961,6 @@
 
         target.addClass(settings.active_class).parent().addClass(settings.active_class);
         settings.callback(target);
-        target.triggerHandler('toggled', [accordion]);
-        accordion.triggerHandler('toggled', [target]);
       });
     },
 
@@ -984,7 +976,7 @@
   Foundation.libs.alert = {
     name : 'alert',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     settings : {
       callback: function (){}
@@ -1003,15 +995,15 @@
               settings = alertBox.data(self.attr_name(true) + '-init') || self.settings;
 
         e.preventDefault();
-        if (Modernizr.csstransitions) {
+        if ('transitionend' in window || 'webkitTransitionEnd' in window || 'oTransitionEnd' in window) {
           alertBox.addClass("alert-close");
           alertBox.on('transitionend webkitTransitionEnd oTransitionEnd', function(e) {
-            S(this).trigger('close').trigger('close.fndtn.alert').remove();
+            S(this).trigger('close').remove();
             settings.callback();
           });
         } else {
           alertBox.fadeOut(300, function () {
-            S(this).trigger('close').trigger('close.fndtn.alert').remove();
+            S(this).trigger('close').remove();
             settings.callback();
           });
         }
@@ -1028,7 +1020,7 @@
   Foundation.libs.clearing = {
     name : 'clearing',
 
-    version: '5.3.0',
+    version: '5.2.3',
 
     settings : {
       templates : {
@@ -1040,10 +1032,7 @@
 
       // comma delimited list of selectors that, on click, will close clearing,
       // add 'div.clearing-blackout, div.visible-img' to close on background click
-      close_selectors : '.clearing-close, div.clearing-blackout', 
-
-      // Default to the entire li element.
-      open_selectors : '',
+      close_selectors : '.clearing-close',
 
       touch_label : '',
 
@@ -1078,7 +1067,7 @@
 
       S(this.scope)
         .off('.clearing')
-        .on('click.fndtn.clearing', 'ul[' + this.attr_name() + '] li ' + this.settings.open_selectors,
+        .on('click.fndtn.clearing', 'ul[' + this.attr_name() + '] li',
           function (e, current, target) {
             var current = current || S(this),
                 target = target || current,
@@ -1154,11 +1143,7 @@
 
           data.delta_x = e.touches[0].pageX - data.start_page_x;
 
-          if (Foundation.rtl) {
-            data.delta_x = -data.delta_x;
-          }
-
-          if (typeof data.is_scrolling === 'undefined') {
+          if ( typeof data.is_scrolling === 'undefined') {
             data.is_scrolling = !!( data.is_scrolling || Math.abs(data.delta_x) < Math.abs(e.touches[0].pageY - data.start_page_y) );
           }
 
@@ -1233,7 +1218,7 @@
               cb.call(this, image);
             }
           }.bind(this));
-        }.bind(this), 100);
+        }.bind(this), 50);
       }
 
       function cb (image) {
@@ -1248,8 +1233,8 @@
           .caption(self.S('.clearing-caption', visible_image), self.S('img', target))
           .center_and_label(image, label)
           .shift(current, target, function () {
-            target.closest('li').siblings().removeClass('visible');
-            target.closest('li').addClass('visible');
+            target.siblings().removeClass('visible');
+            target.addClass('visible');
           });
         visible_image.trigger('opened.fndtn.clearing')
       }
@@ -1306,7 +1291,7 @@
 
       if (e.which === NEXT_KEY) this.go(clearing, 'next');
       if (e.which === PREV_KEY) this.go(clearing, 'prev');
-      if (e.which === ESC_KEY) this.S('a.clearing-close').trigger('click').trigger('click.fndtn.clearing');
+      if (e.which === ESC_KEY) this.S('a.clearing-close').trigger('click');
     },
 
     nav : function (e, direction) {
@@ -1346,7 +1331,6 @@
     },
 
     update_paddles : function (target) {
-      target = target.closest('li');
       var visible_image = target
         .closest('.carousel')
         .siblings('.visible-img');
@@ -1449,7 +1433,7 @@
           .hide();
       }
       return this;
-    }, 
+    },
 
     // directional methods
 
@@ -1459,7 +1443,7 @@
 
       if (target.length) {
         this.S('img', target)
-          .trigger('click', [current, target]).trigger('click.fndtn.clearing', [current, target])
+          .trigger('click', [current, target])
           .trigger('change.fndtn.clearing');
       }
     },
@@ -1571,7 +1555,7 @@
   Foundation.libs.dropdown = {
     name : 'dropdown',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     settings : {
       active_class: 'open',
@@ -1678,7 +1662,7 @@
             .removeClass(self.settings.active_class)
             .removeData('target');
 
-          self.S(this).trigger('closed').trigger('closed.fndtn.dropdown', [dropdown]);
+          self.S(this).trigger('closed', [dropdown]);
         }
       });
     },
@@ -1695,7 +1679,7 @@
           .css(dropdown
             .addClass(this.settings.active_class), target);
         dropdown.prev('[' + this.attr_name() + ']').addClass(this.settings.active_class);
-        dropdown.data('target', target.get(0)).trigger('opened').trigger('opened.fndtn.dropdown', [dropdown, target]);
+        dropdown.data('target', target.get(0)).trigger('opened', [dropdown, target]);
     },
 
     data_attr: function () {
@@ -1734,8 +1718,6 @@
     },
 
     css : function (dropdown, target) {
-      var left_offset = Math.max((target.width() - dropdown.width()) / 2, 8);
-      
       this.clear_idx();
 
       if (this.small()) {
@@ -1748,7 +1730,7 @@
           top: p.top
         });
 
-        dropdown.css(Foundation.rtl ? 'right':'left', left_offset);
+        dropdown.css(Foundation.rtl ? 'right':'left', '2.5%');
       } else {
         var settings = target.data(this.attr_name(true) + '-init') || this.settings;
 
@@ -1782,7 +1764,7 @@
       top: function (t, s) {
         var self = Foundation.libs.dropdown,
             p = self.dirs._base.call(this, t),
-            pip_offset_base = 8;
+            pip_offset_base = (t.outerWidth() / 2) - 8;
 
         this.addClass('drop-top');
 
@@ -1800,7 +1782,7 @@
       bottom: function (t, s) {
         var self = Foundation.libs.dropdown,
             p = self.dirs._base.call(this, t),
-            pip_offset_base = 8;
+            pip_offset_base = (t.outerWidth() / 2) - 8;
 
         if (t.outerWidth() < this.outerWidth() || self.small()) {
           self.adjust_pip(pip_offset_base, p);
@@ -1885,7 +1867,7 @@
   Foundation.libs.equalizer = {
     name : 'equalizer',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     settings : {
       use_tallest: true,
@@ -1914,7 +1896,7 @@
       if (vals.length === 0) return;
       var firstTopOffset = vals.first().offset().top;
       settings.before_height_change();
-      equalizer.trigger('before-height-change').trigger('before-height-change.fndth.equalizer');
+      equalizer.trigger('before-height-change');
       vals.height('inherit');
       vals.each(function(){
         var el = $(this);
@@ -1937,7 +1919,7 @@
         vals.css('height', min);
       }
       settings.after_height_change();
-      equalizer.trigger('after-height-change').trigger('after-height-change.fndtn.equalizer');
+      equalizer.trigger('after-height-change');
     },
 
     reflow : function () {
@@ -1960,7 +1942,7 @@
   Foundation.libs.interchange = {
     name : 'interchange',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     cache : {},
 
@@ -2009,8 +1991,7 @@
 
             return trigger(el[0].src);
           }
-          var last_path = el.data(this.data_attr + '-last-path'),
-              self = this;
+          var last_path = el.data(this.data_attr + '-last-path');
 
           if (last_path == path) return;
 
@@ -2022,7 +2003,7 @@
 
           return $.get(path, function (response) {
             el.html(response);
-            el.data(self.data_attr + '-last-path', path);
+            el.data(this.data_attr + '-last-path', path);
             trigger();
           });
 
@@ -2188,7 +2169,11 @@
         this.object($(this['cached_' + type][i]));
       }
 
-      return $(window).trigger('resize').trigger('resize.fndtn.interchange');
+      return $(window).trigger('resize');
+    },
+
+    parse_params : function (path, directive, mq) {
+      return [this.trim(path), this.convert_directive(directive), this.trim(mq)];
     },
 
     convert_directive : function (directive) {
@@ -2202,25 +2187,6 @@
       return 'replace';
     },
 
-    parse_scenario : function (scenario) {
-      // This logic had to be made more complex since some users were using commas in the url path
-      // So we cannot simply just split on a comma
-      var directive_match = scenario[0].match(/(.+),\s*(\w+)\s*$/),
-      media_query         = scenario[1];
-
-      if (directive_match) {
-        var path  = directive_match[1],
-        directive = directive_match[2];
-      }
-      else {
-        var cached_split = scenario[0].split(/,\s*$/),
-        path             = cached_split[0],
-        directive        = '';               
-      }
-
-      return [this.trim(path), this.convert_directive(directive), this.trim(media_query)];
-    },
-
     object : function(el) {
       var raw_arr = this.parse_data_attr(el),
           scenarios = [], 
@@ -2231,7 +2197,10 @@
           var split = raw_arr[i].split(/\((.*?)(\))$/);
 
           if (split.length > 1) {
-            var params = this.parse_scenario(split);
+            var cached_split = split[0].split(/\, /),
+                params = this.parse_params(cached_split[0],
+                  cached_split[1], split[1]);
+
             scenarios.push(params);
           }
         }
@@ -2307,7 +2276,7 @@
   Foundation.libs.joyride = {
     name : 'joyride',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     defaults : {
       expose                   : false,     // turn on or off the expose feature
@@ -2724,18 +2693,15 @@
       }
 
       if (!/body/i.test(this.settings.$target.selector)) {
-      	  var topAdjustment = this.settings.tip_settings.tipAdjustmentY ? parseInt(this.settings.tip_settings.tipAdjustmentY) : 0,
-			        leftAdjustment = this.settings.tip_settings.tipAdjustmentX ? parseInt(this.settings.tip_settings.tipAdjustmentX) : 0;
-          
           if (this.bottom()) {
             if (this.rtl) {
               this.settings.$next_tip.css({
-                top: (this.settings.$target.offset().top + nub_height + this.settings.$target.outerHeight() + topAdjustment),
-                left: this.settings.$target.offset().left + this.settings.$target.outerWidth() - this.settings.$next_tip.outerWidth() + leftAdjustment});
+                top: (this.settings.$target.offset().top + nub_height + this.settings.$target.outerHeight()),
+                left: this.settings.$target.offset().left + this.settings.$target.outerWidth() - this.settings.$next_tip.outerWidth()});
             } else {
               this.settings.$next_tip.css({
-                top: (this.settings.$target.offset().top + nub_height + this.settings.$target.outerHeight() + topAdjustment),
-                left: this.settings.$target.offset().left + leftAdjustment});
+                top: (this.settings.$target.offset().top + nub_height + this.settings.$target.outerHeight()),
+                left: this.settings.$target.offset().left});
             }
 
             this.nub_position($nub, this.settings.tip_settings.nub_position, 'top');
@@ -2743,12 +2709,12 @@
           } else if (this.top()) {
             if (this.rtl) {
               this.settings.$next_tip.css({
-                top: (this.settings.$target.offset().top - this.settings.$next_tip.outerHeight() - nub_height + topAdjustment),
+                top: (this.settings.$target.offset().top - this.settings.$next_tip.outerHeight() - nub_height),
                 left: this.settings.$target.offset().left + this.settings.$target.outerWidth() - this.settings.$next_tip.outerWidth()});
             } else {
               this.settings.$next_tip.css({
-                top: (this.settings.$target.offset().top - this.settings.$next_tip.outerHeight() - nub_height + topAdjustment),
-                left: this.settings.$target.offset().left + leftAdjustment});
+                top: (this.settings.$target.offset().top - this.settings.$next_tip.outerHeight() - nub_height),
+                left: this.settings.$target.offset().left});
             }
 
             this.nub_position($nub, this.settings.tip_settings.nub_position, 'bottom');
@@ -2756,16 +2722,16 @@
           } else if (this.right()) {
 
             this.settings.$next_tip.css({
-              top: this.settings.$target.offset().top + topAdjustment,
-              left: (this.settings.$target.outerWidth() + this.settings.$target.offset().left + nub_width + leftAdjustment)});
+              top: this.settings.$target.offset().top,
+              left: (this.settings.$target.outerWidth() + this.settings.$target.offset().left + nub_width)});
 
             this.nub_position($nub, this.settings.tip_settings.nub_position, 'left');
 
           } else if (this.left()) {
 
             this.settings.$next_tip.css({
-              top: this.settings.$target.offset().top + topAdjustment,
-              left: (this.settings.$target.offset().left - this.settings.$next_tip.outerWidth() - nub_width + leftAdjustment)});
+              top: this.settings.$target.offset().top,
+              left: (this.settings.$target.offset().left - this.settings.$next_tip.outerWidth() - nub_width)});
 
             this.nub_position($nub, this.settings.tip_settings.nub_position, 'right');
 
@@ -3152,7 +3118,7 @@
   Foundation.libs['magellan-expedition'] = {
     name : 'magellan-expedition',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     settings : {
       active_class: 'active',
@@ -3189,7 +3155,7 @@
           }
 
           // Account for expedition height if fixed position
-          var scroll_top = target.offset().top - settings.destination_threshold;
+          var scroll_top = target.offset().top;
           scroll_top = scroll_top - expedition.outerHeight();
 
           $('html, body').stop().animate({
@@ -3219,12 +3185,11 @@
       var self = this;
       $('[' + this.attr_name() + '=fixed]', self.scope).each(function(idx, el) {
         var expedition = $(this),
-            settings = expedition.data('magellan-expedition-init'),
             styles = expedition.attr('styles'), // save styles
             top_offset;
 
         expedition.attr('style', '');
-        top_offset = expedition.offset().top + settings.threshold;
+        top_offset = expedition.offset().top + self.settings.threshold;
 
         expedition.data(self.data_attr('magellan-top-offset'), top_offset);
         expedition.attr('style', styles);
@@ -3237,7 +3202,6 @@
 
       $('[' + this.attr_name() + '=fixed]', self.scope).each(function() {
         var expedition = $(this),
-            settings = expedition.data('magellan-expedition-init'),
             top_offset = expedition.data('magellan-top-offset');
 
         if (window_top_offset >= top_offset) {
@@ -3250,7 +3214,7 @@
             placeholder.attr(self.add_namespace('data-magellan-expedition-clone'),'');
             expedition.before(placeholder);
           }
-          expedition.css({position:'fixed', top: settings.fixed_top});
+          expedition.css({position:'fixed', top: self.settings.fixed_top});
         } else {
           expedition.prev('[' + self.add_namespace('data-magellan-expedition-clone') + ']').remove();
           expedition.attr('style','').removeClass('fixed');
@@ -3333,7 +3297,7 @@
   Foundation.libs.offcanvas = {
     name : 'offcanvas',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     settings : {
       open_method: 'move',
@@ -3396,13 +3360,13 @@
 
     show: function(class_name, $off_canvas) {
       $off_canvas = $off_canvas || this.get_wrapper();
-      $off_canvas.trigger('open').trigger('open.fndtn.offcanvas');
+      $off_canvas.trigger('open');
       $off_canvas.addClass(class_name);
     },
 
     hide: function(class_name, $off_canvas) {
       $off_canvas = $off_canvas || this.get_wrapper();
-      $off_canvas.trigger('close').trigger('close.fndtn.offcanvas');
+      $off_canvas.trigger('close');
       $off_canvas.removeClass(class_name);
     },
 
@@ -3455,16 +3419,16 @@
         timer_container,
         idx = 0,
         animate,
-        timer,
-        locked = false,
-        adjust_height_after = false;
+        adjust_height_after = false,
+        has_init_active = slides_container.find("." + settings.active_slide_class).length > 0;
 
+    self.cache = {};
 
     self.slides = function() {
       return slides_container.children(settings.slide_selector);
     };
 
-    self.slides().first().addClass(settings.active_slide_class);
+    if (!has_init_active) {self.slides().first().addClass(settings.active_slide_class)};
 
     self.update_slide_number = function(index) {
       if (settings.slide_number) {
@@ -3478,7 +3442,7 @@
     };
 
     self.update_active_link = function(index) {
-      var link = $('a[data-orbit-link="'+self.slides().eq(index).attr('data-orbit-slide')+'"]');
+      var link = $('[data-orbit-link="'+self.slides().eq(index).attr('data-orbit-slide')+'"]');
       link.siblings().removeClass(settings.bullets_active_class);
       link.addClass(settings.bullets_active_class);
     };
@@ -3487,6 +3451,7 @@
       slides_container.wrap('<div class="'+settings.container_class+'"></div>');
       container = slides_container.parent();
       slides_container.addClass(settings.slides_container_class);
+      slides_container.addClass(settings.animation);
       
       if (settings.stack_on_small) {
         container.addClass(settings.stack_on_small_class);
@@ -3500,7 +3465,9 @@
       if (settings.timer) {
         timer_container = $('<div>').addClass(settings.timer_container_class);
         timer_container.append('<span>');
-        timer_container.append($('<div>').addClass(settings.timer_progress_class));
+        if (settings.timer_show_progress_bar) {
+            timer_container.append($('<div>').addClass(settings.timer_progress_class));
+        }
         timer_container.addClass(settings.timer_paused_class);
         container.append(timer_container);
       }
@@ -3516,22 +3483,27 @@
         container.append(bullets_container);
         bullets_container.wrap('<div class="orbit-bullets-container"></div>');
         self.slides().each(function(idx, el) {
-          var bullet = $('<li>').attr('data-orbit-slide', idx).on('click', self.link_bullet);;
+          var bullet = $('<li>').attr('data-orbit-slide', idx)
+            .on('click', self.link_bullet);
           bullets_container.append(bullet);
         });
       }
 
     };
 
-    self._goto = function(next_idx, start_timer) {
-      // if (locked) {return false;}
-      if (next_idx === idx) {return false;}
-      if (typeof timer === 'object') {timer.restart();}
-      var slides = self.slides();
-
+    self._prepare_direction = function(next_idx, current_direction) {
       var dir = 'next';
-      locked = true;
-      if (next_idx < idx) {dir = 'prev';}
+      if (next_idx <= idx) { dir = 'prev'; }
+      
+      if (settings.animation === 'slide') {    
+        setTimeout(function(){
+          slides_container.removeClass("swipe-prev swipe-next");
+          if (dir === 'next') {slides_container.addClass("swipe-next");}
+          else if (dir === 'prev') {slides_container.addClass("swipe-prev");}
+        },0);
+      }
+      
+      var slides = self.slides();
       if (next_idx >= slides.length) {
         if (!settings.circular) return false;
         next_idx = 0;
@@ -3539,29 +3511,53 @@
         if (!settings.circular) return false;
         next_idx = slides.length - 1;
       }
+      var current = $(slides.get(idx))
+        , next = $(slides.get(next_idx));
       
-      var current = $(slides.get(idx));
-      var next = $(slides.get(next_idx));
+      return [dir, current, next, next_idx];
+    };
 
-      current.css('zIndex', 2);
-      current.removeClass(settings.active_slide_class);
-      next.css('zIndex', 4).addClass(settings.active_slide_class);
+    self._goto = function(next_idx, start_timer) {
+      if (next_idx === null) {return false;}
+      if (self.cache.animating) {return false;}
+      if (next_idx === idx) {return false;}
+      if (typeof self.cache.timer === 'object') {self.cache.timer.restart();}
+      
+      var slides = self.slides();
+      self.cache.animating = true;
+      var res = self._prepare_direction(next_idx)
+        , dir = res[0]
+        , current = res[1]
+        , next = res[2]
+        , next_idx = res[3];
+
+      // This means that circular is disabled and we most likely reached the last slide.
+      if (res === false) return false;
 
       slides_container.trigger('before-slide-change.fndtn.orbit');
       settings.before_slide_change();
-      self.update_active_link(next_idx);
+      idx = next_idx;
+
+      current.css("transitionDuration", settings.animation_speed+"ms");
+      next.css("transitionDuration", settings.animation_speed+"ms");
       
       var callback = function() {
         var unlock = function() {
-          idx = next_idx;
-          locked = false;
-          if (start_timer === true) {timer = self.create_timer(); timer.start();}
+          if (start_timer === true) {self.cache.timer.restart();}
           self.update_slide_number(idx);
+          // Remove "animate-in" class as late as possible to avoid "flickering" (especially with variable_height).
+          next.removeClass("animate-in");
+          next.addClass(settings.active_slide_class);
+          self.update_active_link(next_idx);
           slides_container.trigger('after-slide-change.fndtn.orbit',[{slide_number: idx, total_slides: slides.length}]);
           settings.after_slide_change(idx, slides.length);
+          setTimeout(function(){
+            self.cache.animating = false;
+          }, 100);
+          
         };
         if (slides_container.height() != next.height() && settings.variable_height) {
-          slides_container.animate({'height': next.height()}, 250, 'linear', unlock);
+          slides_container.animate({'min-height': next.height()}, 250, 'linear', unlock);
         } else {
           unlock();
         }
@@ -3575,7 +3571,7 @@
       };
 
       if (next.height() > slides_container.height() && settings.variable_height) {
-        slides_container.animate({'height': next.height()}, 250, 'linear', start_animation);
+        slides_container.animate({'min-height': next.height()}, 250, 'linear', start_animation);
       } else {
         start_animation();
       }
@@ -3584,13 +3580,19 @@
     self.next = function(e) {
       e.stopImmediatePropagation();
       e.preventDefault();
-      self._goto(idx + 1);
+      self._prepare_direction(idx + 1);
+      setTimeout(function(){
+        self._goto(idx + 1);
+    }, 100);
     };
     
     self.prev = function(e) {
       e.stopImmediatePropagation();
       e.preventDefault();
-      self._goto(idx - 1);
+      self._prepare_direction(idx - 1);
+      setTimeout(function(){
+        self._goto(idx - 1)
+      }, 100);
     };
 
     self.link_custom = function(e) {
@@ -3598,24 +3600,38 @@
       var link = $(this).attr('data-orbit-link');
       if ((typeof link === 'string') && (link = $.trim(link)) != "") {
         var slide = container.find('[data-orbit-slide='+link+']');
-        if (slide.index() != -1) {self._goto(slide.index());}
+        if (slide.index() != -1) {
+          setTimeout(function(){
+            self._goto(slide.index());
+          },100);
+        }
       }
     };
 
+    // Click handler for slides and bullets.
     self.link_bullet = function(e) {    
       var index = $(this).attr('data-orbit-slide');
       if ((typeof index === 'string') && (index = $.trim(index)) != "") {
         if(isNaN(parseInt(index)))
         {
           var slide = container.find('[data-orbit-slide='+index+']');
-          if (slide.index() != -1) {self._goto(slide.index() + 1);}
+          if (slide.index() != -1) {
+            index = slide.index() + 1;
+            self._prepare_direction(index);
+            setTimeout(function(){
+              self._goto(index);
+            },100);
+          }
         }
         else
         {
-          self._goto(parseInt(index));
+          index = parseInt(index);
+          self._prepare_direction(index);
+          setTimeout(function(){
+            self._goto(index);
+          },100);
         }
       }
-
     }
 
     self.timer_callback = function() {
@@ -3630,7 +3646,7 @@
           if ($(this).height() > h) { h = $(this).height(); }
         });
       }
-      slides_container.height(h);
+      slides_container.css('minHeight', String(h)+'px');
     };
 
     self.create_timer = function() {
@@ -3643,29 +3659,37 @@
     };
 
     self.stop_timer = function() {
-      if (typeof timer === 'object') timer.stop();
+      if (typeof self.cache.timer === 'object') self.cache.timer.stop();
     };
 
     self.toggle_timer = function() {
       var t = container.find('.'+settings.timer_container_class);
       if (t.hasClass(settings.timer_paused_class)) {
-        if (typeof timer === 'undefined') {timer = self.create_timer();}
-        timer.start();     
+        if (typeof self.cache.timer === 'undefined') {self.cache.timer = self.create_timer();}
+        self.cache.timer.start();     
       }
       else {
-        if (typeof timer === 'object') {timer.stop();}
+        if (typeof self.cache.timer === 'object') {self.cache.timer.stop();}
       }
     };
 
     self.init = function() {
       self.build_markup();
       if (settings.timer) {
-        timer = self.create_timer(); 
-        Foundation.utils.image_loaded(this.slides().children('img'), timer.start);
+        self.cache.timer = self.create_timer(); 
+        Foundation.utils.image_loaded(this.slides().find('img'), self.cache.timer.start);
       }
-      animate = new FadeAnimation(settings, slides_container);
-      if (settings.animation === 'slide') 
-        animate = new SlideAnimation(settings, slides_container);        
+      
+      animate = new CSSAnimation(settings, slides_container);
+
+      if (has_init_active) {
+        var $init_target = slides_container.find("." + settings.active_slide_class),
+            animation_speed = settings.animation_speed;
+        settings.animation_speed = 1;
+        $init_target.removeClass('active');
+        self._goto($init_target.index());
+        settings.animation_speed = animation_speed;
+      }
 
       container.on('click', '.'+settings.next_class, self.next);
       container.on('click', '.'+settings.prev_class, self.prev);
@@ -3673,46 +3697,76 @@
       if (settings.next_on_click) {
         container.on('click', '.'+settings.slides_container_class+' [data-orbit-slide]', self.link_bullet);
       }
-
+      
       container.on('click', self.toggle_timer);
       if (settings.swipe) {
-        container.on('touchstart.fndtn.orbit', function(e) {
+        slides_container.on('touchstart.fndtn.orbit',function(e) {
+          if (self.cache.animating) {return;}
           if (!e.touches) {e = e.originalEvent;}
-          var data = {
-            start_page_x: e.touches[0].pageX,
-            start_page_y: e.touches[0].pageY,
-            start_time: (new Date()).getTime(),
-            delta_x: 0,
-            is_scrolling: undefined
-          };
-          container.data('swipe-transition', data);
+          e.preventDefault();
           e.stopPropagation();
+
+          self.cache.start_page_x = e.touches[0].pageX;
+          self.cache.start_page_y = e.touches[0].pageY;
+          self.cache.start_time = (new Date()).getTime();
+          self.cache.delta_x = 0;
+          self.cache.is_scrolling = null;
+          self.cache.direction = null;
+          
+          self.stop_timer(); // does not appear to prevent callback from occurring          
         })
-        .on('touchmove.fndtn.orbit', function(e) {
-          if (!e.touches) { e = e.originalEvent; }
-          // Ignore pinch/zoom events
-          if(e.touches.length > 1 || e.scale && e.scale !== 1) return;
-
-          var data = container.data('swipe-transition');
-          if (typeof data === 'undefined') {data = {};}
-
-          data.delta_x = e.touches[0].pageX - data.start_page_x;
-
-          if ( typeof data.is_scrolling === 'undefined') {
-            data.is_scrolling = !!( data.is_scrolling || Math.abs(data.delta_x) < Math.abs(e.touches[0].pageY - data.start_page_y) );
-          }
-
-          if (!data.is_scrolling && !data.active) {
+        .on('touchmove.fndtn.orbit',function(e) {
+          if (Math.abs(self.cache.delta_x) > 5) {
             e.preventDefault();
-            var direction = (data.delta_x < 0) ? (idx+1) : (idx-1);
-            data.active = true;
-            self._goto(direction);
+            e.stopPropagation();
           }
+
+          if (self.cache.animating) {return;}          
+          requestAnimationFrame(function(){
+            if (!e.touches) { e = e.originalEvent; }
+
+            // Ignore pinch/zoom events
+            if(e.touches.length > 1 || e.scale && e.scale !== 1) return;
+
+            self.cache.delta_x = e.touches[0].pageX - self.cache.start_page_x;
+
+            if (self.cache.is_scrolling === null) {
+              self.cache.is_scrolling = !!( self.cache.is_scrolling || Math.abs(self.cache.delta_x) < Math.abs(e.touches[0].pageY - self.cache.start_page_y) );
+            }
+
+            if (self.cache.is_scrolling) {
+              return;
+            }
+            
+            var direction = (self.cache.delta_x < 0) ? (idx+1) : (idx-1);
+            if (self.cache.direction !== direction) {
+              var res = self._prepare_direction(direction);
+              self.cache.direction = direction;
+              self.cache.dir = res[0];
+              self.cache.current = res[1];
+              self.cache.next = res[2];
+            }
+
+            if (settings.animation === 'slide') {
+              var offset, next_offset;
+              
+              offset = (self.cache.delta_x / container.width()) * 100;
+              if (offset >= 0) {next_offset = -(100 - offset);}
+              else {next_offset = 100 + offset;}
+
+              self.cache.current.css("transform","translate3d("+offset+"%,0,0)");
+              self.cache.next.css("transform","translate3d("+next_offset+"%,0,0)");
+            }
+          });
         })
         .on('touchend.fndtn.orbit', function(e) {
-          container.data('swipe-transition', {});
+          if (self.cache.animating) {return;}
+          e.preventDefault();
           e.stopPropagation();
-        })
+          setTimeout(function(){
+            self._goto(self.cache.direction);
+          }, 50);
+        });
       }
       container.on('mouseenter.fndtn.orbit', function(e) {
         if (settings.timer && settings.pause_on_hover) {
@@ -3721,17 +3775,18 @@
       })
       .on('mouseleave.fndtn.orbit', function(e) {
         if (settings.timer && settings.resume_on_mouseout) {
-          timer.start();
+          self.cache.timer.start();
         }
       });
       
       $(document).on('click', '[data-orbit-link]', self.link_custom);
       $(window).on('load resize', self.compute_dimensions);
-      Foundation.utils.image_loaded(this.slides().children('img'), self.compute_dimensions);
-      Foundation.utils.image_loaded(this.slides().children('img'), function() {
+      var children = this.slides().find('img');
+      Foundation.utils.image_loaded(children, self.compute_dimensions);
+      Foundation.utils.image_loaded(children, function() {
         container.prev('.'+settings.preloader_class).css('display', 'none');
-        self.update_slide_number(0);
-        self.update_active_link(0);
+        self.update_slide_number(idx);
+        self.update_active_link(idx);
         slides_container.trigger('ready.fndtn.orbit');
       });
     };
@@ -3743,6 +3798,7 @@
     var self = this,
         duration = settings.timer_speed,
         progress = el.find('.'+settings.timer_progress_class),
+        do_progress = progress && progress.css('display') != 'none',
         start, 
         timeout,
         left = -1;
@@ -3759,15 +3815,18 @@
       clearTimeout(timeout);
       el.addClass(settings.timer_paused_class);
       left = -1;
-      self.update_progress(0);
+      if (do_progress) {self.update_progress(0);}
+      self.start();
     };
 
     this.start = function() {
       if (!el.hasClass(settings.timer_paused_class)) {return true;}
       left = (left === -1) ? duration : left;
       el.removeClass(settings.timer_paused_class);
-      start = new Date().getTime();
-      progress.animate({'width': '100%'}, left, 'linear');
+      if (do_progress) {
+          start = new Date().getTime();
+          progress.animate({'width': '100%'}, left, 'linear');
+      }
       timeout = setTimeout(function() {
         self.restart();
         callback();
@@ -3779,58 +3838,99 @@
       if (el.hasClass(settings.timer_paused_class)) {return true;}
       clearTimeout(timeout);
       el.addClass(settings.timer_paused_class);
-      var end = new Date().getTime();
-      left = left - (end - start);
-      var w = 100 - ((left / duration) * 100);
-      self.update_progress(w);
+      if (do_progress) {
+          var end = new Date().getTime();
+          left = left - (end - start);
+          var w = 100 - ((left / duration) * 100);
+          self.update_progress(w);
+      }
       el.trigger('timer-stopped.fndtn.orbit');
     };
   };
-  
-  var SlideAnimation = function(settings, container) {
-    var duration = settings.animation_speed;
-    var is_rtl = ($('html[dir=rtl]').length === 1);
-    var margin = is_rtl ? 'marginRight' : 'marginLeft';
-    var animMargin = {};
-    animMargin[margin] = '0%';
+
+  var CSSAnimation = function(settings, container) {
+    var animation_end = "webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend";
 
     this.next = function(current, next, callback) {
-      current.animate({marginLeft:'-100%'}, duration);
-      next.animate(animMargin, duration, function() {
-        current.css(margin, '100%');
-        callback();
+      if (Modernizr.csstransitions) {
+        next.on(animation_end, function(e){
+          next.unbind(animation_end);
+          current.removeClass("active animate-out");
+          container.children().css({
+            "transform":"",
+            "-ms-transform":"",
+            "-webkit-transition-duration":"",
+            "-moz-transition-duration": "",
+            "-o-transition-duration": "",
+            "transition-duration":""
+          });
+          callback();
+        });
+      } else {
+        setTimeout(function(){
+          current.removeClass("active animate-out");
+          container.children().css({
+            "transform":"",
+            "-ms-transform":"",
+            "-webkit-transition-duration":"",
+            "-moz-transition-duration": "",
+            "-o-transition-duration": "",
+            "transition-duration":""
+          });
+          callback();
+        }, settings.animation_speed);
+      }
+      container.children().css({
+        "transform":"",
+        "-ms-transform":"",
+        "-webkit-transition-duration":"",
+        "-moz-transition-duration": "",
+        "-o-transition-duration": "",
+        "transition-duration":""
       });
+      current.addClass("animate-out");
+      next.addClass("animate-in");
     };
 
     this.prev = function(current, prev, callback) {
-      current.animate({marginLeft:'100%'}, duration);
-      prev.css(margin, '-100%');
-      prev.animate(animMargin, duration, function() {
-        current.css(margin, '100%');
-        callback();
+      if (Modernizr.csstransitions) {
+        prev.on(animation_end, function(e){
+          prev.unbind(animation_end);
+          current.removeClass("active animate-out");
+          container.children().css({
+            "transform":"",
+            "-ms-transform":"",
+            "-webkit-transition-duration":"",
+            "-moz-transition-duration": "",
+            "-o-transition-duration": "",
+            "transition-duration":""
+          });
+          callback();
+        });
+      } else {
+        setTimeout(function(){
+          current.removeClass("active animate-out");
+          container.children().css({
+            "transform":"",
+            "-ms-transform":"",
+            "-webkit-transition-duration":"",
+            "-moz-transition-duration": "",
+            "-o-transition-duration": "",
+            "transition-duration":""
+          });
+          callback();
+        }, settings.animation_speed);
+      }
+      container.children().css({
+        "transform":"",
+        "-ms-transform":"",
+        "-webkit-transition-duration":"",
+        "-moz-transition-duration": "",
+        "-o-transition-duration": "",
+        "transition-duration":""
       });
-    };
-  };
-
-  var FadeAnimation = function(settings, container) {
-    var duration = settings.animation_speed;
-    var is_rtl = ($('html[dir=rtl]').length === 1);
-    var margin = is_rtl ? 'marginRight' : 'marginLeft';
-
-    this.next = function(current, next, callback) {
-      next.css({'margin':'0%', 'opacity':'0.01'});
-      next.animate({'opacity':'1'}, duration, 'linear', function() {
-        current.css('margin', '100%');
-        callback();
-      });
-    };
-
-    this.prev = function(current, prev, callback) {
-      prev.css({'margin':'0%', 'opacity':'0.01'});
-      prev.animate({'opacity':'1'}, duration, 'linear', function() {
-        current.css('margin', '100%');
-        callback();
-      });
+      current.addClass("animate-out");
+      prev.addClass("animate-in");
     };
   };
 
@@ -3840,7 +3940,7 @@
   Foundation.libs.orbit = {
     name: 'orbit',
 
-    version: '5.3.0',
+    version: '5.2.3',
 
     settings: {
       animation: 'slide',
@@ -3860,6 +3960,7 @@
       timer_container_class: 'orbit-timer',
       timer_paused_class: 'paused',
       timer_progress_class: 'orbit-progress',
+      timer_show_progress_bar: true,
       slides_container_class: 'orbit-slides-container',
       preloader_class: 'preloader',
       slide_selector: '*',
@@ -3884,6 +3985,7 @@
     },
 
     events : function (instance) {
+      var self = this;
       var orbit_instance = new Orbit(this.S(instance), this.S(instance).data('orbit-init'));
       this.S(instance).data(self.name + '-instance', orbit_instance);
     },
@@ -3908,13 +4010,14 @@
 
     
 }(jQuery, window, window.document));
+
 ;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.reveal = {
     name : 'reveal',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     locked : false,
 
@@ -3925,7 +4028,6 @@
       close_on_esc: true,
       dismiss_modal_class: 'close-reveal-modal',
       bg_class: 'reveal-modal-bg',
-      root_element: 'body',
       open: function(){},
       opened: function(){},
       close: function(){},
@@ -3956,7 +4058,7 @@
 
       S(this.scope)
         .off('.reveal')
-        .on('click.fndtn.reveal', '[' + this.add_namespace('data-reveal-id') + ']:not([disabled])', function (e) {
+        .on('click.fndtn.reveal', '[' + this.add_namespace('data-reveal-id') + ']', function (e) {
           e.preventDefault();
 
           if (!self.locked) {
@@ -4073,7 +4175,7 @@
         }
 
         this.key_up_on(modal);    // PATCH #3: turning on key up capture only when a reveal window is open
-        modal.trigger('open').trigger('open.fndtn.reveal');
+        modal.trigger('open');
 
         if (open_modal.length < 1) {
           this.toggle_bg(modal, true);
@@ -4124,7 +4226,7 @@
       if (open_modals.length > 0) {
         this.locked = true;
         this.key_up_off(modal);   // PATCH #3: turning on key up capture only when a reveal window is open
-        modal.trigger('close').trigger('close.fndtn.reveal');
+        modal.trigger('close');
         this.toggle_bg(modal, false);
         this.hide(open_modals, settings.css.close, settings);
       }
@@ -4159,18 +4261,19 @@
     show : function (el, css) {
       // is modal
       if (css) {
-        var settings = el.data(this.attr_name(true) + '-init') || this.settings,
-            root_element = settings.root_element;
+        var settings = el.data(this.attr_name(true) + '-init');
+        settings = settings || this.settings;
 
-        if (el.parent(root_element).length === 0) {
-          var placeholder = el.wrap('<div style="display: none;" />').parent();
+        if (el.parent('body').length === 0) {
+          var placeholder = el.wrap('<div style="display: none;" />').parent(),
+              rootElement = this.settings.rootElement || 'body';
 
           el.on('closed.fndtn.reveal.wrapped', function() {
             el.detach().appendTo(placeholder);
             el.unwrap().unbind('closed.fndtn.reveal.wrapped');
           });
 
-          el.detach().appendTo(root_element);
+          el.detach().appendTo(rootElement);
         }
 
         var animData = getAnimationData(settings.animation);
@@ -4189,7 +4292,7 @@
               .css(css)
               .animate(end_css, settings.animation_speed, 'linear', function () {
                 this.locked = false;
-                el.trigger('opened').trigger('opened.fndtn.reveal');
+                el.trigger('opened');
               }.bind(this))
               .addClass('open');
           }.bind(this), settings.animation_speed / 2);
@@ -4204,13 +4307,13 @@
               .css(css)
               .animate(end_css, settings.animation_speed, 'linear', function () {
                 this.locked = false;
-                el.trigger('opened').trigger('opened.fndtn.reveal');
+                el.trigger('opened');
               }.bind(this))
               .addClass('open');
           }.bind(this), settings.animation_speed / 2);
         }
 
-        return el.css(css).show().css({opacity: 1}).addClass('open').trigger('opened').trigger('opened.fndtn.reveal');
+        return el.css(css).show().css({opacity: 1}).addClass('open').trigger('opened');
       }
 
       var settings = this.settings;
@@ -4245,7 +4348,7 @@
             return el
               .animate(end_css, settings.animation_speed, 'linear', function () {
                 this.locked = false;
-                el.css(css).trigger('closed').trigger('closed.fndtn.reveal');
+                el.css(css).trigger('closed');
               }.bind(this))
               .removeClass('open');
           }.bind(this), settings.animation_speed / 2);
@@ -4258,13 +4361,13 @@
             return el
               .animate(end_css, settings.animation_speed, 'linear', function () {
                 this.locked = false;
-                el.css(css).trigger('closed').trigger('closed.fndtn.reveal');
+                el.css(css).trigger('closed');
               }.bind(this))
               .removeClass('open');
           }.bind(this), settings.animation_speed / 2);
         }
 
-        return el.hide().css(css).removeClass('open').trigger('closed').trigger('closed.fndtn.reveal');
+        return el.hide().css(css).removeClass('open').trigger('closed');
       }
 
       var settings = this.settings;
@@ -4352,7 +4455,7 @@
   Foundation.libs.slider = {
     name : 'slider',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     settings: {
       start: 0,
@@ -4360,7 +4463,6 @@
       step: 1,
       initial: null,
       display_selector: '',
-      vertical: false,
       on_change: function(){}
     },
 
@@ -4378,7 +4480,7 @@
       $(this.scope)
         .off('.slider')
         .on('mousedown.fndtn.slider touchstart.fndtn.slider pointerdown.fndtn.slider',
-        '[' + self.attr_name() + ']:not(.disabled, [disabled]) .range-slider-handle', function(e) {
+        '[' + self.attr_name() + '] .range-slider-handle', function(e) {
           if (!self.cache.active) {
             e.preventDefault();
             self.set_active_slider($(e.target));
@@ -4387,17 +4489,7 @@
         .on('mousemove.fndtn.slider touchmove.fndtn.slider pointermove.fndtn.slider', function(e) {
           if (!!self.cache.active) {
             e.preventDefault();
-            if ($.data(self.cache.active[0], 'settings').vertical) {
-              self.calculate_position(self.cache.active, e.pageY || 
-                                                         e.originalEvent.clientY || 
-                                                         e.originalEvent.touches[0].clientY || 
-                                                         e.currentPoint.y);
-            } else {
-              self.calculate_position(self.cache.active, e.pageX || 
-                                                         e.originalEvent.clientX || 
-                                                         e.originalEvent.touches[0].clientX || 
-                                                         e.currentPoint.x);
-            }
+            self.calculate_position(self.cache.active, e.pageX || e.originalEvent.clientX || e.originalEvent.touches[0].clientX || e.currentPoint.x);
           }
         })
         .on('mouseup.fndtn.slider touchend.fndtn.slider pointerup.fndtn.slider', function(e) {
@@ -4423,22 +4515,20 @@
 
     calculate_position : function($handle, cursor_x) {
       var self = this,
-          settings = $.data($handle[0], 'settings'),
-          handle_l = $.data($handle[0], 'handle_l'),
+          settings = $.extend({}, self.settings, self.data_options($handle.parent())),
+          handle_w = $.data($handle[0], 'handle_w'),
           handle_o = $.data($handle[0], 'handle_o'),
-          bar_l = $.data($handle[0], 'bar_l'),
+          bar_w = $.data($handle[0], 'bar_w'),
           bar_o = $.data($handle[0], 'bar_o');
 
       requestAnimationFrame(function(){
         var pct;
 
-        if (Foundation.rtl && !settings.vertical) {
-          pct = self.limit_to(((bar_o+bar_l-cursor_x)/bar_l),0,1);
+        if (Foundation.rtl) {
+          pct = self.limit_to(((bar_o+bar_w-cursor_x)/bar_w),0,1);
         } else {
-          pct = self.limit_to(((cursor_x-bar_o)/bar_l),0,1);
+          pct = self.limit_to(((cursor_x-bar_o)/bar_w),0,1);
         }
-
-        pct = settings.vertical ? 1-pct : pct;
 
         var norm = self.normalized_value(pct, settings.start, settings.end, settings.step);
 
@@ -4447,27 +4537,22 @@
     },
 
     set_ui : function($handle, value) {
-      var settings = $.data($handle[0], 'settings'),
-          handle_l = $.data($handle[0], 'handle_l'),
-          bar_l = $.data($handle[0], 'bar_l'),
+      var settings = $.extend({}, this.settings, this.data_options($handle.parent())),
+          handle_w = $.data($handle[0], 'handle_w'),
+          bar_w = $.data($handle[0], 'bar_w'),
           norm_pct = this.normalized_percentage(value, settings.start, settings.end),
-          handle_offset = norm_pct*(bar_l-handle_l)-1,
-          progress_bar_length = norm_pct*100;
+          handle_offset = norm_pct*(bar_w-handle_w)-1,
+          progress_bar_width = norm_pct*100;
 
-      if (Foundation.rtl && !settings.vertical) {
+      if (Foundation.rtl) {
         handle_offset = -handle_offset;
       }
 
-      handle_offset = settings.vertical ? -handle_offset + bar_l - handle_l + 1 : handle_offset;
-      this.set_translate($handle, handle_offset, settings.vertical);
+      this.set_translate($handle, handle_offset);
+      $handle.siblings('.range-slider-active-segment').css('width', progress_bar_width+'%');
 
-      if (settings.vertical) {
-        $handle.siblings('.range-slider-active-segment').css('height', progress_bar_length + '%');
-      } else {
-        $handle.siblings('.range-slider-active-segment').css('width', progress_bar_length + '%');
-      }
-
-      $handle.parent().attr(this.attr_name(), value).trigger('change').trigger('change.fndtn.slider');
+      $handle.parent().attr(this.attr_name(), value);
+      $handle.parent().trigger('change');
 
       $handle.parent().children('input[type=hidden]').val(value);
 
@@ -4519,22 +4604,12 @@
     },
 
     initialize_settings : function(handle) {
-      var settings = $.extend({}, this.settings, this.data_options($(handle).parent()));
-
-      if (settings.vertical) {
-        $.data(handle, 'bar_o', $(handle).parent().offset().top);
-        $.data(handle, 'bar_l', $(handle).parent().outerHeight());
-        $.data(handle, 'handle_o', $(handle).offset().top);
-        $.data(handle, 'handle_l', $(handle).outerHeight());
-      } else {
-        $.data(handle, 'bar_o', $(handle).parent().offset().left);
-        $.data(handle, 'bar_l', $(handle).parent().outerWidth());
-        $.data(handle, 'handle_o', $(handle).offset().left);
-        $.data(handle, 'handle_l', $(handle).outerWidth());
-      }
-
       $.data(handle, 'bar', $(handle).parent());
-      $.data(handle, 'settings', settings);
+      $.data(handle, 'bar_o', $(handle).parent().offset().left);
+      $.data(handle, 'bar_w', $(handle).parent().outerWidth());
+      $.data(handle, 'handle_o', $(handle).offset().left);
+      $.data(handle, 'handle_w', $(handle).outerWidth());
+      $.data(handle, 'settings', $.extend({}, this.settings, this.data_options($(handle).parent())));
     },
 
     set_initial_position : function($ele) {
@@ -4569,6 +4644,7 @@
         }
       });
     }
+
   };
 
 }(jQuery, window, window.document));
@@ -4579,7 +4655,7 @@
   Foundation.libs.tab = {
     name : 'tab',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     settings : {
       active_class: 'active',
@@ -4747,7 +4823,7 @@
   Foundation.libs.tooltip = {
     name : 'tooltip',
 
-    version : '5.3.0',
+    version : '5.2.3',
 
     settings : {
       additional_inheritable_classes : [],
@@ -5046,7 +5122,7 @@
   Foundation.libs.topbar = {
     name : 'topbar',
 
-    version: '5.3.0',
+    version: '5.2.3',
 
     settings : {
       index : 0,
@@ -5054,10 +5130,11 @@
       custom_back_text: true,
       back_text: 'Back',
       is_hover: true,
+      mobile_show_parent_link: false,
       scrolltop : true, // jump to top when sticky nav menu toggle is clicked
       sticky_on : 'all'
     },
-    
+
     init : function (section, method, options) {
       Foundation.inherit(this, 'add_custom_rule register_media throttle');
       var self = this;
@@ -5107,17 +5184,11 @@
       if (sticky && settings.sticky_on === 'all') {
         return true;
       } else if (sticky && this.small() && settings.sticky_on === 'small') {
-        return (matchMedia(Foundation.media_queries.small).matches && !matchMedia(Foundation.media_queries.medium).matches &&
-            !matchMedia(Foundation.media_queries.large).matches); 
-        //return true;
+        return true;
       } else if (sticky && this.medium() && settings.sticky_on === 'medium') {
-        return (matchMedia(Foundation.media_queries.small).matches && matchMedia(Foundation.media_queries.medium).matches &&
-            !matchMedia(Foundation.media_queries.large).matches);
-        //return true;
-      } else if(sticky && this.large() && settings.sticky_on === 'large') {
-        return (matchMedia(Foundation.media_queries.small).matches && matchMedia(Foundation.media_queries.medium).matches &&
-            matchMedia(Foundation.media_queries.large).matches);
-        //return true;
+        return true;
+      } else if (sticky && this.large() && settings.sticky_on === 'large') {
+        return true;
       }
 
       return false;
@@ -5272,7 +5343,7 @@
       
       S(window).off('.topbar').on('resize.fndtn.topbar', self.throttle(function () {
         self.resize.call(self);
-      }, 50)).trigger('resize').trigger('resize.fndtn.topbar');
+      }, 50)).trigger('resize');
 
       S('body').off('.topbar').on('click.fndtn.topbar touchstart.fndtn.topbar', function (e) {
         var parent = S(e.target).closest('li').closest('li.hover');
@@ -5391,7 +5462,11 @@
             $titleLi;
 
         if (!$dropdown.find('.title.back').length) {
-          $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li>');
+          if (settings.mobile_show_parent_link && url && url.length > 1) {
+            $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li><li><a class="parent-link js-generated" href="' + url + '">' + $link.text() +'</a></li>');
+          } else {
+            $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li>');
+          }
   
           // Copy link to subnav
           if (settings.custom_back_text == true) {

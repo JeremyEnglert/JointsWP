@@ -4,7 +4,7 @@
   Foundation.libs.clearing = {
     name : 'clearing',
 
-    version: '5.3.0',
+    version: '5.2.3',
 
     settings : {
       templates : {
@@ -16,10 +16,7 @@
 
       // comma delimited list of selectors that, on click, will close clearing,
       // add 'div.clearing-blackout, div.visible-img' to close on background click
-      close_selectors : '.clearing-close, div.clearing-blackout', 
-
-      // Default to the entire li element.
-      open_selectors : '',
+      close_selectors : '.clearing-close',
 
       touch_label : '',
 
@@ -54,7 +51,7 @@
 
       S(this.scope)
         .off('.clearing')
-        .on('click.fndtn.clearing', 'ul[' + this.attr_name() + '] li ' + this.settings.open_selectors,
+        .on('click.fndtn.clearing', 'ul[' + this.attr_name() + '] li',
           function (e, current, target) {
             var current = current || S(this),
                 target = target || current,
@@ -130,11 +127,7 @@
 
           data.delta_x = e.touches[0].pageX - data.start_page_x;
 
-          if (Foundation.rtl) {
-            data.delta_x = -data.delta_x;
-          }
-
-          if (typeof data.is_scrolling === 'undefined') {
+          if ( typeof data.is_scrolling === 'undefined') {
             data.is_scrolling = !!( data.is_scrolling || Math.abs(data.delta_x) < Math.abs(e.touches[0].pageY - data.start_page_y) );
           }
 
@@ -209,7 +202,7 @@
               cb.call(this, image);
             }
           }.bind(this));
-        }.bind(this), 100);
+        }.bind(this), 50);
       }
 
       function cb (image) {
@@ -224,8 +217,8 @@
           .caption(self.S('.clearing-caption', visible_image), self.S('img', target))
           .center_and_label(image, label)
           .shift(current, target, function () {
-            target.closest('li').siblings().removeClass('visible');
-            target.closest('li').addClass('visible');
+            target.siblings().removeClass('visible');
+            target.addClass('visible');
           });
         visible_image.trigger('opened.fndtn.clearing')
       }
@@ -282,7 +275,7 @@
 
       if (e.which === NEXT_KEY) this.go(clearing, 'next');
       if (e.which === PREV_KEY) this.go(clearing, 'prev');
-      if (e.which === ESC_KEY) this.S('a.clearing-close').trigger('click').trigger('click.fndtn.clearing');
+      if (e.which === ESC_KEY) this.S('a.clearing-close').trigger('click');
     },
 
     nav : function (e, direction) {
@@ -322,7 +315,6 @@
     },
 
     update_paddles : function (target) {
-      target = target.closest('li');
       var visible_image = target
         .closest('.carousel')
         .siblings('.visible-img');
@@ -425,7 +417,7 @@
           .hide();
       }
       return this;
-    }, 
+    },
 
     // directional methods
 
@@ -435,7 +427,7 @@
 
       if (target.length) {
         this.S('img', target)
-          .trigger('click', [current, target]).trigger('click.fndtn.clearing', [current, target])
+          .trigger('click', [current, target])
           .trigger('change.fndtn.clearing');
       }
     },
