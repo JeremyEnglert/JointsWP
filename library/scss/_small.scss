@@ -129,12 +129,9 @@ HEADER STYLES
 *********************/
 
 .header {
-	margin-bottom: 20px;
-		#inner-header {
-			li {
-				list-style: none;
-			}
-		}
+	ul.off-canvas-list li {
+		list-style: none;
+	}
 }
     
 /*********************
