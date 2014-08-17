@@ -1,17 +1,9 @@
 <div class="large-12 columns show-for-medium-up">
-	<div class="sticky">
-		
-		<!-- If you want to use the more traditional "fixed" navigation.
-		 simply replace "sticky" with "fixed" -->
-	
+	<div class="sticky contain-to-grid">
 		<nav class="top-bar" data-topbar>
 			<ul class="title-area">
 				<!-- Title Area -->
 				<li class="name">
-					<h1> <a href="<?php echo home_url(); ?>" rel="nofollow"><?php bloginfo('name'); ?></a></h1>
-				</li>
-				<li class="toggle-topbar menu-icon">
-					<a href="#"><span>Menu</span></a>
 				</li>
 			</ul>		
 			<section class="top-bar-section">
@@ -21,6 +13,7 @@
 	</div>
 </div>
 
+<!-- This is the nav that will show for mobile/small devices -->
 <div class="large-12 columns show-for-small-only">
 	<div class="contain-to-grid">
 		<nav class="tab-bar">
@@ -30,9 +23,6 @@
 			<section class="left-small">
 				<a class="left-off-canvas-toggle menu-icon" ><span></span></a>
 			</section>
-			<section class="right-small">
-				<a class="right-off-canvas-toggle menu-icon" ><span></span></a>
-			</section>			
 		</nav>
 	</div>
 </div>
@@ -43,13 +33,5 @@
 			<?php joints_main_nav(); ?>    
 	</ul>
 </aside>
-
-<aside class="right-off-canvas-menu show-for-small-only">
-	<ul class="off-canvas-list">
-		<li><label>Sidebar</label></li>
-			<?php get_sidebar('offcanvas'); ?>   
-	</ul>
-</aside>
-
 			
 <a class="exit-off-canvas"></a>
