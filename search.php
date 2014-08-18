@@ -2,9 +2,9 @@
 			
 			<div id="content">
 
-				<div id="inner-content" class="row clearfix">
+				<div id="inner-content" class="row">
 			
-					<div id="main" class="large-8 medium-8 columns first clearfix" role="main">
+					<div id="main" class="large-8 medium-8 columns first" role="main">
 						<h1 class="archive-title"><span><?php _e('Search Results for:', 'jointstheme'); ?></span> <?php echo esc_attr(get_search_query()); ?></h1>
 
 						<?php if (have_posts()) : while (have_posts()) : the_post(); ?>

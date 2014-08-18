@@ -17,9 +17,9 @@ single-bookmarks.php
 			
 			<div id="content">
 
-				<div id="inner-content" class="row clearfix">
+				<div id="inner-content" class="row">
 			
-					<div id="main" class="large-8 medium-8 columns first clearfix" role="main">
+					<div id="main" class="large-8 medium-8 columns first" role="main">
 					
 					    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					

@@ -1,4 +1,4 @@
-<article id="post-not-found" class="hentry clearfix">
+<article id="post-not-found" class="hentry">
   <header class="article-header">
     <h1><?php _e("Oops, Post Not Found!", "jointstheme"); ?></h1>
   </header>

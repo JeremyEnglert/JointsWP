@@ -1,5 +1,5 @@
 					<footer class="footer" role="contentinfo">
-						<div id="inner-footer" class="row clearfix">
+						<div id="inner-footer" class="row">
 							<div class="large-12 medium-12 columns">
 								<nav role="navigation">
 		    						<?php joints_footer_links(); ?>
