@@ -218,4 +218,32 @@ function joints_comments($comment, $args, $depth) {
 <?php
 } // don't remove this bracket!
 
+
+/*
+* Code provided by Philip M. Hofer adds Year of Copyright for first and last post (e.g. 2012–2014)
+* http://premium.wpmudev.org/blog/daily-tip-how-to-add-a-dynamic-copyright-date-in-the-footer/#comment-13309
+*/
+if (!function_exists('joints_copyright')) {
+    function joints_copyright() {
+        global $wpdb;
+        $copyright_dates = $wpdb->get_results("
+                    SELECT
+                    YEAR(min(post_date_gmt)) AS firstdate,
+                    YEAR(max(post_date_gmt)) AS lastdate
+                    FROM
+                    $wpdb->posts
+                    WHERE
+                    post_status = 'publish'
+                    ");
+        $output = '';
+        if($copyright_dates) {
+            $copyright = "© " . $copyright_dates[0]->firstdate;
+            if($copyright_dates[0]->firstdate != $copyright_dates[0]->lastdate) {
+                $copyright .= '-' . $copyright_dates[0]->lastdate;
+            }
+            $output =  $copyright;
+        }
+        return $output;
+    }
+}
 ?>
