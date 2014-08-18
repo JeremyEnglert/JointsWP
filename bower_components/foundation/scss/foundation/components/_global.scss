@@ -11,9 +11,6 @@
 // styles get applied to [data-mysite-plugin], etc
 $namespace: false !default;
 
-// Control the inclusion of experimental properties
-$experimental: true !default;
-
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
 // for compatibility with browser-based text zoom or user-set defaults.
 
@@ -28,16 +25,6 @@ $base-line-height: 150% !default;
 //
 // Global Foundation Mixins
 //
-
-// @mixins
-//
-// We use this to optionally include experimental or 
-// explicitly vendor prefixed properties
-@mixin experimental() {
-  @if $experimental {
-    @content;
-  }
-}
 
 // @mixins
 //
@@ -135,12 +122,12 @@ $base-line-height: 150% !default;
 // $hover-color - icon color during hover
 // $offcanvas - Set to true of @include in offcanvas
 @mixin hamburger($width, $left, $top, $thickness, $gap, $color, $hover-color, $offcanvas) {
-  span:after {
-    content: '';
+  span::after {
+    content: "";
     position: absolute;
     display: block;
     height: 0;
-    
+
     @if $offcanvas {
       @if $top {
         top: $top;
@@ -156,7 +143,12 @@ $base-line-height: 150% !default;
     	  left: ($tabbar-menu-icon-width - $width)/2;
     	}
     }
-    	
+    @else {
+      top: 50%;
+      margin-top: -$width/2;
+      #{$opposite-direction}: $topbar-link-padding;
+    }
+
     box-shadow:
       0 0px 0 $thickness $color,
       0 $gap + $thickness 0 $thickness $color,
@@ -320,11 +312,11 @@ $cursor-text-value: text !default;
   // Meta styles are included in all builds, as they are a dependancy of the Javascript.
   // Used to provide media query values for javascript components.
   // Forward slash placed around everything to convince PhantomJS to read the value.
-  
+
   meta.foundation-version {
-    font-family: "/5.2.3/";
+    font-family: "/5.3.3/";
   }
-  
+
   meta.foundation-mq-small {
     font-family: "/" + unquote($small-up) + "/";
     width: lower-bound($small-range);
@@ -378,7 +370,7 @@ $cursor-text-value: text !default;
       font-family: $body-font-family;
       font-weight: $body-font-weight;
       font-style: $body-font-style;
-      line-height: 1; // Set to $base-line-height to take on browser default of 150%
+      line-height: $base-line-height; // Set to $base-line-height to take on browser default of 150%
       position: relative;
       cursor: $cursor-default-value;
     }
