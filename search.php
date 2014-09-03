@@ -51,6 +51,9 @@
     					    	<section class="entry-content">
     					    		<p><?php _e("Try your search again.", "jointstheme"); ?></p>
     					    	</section>
+    					    	<section class="search">
+                                    			<p><?php get_search_form(); ?></p>
+                		                </section> <!-- end search section -->
     					    	<footer class="article-footer">
     					    	    <p><?php _e("This is the error message in the search.php template.", "jointstheme"); ?></p>
     					    	</footer>

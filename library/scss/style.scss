@@ -15,7 +15,7 @@ of the styles inside media queries.
 //
 
 // import normalize
-@import "normalize";
+@import "../../bower_components/foundation/scss/normalize";
 
 // import mixins
 @import "mixins";
@@ -24,7 +24,7 @@ of the styles inside media queries.
 @import "settings";
 
 // foundation.scss
-@import "foundation";
+@import "../../bower_components/foundation/scss/foundation";
 
 // joints.scss
 @import "joints";

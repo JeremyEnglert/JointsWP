@@ -38,7 +38,7 @@
 
 	<body <?php body_class(); ?>>
 
-	<div class="off-canvas-wrap">
+	<div class="off-canvas-wrap" data-offcanvas>
 		<div class="inner-wrap">
 			<div id="container">
 
@@ -56,7 +56,7 @@
 							</h1>
 						</div>
 
-						 <?php  get_template_part( 'partials/nav', 'offcanvas' ); ?>
+						 <?php get_template_part( 'partials/nav', 'offcanvas' ); ?>
 
 						 <?php // get_template_part( 'partials/nav', 'topbar' ); ?>
 
