@@ -41,7 +41,8 @@ function custom_post_example() {
 			'query_var' => true,
 			'menu_position' => 8, /* this is what order you want it to appear in on the left hand side menu */ 
 			'menu_icon' => get_stylesheet_directory_uri() . '/library/images/custom-post-icon.png', /* the icon for the custom post type menu */
-			'rewrite'	=> array( 'slug' => 'custom_type', 'with_front' => false ), /* you can specify its url slug */
+			// 'menu_icon'     => 'dashicons-format-gallery', // Optionally, you can use the matching dashicon set included with wordpress. Here's the list of included dashicons: http://melchoyce.github.io/dashicons/
+      'rewrite'	=> array( 'slug' => 'custom_type', 'with_front' => false ), /* you can specify its url slug */
 			'has_archive' => 'custom_type', /* you can rename the slug here */
 			'capability_type' => 'post',
 			'hierarchical' => false,
