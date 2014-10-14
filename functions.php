@@ -44,7 +44,7 @@ library/admin.php
 library/translation/translation.php
 	- adding support for other languages
 */
-// require_once(get_template_directory().'/library/translation/translation.php'); // this comes turned off by default
+require_once(get_template_directory().'/library/translation/translation.php');
 
 /*********************
 MENUS & NAVIGATION
