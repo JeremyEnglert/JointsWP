@@ -28,7 +28,7 @@
 				<h1 class="title"><?php bloginfo('name'); ?></h1>
 			</section>
 			<section class="left-small">
-				<a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+				<a class="left-off-canvas-toggle menu-icon" href="#off-canvas-navigation"><span></span></a>
 			</section>
 		</nav>
 	</div>
