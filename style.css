@@ -4,10 +4,9 @@ Theme URI: http://www.jointswp.com
 Description: 
 Author: Your Name Here
 Author URI: http://www.yoururlhere.com
-Version: 1.5 (Sass)
+Version: 2.0 (Sass)
+Foundation Version: 5.4.6
 Tags: 
-
-Foundation Version: 5.3
 
 ------------------------------------------------------------------
 
@@ -16,7 +15,7 @@ You will find the .scss files in the /library/scss directory.
 Those files compile to the styles.css found in the library/css directory.
 
 Reccomended tools for working with Sass:
-Recommended
+
 CodeKit: (Best)
 http://incident57.com/codekit/
 
@@ -28,4 +27,20 @@ http://compass.handlino.com/
 Because this file is not being used for styles,
 feel free to use it to leave notes to yourself.
 
+----------------------------------------------------------------
+
+2.0 Changelog
+- header.php
+-- Removed Google Chrome for IE (it is no longer supported by Google)
+-- Removed mobile meta tags for Palm devices
+-- Added favicons for iOS devices (retina and non-retina)
+-- Added Top and Main menus
+
+- 404.php
+-- Removed un-needed PHP from content
+
+- functions.pho
+-- Registered and created "top" nav
+
 ******************************************************************/
+

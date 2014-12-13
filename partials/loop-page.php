@@ -1,18 +1,27 @@
-<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article" itemscope itemtype="http://schema.org/WebPage">
+<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+	
+	<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article" itemscope itemtype="http://schema.org/WebPage">
+							
+		<header class="article-header">
+			<h1 class="page-title"><?php the_title(); ?></h1>
+		</header> <!-- end article header -->
 						
-	<header class="article-header">
-		<h1 class="page-title"><?php the_title(); ?></h1>
-	</header> <!-- end article header -->
-					
-    <section class="entry-content clearfix" itemprop="articleBody">
-	    <?php the_content(); ?>
-	    <?php wp_link_pages(); ?>
-	</section> <!-- end article section -->
+	    <section class="entry-content" itemprop="articleBody">
+		    <?php the_content(); ?>
+		    <?php wp_link_pages(); ?>
+		</section> <!-- end article section -->
+							
+		<footer class="article-footer">
+			
+		</footer> <!-- end article footer -->
+							    
+		<?php //comments_template(); ?>
 						
-	<footer class="article-footer">
-		
-	</footer> <!-- end article footer -->
-						    
-	<?php //comments_template(); ?>
+	</article> <!-- end article -->
+	
+<?php endwhile; else : ?>
 					
-</article> <!-- end article -->
+	<?php get_template_part( 'partials/content', 'missing' ); ?>
+
+<?php endif; ?>
+							

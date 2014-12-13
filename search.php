@@ -2,15 +2,14 @@
 			
 			<div id="content">
 
-				<div id="inner-content" class="row clearfix">
+				<div id="inner-content" class="row">
 			
-					<div id="main" class="large-8 medium-8 columns first clearfix" role="main">
+					<div id="main" class="large-8 medium-8 columns first" role="main">
 						<h1 class="archive-title"><span><?php _e('Search Results for:', 'jointstheme'); ?></span> <?php echo esc_attr(get_search_query()); ?></h1>
 
 						<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
 							<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
-						
 								<header class="article-header">
 
 									<h3 class="search-title"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
@@ -19,8 +18,7 @@
 								</header> <!-- end article header -->
 					
 								<section class="entry-content">
-								    <?php the_excerpt('<span class="read-more">' . __('Read more &raquo;', 'jointstheme') . '</span>'); ?>
-					
+									<?php the_content('<button class="tiny">Read more...</button>'); ?> 
 								</section> <!-- end article section -->
 						
 								<footer class="article-footer">
@@ -31,31 +29,22 @@
 					
 						<?php endwhile; ?>	
 					
-						    <?php if (function_exists('joints_page_navi')) { ?>
-						        <?php joints_page_navi(); ?>
-						    <?php } else { ?>
-						        <nav class="wp-prev-next">
-						            <ul class="clearfix">
-						    	        <li class="prev-link"><?php next_posts_link(__('&laquo; Older Entries', "jointstheme")) ?></li>
-						    	        <li class="next-link"><?php previous_posts_link(__('Newer Entries &raquo;', "jointstheme")) ?></li>
-						            </ul>
-						        </nav>
-						    <?php } ?>		
+						        <?php joints_page_navi(); ?>	
 					
 					    <?php else : ?>
 					
     					    <article id="post-not-found" class="hentry clearfix">
     					    	<header class="article-header">
-    					    		<h1><?php _e("Sorry, No Results.", "jointstheme"); ?></h1>
+    					    		<h1>Sorry, No Results.</h1>
     					    	</header>
     					    	<section class="entry-content">
-    					    		<p><?php _e("Try your search again.", "jointstheme"); ?></p>
+    					    		<p>Try your search again.</p>
     					    	</section>
     					    	<section class="search">
                                     			<p><?php get_search_form(); ?></p>
                 		                </section> <!-- end search section -->
     					    	<footer class="article-footer">
-    					    	    <p><?php _e("This is the error message in the search.php template.", "jointstheme"); ?></p>
+    					    	    <p>This is the error message in the search.php template.</p>
     					    	</footer>
     					    </article>
 					

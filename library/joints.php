@@ -136,13 +136,6 @@ function joints_scripts_and_styles() {
     //adding scripts file in the footer
     wp_enqueue_script( 'joints-js', get_template_directory_uri() . '/library/js/scripts.js', array( 'jquery' ), $theme_version, true );
 
-    /*
-    I recommend using a plugin to call jQuery
-    using the google cdn. That way it stays cached
-    and your site will load faster.
-    */
-    wp_enqueue_script( 'joints-js' );
-
   }
 }
 

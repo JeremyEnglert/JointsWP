@@ -43,7 +43,7 @@ the other stylesheets. Remember, keep it light: Speed is Important.
 /*
 MEDIUM
 */
-@media only screen and (min-width: 40.063em) {
+@media #{$medium-up}{
 
 	// styles in medium.scss
 	@import "medium";
@@ -56,7 +56,7 @@ This is the average viewing window. So Desktops, Laptops, and
 in general anyone not viewing on a mobile device. Here's where
 you can add resource intensive styles.
 */
-@media only screen and (min-width: 64.063em) {
+@media #{$large-up}{
 
 	// styles in large.scss
 	@import "large";
@@ -66,7 +66,7 @@ you can add resource intensive styles.
 /*
 XLARGE
 */
-@media only screen and (min-width: 90.063em) {
+@media #{$xlarge-up}{
 
 	// styles in xlarge.scss
 	@import "xlarge";
@@ -76,7 +76,7 @@ XLARGE
 /*
 XXLARGE
 */
-@media only screen and (min-width: 120.063em) {
+@media #{$xxlarge-up}{
 
 	// styles in xxlarge.scss
 	@import "xxlarge";

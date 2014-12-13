@@ -13,6 +13,8 @@ $include-xl-html-grid-classes: false !default;
 $row-width: rem-calc(1000) !default;
 $total-columns: 12 !default;
 
+$last-child-float: $opposite-direction !default;
+
 //
 // Grid Functions
 //
@@ -114,8 +116,8 @@ $total-columns: 12 !default;
   // Gutter padding whenever a column isn't set to collapse
   // (use $collapse:null to do nothing)
   @else if $collapse == false {
-    padding-left: $column-gutter / 2;
-    padding-right: $column-gutter / 2;
+    padding-left: ($column-gutter / 2);
+    padding-right: ($column-gutter / 2);
   }
 
   // If a column number is given, calculate width
@@ -170,11 +172,10 @@ $total-columns: 12 !default;
     .#{$size}-#{$i} { @include grid-column($columns:$i,$collapse:null,$float:false); }
   }
 
-
-
   @for $i from 0 through $total-columns - 1 {
     .#{$size}-offset-#{$i} { @include grid-column($offset:$i, $collapse:null,$float:false); }
   }
+
   .#{$size}-reset-order {
     margin-#{$default-float}: 0;
     margin-#{$opposite-direction}: 0;
@@ -209,6 +210,21 @@ $total-columns: 12 !default;
   .columns.#{$size}-uncentered.opposite {
     float: $opposite-direction;
   }
+
+	.row {
+		&.#{$size}-collapse {
+			> .column,
+			> .columns { @include grid-column($collapse:true, $float:false); }
+
+			.row {margin-left:0; margin-right:0;}
+		}
+		&.#{$size}-uncollapse {
+			> .column,
+			> .columns {
+				@include grid-column;
+			}
+		}
+	}
 }
 
 @include exports("grid") {
@@ -231,7 +247,7 @@ $total-columns: 12 !default;
     .column,
     .columns { @include grid-column($columns:$total-columns); }
 
-    [class*="column"] + [class*="column"]:last-child { float: $opposite-direction; }
+    [class*="column"] + [class*="column"]:last-child { float: $last-child-float; }
     [class*="column"] + [class*="column"].end { float: $default-float; }
 
     @media #{$small-up} {

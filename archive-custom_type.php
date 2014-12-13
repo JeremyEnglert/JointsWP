@@ -2,34 +2,13 @@
 			
 			<div id="content">
 			
-				<div id="inner-content" class="row clearfix">
+				<div id="inner-content" class="row">
 			
-				    <div id="main" class="large-8 medium-8 columns clearfix" role="main">
-
-					    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-					
-					    	<?php get_template_part( 'partials/loop', 'archive' ); ?>
-					
-					    <?php endwhile; ?>	
-					
-					        <?php if (function_exists('joints_page_navi')) { ?>
-					            <?php joints_page_navi(); ?>
-					        <?php } else { ?>
-					        
-					            <nav class="wp-prev-next">
-					                <ul class="clearfix">
-					        	        <li class="prev-link"><?php next_posts_link(__('&laquo; Older Entries', "jointstheme")) ?></li>
-					        	        <li class="next-link"><?php previous_posts_link(__('Newer Entries &raquo;', "jointstheme")) ?></li>
-					                </ul>
-					            </nav>
-					        <?php } ?>		
-					
-					    <?php else : ?>
-					    
-    						<?php get_template_part( 'partials/content', 'missing' ); ?>
-					
-					    <?php endif; ?>
-			
+				    <div id="main" class="large-8 medium-8 columns" role="main">
+						
+						<!-- To see additional archive styles, visit the /partials directory -->
+					    <?php get_template_part( 'partials/loop', 'archive' ); ?>
+								
 				    </div> <!-- end #main -->
     
 				    <?php get_sidebar(); ?>

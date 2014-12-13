@@ -4,7 +4,7 @@
   Foundation.libs.tooltip = {
     name : 'tooltip',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings : {
       additional_inheritable_classes : [],
@@ -15,9 +15,9 @@
       hover_delay: 200,
       show_on : 'all',
       tip_template : function (selector, content) {
-        return '<span data-selector="' + selector + '" class="'
+        return '<span data-selector="' + selector + '" id="' + selector + '" class="'
           + Foundation.libs.tooltip.settings.tooltip_class.substring(1)
-          + '">' + content + '<span class="nub"></span></span>';
+          + '" role="tooltip">' + content + '<span class="nub"></span></span>';
       }
     },
 
@@ -143,7 +143,9 @@
 
       if ((id && id.length < 1 || !id) && typeof dataSelector != 'string') {
         dataSelector = this.random_str(6);
-        $target.attr('data-selector', dataSelector);
+        $target
+          .attr('data-selector', dataSelector)
+          .attr('aria-describedby', dataSelector);
       }
 
       return (id && id.length > 0) ? id : dataSelector;
@@ -280,7 +282,7 @@
 
       $tip.fadeOut(150, function() {
         $tip.find('.tap-to-close').remove();
-        $tip.off('click.fndtn.tooltip.tapclose touchstart.fndtn.tooltip.tapclose MSPointerDown.fndtn.tapclose');
+        $tip.off('click.fndtn.tooltip.tapclose MSPointerDown.fndtn.tapclose');
         $target.removeClass('open');
       });
     },

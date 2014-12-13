@@ -26,29 +26,6 @@ with the width and height.
   padding-bottom: 15px;
   display: block; }
 
-form {
-  margin-left: 8px;
-  padding: 26px 24px 46px;
-  font-weight: normal;
-  background: white;
-  border: 1px solid #e5e5e5;
-  border-radius: 3px;
-  box-shadow: none; }
-
-body form .input {
-  font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",sans-serif;
-  font-weight: 200;
-  font-size: 24px;
-  width: 97%;
-  padding: 3px;
-  margin-top: 2px;
-  margin-right: 6px;
-  margin-bottom: 16px;
-  border: 1px solid #e5e5e5;
-  background: #FBFBFB;
-  outline: none;
-  box-shadow: inset 1px 1px 2px rgba(200, 200, 200, 0.2); }
-
 /*
 You'll have to override some of the default styles
 but since we're referencing the id, it should be easy.

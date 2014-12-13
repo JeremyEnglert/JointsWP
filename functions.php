@@ -1,65 +1,51 @@
 <?php
 ob_start();
-/*
-This is where you can drop your custom functions or
-just edit things like thumbnail sizes, header images,
-sidebars, comments, ect.
-*/
-
 /*********************
 INCLUDE NEEDED FILES
 *********************/
 
-/*
-library/joints.php
-	- head cleanup (remove rsd, uri links, junk css, ect)
-	- enqueueing scripts & styles
-	- theme support functions
-	- custom menu output & fallbacks
-	- related post function
-	- page-navi function
-	- removing <p> from around images
-	- customizing the post excerpt
-	- custom google+ integration
-	- adding custom fields to user profiles
-*/
-require_once(get_template_directory().'/library/joints.php'); // if you remove this, Joints will break
-/*
-library/custom-post-type.php
-	- an example custom post type
-	- example custom taxonomy (like categories)
-	- example custom taxonomy (like tags)
-*/
-require_once(get_template_directory().'/library/custom-post-type-accordion.php'); // you can disable this if you like
+// LOAD JOINTSWP CORE (if you remove this, the theme will break)
+require_once(get_template_directory().'/library/joints.php'); 
+
+// USE THIS TEMPLATE TO CREATE CUSTOM POST TYPES EASILY
 require_once(get_template_directory().'/library/custom-post-type.php'); // you can disable this if you like
-/*
-library/admin.php
-	- removing some default WordPress dashboard widgets
-	- an example custom dashboard widget
-	- adding custom login css
-	- changing text in footer of admin
-*/
-// require_once(get_template_directory().'/library/admin.php'); // this comes turned off by default
-/*
-library/translation/translation.php
-	- adding support for other languages
-*/
-// require_once(get_template_directory().'/library/translation/translation.php'); // this comes turned off by default
+
+// CUSTOMIZE THE WORDPRESS ADMIN (off by default)
+// require_once(get_template_directory().'/library/admin.php'); 
+
+// SUPPORT FOR OTHER LANGUAGES (off by default)
+// require_once(get_template_directory().'/library/translation/translation.php'); 
 
 /*********************
 MENUS & NAVIGATION
 *********************/
-// registering wp3+ menus
+// REGISTER MENUS
 register_nav_menus(
 	array(
+		'top-nav' => __( 'The Top Menu' ),   // main nav in header
 		'main-nav' => __( 'The Main Menu' ),   // main nav in header
 		'footer-links' => __( 'Footer Links' ) // secondary nav in footer
 	)
 );
 
-// the main menu
+// THE TOP MENU
+function joints_top_nav() {
+    wp_nav_menu(array(
+    	'container' => false,                           // remove nav container
+    	'container_class' => '',           // class of container (should you choose to use it)
+    	'menu' => __( 'The Top Menu', 'jointstheme' ),  // nav name
+    	'menu_class' => '',         // adding custom nav class
+    	'theme_location' => 'top-nav',                 // where it's located in the theme
+    	'before' => '',                                 // before the menu
+        'after' => '',                                  // after the menu
+        'link_before' => '',                            // before each link
+        'link_after' => '',                             // after each link
+    	'fallback_cb' => 'joints_main_nav_fallback'      // fallback function
+	));
+} /* end joints main nav */
+
+// THE MAIN MENU
 function joints_main_nav() {
-	// display the wp3 menu if available
     wp_nav_menu(array(
     	'container' => false,                           // remove nav container
     	'container_class' => '',           // class of container (should you choose to use it)
@@ -74,9 +60,8 @@ function joints_main_nav() {
 	));
 } /* end joints main nav */
 
-// the footer menu (should you choose to use one)
+// THE FOOTER MENU
 function joints_footer_links() {
-	// display the wp3 menu if available
     wp_nav_menu(array(
     	'container' => '',                              // remove nav container
     	'container_class' => 'footer-links clearfix',   // class of container (should you choose to use it)
@@ -92,7 +77,7 @@ function joints_footer_links() {
 	));
 } /* end joints footer link */
 
-// this is the fallback for header menu
+// HEADER FALLBACK MENU
 function joints_main_nav_fallback() {
 	wp_page_menu( array(
 		'show_home' => true,
@@ -105,7 +90,7 @@ function joints_main_nav_fallback() {
 	) );
 }
 
-// this is the fallback for footer menu
+// FOOTER FALLBACK MENU
 function joints_footer_links_fallback() {
 	/* you can put a default here if you like */
 }
@@ -114,7 +99,7 @@ function joints_footer_links_fallback() {
 SIDEBARS
 *********************/
 
-// Sidebars & Widgetizes Areas
+// SIDEBARS AND WIDGETIZED AREAS
 function joints_register_sidebars() {
 	register_sidebar(array(
 		'id' => 'sidebar1',

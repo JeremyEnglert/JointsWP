@@ -22,9 +22,13 @@
 
   header_helpers([
     'foundation-mq-small',
+    'foundation-mq-small-only',
     'foundation-mq-medium',
+    'foundation-mq-medium-only',
     'foundation-mq-large',
+    'foundation-mq-large-only',
     'foundation-mq-xlarge',
+    'foundation-mq-xlarge-only',
     'foundation-mq-xxlarge',
     'foundation-data-attribute-namespace']);
 
@@ -98,7 +102,6 @@
     var self = this,
         should_bind_events = !S(this).data(this.attr_name(true));
 
-
     if (S(this.scope).is('[' + this.attr_name() +']')) {
       S(this.scope).data(this.attr_name(true) + '-init', $.extend({}, this.settings, (options || method), this.data_options(S(this.scope))));
 
@@ -116,7 +119,7 @@
         }
       });
     }
-    // # Patch to fix #5043 to move this *after* the if/else clause in order for Backbone and similar frameworks to have improved control over event binding and data-options updating. 
+    // # Patch to fix #5043 to move this *after* the if/else clause in order for Backbone and similar frameworks to have improved control over event binding and data-options updating.
     if (typeof method === 'string') {
       return this[method].call(this, options);
     }
@@ -158,23 +161,23 @@
 
   window.matchMedia = window.matchMedia || (function( doc ) {
 
-    "use strict";
+    'use strict';
 
     var bool,
         docElem = doc.documentElement,
         refNode = docElem.firstElementChild || docElem.firstChild,
         // fakeBody required for <FF4 when executed in <head>
-        fakeBody = doc.createElement( "body" ),
-        div = doc.createElement( "div" );
+        fakeBody = doc.createElement( 'body' ),
+        div = doc.createElement( 'div' );
 
-    div.id = "mq-test-1";
-    div.style.cssText = "position:absolute;top:-100em";
-    fakeBody.style.background = "none";
+    div.id = 'mq-test-1';
+    div.style.cssText = 'position:absolute;top:-100em';
+    fakeBody.style.background = 'none';
     fakeBody.appendChild(div);
 
     return function (q) {
 
-      div.innerHTML = "&shy;<style media=\"" + q + "\"> #mq-test-1 { width: 42px; }</style>";
+      div.innerHTML = '&shy;<style media="' + q + '"> #mq-test-1 { width: 42px; }</style>';
 
       docElem.insertBefore( fakeBody, refNode );
       bool = div.offsetWidth === 42;
@@ -213,10 +216,10 @@
       jqueryFxAvailable = 'undefined' !== typeof jQuery.fx;
 
   for (; lastTime < vendors.length && !requestAnimationFrame; lastTime++) {
-    requestAnimationFrame = window[ vendors[lastTime] + "RequestAnimationFrame" ];
+    requestAnimationFrame = window[ vendors[lastTime] + 'RequestAnimationFrame' ];
     cancelAnimationFrame = cancelAnimationFrame ||
-      window[ vendors[lastTime] + "CancelAnimationFrame" ] ||
-      window[ vendors[lastTime] + "CancelRequestAnimationFrame" ];
+      window[ vendors[lastTime] + 'CancelAnimationFrame' ] ||
+      window[ vendors[lastTime] + 'CancelRequestAnimationFrame' ];
   }
 
   function raf() {
@@ -278,14 +281,18 @@
   window.Foundation = {
     name : 'Foundation',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     media_queries : {
-      small : S('.foundation-mq-small').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      medium : S('.foundation-mq-medium').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      large : S('.foundation-mq-large').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      xlarge: S('.foundation-mq-xlarge').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
-      xxlarge: S('.foundation-mq-xxlarge').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, '')
+      'small'       : S('.foundation-mq-small').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'small-only'  : S('.foundation-mq-small-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'medium'      : S('.foundation-mq-medium').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'medium-only' : S('.foundation-mq-medium-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'large'       : S('.foundation-mq-large').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'large-only'  : S('.foundation-mq-large-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'xlarge'      : S('.foundation-mq-xlarge').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'xlarge-only' : S('.foundation-mq-xlarge-only').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
+      'xxlarge'     : S('.foundation-mq-xxlarge').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, '')
     },
 
     stylesheet : $('<style></style>').appendTo('head')[0].sheet,
@@ -316,6 +323,18 @@
         }
       }
 
+      S(window).load(function(){
+        S(window)
+          .trigger('resize.fndtn.clearing')
+          .trigger('resize.fndtn.dropdown')
+          .trigger('resize.fndtn.equalizer')
+          .trigger('resize.fndtn.interchange')
+          .trigger('resize.fndtn.joyride')
+          .trigger('resize.fndtn.magellan')
+          .trigger('resize.fndtn.topbar')
+          .trigger('resize.fndtn.slider');
+      });
+
       return scope;
     },
 
@@ -325,15 +344,15 @@
 
         if (args && args.hasOwnProperty(lib)) {
             if (typeof this.libs[lib].settings !== 'undefined') {
-                $.extend(true, this.libs[lib].settings, args[lib]);
+              $.extend(true, this.libs[lib].settings, args[lib]);
             }
             else if (typeof this.libs[lib].defaults !== 'undefined') {
-                $.extend(true, this.libs[lib].defaults, args[lib]);
+              $.extend(true, this.libs[lib].defaults, args[lib]);
             }
           return this.libs[lib].init.apply(this.libs[lib], [this.scope, args[lib]]);
         }
 
-        args = args instanceof Array ? args : new Array(args);    // PATCH: added this line
+        args = args instanceof Array ? args : new Array(args);
         return this.libs[lib].init.apply(this.libs[lib], args);
       }
 
@@ -492,7 +511,7 @@
         ii = opts_arr.length;
 
         function isNumber (o) {
-          return ! isNaN (o-0) && o !== null && o !== "" && o !== false && o !== true;
+          return ! isNaN (o-0) && o !== null && o !== '' && o !== false && o !== true;
         }
 
         function trim (str) {
@@ -597,6 +616,64 @@
         this.prefix = this.prefix || [(this.name || 'F'), (+new Date).toString(36)].join('-');
 
         return this.prefix + (this.fidx++).toString(36);
+      },
+
+      // Description:
+      //    Helper for window.matchMedia
+      //
+      // Arguments:
+      //    mq (String): Media query
+      //
+      // Returns:
+      //    (Boolean): Whether the media query passes or not
+      match : function (mq) {
+        return window.matchMedia(mq).matches;
+      },
+
+      // Description:
+      //    Helpers for checking Foundation default media queries with JS
+      //
+      // Returns:
+      //    (Boolean): Whether the media query passes or not
+
+      is_small_up : function () {
+        return this.match(Foundation.media_queries.small);
+      },
+
+      is_medium_up : function () {
+        return this.match(Foundation.media_queries.medium);
+      },
+
+      is_large_up : function () {
+        return this.match(Foundation.media_queries.large);
+      },
+
+      is_xlarge_up : function () {
+        return this.match(Foundation.media_queries.xlarge);
+      },
+
+      is_xxlarge_up : function () {
+        return this.match(Foundation.media_queries.xxlarge);
+      },
+
+      is_small_only : function () {
+        return !this.is_medium_up() && !this.is_large_up() && !this.is_xlarge_up() && !this.is_xxlarge_up();
+      },
+
+      is_medium_only : function () {
+        return this.is_medium_up() && !this.is_large_up() && !this.is_xlarge_up() && !this.is_xxlarge_up();
+      },
+
+      is_large_only : function () {
+        return this.is_medium_up() && this.is_large_up() && !this.is_xlarge_up() && !this.is_xxlarge_up();
+      },
+
+      is_xlarge_only : function () {
+        return this.is_medium_up() && this.is_large_up() && this.is_xlarge_up() && !this.is_xxlarge_up();
+      },
+
+      is_xxlarge_only : function () {
+        return this.is_medium_up() && this.is_large_up() && this.is_xlarge_up() && this.is_xxlarge_up();
       }
     }
   };
@@ -618,12 +695,14 @@
   Foundation.libs.abide = {
     name : 'abide',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings : {
       live_validate : true,
+      validate_on_blur: true,
       focus_on_invalid : true,
       error_labels: true, // labels with a for="inputId" will recieve an `error` class
+      error_class: 'error',
       timeout : 1000,
       patterns : {
         alpha: /^[a-zA-Z]+$/,
@@ -636,11 +715,11 @@
         cvv : /^([0-9]){3,4}$/,
 
         // http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#valid-e-mail-address
-        email : /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+        email : /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/,
 
         url: /^(https?|ftp|file|ssh):\/\/(((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/,
         // abc.de
-        domain: /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$/,
+        domain: /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,8}$/,
 
         datetime: /^([0-2][0-9]{3})\-([0-1][0-9])\-([0-3][0-9])T([0-5][0-9])\:([0-5][0-9])\:([0-5][0-9])(Z|([\-\+]([0-1][0-9])\:00))$/,
         // YYYY-MM-DD
@@ -650,6 +729,8 @@
         dateISO: /^\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}$/,
         // MM/DD/YYYY
         month_day_year : /^(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.]\d{4}$/,
+        // DD/MM/YYYY
+        day_month_year : /^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.]\d{4}$/,
 
         // #FFF or #FFFFFF
         color: /^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/
@@ -690,10 +771,12 @@
         .find('input, textarea, select')
           .off('.abide')
           .on('blur.fndtn.abide change.fndtn.abide', function (e) {
-            self.validate([this], e);
+            if (settings.validate_on_blur === true) {
+              self.validate([this], e);
+            }
           })
           .on('keydown.fndtn.abide', function (e) {
-            if (settings.live_validate === true) {
+            if (settings.live_validate === true && e.which != 9) {
               clearTimeout(self.timer);
               self.timer = setTimeout(function () {
                 self.validate([this], e);
@@ -705,23 +788,21 @@
     reset : function (form) {
       form.removeAttr(this.invalid_attr);
       $(this.invalid_attr, form).removeAttr(this.invalid_attr);
-      $('.error', form).not('small').removeClass('error');
+      $('.' + this.settings.error_class, form).not('small').removeClass(this.settings.error_class);
     },
 
     validate : function (els, e, is_ajax) {
       var validations = this.parse_patterns(els),
           validation_count = validations.length,
-          form = this.S(els[0]).closest('[data-' + this.attr_name(true) + ']'),
-          settings = form.data(this.attr_name(true) + '-init') || {},
+          form = this.S(els[0]).closest('form'),
           submit_event = /submit/.test(e.type);
 
-      form.trigger('validated').trigger('validated.fndtn.abide');
       // Has to count up to make sure the focus gets applied to the top error
       for (var i=0; i < validation_count; i++) {
         if (!validations[i] && (submit_event || is_ajax)) {
-          if (settings.focus_on_invalid) els[i].focus();
+          if (this.settings.focus_on_invalid) els[i].focus();
           form.trigger('invalid').trigger('invalid.fndtn.abide');
-          this.S(els[i]).closest('[data-' + this.attr_name(true) + ']').attr(this.invalid_attr, '');
+          this.S(els[i]).closest('form').attr(this.invalid_attr, '');
           return false;
         }
       }
@@ -757,7 +838,7 @@
       if (this.settings.patterns.hasOwnProperty(pattern) && pattern.length > 0) {
         return [el, this.settings.patterns[pattern], required];
       } else if (pattern.length > 0) {
-        return [el, new RegExp('^'+pattern+'$'), required];
+        return [el, new RegExp(pattern), required];
       }
 
       if (this.settings.patterns.hasOwnProperty(type)) {
@@ -769,12 +850,12 @@
       return [el, pattern, required];
     },
 
+    // TODO: Break this up into smaller methods, getting hard to read.
     check_validation_and_apply_styles : function (el_patterns) {
       var i = el_patterns.length,
           validations = [],
           form = this.S(el_patterns[0][0]).closest('[data-' + this.attr_name(true) + ']'),
           settings = form.data(this.attr_name(true) + '-init') || {};
-
       while (i--) {
         var el = el_patterns[i][0],
             required = el_patterns[i][2],
@@ -784,7 +865,8 @@
             is_radio = el.type === "radio",
             is_checkbox = el.type === "checkbox",
             label = this.S('label[for="' + el.getAttribute('id') + '"]'),
-            valid_length = (required) ? (el.value.length > 0) : true;
+            valid_length = (required) ? (el.value.length > 0) : true,
+            el_validations = [];
 
         var parent, valid;
 
@@ -797,43 +879,55 @@
           parent = direct_parent.parent();
         }
 
+        if (validator) {
+          valid = this.settings.validators[validator].apply(this, [el, required, parent]);
+          el_validations.push(valid);
+        }
+
         if (is_radio && required) {
-          validations.push(this.valid_radio(el, required));
+          el_validations.push(this.valid_radio(el, required));
         } else if (is_checkbox && required) {
-          validations.push(this.valid_checkbox(el, required));
-        } else if (validator) {
-          valid = this.settings.validators[validator].apply(this, [el, required, parent])
-          validations.push(valid);
-
-          if (valid) {
-            this.S(el).removeAttr(this.invalid_attr);
-            parent.removeClass('error');
-          } else {
-            this.S(el).attr(this.invalid_attr, '');
-            parent.addClass('error');
-          }
-
+          el_validations.push(this.valid_checkbox(el, required));
         } else {
 
           if (el_patterns[i][1].test(value) && valid_length ||
             !required && el.value.length < 1 || $(el).attr('disabled')) {
-            this.S(el).removeAttr(this.invalid_attr);
-            parent.removeClass('error');
-            if (label.length > 0 && settings.error_labels) label.removeClass('error');
+            el_validations.push(true);
+          } else {
+            el_validations.push(false);
+          }
 
-            validations.push(true);
+          el_validations = [el_validations.every(function(valid){return valid;})];
+
+          if(el_validations[0]){
+            this.S(el).removeAttr(this.invalid_attr);
+            el.setAttribute('aria-invalid', 'false');
+            el.removeAttribute('aria-describedby');
+            parent.removeClass(this.settings.error_class);
+            if (label.length > 0 && this.settings.error_labels) {
+              label.removeClass(this.settings.error_class).removeAttr('role');
+            }
             $(el).triggerHandler('valid');
           } else {
             this.S(el).attr(this.invalid_attr, '');
-            parent.addClass('error');
-            if (label.length > 0 && settings.error_labels) label.addClass('error');
+            el.setAttribute('aria-invalid', 'true');
 
-            validations.push(false);
+            // Try to find the error associated with the input
+            var errorElem = parent.find('small.'+this.settings.error_class, 'span.'+this.settings.error_class);
+            var errorID = errorElem.length > 0 ? errorElem[0].id : "";
+            if (errorID.length > 0) el.setAttribute('aria-describedby', errorID);
+
+            // el.setAttribute('aria-describedby', $(el).find('.error')[0].id);
+            parent.addClass(this.settings.error_class);
+            if (label.length > 0 && this.settings.error_labels) {
+              label.addClass(this.settings.error_class).attr('role', 'alert');
+            }
             $(el).triggerHandler('invalid');
           }
         }
+        validations.push(el_validations[0]);
       }
-
+      validations = [validations.every(function(valid){return valid;})];
       return validations;
     },
 
@@ -842,9 +936,9 @@
           valid = (el.is(':checked') || !required);
 
       if (valid) {
-        el.removeAttr(this.invalid_attr).parent().removeClass('error');
+        el.removeAttr(this.invalid_attr).parent().removeClass(this.settings.error_class);
       } else {
-        el.attr(this.invalid_attr, '').parent().addClass('error');
+        el.attr(this.invalid_attr, '').parent().addClass(this.settings.error_class);
       }
 
       return valid;
@@ -864,9 +958,9 @@
       // Has to count up to make sure the focus gets applied to the top error
       for (var i=0; i < count; i++) {
         if (valid) {
-          this.S(group[i]).removeAttr(this.invalid_attr).parent().removeClass('error');
+          this.S(group[i]).removeAttr(this.invalid_attr).parent().removeClass(this.settings.error_class);
         } else {
-          this.S(group[i]).attr(this.invalid_attr, '').parent().addClass('error');
+          this.S(group[i]).attr(this.invalid_attr, '').parent().addClass(this.settings.error_class);
         }
       }
 
@@ -880,10 +974,12 @@
 
       if (valid) {
         this.S(el).removeAttr(this.invalid_attr);
-        parent.removeClass('error');
+        parent.removeClass(this.settings.error_class);
+        if (label.length > 0 && settings.error_labels) label.removeClass(this.settings.error_class);
       } else {
         this.S(el).attr(this.invalid_attr, '');
-        parent.addClass('error');
+        parent.addClass(this.settings.error_class);
+        if (label.length > 0 && settings.error_labels) label.addClass(this.settings.error_class);
       }
 
       return valid;
@@ -895,9 +991,9 @@
         valid = others.filter(':checked').length > 0;
 
       if (valid) {
-        el.removeAttr(this.invalid_attr).parent().removeClass('error');
+        el.removeAttr(this.invalid_attr).parent().removeClass(this.settings.error_class);
       } else {
-        el.attr(this.invalid_attr, '').parent().addClass('error');
+        el.attr(this.invalid_attr, '').parent().addClass(this.settings.error_class);
       }
 
       if (!doNotValidateOthers) {
@@ -918,9 +1014,10 @@
   Foundation.libs.accordion = {
     name : 'accordion',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings : {
+      content_class: 'content',
       active_class: 'active',
       multi_expand: false,
       toggleable: true,
@@ -936,23 +1033,24 @@
       var S = this.S;
       S(this.scope)
       .off('.fndtn.accordion')
-      .on('click.fndtn.accordion', '[' + this.attr_name() + '] > dd > a', function (e) {
+      .on('click.fndtn.accordion', '[' + this.attr_name() + '] > .accordion-navigation > a', function (e) {
         var accordion = S(this).closest('[' + self.attr_name() + ']'),
-            target = S('#' + this.href.split('#')[1]),
-            siblings = S('dd > .content', accordion),
-            aunts = $('dd', accordion),
             groupSelector = self.attr_name() + '=' + accordion.attr(self.attr_name()),
-            settings = accordion.data(self.attr_name(true) + '-init'),
-            active_content = S('dd > .content.' + settings.active_class, accordion);
+            settings = accordion.data(self.attr_name(true) + '-init') || self.settings,
+            target = S('#' + this.href.split('#')[1]),
+            aunts = $('> .accordion-navigation', accordion),
+            siblings = aunts.children('.'+settings.content_class),
+            active_content = siblings.filter('.' + settings.active_class);
+
         e.preventDefault();
 
         if (accordion.attr(self.attr_name())) {
-          siblings = siblings.add('[' + groupSelector + '] dd > .content');
-          aunts = aunts.add('[' + groupSelector + '] dd');
+          siblings = siblings.add('[' + groupSelector + '] dd > '+'.'+settings.content_class);
+          aunts = aunts.add('[' + groupSelector + '] .accordion-navigation');
         }
 
         if (settings.toggleable && target.is(active_content)) {
-          target.parent('dd').toggleClass(settings.active_class, false);
+          target.parent('.accordion-navigation').toggleClass(settings.active_class, false);
           target.toggleClass(settings.active_class, false);
           settings.callback(target);
           target.triggerHandler('toggled', [accordion]);
@@ -984,7 +1082,7 @@
   Foundation.libs.alert = {
     name : 'alert',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings : {
       callback: function (){}
@@ -998,13 +1096,13 @@
       var self = this,
           S = this.S;
 
-      $(this.scope).off('.alert').on('click.fndtn.alert', '[' + this.attr_name() + '] a.close', function (e) {
-          var alertBox = S(this).closest('[' + self.attr_name() + ']'),
-              settings = alertBox.data(self.attr_name(true) + '-init') || self.settings;
+      $(this.scope).off('.alert').on('click.fndtn.alert', '[' + this.attr_name() + '] .close', function (e) {
+        var alertBox = S(this).closest('[' + self.attr_name() + ']'),
+            settings = alertBox.data(self.attr_name(true) + '-init') || self.settings;
 
         e.preventDefault();
         if (Modernizr.csstransitions) {
-          alertBox.addClass("alert-close");
+          alertBox.addClass('alert-close');
           alertBox.on('transitionend webkitTransitionEnd oTransitionEnd', function(e) {
             S(this).trigger('close').trigger('close.fndtn.alert').remove();
             settings.callback();
@@ -1028,7 +1126,7 @@
   Foundation.libs.clearing = {
     name : 'clearing',
 
-    version: '5.3.0',
+    version: '5.5.0',
 
     settings : {
       templates : {
@@ -1044,6 +1142,9 @@
 
       // Default to the entire li element.
       open_selectors : '',
+
+      // Image will be skipped in carousel.
+      skip_selector : '',
 
       touch_label : '',
 
@@ -1220,6 +1321,11 @@
           label = self.S('.clearing-touch-label', container),
           error = false;
 
+      // Event to disable scrolling on touch devices when Clearing is activated
+      $('body').on('touchmove',function(e){
+        e.preventDefault();
+      });
+
       image.error(function () {
         error = true;
       });
@@ -1290,6 +1396,9 @@
         visible_image.hide();
         visible_image.trigger('closed.fndtn.clearing');        
       }
+
+      // Event to re-enable scrolling on touch devices
+      $('body').off('touchmove');
 
       return false;
     },
@@ -1402,10 +1511,10 @@
     load : function ($image) {
       var href;
 
-      if ($image[0].nodeName === "A") {
+      if ($image[0].nodeName === 'A') {
         href = $image.attr('href');
       } else {
-        href = $image.parent().attr('href');
+        href = $image.closest('a').attr('href');
       }
 
       this.preload($image);
@@ -1456,6 +1565,11 @@
     go : function ($ul, direction) {
       var current = this.S('.visible', $ul),
           target = current[direction]();
+
+      // Check for skip selector.
+      if (this.settings.skip_selector && target.find(this.settings.skip_selector).length != 0) {
+        target = target[direction]();
+      }
 
       if (target.length) {
         this.S('img', target)
@@ -1571,12 +1685,15 @@
   Foundation.libs.dropdown = {
     name : 'dropdown',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings : {
       active_class: 'open',
+      disabled_class: 'disabled',
+      mega_class: 'mega',
       align: 'bottom',
       is_hover: false,
+      hover_timeout: 150,
       opened: function(){},
       closed: function(){}
     },
@@ -1584,6 +1701,7 @@
     init : function (scope, method, options) {
       Foundation.inherit(this, 'throttle');
 
+      $.extend(true, this.settings, method, options);
       this.bindings(method, options);
     },
 
@@ -1597,6 +1715,9 @@
           var settings = S(this).data(self.attr_name(true) + '-init') || self.settings;
           if (!settings.is_hover || Modernizr.touch) {
             e.preventDefault();
+            if (S(this).parent('[data-reveal-id]')) {
+              e.stopPropagation();
+            }
             self.toggle($(this));
           }
         })
@@ -1612,38 +1733,51 @@
             target = $this;
           } else {
             dropdown = $this;
-            target = S("[" + self.attr_name() + "='" + dropdown.attr('id') + "']");
+            target = S('[' + self.attr_name() + '="' + dropdown.attr('id') + '"]');
           }
 
           var settings = target.data(self.attr_name(true) + '-init') || self.settings;
-          
-          if(S(e.target).data(self.data_attr()) && settings.is_hover) {
+
+          if(S(e.currentTarget).data(self.data_attr()) && settings.is_hover) {
             self.closeall.call(self);
           }
-          
+
           if (settings.is_hover) self.open.apply(self, [dropdown, target]);
         })
         .on('mouseleave.fndtn.dropdown', '[' + this.attr_name() + '], [' + this.attr_name() + '-content]', function (e) {
           var $this = S(this);
+          var settings;
+
+          if ($this.data(self.data_attr())) {
+              settings = $this.data(self.data_attr(true) + '-init') || self.settings;
+          } 
+          else {
+              var target   = S('[' + self.attr_name() + '="' + S(this).attr('id') + '"]'),
+                  settings = target.data(self.attr_name(true) + '-init') || self.settings;
+          }
+
           self.timeout = setTimeout(function () {
             if ($this.data(self.data_attr())) {
-              var settings = $this.data(self.data_attr(true) + '-init') || self.settings;
               if (settings.is_hover) self.close.call(self, S('#' + $this.data(self.data_attr())));
             } else {
-              var target = S('[' + self.attr_name() + '="' + S(this).attr('id') + '"]'),
-                  settings = target.data(self.attr_name(true) + '-init') || self.settings;
               if (settings.is_hover) self.close.call(self, $this);
             }
-          }.bind(this), 150);
+          }.bind(this), settings.hover_timeout);
         })
         .on('click.fndtn.dropdown', function (e) {
           var parent = S(e.target).closest('[' + self.attr_name() + '-content]');
+          var links  = parent.find('a');
 
-          if (S(e.target).data(self.data_attr()) || S(e.target).parent().data(self.data_attr())) {
+          if (links.length > 0 && parent.attr('aria-autoclose') !== "false") {
+              self.close.call(self, S('[' + self.attr_name() + '-content]'));
+          }
+
+          if (S(e.target).closest('[' + self.attr_name() + ']').length > 0) {
             return;
           }
-          if (!(S(e.target).data('revealId')) && 
-            (parent.length > 0 && (S(e.target).is('[' + self.attr_name() + '-content]') || 
+
+          if (!(S(e.target).data('revealId')) &&
+            (parent.length > 0 && (S(e.target).is('[' + self.attr_name() + '-content]') ||
               $.contains(parent.first()[0], e.target)))) {
             e.stopPropagation();
             return;
@@ -1652,10 +1786,10 @@
           self.close.call(self, S('[' + self.attr_name() + '-content]'));
         })
         .on('opened.fndtn.dropdown', '[' + self.attr_name() + '-content]', function () {
-            self.settings.opened.call(this);
+          self.settings.opened.call(this);
         })
         .on('closed.fndtn.dropdown', '[' + self.attr_name() + '-content]', function () {
-            self.settings.closed.call(this);
+          self.settings.closed.call(this);
         });
 
       S(window)
@@ -1670,9 +1804,12 @@
     close: function (dropdown) {
       var self = this;
       dropdown.each(function () {
+        var original_target = $('[' + self.attr_name() + '=' + dropdown[0].id + ']') || $('aria-controls=' + dropdown[0].id+ ']');
+        original_target.attr('aria-expanded', 'false');
         if (self.S(this).hasClass(self.settings.active_class)) {
           self.S(this)
             .css(Foundation.rtl ? 'right':'left', '-99999px')
+            .attr('aria-hidden', 'true')
             .removeClass(self.settings.active_class)
             .prev('[' + self.attr_name() + ']')
             .removeClass(self.settings.active_class)
@@ -1681,21 +1818,26 @@
           self.S(this).trigger('closed').trigger('closed.fndtn.dropdown', [dropdown]);
         }
       });
+      dropdown.removeClass('f-open-' + this.attr_name(true));
     },
 
     closeall: function() {
       var self = this;
-      $.each(self.S('[' + this.attr_name() + '-content]'), function() {
-        self.close.call(self, self.S(this))
+      $.each(self.S('.f-open-' + this.attr_name(true)), function() {
+        self.close.call(self, self.S(this));
       });
     },
 
     open: function (dropdown, target) {
-        this
-          .css(dropdown
-            .addClass(this.settings.active_class), target);
-        dropdown.prev('[' + this.attr_name() + ']').addClass(this.settings.active_class);
-        dropdown.data('target', target.get(0)).trigger('opened').trigger('opened.fndtn.dropdown', [dropdown, target]);
+      this
+        .css(dropdown
+        .addClass(this.settings.active_class), target);
+      dropdown.prev('[' + this.attr_name() + ']').addClass(this.settings.active_class);
+      dropdown.data('target', target.get(0)).trigger('opened').trigger('opened.fndtn.dropdown', [dropdown, target]);
+      dropdown.attr('aria-hidden', 'false');
+      target.attr('aria-expanded', 'true');
+      dropdown.focus();
+      dropdown.addClass('f-open-' + this.attr_name(true));
     },
 
     data_attr: function () {
@@ -1707,6 +1849,9 @@
     },
 
     toggle : function (target) {
+      if (target.hasClass(this.settings.disabled_class)) {
+        return;
+      }
       var dropdown = this.S('#' + target.data(this.data_attr()));
       if (dropdown.length === 0) {
         // No dropdown found, not continuing
@@ -1726,7 +1871,7 @@
 
     resize : function () {
       var dropdown = this.S('[' + this.attr_name() + '-content].open'),
-          target = this.S("[" + this.attr_name() + "='" + dropdown.attr('id') + "']");
+          target = this.S('[' + this.attr_name() + '="' + dropdown.attr('id') + '"]');
 
       if (dropdown.length && target.length) {
         this.css(dropdown, target);
@@ -1734,12 +1879,13 @@
     },
 
     css : function (dropdown, target) {
-      var left_offset = Math.max((target.width() - dropdown.width()) / 2, 8);
-      
+      var left_offset = Math.max((target.width() - dropdown.width()) / 2, 8),
+          settings = target.data(this.attr_name(true) + '-init') || this.settings;
+
       this.clear_idx();
 
       if (this.small()) {
-        var p = this.dirs.bottom.call(dropdown, target);
+        var p = this.dirs.bottom.call(dropdown, target, settings);
 
         dropdown.attr('style', '').removeClass('drop-left drop-right drop-top').css({
           position : 'absolute',
@@ -1750,7 +1896,6 @@
 
         dropdown.css(Foundation.rtl ? 'right':'left', left_offset);
       } else {
-        var settings = target.data(this.attr_name(true) + '-init') || this.settings;
 
         this.style(dropdown, target, settings);
       }
@@ -1759,7 +1904,7 @@
     },
 
     style : function (dropdown, target, settings) {
-      var css = $.extend({position: 'absolute'}, 
+      var css = $.extend({position: 'absolute'},
         this.dirs[settings.align].call(dropdown, target, settings));
 
       dropdown.attr('style', '').css(css);
@@ -1776,34 +1921,86 @@
 
         p.top -= o.top;
         p.left -= o.left;
+        
+        //set some flags on the p object to pass along
+        p.missRight = false;
+        p.missTop = false;
+        p.missLeft = false;
+        p.leftRightFlag = false;
+    
+        //lets see if the panel will be off the screen
+        //get the actual width of the page and store it
+        var actualBodyWidth;
+        if (document.getElementsByClassName('row')[0]) {
+          actualBodyWidth = document.getElementsByClassName('row')[0].clientWidth;
+        } else {
+          actualBodyWidth = window.outerWidth;
+        }
+
+        var actualMarginWidth = (window.outerWidth - actualBodyWidth) / 2;
+        var actualBoundary = actualBodyWidth;
+    
+        if (!this.hasClass('mega')) {
+          //miss top
+          if (t.offset().top <= this.outerHeight()) {
+            p.missTop = true;
+            actualBoundary = window.outerWidth - actualMarginWidth;
+            p.leftRightFlag = true;
+          }
+          
+          //miss right
+          if (t.offset().left + this.outerWidth() > t.offset().left + actualMarginWidth && t.offset().left - actualMarginWidth > this.outerWidth()) {
+            p.missRight = true;
+            p.missLeft = false;
+          }
+          
+          //miss left
+          if (t.offset().left - this.outerWidth() <= 0) {
+            p.missLeft = true;
+            p.missRight = false;
+          }
+        }
 
         return p;
       },
+
       top: function (t, s) {
         var self = Foundation.libs.dropdown,
-            p = self.dirs._base.call(this, t),
-            pip_offset_base = 8;
+            p = self.dirs._base.call(this, t);
 
         this.addClass('drop-top');
+        
+        if (p.missTop == true) {
+          p.top = p.top + t.outerHeight() + this.outerHeight();
+          this.removeClass('drop-top');
+        }
+    
+        if (p.missRight == true) {
+          p.left = p.left - this.outerWidth() + t.outerWidth();
+        }
 
-        if (t.outerWidth() < this.outerWidth() || self.small()) {
-          self.adjust_pip(pip_offset_base, p);
+        if (t.outerWidth() < this.outerWidth() || self.small() || this.hasClass(s.mega_menu)) {
+          self.adjust_pip(this,t,s,p);
         }
 
         if (Foundation.rtl) {
-          return {left: p.left - this.outerWidth() + t.outerWidth(), 
+          return {left: p.left - this.outerWidth() + t.outerWidth(),
             top: p.top - this.outerHeight()};
         }
 
         return {left: p.left, top: p.top - this.outerHeight()};
       },
-      bottom: function (t, s) {
-        var self = Foundation.libs.dropdown,
-            p = self.dirs._base.call(this, t),
-            pip_offset_base = 8;
 
-        if (t.outerWidth() < this.outerWidth() || self.small()) {
-          self.adjust_pip(pip_offset_base, p);
+      bottom: function (t,s) {
+        var self = Foundation.libs.dropdown,
+            p = self.dirs._base.call(this, t);
+
+        if (p.missRight == true) {
+          p.left = p.left - this.outerWidth() + t.outerWidth();
+        }
+
+        if (t.outerWidth() < this.outerWidth() || self.small() || this.hasClass(s.mega_menu)) {
+          self.adjust_pip(this,t,s,p);
         }
 
         if (self.rtl) {
@@ -1812,36 +2009,79 @@
 
         return {left: p.left, top: p.top + t.outerHeight()};
       },
+
       left: function (t, s) {
         var p = Foundation.libs.dropdown.dirs._base.call(this, t);
 
         this.addClass('drop-left');
+        
+        if (p.missLeft == true) {
+          p.left =  p.left + this.outerWidth();
+          p.top = p.top + t.outerHeight();
+          this.removeClass('drop-left');
+        }
 
         return {left: p.left - this.outerWidth(), top: p.top};
       },
+
       right: function (t, s) {
         var p = Foundation.libs.dropdown.dirs._base.call(this, t);
 
         this.addClass('drop-right');
+        
+        if (p.missRight == true) {
+          p.left = p.left - this.outerWidth();
+          p.top = p.top + t.outerHeight();
+          this.removeClass('drop-right');
+        } else {
+          p.triggeredRight = true;
+        }
+    
+        var self = Foundation.libs.dropdown;
+
+        if (t.outerWidth() < this.outerWidth() || self.small() || this.hasClass(s.mega_menu)) {
+          self.adjust_pip(this,t,s,p);
+        }
 
         return {left: p.left + t.outerWidth(), top: p.top};
       }
     },
 
     // Insert rule to style psuedo elements
-    adjust_pip : function (pip_offset_base, p) {
-      var sheet = Foundation.stylesheet;
+    adjust_pip : function (dropdown,target,settings,position) {
+      var sheet = Foundation.stylesheet,
+          pip_offset_base = 8;
 
-      if (this.small()) {
-        pip_offset_base += p.left - 8;
+      if (dropdown.hasClass(settings.mega_class)) {
+        pip_offset_base = position.left + (target.outerWidth()/2) - 8;
+      }
+      else if (this.small()) {
+        pip_offset_base += position.left - 8;
       }
 
       this.rule_idx = sheet.cssRules.length;
 
+      //default
       var sel_before = '.f-dropdown.open:before',
           sel_after  = '.f-dropdown.open:after',
           css_before = 'left: ' + pip_offset_base + 'px;',
           css_after  = 'left: ' + (pip_offset_base - 1) + 'px;';
+        
+      if (position.missRight == true) {
+        pip_offset_base = dropdown.outerWidth() - 23;
+        sel_before = '.f-dropdown.open:before',
+        sel_after  = '.f-dropdown.open:after',
+        css_before = 'left: ' + pip_offset_base + 'px;',
+        css_after  = 'left: ' + (pip_offset_base - 1) + 'px;';
+      }
+    
+      //just a case where right is fired, but its not missing right
+      if (position.triggeredRight == true) {
+        sel_before = '.f-dropdown.open:before',
+        sel_after  = '.f-dropdown.open:after',
+        css_before = 'left:-12px;',
+        css_after  = 'left:-14px;';
+      }
 
       if (sheet.insertRule) {
         sheet.insertRule([sel_before, '{', css_before, '}'].join(' '), this.rule_idx);
@@ -1856,7 +2096,7 @@
     clear_idx : function () {
       var sheet = Foundation.stylesheet;
 
-      if (this.rule_idx) {
+      if (typeof this.rule_idx !== 'undefined') {
         sheet.deleteRule(this.rule_idx);
         sheet.deleteRule(this.rule_idx);
         delete this.rule_idx;
@@ -1885,7 +2125,7 @@
   Foundation.libs.equalizer = {
     name : 'equalizer',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings : {
       use_tallest: true,
@@ -1953,14 +2193,13 @@
   };
 })(jQuery, window, window.document);
 
-
 ;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.interchange = {
     name : 'interchange',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     cache : {},
 
@@ -1971,15 +2210,19 @@
       load_attr : 'interchange',
 
       named_queries : {
-        'default' : 'only screen',
-        small : Foundation.media_queries.small,
-        medium : Foundation.media_queries.medium,
-        large : Foundation.media_queries.large,
-        xlarge : Foundation.media_queries.xlarge,
-        xxlarge: Foundation.media_queries.xxlarge,
-        landscape : 'only screen and (orientation: landscape)',
-        portrait : 'only screen and (orientation: portrait)',
-        retina : 'only screen and (-webkit-min-device-pixel-ratio: 2),' +
+        'default'     : 'only screen',
+        'small'       : Foundation.media_queries['small'],
+        'small-only'  : Foundation.media_queries['small-only'],
+        'medium'      : Foundation.media_queries['medium'],
+        'medium-only' : Foundation.media_queries['medium-only'],
+        'large'       : Foundation.media_queries['large'],
+        'large-only'  : Foundation.media_queries['large-only'],
+        'xlarge'      : Foundation.media_queries['xlarge'],
+        'xlarge-only' : Foundation.media_queries['xlarge-only'],
+        'xxlarge'     : Foundation.media_queries['xxlarge'],
+        'landscape'   : 'only screen and (orientation: landscape)',
+        'portrait'    : 'only screen and (orientation: portrait)',
+        'retina'      : 'only screen and (-webkit-min-device-pixel-ratio: 2),' +
           'only screen and (min--moz-device-pixel-ratio: 2),' +
           'only screen and (-o-min-device-pixel-ratio: 2/1),' +
           'only screen and (min-device-pixel-ratio: 2),' +
@@ -2307,11 +2550,12 @@
   Foundation.libs.joyride = {
     name : 'joyride',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     defaults : {
       expose                   : false,     // turn on or off the expose feature
       modal                    : true,      // Whether to cover page with modal during the tour
+      keyboard                 : true,      // enable left, right and esc keystrokes
       tip_location             : 'bottom',  // 'top' or 'bottom' in relation to parent
       nub_position             : 'auto',    // override on a per tooltip bases
       scroll_speed             : 1500,      // Page scrolling speed in milliseconds, 0 = no scroll animation
@@ -2320,6 +2564,7 @@
       start_timer_on_click     : true,      // true or false - true requires clicking the first button start the timer
       start_offset             : 0,         // the index of the tooltip you want to start on (index of the li)
       next_button              : true,      // true or false to control whether a next button is used
+      prev_button              : true,      // true or false to control whether a prev button is used
       tip_animation            : 'fade',    // 'pop' or 'fade' in each tip
       pause_after              : [],        // array of indexes where to pause the tour after
       exposed                  : [],        // array of expose elements
@@ -2342,14 +2587,15 @@
       pre_ride_callback      : function (){},    // A method to call before the tour starts (passed index, tip, and cloned exposed element)
       post_expose_callback   : function (){},    // A method to call after an element has been exposed
       template : { // HTML segments for tip layout
-        link    : '<a href="#close" class="joyride-close-tip">&times;</a>',
-        timer   : '<div class="joyride-timer-indicator-wrap"><span class="joyride-timer-indicator"></span></div>',
-        tip     : '<div class="joyride-tip-guide"><span class="joyride-nub"></span></div>',
-        wrapper : '<div class="joyride-content-wrapper"></div>',
-        button  : '<a href="#" class="small button joyride-next-tip"></a>',
-        modal   : '<div class="joyride-modal-bg"></div>',
-        expose  : '<div class="joyride-expose-wrapper"></div>',
-        expose_cover: '<div class="joyride-expose-cover"></div>'
+        link          : '<a href="#close" class="joyride-close-tip">&times;</a>',
+        timer         : '<div class="joyride-timer-indicator-wrap"><span class="joyride-timer-indicator"></span></div>',
+        tip           : '<div class="joyride-tip-guide"><span class="joyride-nub"></span></div>',
+        wrapper       : '<div class="joyride-content-wrapper"></div>',
+        button        : '<a href="#" class="small button joyride-next-tip"></a>',
+        prev_button   : '<a href="#" class="small button joyride-prev-tip"></a>',
+        modal         : '<div class="joyride-modal-bg"></div>',
+        expose        : '<div class="joyride-expose-wrapper"></div>',
+        expose_cover  : '<div class="joyride-expose-cover"></div>'
       },
       expose_add_class : '' // One or more space-separated class names to be added to exposed element
     },
@@ -2362,6 +2608,34 @@
       this.bindings(method, options)
     },
 
+    go_next : function() {
+      if (this.settings.$li.next().length < 1) {
+        this.end();
+      } else if (this.settings.timer > 0) {
+        clearTimeout(this.settings.automate);
+        this.hide();
+        this.show();
+        this.startTimer();
+      } else {
+        this.hide();
+        this.show();
+      }
+    },
+
+    go_prev : function() {
+      if (this.settings.$li.prev().length < 1) {
+        // Do nothing if there are no prev element
+      } else if (this.settings.timer > 0) {
+        clearTimeout(this.settings.automate);
+        this.hide();
+        this.show(null, true);
+        this.startTimer();
+      } else {
+        this.hide();
+        this.show(null, true);
+      }
+    },
+
     events : function () {
       var self = this;
 
@@ -2369,30 +2643,42 @@
         .off('.joyride')
         .on('click.fndtn.joyride', '.joyride-next-tip, .joyride-modal-bg', function (e) {
           e.preventDefault();
-
-          if (this.settings.$li.next().length < 1) {
-            this.end();
-          } else if (this.settings.timer > 0) {
-            clearTimeout(this.settings.automate);
-            this.hide();
-            this.show();
-            this.startTimer();
-          } else {
-            this.hide();
-            this.show();
-          }
-
+          this.go_next()
+        }.bind(this))
+        .on('click.fndtn.joyride', '.joyride-prev-tip', function (e) {
+          e.preventDefault();
+          this.go_prev();
         }.bind(this))
 
         .on('click.fndtn.joyride', '.joyride-close-tip', function (e) {
           e.preventDefault();
           this.end(this.settings.abort_on_close);
+        }.bind(this))
+
+        .on('keyup.fndtn.joyride', function(e) {
+          // Don't do anything if keystrokes are disabled
+          // or if the joyride is not being shown
+          if (!this.settings.keyboard || !this.settings.riding) return;
+
+          switch (e.which) {
+            case 39: // right arrow
+              e.preventDefault();
+              this.go_next();
+              break;
+            case 37: // left arrow
+              e.preventDefault();
+              this.go_prev();
+              break;
+            case 27: // escape
+              e.preventDefault();
+              this.end(this.settings.abort_on_close);
+          }
         }.bind(this));
 
       $(window)
         .off('.joyride')
         .on('resize.fndtn.joyride', self.throttle(function () {
-          if ($('[' + self.attr_name() + ']').length > 0 && self.settings.$next_tip) {
+          if ($('[' + self.attr_name() + ']').length > 0 && self.settings.$next_tip && self.settings.riding) {
             if (self.settings.exposed.length > 0) {
               var $els = $(self.settings.exposed);
 
@@ -2431,6 +2717,7 @@
       this.settings.$tip_content = this.settings.$content_el.find('> li');
       this.settings.paused = false;
       this.settings.attempts = 0;
+      this.settings.riding = true;
 
       // can we create cookies?
       if (typeof $.cookie !== 'function') {
@@ -2474,6 +2761,7 @@
 
       $blank = $(this.settings.template.tip).addClass(opts.tip_class);
       content = $.trim($(opts.li).html()) +
+        this.prev_button_text(opts.prev_button_text, opts.index) +
         this.button_text(opts.button_text) +
         this.settings.template.link +
         this.timer_instance(opts.index);
@@ -2497,7 +2785,7 @@
     },
 
     button_text : function (txt) {
-      if (this.settings.next_button) {
+      if (this.settings.tip_settings.next_button) {
         txt = $.trim(txt) || 'Next';
         txt = $(this.settings.template.button).append(txt)[0].outerHTML;
       } else {
@@ -2506,21 +2794,40 @@
       return txt;
     },
 
+    prev_button_text : function (txt, idx) {
+      if (this.settings.tip_settings.prev_button) {
+        txt = $.trim(txt) || 'Previous';
+
+        // Add the disabled class to the button if it's the first element
+        if (idx == 0)
+          txt = $(this.settings.template.prev_button).append(txt).addClass('disabled')[0].outerHTML;
+        else
+          txt = $(this.settings.template.prev_button).append(txt)[0].outerHTML;
+      } else {
+        txt = '';
+      }
+      return txt;
+    },
+
     create : function (opts) {
-      var buttonText = opts.$li.attr(this.add_namespace('data-button')) 
+      this.settings.tip_settings = $.extend({}, this.settings, this.data_options(opts.$li));
+      var buttonText = opts.$li.attr(this.add_namespace('data-button'))
         || opts.$li.attr(this.add_namespace('data-text')),
+          prevButtonText = opts.$li.attr(this.add_namespace('data-button-prev'))
+        || opts.$li.attr(this.add_namespace('data-prev-text')),
         tipClass = opts.$li.attr('class'),
         $tip_content = $(this.tip_template({
           tip_class : tipClass,
           index : opts.index,
           button_text : buttonText,
+          prev_button_text : prevButtonText,
           li : opts.$li
         }));
 
       $(this.settings.tip_container).append($tip_content);
     },
 
-    show : function (init) {
+    show : function (init, is_prev) {
       var $timer = null;
 
       // are we paused?
@@ -2531,7 +2838,7 @@
         if (this.settings.paused) {
           this.settings.paused = false;
         } else {
-          this.set_li(init);
+          this.set_li(init, is_prev);
         }
 
         this.settings.attempts = 0;
@@ -2556,8 +2863,14 @@
 
           this.settings.tip_settings.tip_location_pattern = this.settings.tip_location_patterns[this.settings.tip_settings.tip_location];
 
-          // scroll if not modal
+          // scroll and hide bg if not modal
           if (!/body/i.test(this.settings.$target.selector)) {
+            var joyridemodalbg = $('.joyride-modal-bg');
+            if (/pop/i.test(this.settings.tipAnimation)) {
+                joyridemodalbg.hide();
+            } else {
+                joyridemodalbg.fadeOut(this.settings.tipAnimationFadeSpeed);
+            }
             this.scroll_to();
           }
 
@@ -2615,7 +2928,7 @@
         // skip non-existant targets
         } else if (this.settings.$li && this.settings.$target.length < 1) {
 
-          this.show();
+          this.show(init, is_prev);
 
         } else {
 
@@ -2654,13 +2967,16 @@
         this.settings.$current_tip);
     },
 
-    set_li : function (init) {
+    set_li : function (init, is_prev) {
       if (init) {
         this.settings.$li = this.settings.$tip_content.eq(this.settings.start_offset);
         this.set_next_tip();
         this.settings.$current_tip = this.settings.$next_tip;
       } else {
-        this.settings.$li = this.settings.$li.next();
+        if (is_prev)
+          this.settings.$li = this.settings.$li.prev();
+        else
+          this.settings.$li = this.settings.$li.next();
         this.set_next_tip();
       }
 
@@ -2668,7 +2984,7 @@
     },
 
     set_next_tip : function () {
-      this.settings.$next_tip = $(".joyride-tip-guide").eq(this.settings.$li.index());
+      this.settings.$next_tip = $('.joyride-tip-guide').eq(this.settings.$li.index());
       this.settings.$next_tip.data('closed', '');
     },
 
@@ -2724,9 +3040,9 @@
       }
 
       if (!/body/i.test(this.settings.$target.selector)) {
-      	  var topAdjustment = this.settings.tip_settings.tipAdjustmentY ? parseInt(this.settings.tip_settings.tipAdjustmentY) : 0,
-			        leftAdjustment = this.settings.tip_settings.tipAdjustmentX ? parseInt(this.settings.tip_settings.tipAdjustmentX) : 0;
-          
+          var topAdjustment = this.settings.tip_settings.tipAdjustmentY ? parseInt(this.settings.tip_settings.tipAdjustmentY) : 0,
+              leftAdjustment = this.settings.tip_settings.tipAdjustmentX ? parseInt(this.settings.tip_settings.tipAdjustmentX) : 0;
+
           if (this.bottom()) {
             if (this.rtl) {
               this.settings.$next_tip.css({
@@ -2852,7 +3168,8 @@
       if (!this.settings.$next_tip.data('closed')) {
         var joyridemodalbg =  $('.joyride-modal-bg');
         if (joyridemodalbg.length < 1) {
-          $('body').append(this.settings.template.modal).show();
+          var joyridemodalbg = $(this.settings.template.modal);
+          joyridemodalbg.appendTo('body');
         }
 
         if (/pop/i.test(this.settings.tip_animation)) {
@@ -3120,7 +3437,11 @@
         this.un_expose();
       }
 
+      // Unplug keystrokes listener
+      $(this.scope).off('keyup.joyride')
+
       this.settings.$next_tip.data('closed', true);
+      this.settings.riding = false;
 
       $('.joyride-modal-bg').hide();
       this.settings.$current_tip.hide();
@@ -3152,15 +3473,18 @@
   Foundation.libs['magellan-expedition'] = {
     name : 'magellan-expedition',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings : {
       active_class: 'active',
       threshold: 0, // pixels from the top of the expedition for it to become fixes
       destination_threshold: 20, // pixels from the top of destination for it to be considered active
       throttle_delay: 30, // calculation throttling to increase framerate
-      fixed_top: 0 // top distance in pixels assigend to the fixed element on scroll
-    }, 
+      fixed_top: 0, // top distance in pixels assigend to the fixed element on scroll
+      offset_by_height: true,  // whether to offset the destination by the expedition height. Usually you want this to be true, unless your expedition is on the side.
+      duration: 700, // animation duration time 
+      easing: 'swing' // animation easing
+    },
 
     init : function (scope, method, options) {
       Foundation.inherit(this, 'throttle');
@@ -3182,19 +3506,23 @@
           var expedition = $(this).closest('[' + self.attr_name() + ']'),
               settings = expedition.data('magellan-expedition-init'),
               hash = this.hash.split('#').join(''),
-              target = $("a[name='"+hash+"']");
-          
+              target = $('a[name="'+hash+'"]');
+
           if (target.length === 0) {
             target = $('#'+hash);
+
           }
 
+
           // Account for expedition height if fixed position
-          var scroll_top = target.offset().top - settings.destination_threshold;
-          scroll_top = scroll_top - expedition.outerHeight();
+          var scroll_top = target.offset().top - settings.destination_threshold + 1;
+          if (settings.offset_by_height) {
+            scroll_top = scroll_top - expedition.outerHeight();
+          }
 
           $('html, body').stop().animate({
             'scrollTop': scroll_top
-          }, 700, 'swing', function () {
+          }, settings.duration, settings.easing, function () {
             if(history.pushState) {
               history.pushState(null, null, '#'+hash);
             }
@@ -3204,7 +3532,7 @@
           });
         })
         .on('scroll.fndtn.magellan', self.throttle(this.check_for_arrivals.bind(this), settings.throttle_delay));
-      
+
       $(window)
         .on('resize.fndtn.magellan', self.throttle(this.set_expedition_position.bind(this), settings.throttle_delay));
     },
@@ -3221,10 +3549,15 @@
         var expedition = $(this),
             settings = expedition.data('magellan-expedition-init'),
             styles = expedition.attr('styles'), // save styles
-            top_offset;
+            top_offset, fixed_top;
 
         expedition.attr('style', '');
         top_offset = expedition.offset().top + settings.threshold;
+
+        //set fixed-top by attribute
+        fixed_top = parseInt(expedition.data('magellan-fixed-top'));
+        if(!isNaN(fixed_top))
+            self.settings.fixed_top = fixed_top;
 
         expedition.data(self.data_attr('magellan-top-offset'), top_offset);
         expedition.attr('style', styles);
@@ -3238,9 +3571,11 @@
       $('[' + this.attr_name() + '=fixed]', self.scope).each(function() {
         var expedition = $(this),
             settings = expedition.data('magellan-expedition-init'),
+            styles = expedition.attr('style'), // save styles
             top_offset = expedition.data('magellan-top-offset');
 
-        if (window_top_offset >= top_offset) {
+        //scroll to the top distance
+        if (window_top_offset+self.settings.fixed_top >= top_offset) {
           // Placeholder allows height calculations to be consistent even when
           // appearing to switch between fixed/non-fixed placement
           var placeholder = expedition.prev('[' + self.add_namespace('data-magellan-expedition-clone') + ']');
@@ -3250,10 +3585,10 @@
             placeholder.attr(self.add_namespace('data-magellan-expedition-clone'),'');
             expedition.before(placeholder);
           }
-          expedition.css({position:'fixed', top: settings.fixed_top});
+          expedition.css({position:'fixed', top: settings.fixed_top}).addClass('fixed');
         } else {
           expedition.prev('[' + self.add_namespace('data-magellan-expedition-clone') + ']').remove();
-          expedition.attr('style','').removeClass('fixed');
+          expedition.attr('style',styles).css('position','').css('top','').removeClass('fixed');
         }
       });
     },
@@ -3291,7 +3626,11 @@
         var name = $(this).data(self.data_attr('magellan-arrival')),
             dest = $('[' + self.add_namespace('data-magellan-destination') + '=' + name + ']');
         if (dest.length > 0) {
-          var top_offset = dest.offset().top - settings.destination_threshold - expedition.outerHeight();
+          var top_offset = dest.offset().top - settings.destination_threshold;
+          if (settings.offset_by_height) {
+            top_offset = top_offset - expedition.outerHeight();
+          }
+          top_offset = Math.floor(top_offset);
           return {
             destination : dest,
             arrival : $(this),
@@ -3333,11 +3672,11 @@
   Foundation.libs.offcanvas = {
     name : 'offcanvas',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings : {
       open_method: 'move',
-      close_on_click: true
+      close_on_click: false
     },
 
     init : function (scope, method, options) {
@@ -3355,6 +3694,10 @@
         move_class = 'move-';
         right_postfix = 'right';
         left_postfix = 'left';
+      } else if (this.settings.open_method === 'overlap_single') {
+        move_class = 'offcanvas-overlap-';
+        right_postfix = 'right';
+        left_postfix = 'left';
       } else if (this.settings.open_method === 'overlap') {
         move_class = 'offcanvas-overlap';
       }
@@ -3362,27 +3705,67 @@
       S(this.scope).off('.offcanvas')
         .on('click.fndtn.offcanvas', '.left-off-canvas-toggle', function (e) {
           self.click_toggle_class(e, move_class + right_postfix);
+          if (self.settings.open_method !== 'overlap'){
+            S('.left-submenu').removeClass(move_class + right_postfix);
+          }
+          $('.left-off-canvas-toggle').attr('aria-expanded', 'true');
         })
         .on('click.fndtn.offcanvas', '.left-off-canvas-menu a', function (e) {
           var settings = self.get_settings(e);
-          if (settings.close_on_click) {
+          var parent = S(this).parent();
+
+          if(settings.close_on_click && !parent.hasClass('has-submenu') && !parent.hasClass('back')){
             self.hide.call(self, move_class + right_postfix, self.get_wrapper(e));
+            parent.parent().removeClass(move_class + right_postfix);
+          }else if(S(this).parent().hasClass('has-submenu')){
+            e.preventDefault();
+            S(this).siblings('.left-submenu').toggleClass(move_class + right_postfix);
+          }else if(parent.hasClass('back')){
+            e.preventDefault();
+            parent.parent().removeClass(move_class + right_postfix);
           }
+          $('.left-off-canvas-toggle').attr('aria-expanded', 'true');
         })
         .on('click.fndtn.offcanvas', '.right-off-canvas-toggle', function (e) {
           self.click_toggle_class(e, move_class + left_postfix);
+          if (self.settings.open_method !== 'overlap'){
+            S('.right-submenu').removeClass(move_class + left_postfix);
+          }
+          $('.right-off-canvas-toggle').attr('aria-expanded', 'true');
         })
         .on('click.fndtn.offcanvas', '.right-off-canvas-menu a', function (e) {
           var settings = self.get_settings(e);
-          if (settings.close_on_click) {
+          var parent = S(this).parent();
+
+          if(settings.close_on_click && !parent.hasClass('has-submenu') && !parent.hasClass('back')){
             self.hide.call(self, move_class + left_postfix, self.get_wrapper(e));
+            parent.parent().removeClass(move_class + left_postfix);
+          }else if(S(this).parent().hasClass('has-submenu')){
+            e.preventDefault();
+            S(this).siblings('.right-submenu').toggleClass(move_class + left_postfix);
+          }else if(parent.hasClass('back')){
+            e.preventDefault();
+            parent.parent().removeClass(move_class + left_postfix);
           }
+          $('.right-off-canvas-toggle').attr('aria-expanded', 'true');
         })
         .on('click.fndtn.offcanvas', '.exit-off-canvas', function (e) {
           self.click_remove_class(e, move_class + left_postfix);
-          if (right_postfix) self.click_remove_class(e, move_class + right_postfix);
+          S('.right-submenu').removeClass(move_class + left_postfix);
+          if (right_postfix){
+            self.click_remove_class(e, move_class + right_postfix);
+            S('.left-submenu').removeClass(move_class + left_postfix);
+          }
+          $('.right-off-canvas-toggle').attr('aria-expanded', 'true');
+        })
+        .on('click.fndtn.offcanvas', '.exit-off-canvas', function (e) {
+          self.click_remove_class(e, move_class + left_postfix);
+          $('.left-off-canvas-toggle').attr('aria-expanded', 'false');
+          if (right_postfix) {
+            self.click_remove_class(e, move_class + right_postfix);
+            $('.right-off-canvas-toggle').attr('aria-expanded', 'false');
+          }
         });
-
     },
 
     toggle: function(class_name, $off_canvas) {
@@ -3478,7 +3861,7 @@
     };
 
     self.update_active_link = function(index) {
-      var link = $('a[data-orbit-link="'+self.slides().eq(index).attr('data-orbit-slide')+'"]');
+      var link = $('[data-orbit-link="'+self.slides().eq(index).attr('data-orbit-slide')+'"]');
       link.siblings().removeClass(settings.bullets_active_class);
       link.addClass(settings.bullets_active_class);
     };
@@ -3487,7 +3870,7 @@
       slides_container.wrap('<div class="'+settings.container_class+'"></div>');
       container = slides_container.parent();
       slides_container.addClass(settings.slides_container_class);
-      
+
       if (settings.stack_on_small) {
         container.addClass(settings.stack_on_small_class);
       }
@@ -3539,7 +3922,7 @@
         if (!settings.circular) return false;
         next_idx = slides.length - 1;
       }
-      
+
       var current = $(slides.get(idx));
       var next = $(slides.get(next_idx));
 
@@ -3550,7 +3933,7 @@
       slides_container.trigger('before-slide-change.fndtn.orbit');
       settings.before_slide_change();
       self.update_active_link(next_idx);
-      
+
       var callback = function() {
         var unlock = function() {
           idx = next_idx;
@@ -3571,7 +3954,7 @@
 
       var start_animation = function() {
         if (dir === 'next') {animate.next(current, next, callback);}
-        if (dir === 'prev') {animate.prev(current, next, callback);}        
+        if (dir === 'prev') {animate.prev(current, next, callback);}
       };
 
       if (next.height() > slides_container.height() && settings.variable_height) {
@@ -3580,13 +3963,13 @@
         start_animation();
       }
     };
-    
+
     self.next = function(e) {
       e.stopImmediatePropagation();
       e.preventDefault();
       self._goto(idx + 1);
     };
-    
+
     self.prev = function(e) {
       e.stopImmediatePropagation();
       e.preventDefault();
@@ -3596,15 +3979,15 @@
     self.link_custom = function(e) {
       e.preventDefault();
       var link = $(this).attr('data-orbit-link');
-      if ((typeof link === 'string') && (link = $.trim(link)) != "") {
+      if ((typeof link === 'string') && (link = $.trim(link)) != '') {
         var slide = container.find('[data-orbit-slide='+link+']');
         if (slide.index() != -1) {self._goto(slide.index());}
       }
     };
 
-    self.link_bullet = function(e) {    
+    self.link_bullet = function(e) {
       var index = $(this).attr('data-orbit-slide');
-      if ((typeof index === 'string') && (index = $.trim(index)) != "") {
+      if ((typeof index === 'string') && (index = $.trim(index)) != '') {
         if(isNaN(parseInt(index)))
         {
           var slide = container.find('[data-orbit-slide='+index+']');
@@ -3621,7 +4004,7 @@
     self.timer_callback = function() {
       self._goto(idx + 1, true);
     }
-    
+
     self.compute_dimensions = function() {
       var current = $(self.slides().get(idx));
       var h = current.height();
@@ -3635,8 +4018,8 @@
 
     self.create_timer = function() {
       var t = new Timer(
-        container.find('.'+settings.timer_container_class), 
-        settings, 
+        container.find('.'+settings.timer_container_class),
+        settings,
         self.timer_callback
       );
       return t;
@@ -3650,7 +4033,7 @@
       var t = container.find('.'+settings.timer_container_class);
       if (t.hasClass(settings.timer_paused_class)) {
         if (typeof timer === 'undefined') {timer = self.create_timer();}
-        timer.start();     
+        timer.start();
       }
       else {
         if (typeof timer === 'object') {timer.stop();}
@@ -3660,12 +4043,12 @@
     self.init = function() {
       self.build_markup();
       if (settings.timer) {
-        timer = self.create_timer(); 
+        timer = self.create_timer();
         Foundation.utils.image_loaded(this.slides().children('img'), timer.start);
       }
       animate = new FadeAnimation(settings, slides_container);
-      if (settings.animation === 'slide') 
-        animate = new SlideAnimation(settings, slides_container);        
+      if (settings.animation === 'slide')
+        animate = new SlideAnimation(settings, slides_container);
 
       container.on('click', '.'+settings.next_class, self.next);
       container.on('click', '.'+settings.prev_class, self.prev);
@@ -3724,7 +4107,7 @@
           timer.start();
         }
       });
-      
+
       $(document).on('click', '[data-orbit-link]', self.link_custom);
       $(window).on('load resize', self.compute_dimensions);
       Foundation.utils.image_loaded(this.slides().children('img'), self.compute_dimensions);
@@ -3743,7 +4126,7 @@
     var self = this,
         duration = settings.timer_speed,
         progress = el.find('.'+settings.timer_progress_class),
-        start, 
+        start,
         timeout,
         left = -1;
 
@@ -3786,7 +4169,7 @@
       el.trigger('timer-stopped.fndtn.orbit');
     };
   };
-  
+
   var SlideAnimation = function(settings, container) {
     var duration = settings.animation_speed;
     var is_rtl = ($('html[dir=rtl]').length === 1);
@@ -3840,7 +4223,7 @@
   Foundation.libs.orbit = {
     name: 'orbit',
 
-    version: '5.3.0',
+    version: '5.5.0',
 
     settings: {
       animation: 'slide',
@@ -3885,7 +4268,7 @@
 
     events : function (instance) {
       var orbit_instance = new Orbit(this.S(instance), this.S(instance).data('orbit-init'));
-      this.S(instance).data(self.name + '-instance', orbit_instance);
+      this.S(instance).data(this.name + '-instance', orbit_instance);
     },
 
     reflow : function () {
@@ -3906,15 +4289,16 @@
     }
   };
 
-    
+
 }(jQuery, window, window.document));
+
 ;(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.reveal = {
     name : 'reveal',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     locked : false,
 
@@ -3925,6 +4309,7 @@
       close_on_esc: true,
       dismiss_modal_class: 'close-reveal-modal',
       bg_class: 'reveal-modal-bg',
+      bg_root_element: 'body',
       root_element: 'body',
       open: function(){},
       opened: function(){},
@@ -3958,7 +4343,7 @@
         .off('.reveal')
         .on('click.fndtn.reveal', '[' + this.add_namespace('data-reveal-id') + ']:not([disabled])', function (e) {
           e.preventDefault();
-
+        
           if (!self.locked) {
             var element = S(this),
                 ajax = element.data(self.data_attr('reveal-ajax'));
@@ -3976,12 +4361,12 @@
         });
 
       S(document)
-        .on('touchend.fndtn.reveal click.fndtn.reveal', this.close_targets(), function (e) {
+        .on('click.fndtn.reveal', this.close_targets(), function (e) {
 
           e.preventDefault();
 
           if (!self.locked) {
-            var settings = S('[' + self.attr_name() + '].open').data(self.attr_name(true) + '-init'),
+            var settings = S('[' + self.attr_name() + '].open').data(self.attr_name(true) + '-init') || self.settings,
                 bg_clicked = S(e.target)[0] === S('.' + settings.bg_class)[0];
 
             if (bg_clicked) {
@@ -4027,7 +4412,7 @@
       // PATCH #1: fixing multiple keyup event trigger from single key press
       self.S('body').off('keyup.fndtn.reveal').on('keyup.fndtn.reveal', function ( event ) {
         var open_modal = self.S('[' + self.attr_name() + '].open'),
-            settings = open_modal.data(self.attr_name(true) + '-init');
+            settings = open_modal.data(self.attr_name(true) + '-init') || self.settings ;
         // PATCH #2: making sure that the close event can be called only while unlocked,
         //           so that multiple keyup.fndtn.reveal events don't prevent clean closing of the reveal window.
         if ( settings && event.which === 27  && settings.close_on_esc && !self.locked) { // 27 is the keycode for the Escape key
@@ -4043,6 +4428,7 @@
       this.S('body').off('keyup.fndtn.reveal');
       return true;
     },
+
 
     open : function (target, ajax_settings) {
       var self = this,
@@ -4063,6 +4449,11 @@
 
       var settings = modal.data(self.attr_name(true) + '-init');
       settings = settings || this.settings;
+
+
+      if (modal.hasClass('open') && target.attr('data-reveal-id') == modal.attr('id')) {
+        return self.close(modal);
+      }
 
       if (!modal.hasClass('open')) {
         var open_modal = self.S('[' + self.attr_name() + '].open');
@@ -4097,7 +4488,8 @@
           $.extend(ajax_settings, {
             success: function (data, textStatus, jqXHR) {
               if ( $.isFunction(old_success) ) {
-                old_success(data, textStatus, jqXHR);
+                var result = old_success(data, textStatus, jqXHR);
+                if (typeof result == 'string') data = result;
               }
 
               modal.html(data);
@@ -4114,6 +4506,7 @@
           $.ajax(ajax_settings);
         }
       }
+      self.S(window).trigger('resize');
     },
 
     close : function (modal) {
@@ -4140,10 +4533,13 @@
       return base;
     },
 
-    toggle_bg : function (modal, state) {
+    toggle_bg : function (el, modal, state) {
+      var settings = el.data(this.attr_name(true) + '-init') || this.settings,
+            bg_root_element = settings.bg_root_element; // Adding option to specify the background root element fixes scrolling issue
+      
       if (this.S('.' + this.settings.bg_class).length === 0) {
         this.settings.bg = $('<div />', {'class': this.settings.bg_class})
-          .appendTo('body').hide();
+          .appendTo(bg_root_element).hide();
       }
 
       var visible = this.settings.bg.filter(':visible').length > 0;
@@ -4178,9 +4574,9 @@
           this.locked = false;
         }
         if (animData.pop) {
-          css.top = $(window).scrollTop() - el.data('offset') + 'px';
+          css.top = $(root_element).scrollTop() - el.data('offset') + 'px'; //adding root_element instead of window for scrolling offset if modal trigger is below the fold
           var end_css = {
-            top: $(window).scrollTop() + el.data('css-top') + 'px',
+            top: $(root_element).scrollTop() + el.data('css-top') + 'px', //adding root_element instead of window for scrolling offset if modal trigger is below the fold
             opacity: 1
           };
 
@@ -4196,7 +4592,7 @@
         }
 
         if (animData.fade) {
-          css.top = $(window).scrollTop() + el.data('css-top') + 'px';
+          css.top = $(root_element).scrollTop() + el.data('css-top') + 'px'; //adding root_element instead of window for scrolling offset if modal trigger is below the fold
           var end_css = {opacity: 1};
 
           return setTimeout(function () {
@@ -4228,8 +4624,8 @@
     hide : function (el, css) {
       // is modal
       if (css) {
-        var settings = el.data(this.attr_name(true) + '-init');
-        settings = settings || this.settings;
+        var settings = el.data(this.attr_name(true) + '-init') || this.settings,
+            root_element = settings.root_element;
 
         var animData = getAnimationData(settings.animation);
         if (!animData.animate) {
@@ -4237,7 +4633,7 @@
         }
         if (animData.pop) {
           var end_css = {
-            top: - $(window).scrollTop() - el.data('offset') + 'px',
+            top: - $(root_element).scrollTop() - el.data('offset') + 'px', //adding root_element instead of window for scrolling offset if modal trigger is below the fold
             opacity: 0
           };
 
@@ -4283,7 +4679,7 @@
 
       if (iframe.length > 0) {
         iframe.attr('data-src', iframe[0].src);
-        iframe.attr('src', 'about:blank');
+        iframe.attr('src', iframe.attr('src'));
         video.hide();
       }
     },
@@ -4352,15 +4748,17 @@
   Foundation.libs.slider = {
     name : 'slider',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings: {
       start: 0,
       end: 100,
       step: 1,
+      precision: null,
       initial: null,
       display_selector: '',
       vertical: false,
+      trigger_input_change: false,
       on_change: function(){}
     },
 
@@ -4388,15 +4786,13 @@
           if (!!self.cache.active) {
             e.preventDefault();
             if ($.data(self.cache.active[0], 'settings').vertical) {
-              self.calculate_position(self.cache.active, e.pageY || 
-                                                         e.originalEvent.clientY || 
-                                                         e.originalEvent.touches[0].clientY || 
-                                                         e.currentPoint.y);
+              var scroll_offset = 0;
+              if (!e.pageY) {
+                scroll_offset = window.scrollY;
+              }
+              self.calculate_position(self.cache.active, self.get_cursor_position(e, 'y') + scroll_offset);
             } else {
-              self.calculate_position(self.cache.active, e.pageX || 
-                                                         e.originalEvent.clientX || 
-                                                         e.originalEvent.touches[0].clientX || 
-                                                         e.currentPoint.x);
+              self.calculate_position(self.cache.active, self.get_cursor_position(e, 'x'));
             }
           }
         })
@@ -4411,6 +4807,26 @@
         .on('resize.fndtn.slider', self.throttle(function(e) {
           self.reflow();
         }, 300));
+    },
+
+    get_cursor_position : function(e, xy) {
+      var pageXY = 'page' + xy.toUpperCase(),
+          clientXY = 'client' + xy.toUpperCase(),
+          position;
+
+      if (typeof e[pageXY] !== 'undefined') {
+        position = e[pageXY];
+      }
+      else if (typeof e.originalEvent[clientXY] !== 'undefined') {
+        position = e.originalEvent[clientXY];
+      }
+      else if (e.originalEvent.touches && e.originalEvent.touches[0] && typeof e.originalEvent.touches[0][clientXY] !== 'undefined') {
+        position = e.originalEvent.touches[0][clientXY];
+      }
+      else if(e.currentPoint && typeof e.currentPoint[xy] !== 'undefined') {
+        position = e.currentPoint[xy];
+      }
+      return position;
     },
 
     set_active_slider : function($handle) {
@@ -4440,7 +4856,7 @@
 
         pct = settings.vertical ? 1-pct : pct;
 
-        var norm = self.normalized_value(pct, settings.start, settings.end, settings.step);
+        var norm = self.normalized_value(pct, settings.start, settings.end, settings.step, settings.precision);
 
         self.set_ui($handle, norm);
       });
@@ -4452,7 +4868,9 @@
           bar_l = $.data($handle[0], 'bar_l'),
           norm_pct = this.normalized_percentage(value, settings.start, settings.end),
           handle_offset = norm_pct*(bar_l-handle_l)-1,
-          progress_bar_length = norm_pct*100;
+          progress_bar_length = norm_pct*100,
+          $handle_parent = $handle.parent(),
+          $hidden_inputs = $handle.parent().children('input[type=hidden]');
 
       if (Foundation.rtl && !settings.vertical) {
         handle_offset = -handle_offset;
@@ -4467,11 +4885,22 @@
         $handle.siblings('.range-slider-active-segment').css('width', progress_bar_length + '%');
       }
 
-      $handle.parent().attr(this.attr_name(), value).trigger('change').trigger('change.fndtn.slider');
+      $handle_parent.attr(this.attr_name(), value).trigger('change').trigger('change.fndtn.slider');
 
-      $handle.parent().children('input[type=hidden]').val(value);
+      $hidden_inputs.val(value);
+      if (settings.trigger_input_change) {
+          $hidden_inputs.trigger('change');
+      }
 
-      if (settings.input_id != '') {
+      if (!$handle[0].hasAttribute('aria-valuemin')) {
+        $handle.attr({
+          'aria-valuemin': settings.start,
+          'aria-valuemax': settings.end
+        });
+      }
+      $handle.attr('aria-valuenow', value);
+
+      if (settings.display_selector != '') {
         $(settings.display_selector).each(function(){
           if (this.hasOwnProperty('value')) {
             $(this).val(value);
@@ -4484,16 +4913,16 @@
     },
 
     normalized_percentage : function(val, start, end) {
-      return (val - start)/(end - start);
+      return Math.min(1, (val - start)/(end - start));
     },
 
-    normalized_value : function(val, start, end, step) {
+    normalized_value : function(val, start, end, step, precision) {
       var range = end - start,
           point = val*range,
           mod = (point-(point%step)) / step,
           rem = point % step,
           round = ( rem >= step*0.5 ? step : 0);
-      return (mod*step + round) + start;
+      return ((mod*step + round) + start).toFixed(precision);
     },
 
     set_translate : function(ele, offset, vertical) {
@@ -4518,8 +4947,16 @@
       return Math.min(Math.max(val, min), max);
     },
 
+
+
     initialize_settings : function(handle) {
-      var settings = $.extend({}, this.settings, this.data_options($(handle).parent()));
+      var settings = $.extend({}, this.settings, this.data_options($(handle).parent())),
+          decimal_places_match_result;
+
+      if (settings.precision === null) {
+        decimal_places_match_result = ('' + settings.step).match(/\.([\d]*)/);
+        settings.precision = decimal_places_match_result && decimal_places_match_result[1] ? decimal_places_match_result[1].length : 0;
+      }
 
       if (settings.vertical) {
         $.data(handle, 'bar_o', $(handle).parent().offset().top);
@@ -4539,7 +4976,7 @@
 
     set_initial_position : function($ele) {
       var settings = $.data($ele.children('.range-slider-handle')[0], 'settings'),
-          initial = (!!settings.initial ? settings.initial : Math.floor((settings.end-settings.start)*0.5/settings.step)*settings.step+settings.start),
+          initial = ((typeof settings.initial == 'number' && !isNaN(settings.initial)) ? settings.initial : Math.floor((settings.end-settings.start)*0.5/settings.step)*settings.step+settings.start),
           $handle = $ele.children('.range-slider-handle');
       this.set_ui($handle, initial);
     },
@@ -4579,7 +5016,7 @@
   Foundation.libs.tab = {
     name : 'tab',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings : {
       active_class: 'active',
@@ -4610,17 +5047,20 @@
       var self = this,
           S = this.S;
 
-      S(this.scope)
-        .off('.tab')
-        // Click event: tab title
-        .on('click.fndtn.tab', '[' + this.attr_name() + '] > * > a', function (e) {
+      var usual_tab_behavior =  function (e) {
           var settings = S(this).closest('[' + self.attr_name() +']').data(self.attr_name(true) + '-init');
           if (!settings.is_hover || Modernizr.touch) {
             e.preventDefault();
             e.stopPropagation();
             self.toggle_active_tab(S(this).parent());
           }
-        })
+        };
+
+      S(this.scope)
+        .off('.tab')
+        // Click event: tab title
+        .on('focus.fndtn.tab', '[' + this.attr_name() + '] > * > a', usual_tab_behavior )
+        .on('click.fndtn.tab', '[' + this.attr_name() + '] > * > a', usual_tab_behavior )
         // Hover event: tab title
         .on('mouseenter.fndtn.tab', '[' + this.attr_name() + '] > * > a', function (e) {
           var settings = S(this).closest('[' + self.attr_name() +']').data(self.attr_name(true) + '-init');
@@ -4635,6 +5075,7 @@
     },
 
     handle_location_hash_change : function () {
+
       var self = this,
           S = this.S;
 
@@ -4642,12 +5083,18 @@
         var settings = S(this).data(self.attr_name(true) + '-init');
         if (settings.deep_linking) {
           // Match the location hash to a label
-          var hash = self.scope.location.hash;
+          var hash;
+          if (settings.scroll_to_content) {
+            hash = self.scope.location.hash;
+          } else {
+            // prefix the hash to prevent anchor scrolling
+            hash = self.scope.location.hash.replace('fndtn-', '');
+          }
           if (hash != '') {
             // Check whether the location hash references a tab content div or
             // another element on the page (inside or outside the tab content div)
             var hash_element = S(hash);
-            if (hash_element.hasClass('content') && hash_element.parent().hasClass('tab-content')) {
+            if (hash_element.hasClass('content') && hash_element.parent().hasClass('tabs-content')) {
               // Tab content div
               self.toggle_active_tab($('[' + self.attr_name() + '] > * > a[href=' + hash + ']').parent());
             } else {
@@ -4660,7 +5107,7 @@
             }
           } else {
             // Reference the default tab hashes which were initialized in the init function
-            for (var ind in self.default_tab_hashes) {
+            for (var ind = 0; ind < self.default_tab_hashes.length; ind++) {
               self.toggle_active_tab($('[' + self.attr_name() + '] > * > a[href=' + self.default_tab_hashes[ind] + ']').parent());
             }
           }
@@ -4671,11 +5118,58 @@
     toggle_active_tab: function (tab, location_hash) {
       var S = this.S,
           tabs = tab.closest('[' + this.attr_name() + ']'),
+          tab_link = tab.find('a'),
           anchor = tab.children('a').first(),
           target_hash = '#' + anchor.attr('href').split('#')[1],
           target = S(target_hash),
           siblings = tab.siblings(),
-          settings = tabs.data(this.attr_name(true) + '-init');
+          settings = tabs.data(this.attr_name(true) + '-init'),
+          interpret_keyup_action = function(e) {
+            // Light modification of Heydon Pickering's Practical ARIA Examples: http://heydonworks.com/practical_aria_examples/js/a11y.js
+
+            // define current, previous and next (possible) tabs
+
+            var $original = $(this);
+            var $prev = $(this).parents('li').prev().children('[role="tab"]');
+            var $next = $(this).parents('li').next().children('[role="tab"]');
+            var $target;
+
+            // find the direction (prev or next)
+
+            switch (e.keyCode) {
+              case 37:
+                $target = $prev;
+                break;
+              case 39:
+                $target = $next;
+                break;
+              default:
+                $target = false
+                  break;
+            }
+
+            if ($target.length) {
+              $original.attr({
+                'tabindex' : '-1',
+                'aria-selected' : null
+              });
+              $target.attr({
+                'tabindex' : '0',
+                'aria-selected' : true
+              }).focus();
+            }
+
+            // Hide panels
+
+            $('[role="tabpanel"]')
+              .attr('aria-hidden', 'true');
+
+            // Show panel which corresponds to target
+
+            $('#' + $(document.activeElement).attr('href').substring(1))
+              .attr('aria-hidden', null);
+
+          };
 
       // allow usage of data-tab-content attribute instead of href
       if (S(this).data(this.data_attr('tab-content'))) {
@@ -4684,34 +5178,21 @@
       }
 
       if (settings.deep_linking) {
-        // Get the scroll Y position prior to moving to the hash ID
-        var cur_ypos = $('body,html').scrollTop();
-
-        // Update the location hash to preserve browser history
-        // Note that the hash does not need to correspond to the
-        // tab content ID anchor; it can be an ID inside or outside of the tab
-        // content div.
-        if (location_hash != undefined) {
-          window.location.hash = location_hash;
-        } else {
-          window.location.hash = target_hash;
-        }
 
         if (settings.scroll_to_content) {
-          // If the user is requesting the content of a tab, then scroll to the
-          // top of the title area; otherwise, scroll to the element within
-          // the content area as defined by the hash value.
+          // retain current hash to scroll to content
+          window.location.hash = location_hash || target_hash;
           if (location_hash == undefined || location_hash == target_hash) {
             tab.parent()[0].scrollIntoView();
           } else {
             S(target_hash)[0].scrollIntoView();
           }
         } else {
-          // Adjust the scrollbar to the Y position prior to setting the hash
-          // Only do this for the tab content anchor, otherwise there will be
-          // conflicts with in-tab anchor links nested in the tab-content div
-          if (location_hash == undefined || location_hash == target_hash) {
-            $('body,html').scrollTop(cur_ypos);
+          // prefix the hashes so that the browser doesn't scroll down
+          if (location_hash != undefined) {
+            window.location.hash = 'fndtn-' + location_hash.replace('#', '');
+          } else {
+            window.location.hash = 'fndtn-' + target_hash.replace('#', '');
           }
         }
       }
@@ -4719,12 +5200,18 @@
       // WARNING: The activation and deactivation of the tab content must
       // occur after the deep linking in order to properly refresh the browser
       // window (notably in Chrome).
+      // Clean up multiple attr instances to done once
       tab.addClass(settings.active_class).triggerHandler('opened');
-      siblings.removeClass(settings.active_class);
-      target.siblings().removeClass(settings.active_class).end().addClass(settings.active_class);
+      tab_link.attr({'aria-selected': 'true',  tabindex: 0});
+      siblings.removeClass(settings.active_class)
+      siblings.find('a').attr({'aria-selected': 'false',  tabindex: -1});
+      target.siblings().removeClass(settings.active_class).attr({'aria-hidden': 'true',  tabindex: -1});
+      target.addClass(settings.active_class).attr('aria-hidden', 'false').removeAttr('tabindex');
       settings.callback(tab);
       target.triggerHandler('toggled', [tab]);
       tabs.triggerHandler('toggled', [target]);
+
+      tab_link.off('keydown').on('keydown', interpret_keyup_action );
     },
 
     data_attr: function (str) {
@@ -4747,7 +5234,7 @@
   Foundation.libs.tooltip = {
     name : 'tooltip',
 
-    version : '5.3.0',
+    version : '5.5.0',
 
     settings : {
       additional_inheritable_classes : [],
@@ -4758,9 +5245,9 @@
       hover_delay: 200,
       show_on : 'all',
       tip_template : function (selector, content) {
-        return '<span data-selector="' + selector + '" class="'
+        return '<span data-selector="' + selector + '" id="' + selector + '" class="'
           + Foundation.libs.tooltip.settings.tooltip_class.substring(1)
-          + '">' + content + '<span class="nub"></span></span>';
+          + '" role="tooltip">' + content + '<span class="nub"></span></span>';
       }
     },
 
@@ -4886,7 +5373,9 @@
 
       if ((id && id.length < 1 || !id) && typeof dataSelector != 'string') {
         dataSelector = this.random_str(6);
-        $target.attr('data-selector', dataSelector);
+        $target
+          .attr('data-selector', dataSelector)
+          .attr('aria-describedby', dataSelector);
       }
 
       return (id && id.length > 0) ? id : dataSelector;
@@ -5023,7 +5512,7 @@
 
       $tip.fadeOut(150, function() {
         $tip.find('.tap-to-close').remove();
-        $tip.off('click.fndtn.tooltip.tapclose touchstart.fndtn.tooltip.tapclose MSPointerDown.fndtn.tapclose');
+        $tip.off('click.fndtn.tooltip.tapclose MSPointerDown.fndtn.tapclose');
         $target.removeClass('open');
       });
     },
@@ -5046,18 +5535,19 @@
   Foundation.libs.topbar = {
     name : 'topbar',
 
-    version: '5.3.0',
+    version: '5.5.0',
 
     settings : {
       index : 0,
       sticky_class : 'sticky',
       custom_back_text: true,
       back_text: 'Back',
+      mobile_show_parent_link: true,
       is_hover: true,
       scrolltop : true, // jump to top when sticky nav menu toggle is clicked
       sticky_on : 'all'
     },
-    
+
     init : function (section, method, options) {
       Foundation.inherit(this, 'add_custom_rule register_media throttle');
       var self = this;
@@ -5069,7 +5559,7 @@
       self.S('[' + this.attr_name() + ']', this.scope).each(function () {
         var topbar = $(this),
             settings = topbar.data(self.attr_name(true) + '-init'),
-            section = self.S('section', this);
+            section = self.S('section, .top-bar-section', this);
         topbar.data('index', 0);
         var topbarContainer = topbar.parent();
         if (topbarContainer.hasClass('fixed') || self.is_sticky(topbar, topbarContainer, settings) ) {
@@ -5108,7 +5598,7 @@
         return true;
       } else if (sticky && this.small() && settings.sticky_on === 'small') {
         return (matchMedia(Foundation.media_queries.small).matches && !matchMedia(Foundation.media_queries.medium).matches &&
-            !matchMedia(Foundation.media_queries.large).matches); 
+            !matchMedia(Foundation.media_queries.large).matches);
         //return true;
       } else if (sticky && this.medium() && settings.sticky_on === 'medium') {
         return (matchMedia(Foundation.media_queries.small).matches && matchMedia(Foundation.media_queries.medium).matches &&
@@ -5135,7 +5625,7 @@
 
       var settings = topbar.data(this.attr_name(true) + '-init');
 
-      var section = self.S('section, .section', topbar);
+      var section = self.S('section, .top-bar-section', topbar);
 
       if (self.breakpoint()) {
         if (!self.rtl) {
@@ -5251,7 +5741,7 @@
 
             var $this = S(this),
                 topbar = $this.closest('[' + self.attr_name() + ']'),
-                section = topbar.find('section, .section'),
+                section = topbar.find('section, .top-bar-section'),
                 dropdownHeight = $this.next('.dropdown').outerHeight(),
                 $selectedLi = $this.closest('li');
 
@@ -5269,12 +5759,15 @@
             topbar.css('height', $this.siblings('ul').outerHeight(true) + topbar.data('height'));
           }
         });
-      
-      S(window).off('.topbar').on('resize.fndtn.topbar', self.throttle(function () {
-        self.resize.call(self);
-      }, 50)).trigger('resize').trigger('resize.fndtn.topbar');
 
-      S('body').off('.topbar').on('click.fndtn.topbar touchstart.fndtn.topbar', function (e) {
+      S(window).off('.topbar').on('resize.fndtn.topbar', self.throttle(function() {
+          self.resize.call(self);
+      }, 50)).trigger('resize').trigger('resize.fndtn.topbar').load(function(){
+          // Ensure that the offset is calculated after all of the pages resources have loaded
+          S(this).trigger('resize.fndtn.topbar');
+      });
+
+      S('body').off('.topbar').on('click.fndtn.topbar', function (e) {
         var parent = S(e.target).closest('li').closest('li.hover');
 
         if (parent.length > 0) {
@@ -5290,7 +5783,7 @@
 
         var $this = S(this),
             topbar = $this.closest('[' + self.attr_name() + ']'),
-            section = topbar.find('section, .section'),
+            section = topbar.find('section, .top-bar-section'),
             settings = topbar.data(self.attr_name(true) + '-init'),
             $movedLi = $this.closest('li.moved'),
             $previousLevelUl = $movedLi.parent();
@@ -5315,6 +5808,15 @@
           $movedLi.removeClass('moved');
         }, 300);
       });
+
+      // Show dropdown menus when their items are focused
+      S(this.scope).find('.dropdown a')
+        .focus(function() {
+          $(this).parents('.has-dropdown').addClass('hover');
+        })
+        .blur(function() {
+          $(this).parents('.has-dropdown').removeClass('hover');
+        });
     },
 
     resize : function () {
@@ -5379,7 +5881,7 @@
     assemble : function (topbar) {
       var self = this,
           settings = topbar.data(this.attr_name(true) + '-init'),
-          section = self.S('section', topbar);
+          section = self.S('section, .top-bar-section', topbar);
 
       // Pull element out of the DOM for manipulation
       section.detach();
@@ -5390,9 +5892,15 @@
             url = $link.attr('href'),
             $titleLi;
 
+
         if (!$dropdown.find('.title.back').length) {
-          $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li>');
-  
+
+          if (settings.mobile_show_parent_link == true && url) {
+            $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li><li class="parent-link show-for-small-only"><a class="parent-link js-generated" href="' + url + '">' + $link.html() +'</a></li>');
+          } else {
+            $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5>');
+          }
+
           // Copy link to subnav
           if (settings.custom_back_text == true) {
             $('h5>a', $titleLi).html(settings.back_text);
@@ -5420,8 +5928,8 @@
       var total = 0,
           self = this;
 
-      $('> li', ul).each(function () { 
-        total += self.S(this).outerHeight(true); 
+      $('> li', ul).each(function () {
+        total += self.S(this).outerHeight(true);
       });
 
       return total;
@@ -5437,7 +5945,7 @@
 
     update_sticky_positioning: function() {
       var klass = '.' + this.settings.sticky_class,
-          $window = this.S(window), 
+          $window = this.S(window),
           self = this;
 
       if (self.settings.sticky_topbar && self.is_sticky(this.settings.sticky_topbar,this.settings.sticky_topbar.parent(), this.settings)) {
@@ -5465,4 +5973,4 @@
 
     reflow : function () {}
   };
-}(jQuery, this, this.document));
+}(jQuery, window, window.document));
