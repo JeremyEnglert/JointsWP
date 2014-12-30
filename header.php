@@ -10,7 +10,7 @@
 
 		<title><?php wp_title(''); ?></title>
 
-		<!-- Mobile Neta -->
+		<!-- Mobile Meta -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 		<!-- Icons & Favicons -->
