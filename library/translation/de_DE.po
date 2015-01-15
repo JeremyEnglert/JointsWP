@@ -12,9 +12,9 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_e;_n\n"
 "X-Poedit-Basepath: /home/fulgor/GIT/bones\n"
-"Last-Translator: Pixolin <pixolin@gmx.com>\n"
+"Last-Translator: pixolin <pixolin@gmx.com>\n"
 "Language: de_DE\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.7.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: comments.php:12
@@ -122,7 +122,7 @@ msgstr "Kommentar absenden"
 
 #: comments.php:120
 msgid "You can use these tags"
-msgstr "Sie können diese Auszeichnungen nutzen"
+msgstr "Sie können diese Schlagwörter nutzen"
 
 #: header.php:23
 #, php-format
@@ -131,11 +131,11 @@ msgstr "Seite %s"
 
 #: taxonomy-custom_cat.php:22 archive.php:9
 msgid "Posts Categorized:"
-msgstr "Zugeordnete Einträge:"
+msgstr "Kategorisierte Beiträge:"
 
 #: taxonomy-custom_cat.php:32 embed-post_meta.php:1 single-custom_type.php:30
 msgid "Posted"
-msgstr "Eingetragen"
+msgstr "Veröffentlicht"
 
 #: taxonomy-custom_cat.php:32 embed-post_meta.php:1 single-custom_type.php:30
 msgid "by"
@@ -147,7 +147,7 @@ msgstr "abgelegt unter"
 
 #: taxonomy-custom_cat.php:41
 msgid "Read more"
-msgstr "Lesen Sie weiter"
+msgstr "Weiterlesen"
 
 #: functions.php:103
 msgid "(Edit)"
@@ -355,11 +355,11 @@ msgstr "Alle eigenen Schlagworte"
 
 #: library/custom-post-type.php:98
 msgid "Parent Custom Tag"
-msgstr "Übergeordnetes eigene Schlagwort"
+msgstr "Übergeordnetes eigenes Schlagwort"
 
 #: library/custom-post-type.php:99
 msgid "Parent Custom Tag:"
-msgstr "Übergeordnetes eigene Schlagwort:"
+msgstr "Übergeordnetes eigenes Schlagwort:"
 
 #: library/custom-post-type.php:100
 msgid "Edit Custom Tag"
@@ -367,15 +367,15 @@ msgstr "Bearbeite eigenes Schlagwort"
 
 #: library/custom-post-type.php:101
 msgid "Update Custom Tag"
-msgstr "Aktualisiere eigene Schlagwort"
+msgstr "Aktualisiere eigenes Schlagwort"
 
 #: library/custom-post-type.php:102
 msgid "Add New Custom Tag"
-msgstr "Eigene Schlagwort hinzufügen"
+msgstr "Eigenes Schlagwort hinzufügen"
 
 #: library/custom-post-type.php:103
 msgid "New Custom Tag Name"
-msgstr "Name für eigene Schlagwort hinzufügen"
+msgstr "Name für eigenes Schlagwort hinzufügen"
 
 #~ msgid "No Posts Yet"
 #~ msgstr "Bislang keine Einträge"
