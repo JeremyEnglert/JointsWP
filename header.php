@@ -40,7 +40,7 @@
 							
 						 <!-- This navs will be applied to the topbar, above all content 
 							  To see additional nav styles, visit the /partials directory -->
-						 <?php get_template_part( 'partials/nav', 'top-offcanvas' ); ?>
+						 <?php // get_template_part( 'partials/nav', 'top-offcanvas' ); ?>
 								 
 						<div id="inner-header" class="row">
 							<div class="large-12 medium-12 columns">
@@ -57,7 +57,7 @@
 							 <!-- This navs will be applied to the main, under the logo 
 								  To see additional nav styles, visit the /partials directory -->
 								  
-							 <?php // get_template_part( 'partials/nav', 'main-offcanvas' ); ?>
+							 <?php get_template_part( 'partials/nav', 'main-offcanvas' ); ?>
 	
 						</div> <!-- end #inner-header -->
 					</header> <!-- end .header -->
