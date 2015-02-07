@@ -19,9 +19,4 @@
 						
 	</article> <!-- end article -->
 	
-<?php endwhile; else : ?>
-					
-	<?php get_template_part( 'partials/content', 'missing' ); ?>
-
-<?php endif; ?>
-							
+<?php endwhile; endif; ?>							
