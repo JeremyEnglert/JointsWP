@@ -8,8 +8,8 @@
 					
 					    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
-					    	<?php get_template_part( 'partials/loop', 'single' ); ?>
-					    					
+					    	<?php get_template_part( 'partials/loop', 'single' ); ?>				
+					    	
 					    <?php endwhile; else : ?>
 					
 					   		<?php get_template_part( 'partials/content', 'missing' ); ?>
