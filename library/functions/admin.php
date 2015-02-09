@@ -1,26 +1,20 @@
 <?php
-/*
-This file handles the admin area and functions.
-You can use this file to make changes to the dashboard.
-It's turned off by default, but you can call it
-via the functions file.
-*/
+// This file handles the admin area and functions - You can use this file to make changes to the dashboard.
 
 /************* DASHBOARD WIDGETS *****************/
-
-// disable default dashboard widgets
+// Disable default dashboard widgets
 function disable_default_dashboard_widgets() {
-	// remove_meta_box('dashboard_right_now', 'dashboard', 'core');    // Right Now Widget
+	// Remove_meta_box('dashboard_right_now', 'dashboard', 'core');    // Right Now Widget
 	remove_meta_box('dashboard_recent_comments', 'dashboard', 'core'); // Comments Widget
 	remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');  // Incoming Links Widget
 	remove_meta_box('dashboard_plugins', 'dashboard', 'core');         // Plugins Widget
 
-	// remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
+	// Remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
 	remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core');   // Recent Drafts Widget
 	remove_meta_box('dashboard_primary', 'dashboard', 'core');         //
 	remove_meta_box('dashboard_secondary', 'dashboard', 'core');       //
 
-	// removing plugin dashboard boxes
+	// Removing plugin dashboard boxes
 	remove_meta_box('yoast_db_widget', 'dashboard', 'normal');         // Yoast's SEO Plugin Widget
 
 }
@@ -58,7 +52,7 @@ function joints_rss_dashboard_widget() {
 	<?php }
 }
 
-// calling all custom dashboard widgets
+// Calling all custom dashboard widgets
 function joints_custom_dashboard_widgets() {
 	wp_add_dashboard_widget('joints_rss_dashboard_widget', __('Recently on Themble (Customize on admin.php)', 'jointstheme'), 'joints_rss_dashboard_widget');
 	/*
@@ -66,8 +60,6 @@ function joints_custom_dashboard_widgets() {
 	in this function and they will all load.
 	*/
 }
-
-
 // removing the dashboard widgets
 add_action('admin_menu', 'disable_default_dashboard_widgets');
 // adding any custom widgets
@@ -75,9 +67,7 @@ add_action('wp_dashboard_setup', 'joints_custom_dashboard_widgets');
 
 
 /************* CUSTOM LOGIN PAGE *****************/
-
-// calling your own login css so you can style it
-
+// Calling your own login css so you can style it
 //Updated to proper 'enqueue' method
 //http://codex.wordpress.org/Plugin_API/Action_Reference/login_enqueue_scripts
 function joints_login_css() {
@@ -97,14 +87,6 @@ add_filter('login_headertitle', 'joints_login_title');
 
 
 /************* CUSTOMIZE ADMIN *******************/
-
-/*
-I don't really recommend editing the admin too much
-as things may get funky if WordPress updates. Here
-are a few funtions which you can choose to use if
-you like.
-*/
-
 // Custom Backend Footer
 function joints_custom_admin_footer() {
 	_e('<span id="footer-thankyou">Developed by <a href="http://yoursite.com" target="_blank">Your Site Name</a></span>.', 'jointstheme');
