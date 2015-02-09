@@ -19,8 +19,5 @@
   ],
   "dependencies": {
     "foundation": "~5.2.1"
-  },
-  "resolutions": {
-    "foundation": "~5.5.1"
   }
 }
