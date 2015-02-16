@@ -1,6 +1,4 @@
 /******************************************************************
-Site Name: 
-Author: 
 
 Stylesheet: Retina Screens & Devices Stylesheet
 
@@ -9,6 +7,9 @@ if you're not using font icons. Here you can add them in one neat
 place.
 
 ******************************************************************/
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+       only screen and (min--moz-device-pixel-ratio: 1.5),
+       only screen and (min-device-pixel-ratio: 1.5) {
 
 /* 
 
@@ -40,3 +41,4 @@ the original dimensions and you are good to go.
 
 */
 
+}

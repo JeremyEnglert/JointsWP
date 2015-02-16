@@ -3,12 +3,13 @@
 Stylesheet: Print Stylesheet
 
 This is the print stylesheet. There's probably not a lot
-of reasons to edit this stylesheet. If you want to
-though, go for it.
+of reasons to edit this stylesheet. 
 
+Remember to add things that won't make sense to print at 
+the bottom. Things like nav, ads, and forms shouldbe set 
+to display none.
 ******************************************************************/
-
-
+@media print {
 
   * {
     background: transparent !important;
@@ -70,7 +71,7 @@ though, go for it.
       page-break-after: avoid;
     }
 
-    // hide content people who print don't need to see
+    // Hide content people who print don't need to see
     .sidebar,
     .page-navigation,
     .wp-prev-next,
@@ -78,3 +79,5 @@ though, go for it.
     nav {
       display: none;
     }
+    
+} // End of media query
