@@ -1,19 +1,18 @@
 <?php
+	
 // Adding WP 3+ Functions & Theme Support
 function joints_theme_support() {
 
-	// WP Thumbnails 
+	// Add WP Thumbnail Support
 	add_theme_support('post-thumbnails');
 	
 	// Default thumbnail size
 	set_post_thumbnail_size(125, 125, true);
 
-	// RSS 
+	// Add RSS Support
 	add_theme_support('automatic-feed-links');
-
-	// to add header image support go here: http://themble.com/support/adding-header-background-image-support/
-
-	// adding post format support
+	
+	// Adding post format support
 	add_theme_support( 'post-formats',
 		array(
 			'aside',             // title less blurb
@@ -28,10 +27,13 @@ function joints_theme_support() {
 		)
 	);
 
-	// wp menus
+	// Add Support for WP Menus
 	add_theme_support( 'menus' );
 	
-	//html5 support (http://themeshaper.com/2013/08/01/html5-support-in-wordpress-core/)
+	// Add Support for WP Controlled Title Tag
+	add_theme_support( 'title-tag' );
+	
+	// Add HTML5 Support
 	add_theme_support( 'html5', 
 	         array( 
 	         	'comment-list', 
