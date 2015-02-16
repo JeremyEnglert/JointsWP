@@ -23,16 +23,19 @@ require_once(get_template_directory().'/assets/functions/comments.php');
 // Replace 'older/newer' post links with numbered navigation
 require_once(get_template_directory().'/assets/functions/page-navi.php'); 
 
-// Customize the WordPress admin, such as the login page
-// require_once(get_template_directory().'/assets/functions/admin.php'); 
-
 // Adds support for multiple languages
 // require_once(get_template_directory().'/assets/translation/translation.php'); 
 
-// Related post functions - no need to rely on plugins!
-   require_once(get_template_directory().'/assets/functions/related-posts.php'); 
+// Related post function - no need to rely on plugins
+// require_once(get_template_directory().'/assets/functions/related-posts.php'); 
 
 // Use this as a template for custom post types
 // require_once(get_template_directory().'/assets/functions/custom-post-type.php');
+
+// Customize the WordPress login menu
+// require_once(get_template_directory().'/assets/functions/login.php'); 
+
+// Customize the WordPress admin
+// require_once(get_template_directory().'/assets/functions/admin.php'); 
 
 ?>
