@@ -4077,119 +4077,119 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/content-byline.php": {
+	"\/parts\/content-byline.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/content-byline.php",
+		"inputAbbreviatedPath": "\/parts\/content-byline.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/content-missing.php": {
+	"\/parts\/content-missing.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/content-missing.php",
+		"inputAbbreviatedPath": "\/parts\/content-missing.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/loop-archive-accordion.php": {
+	"\/parts\/loop-archive-accordion.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/loop-archive-accordion.php",
+		"inputAbbreviatedPath": "\/parts\/loop-archive-accordion.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/loop-archive-grid.php": {
+	"\/parts\/loop-archive-grid.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/loop-archive-grid.php",
+		"inputAbbreviatedPath": "\/parts\/loop-archive-grid.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/loop-archive.php": {
+	"\/parts\/loop-archive.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/loop-archive.php",
+		"inputAbbreviatedPath": "\/parts\/loop-archive.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/loop-page.php": {
+	"\/parts\/loop-page.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/loop-page.php",
+		"inputAbbreviatedPath": "\/parts\/loop-page.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/loop-single.php": {
+	"\/parts\/loop-single.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/loop-single.php",
+		"inputAbbreviatedPath": "\/parts\/loop-single.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/nav-main-offcanvas-sidebar.php": {
+	"\/parts\/nav-main-offcanvas-sidebar.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/nav-main-offcanvas-sidebar.php",
+		"inputAbbreviatedPath": "\/parts\/nav-main-offcanvas-sidebar.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/nav-main-offcanvas.php": {
+	"\/parts\/nav-main-offcanvas.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/nav-main-offcanvas.php",
+		"inputAbbreviatedPath": "\/parts\/nav-main-offcanvas.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/nav-main-topbar.php": {
+	"\/parts\/nav-main-topbar.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/nav-main-topbar.php",
+		"inputAbbreviatedPath": "\/parts\/nav-main-topbar.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/nav-top-offcanvas-sidebar.php": {
+	"\/parts\/nav-top-offcanvas-sidebar.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/nav-top-offcanvas-sidebar.php",
+		"inputAbbreviatedPath": "\/parts\/nav-top-offcanvas-sidebar.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/nav-top-offcanvas.php": {
+	"\/parts\/nav-top-offcanvas.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/nav-top-offcanvas.php",
+		"inputAbbreviatedPath": "\/parts\/nav-top-offcanvas.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/partials\/nav-top-topbar.php": {
+	"\/parts\/nav-top-topbar.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/partials\/nav-top-topbar.php",
+		"inputAbbreviatedPath": "\/parts\/nav-top-topbar.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0

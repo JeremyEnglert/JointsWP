@@ -39,8 +39,8 @@
 					<header class="header" role="banner">
 							
 						 <!-- This navs will be applied to the topbar, above all content 
-							  To see additional nav styles, visit the /partials directory -->
-						 <?php // get_template_part( 'partials/nav', 'top-offcanvas' ); ?>
+							  To see additional nav styles, visit the /parts directory -->
+						 <?php // get_template_part( 'parts/nav', 'top-offcanvas' ); ?>
 								 
 						<div id="inner-header" class="row">
 							<div class="large-12 medium-12 columns">
@@ -55,9 +55,9 @@
 							</div>
 							
 							 <!-- This navs will be applied to the main, under the logo 
-								  To see additional nav styles, visit the /partials directory -->
+								  To see additional nav styles, visit the /parts directory -->
 								  
-							 <?php get_template_part( 'partials/nav', 'main-offcanvas' ); ?>
+							 <?php get_template_part( 'parts/nav', 'main-offcanvas' ); ?>
 	
 						</div> <!-- end #inner-header -->
 					</header> <!-- end .header -->

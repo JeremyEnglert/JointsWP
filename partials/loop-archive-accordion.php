@@ -13,5 +13,5 @@
 <?php joints_page_navi(); ?>
 
 <?php else : ?>
-    <?php get_template_part( 'partials/missing', 'content' ); ?>
+    <?php get_template_part( 'parts/missing', 'content' ); ?>
 <?php endif; ?>

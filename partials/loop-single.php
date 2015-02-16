@@ -2,7 +2,7 @@
 						
 	<header class="article-header">	
 		<h1 class="entry-title single-title" itemprop="headline"><?php the_title(); ?></h1>
-		<?php get_template_part( 'partials/content', 'byline' ); ?>
+		<?php get_template_part( 'parts/content', 'byline' ); ?>
     </header> <!-- end article header -->
 					
     <section class="entry-content" itemprop="articleBody">

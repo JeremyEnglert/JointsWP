@@ -12,7 +12,7 @@ Template Name: Custom Page Example
 			
 				    <div id="main" class="large-8 medium-8 columns first" role="main">
 					
-					    <?php get_template_part( 'partials/loop', 'page' ); ?>
+					    <?php get_template_part( 'parts/loop', 'page' ); ?>
 					    						
 				    </div> <!-- end #main -->
     

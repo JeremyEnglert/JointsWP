@@ -30,7 +30,7 @@ taxonomy-shoes.php
 						    <header class="article-header">
 							
 							    <h3 class="h2"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
-							    <?php get_template_part( 'partials/content', 'byline' ); ?>
+							    <?php get_template_part( 'parts/content', 'byline' ); ?>
 						
 						    </header> <!-- end article header -->
 					
@@ -60,7 +60,7 @@ taxonomy-shoes.php
 					        
 					    <?php else : ?>
 					
-        					<?php get_template_part( 'partials/content', 'missing' ); ?>
+        					<?php get_template_part( 'parts/content', 'missing' ); ?>
 					
 					    <?php endif; ?>
 			

@@ -38,8 +38,8 @@
 					    	    <span>Yearly Archives:</span> <?php the_time('Y'); ?>
 					        </h1>
 					    <?php } ?>
-					    	<!-- To see additional archive styles, visit the /partials directory -->
-					    	<?php get_template_part( 'partials/loop', 'archive' ); ?>					
+					    	<!-- To see additional archive styles, visit the /parts directory -->
+					    	<?php get_template_part( 'parts/loop', 'archive' ); ?>					
 			
     				</div> <!-- end #main -->
     
