@@ -22,7 +22,7 @@ $sub-nav-list-padding-top: rem-calc(4) !default;
 // We use this to control the definition
 $sub-nav-font-family: $body-font-family !default;
 $sub-nav-font-size: rem-calc(14) !default;
-$sub-nav-font-color: #999 !default;
+$sub-nav-font-color: $aluminum !default;
 $sub-nav-font-weight: $font-weight-normal !default;
 $sub-nav-text-decoration: none !default;
 $sub-nav-padding: rem-calc(3 16) !default;
@@ -35,7 +35,7 @@ $sub-nav-font-color-hover: scale-color($sub-nav-font-color, $lightness: -25%) !d
 $sub-nav-active-font-weight: $font-weight-normal !default;
 $sub-nav-active-bg: $primary-color !default;
 $sub-nav-active-bg-hover: scale-color($sub-nav-active-bg, $lightness: -14%) !default;
-$sub-nav-active-color: #fff !default;
+$sub-nav-active-color: $white !default;
 $sub-nav-active-padding: $sub-nav-padding !default;
 $sub-nav-active-cursor: default !default;
 
@@ -61,10 +61,8 @@ $sub-nav-item-divider-margin: rem-calc(12) !default;
   display: block;
   width: auto;
   overflow: hidden;
-  margin: $sub-nav-list-margin;
+  margin-bottom: $sub-nav-list-margin;
   padding-top: $sub-nav-list-padding-top;
-  margin-#{$opposite-direction}: 0;
-  margin-#{$default-float}: rem-calc(-12);
 
   dt {
     text-transform: uppercase;
@@ -74,9 +72,8 @@ $sub-nav-item-divider-margin: rem-calc(12) !default;
   dd,
   li {
     float: $default-float;
-    display: inline;
     margin-#{$default-float}: rem-calc(16);
-    margin-bottom: rem-calc(10);
+    margin-bottom: 0;
     font-family: $sub-nav-font-family;
     font-weight: $sub-nav-font-weight;
     font-size: $font-size;

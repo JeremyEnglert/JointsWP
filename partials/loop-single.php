@@ -8,6 +8,7 @@
     <section class="entry-content" itemprop="articleBody">
 		<?php the_post_thumbnail('full'); ?>
 		<?php the_content(); ?>
+		<?php joints_related_posts(); ?>				
 	</section> <!-- end article section -->
 						
 	<footer class="article-footer">

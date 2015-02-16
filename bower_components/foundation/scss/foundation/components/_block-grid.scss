@@ -7,7 +7,7 @@
 //
 // Block Grid Variables
 //
-$include-html-grid-classes: $include-html-classes !default;
+$include-html-block-grid-classes: $include-html-classes !default;
 $include-xl-html-block-grid-classes: false !default;
 
 // We use this to control the maximum number of block grid elements per row
@@ -30,6 +30,7 @@ $block-grid-media-queries: true !default;
 //
 // $per-row - # of items to display per row. Default: false.
 // $spacing - # of ems to use as padding on each block item. Default: rem-calc(20).
+// $include-spacing - Adds padding to our list item. Default: true.
 // $base-style - Apply a base style to block grid. Default: true.
 @mixin block-grid(
   $per-row:false,
@@ -101,7 +102,7 @@ $block-grid-media-queries: true !default;
 }
 
 @include exports("block-grid") {
-  @if $include-html-grid-classes {
+  @if $include-html-block-grid-classes {
 
     [class*="block-grid-"] { @include block-grid; }
 

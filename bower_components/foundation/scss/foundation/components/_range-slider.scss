@@ -21,10 +21,11 @@ $range-slider-bar-height: rem-calc(16) !default;
 
 $range-slider-bar-border-width: 1px !default;
 $range-slider-bar-border-style: solid !default;
-$range-slider-bar-border-color: #ddd !default; 
+$range-slider-bar-border-color: $gainsboro !default;
 $range-slider-radius: $global-radius !default;
 $range-slider-round: $global-rounded !default;
-$range-slider-bar-bg-color: #fafafa !default;
+$range-slider-bar-bg-color: $ghost !default;
+$range-slider-active-segment-bg-color: scale-color($secondary-color, $lightness: -1%) !default;
 
 // Vertical bar styles
 $range-slider-vertical-bar-width: rem-calc(16) !default;
@@ -43,16 +44,15 @@ $range-slider-handle-round: $global-rounded !default;
 $range-slider-handle-bg-hover-color: scale-color($primary-color, $lightness: -12%) !default;
 $range-slider-handle-cursor: pointer !default;
 
+$range-slider-disabled-opacity: 0.7 !default;
+$range-slider-disabled-cursor: $cursor-disabled-value !default;
 
 //
 // @mixins
 //
 
 @mixin range-slider-bar-base($vertical: false) {
-  display: block;
   position: relative;
-  width: $range-slider-bar-width;
-  height: $range-slider-bar-height;
   border: $range-slider-bar-border-width $range-slider-bar-border-style $range-slider-bar-border-color;
   margin: rem-calc(20 0);
   -ms-touch-action: none;
@@ -61,19 +61,28 @@ $range-slider-handle-cursor: pointer !default;
     display: inline-block;
     width: $range-slider-vertical-bar-width;
     height: $range-slider-vertical-bar-height;
+  } @else {
+    display: block;
+    width: $range-slider-bar-width;
+    height: $range-slider-bar-height;
   }
 }
 @mixin range-slider-bar-style(
   $bg: true,
   $radius: false,
-  $round: false) {
-    @if $bg == true { background: $range-slider-bar-bg-color; }
-    @if $radius == true { @include radius($range-slider-radius); }
-    @if $round == true { @include radius($range-slider-round); }
+  $round: false,
+  $disabled: false) {
+  @if $bg == true { background: $range-slider-bar-bg-color; }
+  @if $radius == true { @include radius($range-slider-radius); }
+  @if $round == true { @include radius($range-slider-round); }
+  @if $disabled == true {
+    cursor: $range-slider-disabled-cursor;
+    opacity: $range-slider-disabled-opacity;
   }
+}
 
 @mixin range-slider-bar(
-  $bg: $range-slider-bar-bg-color, 
+  $bg: $range-slider-bar-bg-color,
   $radius:false) {
   @include range-slider-bar-base;
   @include range-slider-bar-style;
@@ -88,14 +97,23 @@ $range-slider-handle-cursor: pointer !default;
   height: $range-slider-handle-height;
   border: $range-slider-handle-border-width $range-slider-handle-border-style $range-slider-handle-border-color;
   cursor: $range-slider-handle-cursor;
+
+  // This removes the 300ms touch delay on Windows 8
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
 }
 @mixin range-slider-handle-style(
   $bg: true,
   $radius: false,
-  $round: false) {
+  $round: false,
+  $disabled: false) {
   @if $bg == true { background: $range-slider-handle-bg-color; }
   @if $radius == true { @include radius($range-slider-radius); }
   @if $round == true { @include radius($range-slider-round); }
+  @if $disabled == true {
+    cursor: $cursor-default-value;
+    opacity: $range-slider-disabled-opacity;
+  }
   &:hover {
     background: $range-slider-handle-bg-hover-color;
   }
@@ -133,12 +151,16 @@ $range-slider-handle-cursor: pointer !default;
         @include range-slider-bar-style($round:true);
         .range-slider-handle { @include range-slider-handle-style($round: true); }
       }
+      &.disabled, &[disabled] {
+        @include range-slider-bar-style($disabled:true);
+        .range-slider-handle { @include range-slider-handle-style($disabled: true); }
+      }
     }
     .range-slider-active-segment {
       display: inline-block;
       position: absolute;
       height: $range-slider-bar-height - rem-calc((strip-unit($range-slider-bar-border-width) * 2));
-      background: scale-color($secondary-color, $lightness: -1%);
+      background: $range-slider-active-segment-bg-color;
     }
     .range-slider-handle {
       @include range-slider-handle-base;
