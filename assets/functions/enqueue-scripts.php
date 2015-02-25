@@ -14,13 +14,13 @@ function joints_scripts_and_styles() {
     wp_enqueue_script( 'modernizr', get_template_directory_uri() . '/bower_components/foundation/js/vendor/modernizr.js', array(), '2.8.3', false );
     
     // Adding Foundation scripts file in the footer
-    wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/bower_components/foundation/js/foundation.min.js', array( 'jquery' ), '5.5.1', true );
+    //wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/bower_components/foundation/js/foundation.min.js', array( 'jquery' ), '5.5.1', true );
     
     // Adding scripts file in the footer
-    wp_enqueue_script( 'joints-js', get_template_directory_uri() . '/assets/js/scripts.js', array( 'jquery' ), $theme_version, true );
+    wp_enqueue_script( 'joints-js', get_template_directory_uri() . '/assets/js/min/scripts.min.js', array( 'jquery' ), $theme_version, true );
    
     // Register main stylesheet
-    wp_enqueue_style( 'joints-stylesheet', get_template_directory_uri() . '/assets/css/style.css', array(), $theme_version, 'all' );
+    wp_enqueue_style( 'joints-stylesheet', get_template_directory_uri() . '/assets/css/style.min.css', array(), $theme_version, 'all' );
     
     // Register foundation icons
     // wp_enqueue_style( 'foundation-icons', get_template_directory_uri() . '/assets/css/icons/foundation-icons.css', array(), '3.0', 'all' );
