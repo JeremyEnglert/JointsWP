@@ -8,11 +8,18 @@ var gulp  = require('gulp'),
     stylish = require('jshint-stylish'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
-    rename = require('gulp-rename')
+    rename = require('gulp-rename'),
+    plumber = require('gulp-plumber')
     
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
   return gulp.src('./assets/scss/**/*.scss')
+    .pipe(plumber({
+        handleError: function (err) {
+            console.log(err);
+            this.emit('end');
+        }
+    }))
     .pipe(sass())
     .pipe(autoprefixer({
             browsers: ['last 2 versions'],
