@@ -5,7 +5,7 @@
 		<a href="#panel<?php the_ID(); ?>" title="<?php the_title_attribute(); ?>"> <h4 class="fi-plus "> <?php the_title(); ?></h4></a>
 	    <div class="content" id="panel<?php the_ID(); ?>">
 			<?php the_content(); ?>
-	    <div> <!-- end article section -->
+	    </div> <!-- end article section -->
 	</dd>		
 <?php endwhile; ?>
 </dl>	
