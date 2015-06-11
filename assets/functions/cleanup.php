@@ -17,10 +17,8 @@ function joints_start() {
     // launching this stuff after theme setup
     joints_theme_support();
 
-    // adding sidebars to Wordpress (these are created in functions.php)
+    // adding sidebars to Wordpress
     add_action( 'widgets_init', 'joints_register_sidebars' );
-    // adding the joints search form (created in functions.php)
-    add_filter( 'get_search_form', 'joints_wpsearch' );
     // cleaning up excerpt
     add_filter('excerpt_more', 'joints_excerpt_more');
 
