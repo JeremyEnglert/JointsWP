@@ -1,46 +1,11 @@
 /******************************************************************
-Theme Name: JointsWP (Sass)
+Theme Name: JointsWP
 Theme URI: http://www.jointswp.com
 Description: 
 Author: Your Name Here
 Author URI: http://www.yoururlhere.com
-Version: 2.0 (Sass)
-Foundation Version: 5.5.1
-Tags: 
-
-------------------------------------------------------------------
-
-This theme uses Sass.
-You will find the .scss files in the /library/scss directory.
-Those files compile to the styles.css found in the library/css directory.
-
-Reccomended tools for working with Sass:
-
-CodeKit: (Best)
-http://incident57.com/codekit/
-
-Compass App: (Windows / Mac Users)
-http://compass.handlino.com/
-
----------------------------------------------------------------
-
-Because this file is not being used for styles,
-feel free to use it to leave notes to yourself.
-
-----------------------------------------------------------------
-
-2.0 Changelog
-- header.php
--- Removed Google Chrome for IE (it is no longer supported by Google)
--- Removed mobile meta tags for Palm devices
--- Added favicons for iOS devices (retina and non-retina)
--- Added Top and Main menus
-
-- 404.php
--- Removed un-needed PHP from content
-
-- functions.pho
--- Registered and created "top" nav
-
+Version: 3.0
+License: GNU General Public License & MIT
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: Sass
 ******************************************************************/
-
