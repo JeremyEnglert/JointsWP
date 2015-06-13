@@ -157,44 +157,6 @@
     }
   };
 
-<<<<<<< HEAD
-  /*
-    https://github.com/paulirish/matchMedia.js
-  */
-
-  window.matchMedia = window.matchMedia || (function ( doc ) {
-
-    'use strict';
-
-    var bool,
-        docElem = doc.documentElement,
-        refNode = docElem.firstElementChild || docElem.firstChild,
-        // fakeBody required for <FF4 when executed in <head>
-        fakeBody = doc.createElement( 'body' ),
-        div = doc.createElement( 'div' );
-
-    div.id = 'mq-test-1';
-    div.style.cssText = 'position:absolute;top:-100em';
-    fakeBody.style.background = 'none';
-    fakeBody.appendChild(div);
-
-    return function (q) {
-
-      div.innerHTML = '&shy;<style media="' + q + '"> #mq-test-1 { width: 42px; }</style>';
-
-      docElem.insertBefore( fakeBody, refNode );
-      bool = div.offsetWidth === 42;
-      docElem.removeChild( fakeBody );
-
-      return {
-        matches : bool,
-        media : q
-      };
-
-    };
-
-  }( document ));
-=======
   /*! matchMedia() polyfill - Test a CSS media type/query in JS. Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas, David Knight. Dual MIT/BSD license */
 
   window.matchMedia || (window.matchMedia = function() {
@@ -241,7 +203,6 @@
           };
       };
   }());
->>>>>>> JointsWP-3
 
   /*
    * jquery.requestAnimationFrame
@@ -332,11 +293,7 @@
   window.Foundation = {
     name : 'Foundation',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     media_queries : {
       'small'       : S('.foundation-mq-small').css('font-family').replace(/^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g, ''),
@@ -636,11 +593,7 @@
 
           if (query !== undefined) {
             Foundation.stylesheet.insertRule('@media ' +
-<<<<<<< HEAD
-              Foundation.media_queries[media] + '{ ' + rule + ' }');
-=======
               Foundation.media_queries[media] + '{ ' + rule + ' }', Foundation.stylesheet.cssRules.length);
->>>>>>> JointsWP-3
           }
         }
       },
@@ -656,9 +609,6 @@
         var self = this,
             unloaded = images.length;
 
-<<<<<<< HEAD
-        if (unloaded === 0) {
-=======
         function pictures_has_height(images) {
           var pictures_number = images.length;
 
@@ -672,7 +622,6 @@
         }
 
         if (unloaded === 0 || pictures_has_height(images)) {
->>>>>>> JointsWP-3
           callback(images);
         }
 
@@ -781,19 +730,12 @@
   Foundation.libs.abide = {
     name : 'abide',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       live_validate : true,
       validate_on_blur : true,
-<<<<<<< HEAD
-=======
       // validate_on: 'tab', // tab (when user tabs between fields), change (input changes), manual (call custom events) 
->>>>>>> JointsWP-3
       focus_on_invalid : true,
       error_labels : true, // labels with a for="inputId" will recieve an `error` class
       error_class : 'error',
@@ -811,12 +753,8 @@
         // http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#valid-e-mail-address
         email : /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/,
 
-<<<<<<< HEAD
-        url : /^(https?|ftp|file|ssh):\/\/(((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/,
-=======
         // http://blogs.lse.ac.uk/lti/2008/04/23/a-regular-expression-to-match-any-url/
         url: /^(https?|ftp|file|ssh):\/\/([-;:&=\+\$,\w]+@{1})?([-A-Za-z0-9\.]+)+:?(\d+)?((\/[-\+~%\/\.\w]+)?\??([-\+=&;%@\.\w]+)?#?([\w]+)?)?/,
->>>>>>> JointsWP-3
         // abc.de
         domain : /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,8}$/,
 
@@ -858,38 +796,6 @@
 
       this.invalid_attr = this.add_namespace('data-invalid');
 
-<<<<<<< HEAD
-      form
-        .off('.abide')
-        .on('submit.fndtn.abide validate.fndtn.abide', function (e) {
-          var is_ajax = /ajax/i.test(self.S(this).attr(self.attr_name()));
-          return self.validate(self.S(this).find('input, textarea, select').get(), e, is_ajax);
-        })
-        .on('reset', function () {
-          return self.reset($(this));
-        })
-        .find('input, textarea, select')
-          .off('.abide')
-          .on('blur.fndtn.abide change.fndtn.abide', function (e) {
-            if (settings.validate_on_blur === true) {
-              self.validate([this], e);
-            }
-          })
-          .on('keydown.fndtn.abide', function (e) {
-            if (settings.live_validate === true && e.which != 9) {
-              clearTimeout(self.timer);
-              self.timer = setTimeout(function () {
-                self.validate([this], e);
-              }.bind(this), settings.timeout);
-            }
-          });
-    },
-
-    reset : function (form) {
-      form.removeAttr(this.invalid_attr);
-      $(this.invalid_attr, form).removeAttr(this.invalid_attr);
-      $('.' + this.settings.error_class, form).not('small').removeClass(this.settings.error_class);
-=======
       function validate(originalSelf, e) {
         clearTimeout(self.timer);
         self.timer = setTimeout(function () {
@@ -955,7 +861,6 @@
       $('[' + self.invalid_attr + ']', form).removeAttr(self.invalid_attr);
       $('.' + self.settings.error_class, form).not('small').removeClass(self.settings.error_class);
       $(':input', form).not(':button, :submit, :reset, :hidden, [data-abide-ignore]').val('').removeAttr(self.invalid_attr);
->>>>>>> JointsWP-3
     },
 
     validate : function (els, e, is_ajax) {
@@ -970,22 +875,14 @@
           if (this.settings.focus_on_invalid) {
             els[i].focus();
           }
-<<<<<<< HEAD
-          form.trigger('invalid').trigger('invalid.fndtn.abide');
-=======
           form.trigger('invalid.fndtn.abide');
->>>>>>> JointsWP-3
           this.S(els[i]).closest('form').attr(this.invalid_attr, '');
           return false;
         }
       }
 
       if (submit_event || is_ajax) {
-<<<<<<< HEAD
-        form.trigger('valid').trigger('valid.fndtn.abide');
-=======
         form.trigger('valid.fndtn.abide');
->>>>>>> JointsWP-3
       }
 
       form.removeAttr(this.invalid_attr);
@@ -1058,20 +955,10 @@
           parent = direct_parent.parent();
         }
 
-<<<<<<< HEAD
-        if (validator) {
-          valid = this.settings.validators[validator].apply(this, [el, required, parent]);
-          el_validations.push(valid);
-        }
-
-=======
->>>>>>> JointsWP-3
         if (is_radio && required) {
           el_validations.push(this.valid_radio(el, required));
         } else if (is_checkbox && required) {
           el_validations.push(this.valid_checkbox(el, required));
-<<<<<<< HEAD
-=======
 
         } else if (validator) {
           // Validate using each of the specified (space-delimited) validators.
@@ -1098,7 +985,6 @@
               }
               $(el).triggerHandler('invalid');
           }
->>>>>>> JointsWP-3
         } else {
 
           if (el_patterns[i][1].test(value) && valid_length ||
@@ -1109,10 +995,6 @@
           }
 
           el_validations = [el_validations.every(function (valid) {return valid;})];
-<<<<<<< HEAD
-
-=======
->>>>>>> JointsWP-3
           if (el_validations[0]) {
             this.S(el).removeAttr(this.invalid_attr);
             el.setAttribute('aria-invalid', 'false');
@@ -1141,14 +1023,8 @@
             $(el).triggerHandler('invalid');
           }
         }
-<<<<<<< HEAD
-        validations.push(el_validations[0]);
-      }
-      validations = [validations.every(function (valid) {return valid;})];
-=======
         validations = validations.concat(el_validations);
       }
->>>>>>> JointsWP-3
       return validations;
     },
 
@@ -1158,15 +1034,10 @@
 
       if (valid) {
         el.removeAttr(this.invalid_attr).parent().removeClass(this.settings.error_class);
-<<<<<<< HEAD
-      } else {
-        el.attr(this.invalid_attr, '').parent().addClass(this.settings.error_class);
-=======
         $(el).triggerHandler('valid');
       } else {
         el.attr(this.invalid_attr, '').parent().addClass(this.settings.error_class);
         $(el).triggerHandler('invalid');
->>>>>>> JointsWP-3
       }
 
       return valid;
@@ -1199,15 +1070,10 @@
       for (var i = 0; i < count; i++) {
         if (valid) {
           this.S(group[i]).removeAttr(this.invalid_attr).parent().removeClass(this.settings.error_class);
-<<<<<<< HEAD
-        } else {
-          this.S(group[i]).attr(this.invalid_attr, '').parent().addClass(this.settings.error_class);
-=======
           $(group[i]).triggerHandler('valid');
         } else {
           this.S(group[i]).attr(this.invalid_attr, '').parent().addClass(this.settings.error_class);
           $(group[i]).triggerHandler('invalid');
->>>>>>> JointsWP-3
         }
       }
 
@@ -1255,8 +1121,6 @@
       }
 
       return valid;
-<<<<<<< HEAD
-=======
     },
 
     reflow : function(scope, options) {
@@ -1265,7 +1129,6 @@
           self.S(form).each(function (idx, el) {
             self.events(el);
           });
->>>>>>> JointsWP-3
     }
   };
 }(jQuery, window, window.document));
@@ -1276,11 +1139,7 @@
   Foundation.libs.accordion = {
     name : 'accordion',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       content_class : 'content',
@@ -1294,14 +1153,6 @@
       this.bindings(method, options);
     },
 
-<<<<<<< HEAD
-    events : function () {
-      var self = this;
-      var S = this.S;
-      S(this.scope)
-      .off('.fndtn.accordion')
-      .on('click.fndtn.accordion', '[' + this.attr_name() + '] > .accordion-navigation > a', function (e) {
-=======
     events : function (instance) {
       var self = this;
       var S = this.S;
@@ -1310,31 +1161,17 @@
       S(this.scope)
       .off('.fndtn.accordion')
       .on('click.fndtn.accordion', '[' + this.attr_name() + '] > dd > a, [' + this.attr_name() + '] > li > a', function (e) {
->>>>>>> JointsWP-3
         var accordion = S(this).closest('[' + self.attr_name() + ']'),
             groupSelector = self.attr_name() + '=' + accordion.attr(self.attr_name()),
             settings = accordion.data(self.attr_name(true) + '-init') || self.settings,
             target = S('#' + this.href.split('#')[1]),
-<<<<<<< HEAD
-            aunts = $('> .accordion-navigation', accordion),
-=======
             aunts = $('> dd, > li', accordion),
->>>>>>> JointsWP-3
             siblings = aunts.children('.' + settings.content_class),
             active_content = siblings.filter('.' + settings.active_class);
 
         e.preventDefault();
 
         if (accordion.attr(self.attr_name())) {
-<<<<<<< HEAD
-          siblings = siblings.add('[' + groupSelector + '] dd > ' + '.' + settings.content_class);
-          aunts = aunts.add('[' + groupSelector + '] .accordion-navigation');
-        }
-
-        if (settings.toggleable && target.is(active_content)) {
-          target.parent('.accordion-navigation').toggleClass(settings.active_class, false);
-          target.toggleClass(settings.active_class, false);
-=======
           siblings = siblings.add('[' + groupSelector + '] dd > ' + '.' + settings.content_class + ', [' + groupSelector + '] li > ' + '.' + settings.content_class);
           aunts = aunts.add('[' + groupSelector + '] dd, [' + groupSelector + '] li');
         }
@@ -1345,7 +1182,6 @@
           S(this).attr('aria-expanded', function(i, attr){
               return attr === 'true' ? 'false' : 'true';
           });
->>>>>>> JointsWP-3
           settings.callback(target);
           target.triggerHandler('toggled', [accordion]);
           accordion.triggerHandler('toggled', [target]);
@@ -1355,21 +1191,13 @@
         if (!settings.multi_expand) {
           siblings.removeClass(settings.active_class);
           aunts.removeClass(settings.active_class);
-<<<<<<< HEAD
-=======
           aunts.children('a').attr('aria-expanded','false');
->>>>>>> JointsWP-3
         }
 
         target.addClass(settings.active_class).parent().addClass(settings.active_class);
         settings.callback(target);
         target.triggerHandler('toggled', [accordion]);
         accordion.triggerHandler('toggled', [target]);
-<<<<<<< HEAD
-      });
-    },
-
-=======
         S(this).attr('aria-expanded','true');
       });
     },
@@ -1388,7 +1216,6 @@
       }
     },
 
->>>>>>> JointsWP-3
     off : function () {},
 
     reflow : function () {}
@@ -1401,11 +1228,7 @@
   Foundation.libs.alert = {
     name : 'alert',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       callback : function () {}
@@ -1427,20 +1250,12 @@
         if (Modernizr.csstransitions) {
           alertBox.addClass('alert-close');
           alertBox.on('transitionend webkitTransitionEnd oTransitionEnd', function (e) {
-<<<<<<< HEAD
-            S(this).trigger('close').trigger('close.fndtn.alert').remove();
-=======
             S(this).trigger('close.fndtn.alert').remove();
->>>>>>> JointsWP-3
             settings.callback();
           });
         } else {
           alertBox.fadeOut(300, function () {
-<<<<<<< HEAD
-            S(this).trigger('close').trigger('close.fndtn.alert').remove();
-=======
             S(this).trigger('close.fndtn.alert').remove();
->>>>>>> JointsWP-3
             settings.callback();
           });
         }
@@ -1457,24 +1272,16 @@
   Foundation.libs.clearing = {
     name : 'clearing',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       templates : {
         viewing : '<a href="#" class="clearing-close">&times;</a>' +
           '<div class="visible-img" style="display: none"><div class="clearing-touch-label"></div><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" alt="" />' +
           '<p class="clearing-caption"></p><a href="#" class="clearing-main-prev"><span></span></a>' +
-<<<<<<< HEAD
-          '<a href="#" class="clearing-main-next"><span></span></a></div>'
-=======
           '<a href="#" class="clearing-main-next"><span></span></a></div>' +
           '<img class="clearing-preload-next" style="display: none" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" alt="" />' +
           '<img class="clearing-preload-prev" style="display: none" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" alt="" />'
->>>>>>> JointsWP-3
       },
 
       // comma delimited list of selectors that, on click, will close clearing,
@@ -1664,12 +1471,8 @@
           visible_image = self.S('.visible-img', container),
           image = self.S('img', visible_image).not($image),
           label = self.S('.clearing-touch-label', container),
-<<<<<<< HEAD
-          error = false;
-=======
           error = false,
           loaded = {};
->>>>>>> JointsWP-3
 
       // Event to disable scrolling on touch devices when Clearing is activated
       $('body').on('touchmove', function (e) {
@@ -1695,10 +1498,7 @@
       function cb (image) {
         var $image = $(image);
         $image.css('visibility', 'visible');
-<<<<<<< HEAD
-=======
         $image.trigger('imageVisible');
->>>>>>> JointsWP-3
         // toggle the gallery
         body.css('overflow', 'hidden');
         root.addClass('clearing-blackout');
@@ -1717,11 +1517,6 @@
       if (!this.locked()) {
         visible_image.trigger('open.fndtn.clearing');
         // set the image to the selected thumbnail
-<<<<<<< HEAD
-        image
-          .attr('src', this.load($image))
-          .css('visibility', 'hidden');
-=======
         loaded = this.load($image);
         if (loaded.interchange) {
           image
@@ -1733,7 +1528,6 @@
             .attr('data-interchange', '');
         }
         image.css('visibility', 'hidden');
->>>>>>> JointsWP-3
 
         startLoad.call(this);
       }
@@ -1788,11 +1582,7 @@
         this.go(clearing, 'prev');
       }
       if (e.which === ESC_KEY) {
-<<<<<<< HEAD
-        this.S('a.clearing-close').trigger('click').trigger('click.fndtn.clearing');
-=======
         this.S('a.clearing-close').trigger('click.fndtn.clearing');
->>>>>>> JointsWP-3
       }
     },
 
@@ -1871,14 +1661,6 @@
     // image loading and preloading
 
     load : function ($image) {
-<<<<<<< HEAD
-      var href;
-
-      if ($image[0].nodeName === 'A') {
-        href = $image.attr('href');
-      } else {
-        href = $image.closest('a').attr('href');
-=======
       var href,
           interchange,
           closest_a;
@@ -1890,41 +1672,18 @@
         closest_a = $image.closest('a');
         href = closest_a.attr('href');
         interchange = closest_a.data('clearing-interchange');
->>>>>>> JointsWP-3
       }
 
       this.preload($image);
 
-<<<<<<< HEAD
-      if (href) {
-        return href;
-      }
-      return $image.attr('src');
-=======
       return {
         'src': href ? href : $image.attr('src'),
         'interchange': href ? interchange : $image.data('clearing-interchange')
       }
->>>>>>> JointsWP-3
     },
 
     preload : function ($image) {
       this
-<<<<<<< HEAD
-        .img($image.closest('li').next())
-        .img($image.closest('li').prev());
-    },
-
-    img : function (img) {
-      if (img.length) {
-        var new_img = new Image(),
-            new_a = this.S('a', img);
-
-        if (new_a.length) {
-          new_img.src = new_a.attr('href');
-        } else {
-          new_img.src = this.S('img', img).attr('src');
-=======
         .img($image.closest('li').next(), 'next')
         .img($image.closest('li').prev(), 'prev');
     },
@@ -1951,7 +1710,6 @@
         } else {
           preload_img.attr('src', src);
           preload_img.attr('data-interchange', '');
->>>>>>> JointsWP-3
         }
       }
       return this;
@@ -1987,11 +1745,7 @@
 
       if (target.length) {
         this.S('img', target)
-<<<<<<< HEAD
-          .trigger('click', [current, target]).trigger('click.fndtn.clearing', [current, target])
-=======
           .trigger('click.fndtn.clearing', [current, target])
->>>>>>> JointsWP-3
           .trigger('change.fndtn.clearing');
       }
     },
@@ -2105,11 +1859,7 @@
   Foundation.libs.dropdown = {
     name : 'dropdown',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       active_class : 'open',
@@ -2139,11 +1889,7 @@
           var settings = S(this).data(self.attr_name(true) + '-init') || self.settings;
           if (!settings.is_hover || Modernizr.touch) {
             e.preventDefault();
-<<<<<<< HEAD
-            if (S(this).parent('[data-reveal-id]')) {
-=======
             if (S(this).parent('[data-reveal-id]').length) {
->>>>>>> JointsWP-3
               e.stopPropagation();
             }
             self.toggle($(this));
@@ -2240,13 +1986,8 @@
 
     close : function (dropdown) {
       var self = this;
-<<<<<<< HEAD
-      dropdown.each(function () {
-        var original_target = $('[' + self.attr_name() + '=' + dropdown[0].id + ']') || $('aria-controls=' + dropdown[0].id + ']');
-=======
       dropdown.each(function (idx) {
         var original_target = $('[' + self.attr_name() + '=' + dropdown[idx].id + ']') || $('aria-controls=' + dropdown[idx].id + ']');
->>>>>>> JointsWP-3
         original_target.attr('aria-expanded', 'false');
         if (self.S(this).hasClass(self.settings.active_class)) {
           self.S(this)
@@ -2257,11 +1998,7 @@
             .removeClass(self.settings.active_class)
             .removeData('target');
 
-<<<<<<< HEAD
-          self.S(this).trigger('closed').trigger('closed.fndtn.dropdown', [dropdown]);
-=======
           self.S(this).trigger('closed.fndtn.dropdown', [dropdown]);
->>>>>>> JointsWP-3
         }
       });
       dropdown.removeClass('f-open-' + this.attr_name(true));
@@ -2279,11 +2016,7 @@
         .css(dropdown
         .addClass(this.settings.active_class), target);
       dropdown.prev('[' + this.attr_name() + ']').addClass(this.settings.active_class);
-<<<<<<< HEAD
-      dropdown.data('target', target.get(0)).trigger('opened').trigger('opened.fndtn.dropdown', [dropdown, target]);
-=======
       dropdown.data('target', target.get(0)).trigger('opened.fndtn.dropdown', [dropdown, target]);
->>>>>>> JointsWP-3
       dropdown.attr('aria-hidden', 'false');
       target.attr('aria-expanded', 'true');
       dropdown.focus();
@@ -2331,12 +2064,6 @@
 
     css : function (dropdown, target) {
       var left_offset = Math.max((target.width() - dropdown.width()) / 2, 8),
-<<<<<<< HEAD
-          settings = target.data(this.attr_name(true) + '-init') || this.settings;
-
-      this.clear_idx();
-
-=======
           settings = target.data(this.attr_name(true) + '-init') || this.settings,
           parentOverflow = dropdown.parent().css('overflow-y') || dropdown.parent().css('overflow');
 
@@ -2344,7 +2071,6 @@
 
 
 
->>>>>>> JointsWP-3
       if (this.small()) {
         var p = this.dirs.bottom.call(dropdown, target, settings);
 
@@ -2356,9 +2082,6 @@
         });
 
         dropdown.css(Foundation.rtl ? 'right' : 'left', left_offset);
-<<<<<<< HEAD
-      } else {
-=======
       }
       // detect if dropdown is in an overflow container
       else if (parentOverflow !== 'visible') {
@@ -2372,7 +2095,6 @@
         dropdown.css(Foundation.rtl ? 'right' : 'left', left_offset);
       }
       else {
->>>>>>> JointsWP-3
 
         this.style(dropdown, target, settings);
       }
@@ -2411,28 +2133,17 @@
         if (document.getElementsByClassName('row')[0]) {
           actualBodyWidth = document.getElementsByClassName('row')[0].clientWidth;
         } else {
-<<<<<<< HEAD
-          actualBodyWidth = window.outerWidth;
-        }
-
-        var actualMarginWidth = (window.outerWidth - actualBodyWidth) / 2;
-=======
           actualBodyWidth = window.innerWidth;
         }
 
         var actualMarginWidth = (window.innerWidth - actualBodyWidth) / 2;
->>>>>>> JointsWP-3
         var actualBoundary = actualBodyWidth;
 
         if (!this.hasClass('mega')) {
           //miss top
           if (t.offset().top <= this.outerHeight()) {
             p.missTop = true;
-<<<<<<< HEAD
-            actualBoundary = window.outerWidth - actualMarginWidth;
-=======
             actualBoundary = window.innerWidth - actualMarginWidth;
->>>>>>> JointsWP-3
             p.leftRightFlag = true;
           }
 
@@ -2612,22 +2323,14 @@
   Foundation.libs.equalizer = {
     name : 'equalizer',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       use_tallest : true,
       before_height_change : $.noop,
       after_height_change : $.noop,
-<<<<<<< HEAD
-      equalize_on_stack : false
-=======
       equalize_on_stack : false,
       act_on_hidden_el: false
->>>>>>> JointsWP-3
     },
 
     init : function (scope, method, options) {
@@ -2644,30 +2347,6 @@
 
     equalize : function (equalizer) {
       var isStacked = false,
-<<<<<<< HEAD
-          vals = equalizer.find('[' + this.attr_name() + '-watch]:visible'),
-          settings = equalizer.data(this.attr_name(true) + '-init');
-
-      if (vals.length === 0) {
-        return;
-      }
-      var firstTopOffset = vals.first().offset().top;
-      settings.before_height_change();
-      equalizer.trigger('before-height-change').trigger('before-height-change.fndth.equalizer');
-      vals.height('inherit');
-      vals.each(function () {
-        var el = $(this);
-        if (el.offset().top !== firstTopOffset) {
-          isStacked = true;
-        }
-      });
-
-      if (settings.equalize_on_stack === false) {
-        if (isStacked) {
-          return;
-        }
-      };
-=======
           group = equalizer.data('equalizer'),
           settings = equalizer.data(this.attr_name(true)+'-init') || this.settings,
           vals,
@@ -2700,7 +2379,6 @@
           return;
         }
       }
->>>>>>> JointsWP-3
 
       var heights = vals.map(function () { return $(this).outerHeight(false) }).get();
 
@@ -2711,25 +2389,15 @@
         var min = Math.min.apply(null, heights);
         vals.css('height', min);
       }
-<<<<<<< HEAD
-      settings.after_height_change();
-      equalizer.trigger('after-height-change').trigger('after-height-change.fndtn.equalizer');
-=======
 
       settings.after_height_change();
       equalizer.trigger('after-height-change.fndtn.equalizer');
->>>>>>> JointsWP-3
     },
 
     reflow : function () {
       var self = this;
 
       this.S('[' + this.attr_name() + ']', this.scope).each(function () {
-<<<<<<< HEAD
-        var $eq_target = $(this);
-        self.image_loaded(self.S('img', this), function () {
-          self.equalize($eq_target)
-=======
         var $eq_target = $(this),
             media_query = $eq_target.data('equalizer-mq'),
             ignore_media_query = true;
@@ -2748,7 +2416,6 @@
             var vals = $eq_target.find('[' + self.attr_name() + '-watch]:visible');
             vals.css('height', 'auto');
           }
->>>>>>> JointsWP-3
         });
       });
     }
@@ -2761,11 +2428,7 @@
   Foundation.libs.interchange = {
     name : 'interchange',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     cache : {},
 
@@ -2809,22 +2472,14 @@
           //   console.log($(this).html(), a, b, c);
           // });
 
-<<<<<<< HEAD
-          if (/IMG/.test(el[0].nodeName)) {
-=======
           if (el !== null && /IMG/.test(el[0].nodeName)) {
->>>>>>> JointsWP-3
             var orig_path = el[0].src;
 
             if (new RegExp(path, 'i').test(orig_path)) {
               return;
             }
 
-<<<<<<< HEAD
-            el[0].src = path;
-=======
             el.attr("src", path);
->>>>>>> JointsWP-3
 
             return trigger(el[0].src);
           }
@@ -2857,12 +2512,7 @@
       this.data_attr = this.set_data_attr();
       $.extend(true, this.settings, method, options);
       this.bindings(method, options);
-<<<<<<< HEAD
-      this.load('images');
-      this.load('nodes');
-=======
       this.reflow();
->>>>>>> JointsWP-3
     },
 
     get_media_hash : function () {
@@ -2900,18 +2550,10 @@
       for (var uuid in cache) {
         if (cache.hasOwnProperty(uuid)) {
           var passed = this.results(uuid, cache[uuid]);
-<<<<<<< HEAD
-
-          if (passed) {
-            this.settings.directives[passed
-              .scenario[1]].call(this, passed.el, passed.scenario[0], (function (passed) {
-                if (arguments[0] instanceof Array) { 
-=======
           if (passed) {
             this.settings.directives[passed
               .scenario[1]].call(this, passed.el, passed.scenario[0], (function (passed) {
                 if (arguments[0] instanceof Array) {
->>>>>>> JointsWP-3
                   var args = arguments[0];
                 } else {
                   var args = Array.prototype.slice.call(arguments, 0);
@@ -3021,11 +2663,7 @@
         this.object($(this['cached_' + type][i]));
       }
 
-<<<<<<< HEAD
-      return $(window).trigger('resize').trigger('resize.fndtn.interchange');
-=======
       return $(window).trigger('resize.fndtn.interchange');
->>>>>>> JointsWP-3
     },
 
     convert_directive : function (directive) {
@@ -3042,10 +2680,6 @@
     parse_scenario : function (scenario) {
       // This logic had to be made more complex since some users were using commas in the url path
       // So we cannot simply just split on a comma
-<<<<<<< HEAD
-      var directive_match = scenario[0].match(/(.+),\s*(\w+)\s*$/),
-      media_query         = scenario[1];
-=======
 
       var directive_match = scenario[0].match(/(.+),\s*(\w+)\s*$/),
       // getting the mq has gotten a bit complicated since we started accounting for several use cases
@@ -3053,26 +2687,18 @@
       // as nested objects or arrays in F6.
       // regex: match everything before close parenthesis for mq
       media_query         = scenario[1].match(/(.*)\)/);
->>>>>>> JointsWP-3
 
       if (directive_match) {
         var path  = directive_match[1],
         directive = directive_match[2];
-<<<<<<< HEAD
-=======
 
->>>>>>> JointsWP-3
       } else {
         var cached_split = scenario[0].split(/,\s*$/),
         path             = cached_split[0],
         directive        = '';
       }
 
-<<<<<<< HEAD
-      return [this.trim(path), this.convert_directive(directive), this.trim(media_query)];
-=======
       return [this.trim(path), this.convert_directive(directive), this.trim(media_query[1])];
->>>>>>> JointsWP-3
     },
 
     object : function (el) {
@@ -3082,19 +2708,12 @@
 
       if (i > 0) {
         while (i--) {
-<<<<<<< HEAD
-          var split = raw_arr[i].split(/\(([^\)]*?)(\))$/);
-
-          if (split.length > 1) {
-            var params = this.parse_scenario(split);
-=======
           // split array between comma delimited content and mq
           // regex: comma, optional space, open parenthesis
           var scenario = raw_arr[i].split(/,\s?\(/);
 
           if (scenario.length > 1) {
             var params = this.parse_scenario(scenario);
->>>>>>> JointsWP-3
             scenarios.push(params);
           }
         }
@@ -3112,10 +2731,6 @@
       }
 
       el.attr(this.add_namespace('data-uuid'), uuid);
-<<<<<<< HEAD
-
-=======
->>>>>>> JointsWP-3
       return this.cache[uuid] = scenarios;
     },
 
@@ -3175,11 +2790,7 @@
   Foundation.libs.joyride = {
     name : 'joyride',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     defaults : {
       expose                   : false,     // turn on or off the expose feature
@@ -4110,11 +3721,7 @@
   Foundation.libs['magellan-expedition'] = {
     name : 'magellan-expedition',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       active_class : 'active',
@@ -4142,40 +3749,6 @@
 
       S(self.scope)
         .off('.magellan')
-<<<<<<< HEAD
-        .on('click.fndtn.magellan', '[' + self.add_namespace('data-magellan-arrival') + '] a[href^="#"]', function (e) {
-          e.preventDefault();
-          var expedition = $(this).closest('[' + self.attr_name() + ']'),
-              settings = expedition.data('magellan-expedition-init'),
-              hash = this.hash.split('#').join(''),
-              target = $('a[name="' + hash + '"]');
-
-          if (target.length === 0) {
-            target = $('#' + hash);
-
-          }
-
-          // Account for expedition height if fixed position
-          var scroll_top = target.offset().top - settings.destination_threshold + 1;
-          if (settings.offset_by_height) {
-            scroll_top = scroll_top - expedition.outerHeight();
-          }
-
-          $('html, body').stop().animate({
-            'scrollTop' : scroll_top
-          }, settings.duration, settings.easing, function () {
-            if (history.pushState) {
-              history.pushState(null, null, '#' + hash);
-            } else {
-              location.hash = '#' + hash;
-            }
-          });
-        })
-        .on('scroll.fndtn.magellan', self.throttle(this.check_for_arrivals.bind(this), settings.throttle_delay));
-
-      $(window)
-        .on('resize.fndtn.magellan', self.throttle(this.set_expedition_position.bind(this), settings.throttle_delay));
-=======
         .on('click.fndtn.magellan', '[' + self.add_namespace('data-magellan-arrival') + '] a[href*=#]', function (e) {
           var sameHost = ((this.hostname === location.hostname) || !this.hostname),
               samePath = self.filterPathname(location.pathname) === self.filterPathname(this.pathname),
@@ -4212,7 +3785,6 @@
           }
         })
         .on('scroll.fndtn.magellan', self.throttle(this.check_for_arrivals.bind(this), settings.throttle_delay));
->>>>>>> JointsWP-3
     },
 
     check_for_arrivals : function () {
@@ -4343,8 +3915,6 @@
       this.S(window).off('.magellan');
     },
 
-<<<<<<< HEAD
-=======
     filterPathname : function (pathname) {
       pathname = pathname || '';
       return pathname
@@ -4353,7 +3923,6 @@
           .replace(/\/$/,'');
     },
 
->>>>>>> JointsWP-3
     reflow : function () {
       var self = this;
       // remove placeholder expeditions used for height calculation purposes
@@ -4368,11 +3937,7 @@
   Foundation.libs.offcanvas = {
     name : 'offcanvas',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       open_method : 'move',
@@ -4479,21 +4044,13 @@
 
     show : function (class_name, $off_canvas) {
       $off_canvas = $off_canvas || this.get_wrapper();
-<<<<<<< HEAD
-      $off_canvas.trigger('open').trigger('open.fndtn.offcanvas');
-=======
       $off_canvas.trigger('open.fndtn.offcanvas');
->>>>>>> JointsWP-3
       $off_canvas.addClass(class_name);
     },
 
     hide : function (class_name, $off_canvas) {
       $off_canvas = $off_canvas || this.get_wrapper();
-<<<<<<< HEAD
-      $off_canvas.trigger('close').trigger('close.fndtn.offcanvas');
-=======
       $off_canvas.trigger('close.fndtn.offcanvas');
->>>>>>> JointsWP-3
       $off_canvas.removeClass(class_name);
     },
 
@@ -4936,11 +4493,7 @@
   Foundation.libs.orbit = {
     name : 'orbit',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       animation : 'slide',
@@ -5014,11 +4567,7 @@
   Foundation.libs.reveal = {
     name : 'reveal',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     locked : false,
 
@@ -5035,10 +4584,7 @@
       opened : function(){},
       close : function(){},
       closed : function(){},
-<<<<<<< HEAD
-=======
       on_ajax_error: $.noop,
->>>>>>> JointsWP-3
       bg : $('.reveal-modal-bg'),
       css : {
         open : {
@@ -5070,12 +4616,8 @@
 
           if (!self.locked) {
             var element = S(this),
-<<<<<<< HEAD
-                ajax = element.data(self.data_attr('reveal-ajax'));
-=======
                 ajax = element.data(self.data_attr('reveal-ajax')),
                 replaceContentSel = element.data(self.data_attr('reveal-replace-content'));
->>>>>>> JointsWP-3
 
             self.locked = true;
 
@@ -5083,12 +4625,7 @@
               self.open.call(self, element);
             } else {
               var url = ajax === true ? element.attr('href') : ajax;
-<<<<<<< HEAD
-
-              self.open.call(self, element, {url : url});
-=======
               self.open.call(self, element, {url : url}, { replaceContentSel : replaceContentSel });
->>>>>>> JointsWP-3
             }
           }
         });
@@ -5109,11 +4646,7 @@
             }
 
             self.locked = true;
-<<<<<<< HEAD
-            self.close.call(self, bg_clicked ? S('[' + self.attr_name() + '].open') : S(this).closest('[' + self.attr_name() + ']'));
-=======
             self.close.call(self, bg_clicked ? S('[' + self.attr_name() + '].open:not(.toback)') : S(this).closest('[' + self.attr_name() + ']'));
->>>>>>> JointsWP-3
           }
         });
 
@@ -5184,10 +4717,7 @@
       var settings = modal.data(self.attr_name(true) + '-init');
       settings = settings || this.settings;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> JointsWP-3
       if (modal.hasClass('open') && target.attr('data-reveal-id') == modal.attr('id')) {
         return self.close(modal);
       }
@@ -5200,10 +4730,6 @@
             .data('offset', this.cache_offset(modal));
         }
 
-<<<<<<< HEAD
-        this.key_up_on(modal);    // PATCH #3: turning on key up capture only when a reveal window is open
-
-=======
         modal.attr('tabindex','0').attr('aria-hidden','false');
 
         this.key_up_on(modal);    // PATCH #3: turning on key up capture only when a reveal window is open
@@ -5213,7 +4739,6 @@
           if (e.namespace !== 'fndtn.reveal') return;
         });
 
->>>>>>> JointsWP-3
         modal.on('open.fndtn.reveal').trigger('open.fndtn.reveal');
 
         if (open_modal.length < 1) {
@@ -5229,25 +4754,15 @@
         if (typeof ajax_settings === 'undefined' || !ajax_settings.url) {
           if (open_modal.length > 0) {
             if (settings.multiple_opened) {
-<<<<<<< HEAD
-              this.to_back(open_modal);
-            } else {
-              this.hide(open_modal, settings.css.close);
-=======
               self.to_back(open_modal);
             } else {
               self.hide(open_modal, settings.css.close);
->>>>>>> JointsWP-3
             }
           }
 
           this.show(modal, settings.css.open);
         } else {
           var old_success = typeof ajax_settings.success !== 'undefined' ? ajax_settings.success : null;
-<<<<<<< HEAD
-
-=======
->>>>>>> JointsWP-3
           $.extend(ajax_settings, {
             success : function (data, textStatus, jqXHR) {
               if ( $.isFunction(old_success) ) {
@@ -5257,38 +4772,26 @@
                 }
               }
 
-<<<<<<< HEAD
-              modal.html(data);
-=======
               if (typeof options !== 'undefined' && typeof options.replaceContentSel !== 'undefined') {
                 modal.find(options.replaceContentSel).html(data);
               } else {
                 modal.html(data);
               }
 
->>>>>>> JointsWP-3
               self.S(modal).foundation('section', 'reflow');
               self.S(modal).children().foundation();
 
               if (open_modal.length > 0) {
                 if (settings.multiple_opened) {
-<<<<<<< HEAD
-                  this.to_back(open_modal);
-                } else {
-                  this.hide(open_modal, settings.css.close);
-=======
                   self.to_back(open_modal);
                 } else {
                   self.hide(open_modal, settings.css.close);
->>>>>>> JointsWP-3
                 }
               }
               self.show(modal, settings.css.open);
             }
           });
 
-<<<<<<< HEAD
-=======
           // check for if user initalized with error callback
           if (settings.on_ajax_error !== $.noop) {
             $.extend(ajax_settings, {
@@ -5296,7 +4799,6 @@
             });
           }
 
->>>>>>> JointsWP-3
           $.ajax(ajax_settings);
         }
       }
@@ -5306,25 +4808,6 @@
     close : function (modal) {
       var modal = modal && modal.length ? modal : this.S(this.scope),
           open_modals = this.S('[' + this.attr_name() + '].open'),
-<<<<<<< HEAD
-          settings = modal.data(this.attr_name(true) + '-init') || this.settings;
-
-      if (open_modals.length > 0) {
-        this.locked = true;
-        this.key_up_off(modal);   // PATCH #3: turning on key up capture only when a reveal window is open
-        modal.trigger('close').trigger('close.fndtn.reveal');
-        
-        if ((settings.multiple_opened && open_modals.length === 1) || !settings.multiple_opened || modal.length > 1) {
-          this.toggle_bg(modal, false);
-          this.to_front(modal);
-        }
-        
-        if (settings.multiple_opened) {
-          this.hide(modal, settings.css.close, settings);
-          this.to_front($($.makeArray(open_modals).reverse()[1]));
-        } else {
-          this.hide(open_modals, settings.css.close, settings);
-=======
           settings = modal.data(this.attr_name(true) + '-init') || this.settings,
           self = this;
 
@@ -5347,7 +4830,6 @@
           self.to_front($($.makeArray(open_modals).reverse()[1]));
         } else {
           self.hide(open_modals, settings.css.close, settings);
->>>>>>> JointsWP-3
         }
       }
     },
@@ -5382,12 +4864,8 @@
       // is modal
       if (css) {
         var settings = el.data(this.attr_name(true) + '-init') || this.settings,
-<<<<<<< HEAD
-            root_element = settings.root_element;
-=======
             root_element = settings.root_element,
             context = this;
->>>>>>> JointsWP-3
 
         if (el.parent(root_element).length === 0) {
           var placeholder = el.wrap('<div style="display: none;" />').parent();
@@ -5415,19 +4893,11 @@
             return el
               .css(css)
               .animate(end_css, settings.animation_speed, 'linear', function () {
-<<<<<<< HEAD
-                this.locked = false;
-                el.trigger('opened').trigger('opened.fndtn.reveal');
-              }.bind(this))
-              .addClass('open');
-          }.bind(this), settings.animation_speed / 2);
-=======
                 context.locked = false;
                 el.trigger('opened.fndtn.reveal');
               })
               .addClass('open');
           }, settings.animation_speed / 2);
->>>>>>> JointsWP-3
         }
 
         if (animData.fade) {
@@ -5438,16 +4908,6 @@
             return el
               .css(css)
               .animate(end_css, settings.animation_speed, 'linear', function () {
-<<<<<<< HEAD
-                this.locked = false;
-                el.trigger('opened').trigger('opened.fndtn.reveal');
-              }.bind(this))
-              .addClass('open');
-          }.bind(this), settings.animation_speed / 2);
-        }
-
-        return el.css(css).show().css({opacity : 1}).addClass('open').trigger('opened').trigger('opened.fndtn.reveal');
-=======
                 context.locked = false;
                 el.trigger('opened.fndtn.reveal');
               })
@@ -5456,7 +4916,6 @@
         }
 
         return el.css(css).show().css({opacity : 1}).addClass('open').trigger('opened.fndtn.reveal');
->>>>>>> JointsWP-3
       }
 
       var settings = this.settings;
@@ -5470,19 +4929,11 @@
 
       return el.show();
     },
-<<<<<<< HEAD
-    
-    to_back : function(el) {
-      el.addClass('toback');
-    },
-    
-=======
 
     to_back : function(el) {
       el.addClass('toback');
     },
 
->>>>>>> JointsWP-3
     to_front : function(el) {
       el.removeClass('toback');
     },
@@ -5490,12 +4941,8 @@
     hide : function (el, css) {
       // is modal
       if (css) {
-<<<<<<< HEAD
-        var settings = el.data(this.attr_name(true) + '-init');
-=======
         var settings = el.data(this.attr_name(true) + '-init'),
             context = this;
->>>>>>> JointsWP-3
         settings = settings || this.settings;
 
         var animData = getAnimationData(settings.animation);
@@ -5511,19 +4958,11 @@
           return setTimeout(function () {
             return el
               .animate(end_css, settings.animation_speed, 'linear', function () {
-<<<<<<< HEAD
-                this.locked = false;
-                el.css(css).trigger('closed').trigger('closed.fndtn.reveal');
-              }.bind(this))
-              .removeClass('open');
-          }.bind(this), settings.animation_speed / 2);
-=======
                 context.locked = false;
                 el.css(css).trigger('closed.fndtn.reveal');
               })
               .removeClass('open');
           }, settings.animation_speed / 2);
->>>>>>> JointsWP-3
         }
 
         if (animData.fade) {
@@ -5532,16 +4971,6 @@
           return setTimeout(function () {
             return el
               .animate(end_css, settings.animation_speed, 'linear', function () {
-<<<<<<< HEAD
-                this.locked = false;
-                el.css(css).trigger('closed').trigger('closed.fndtn.reveal');
-              }.bind(this))
-              .removeClass('open');
-          }.bind(this), settings.animation_speed / 2);
-        }
-
-        return el.hide().css(css).removeClass('open').trigger('closed').trigger('closed.fndtn.reveal');
-=======
                 context.locked = false;
                 el.css(css).trigger('closed.fndtn.reveal');
               })
@@ -5550,7 +4979,6 @@
         }
 
         return el.hide().css(css).removeClass('open').trigger('closed.fndtn.reveal');
->>>>>>> JointsWP-3
       }
 
       var settings = this.settings;
@@ -5600,11 +5028,7 @@
     },
 
     cache_offset : function (modal) {
-<<<<<<< HEAD
-      var offset = modal.show().height() + parseInt(modal.css('top'), 10);
-=======
       var offset = modal.show().height() + parseInt(modal.css('top'), 10) + modal.scrollY;
->>>>>>> JointsWP-3
 
       modal.hide();
 
@@ -5642,11 +5066,7 @@
   Foundation.libs.slider = {
     name : 'slider',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       start : 0,
@@ -5705,8 +5125,6 @@
         .on('resize.fndtn.slider', self.throttle(function (e) {
           self.reflow();
         }, 300));
-<<<<<<< HEAD
-=======
 
       // update slider value as users change input value
       this.S('[' + this.attr_name() + ']').each(function () {
@@ -5725,7 +5143,6 @@
           });
         }
       });
->>>>>>> JointsWP-3
     },
 
     get_cursor_position : function (e, xy) {
@@ -5802,19 +5219,11 @@
         $handle.siblings('.range-slider-active-segment').css('width', progress_bar_length + '%');
       }
 
-<<<<<<< HEAD
-      $handle_parent.attr(this.attr_name(), value).trigger('change').trigger('change.fndtn.slider');
-
-      $hidden_inputs.val(value);
-      if (settings.trigger_input_change) {
-          $hidden_inputs.trigger('change');
-=======
       $handle_parent.attr(this.attr_name(), value).trigger('change.fndtn.slider');
 
       $hidden_inputs.val(value);
       if (settings.trigger_input_change) {
           $hidden_inputs.trigger('change.fndtn.slider');
->>>>>>> JointsWP-3
       }
 
       if (!$handle[0].hasAttribute('aria-valuemin')) {
@@ -5827,11 +5236,7 @@
 
       if (settings.display_selector != '') {
         $(settings.display_selector).each(function () {
-<<<<<<< HEAD
-          if (this.hasOwnProperty('value')) {
-=======
           if (this.hasAttribute('value')) {
->>>>>>> JointsWP-3
             $(this).val(value);
           } else {
             $(this).text(value);
@@ -5898,11 +5303,7 @@
       }
 
       $.data(handle, 'bar', $(handle).parent());
-<<<<<<< HEAD
-      $.data(handle, 'settings', settings);
-=======
       return $.data(handle, 'settings', settings);
->>>>>>> JointsWP-3
     },
 
     set_initial_position : function ($ele) {
@@ -5947,11 +5348,7 @@
   Foundation.libs.tab = {
     name : 'tab',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       active_class : 'active',
@@ -5967,65 +5364,36 @@
       var self = this,
           S = this.S;
 
-<<<<<<< HEAD
-      this.bindings(method, options);
-=======
 	  // Store the default active tabs which will be referenced when the
 	  // location hash is absent, as in the case of navigating the tabs and
 	  // returning to the first viewing via the browser Back button.
 	  S('[' + this.attr_name() + '] > .active > a', this.scope).each(function () {
 	    self.default_tab_hashes.push(this.hash);
 	  });
->>>>>>> JointsWP-3
 
       // store the initial href, which is used to allow correct behaviour of the
       // browser back button when deep linking is turned on.
       self.entry_location = window.location.href;
 
-<<<<<<< HEAD
-      this.handle_location_hash_change();
-
-      // Store the default active tabs which will be referenced when the
-      // location hash is absent, as in the case of navigating the tabs and
-      // returning to the first viewing via the browser Back button.
-      S('[' + this.attr_name() + '] > .active > a', this.scope).each(function () {
-        self.default_tab_hashes.push(this.hash);
-      });
-=======
       this.bindings(method, options);
       this.handle_location_hash_change();
->>>>>>> JointsWP-3
     },
 
     events : function () {
       var self = this,
           S = this.S;
 
-<<<<<<< HEAD
-      var usual_tab_behavior =  function (e) {
-          var settings = S(this).closest('[' + self.attr_name() + ']').data(self.attr_name(true) + '-init');
-          if (!settings.is_hover || Modernizr.touch) {
-            e.preventDefault();
-            e.stopPropagation();
-            self.toggle_active_tab(S(this).parent());
-=======
       var usual_tab_behavior =  function (e, target) {
           var settings = S(target).closest('[' + self.attr_name() + ']').data(self.attr_name(true) + '-init');
           if (!settings.is_hover || Modernizr.touch) {
             e.preventDefault();
             e.stopPropagation();
             self.toggle_active_tab(S(target).parent());
->>>>>>> JointsWP-3
           }
         };
 
       S(this.scope)
         .off('.tab')
-<<<<<<< HEAD
-        // Click event: tab title
-        .on('focus.fndtn.tab', '[' + this.attr_name() + '] > * > a', usual_tab_behavior )
-        .on('click.fndtn.tab', '[' + this.attr_name() + '] > * > a', usual_tab_behavior )
-=======
         // Key event: focus/tab key
         .on('keydown.fndtn.tab', '[' + this.attr_name() + '] > * > a', function(e) {
           var el = this;
@@ -6042,7 +5410,6 @@
           var el = this;
           usual_tab_behavior(e, el);
         })
->>>>>>> JointsWP-3
         // Hover event: tab title
         .on('mouseenter.fndtn.tab', '[' + this.attr_name() + '] > * > a', function (e) {
           var settings = S(this).closest('[' + self.attr_name() + ']').data(self.attr_name(true) + '-init');
@@ -6167,13 +5534,8 @@
           };
 
       // allow usage of data-tab-content attribute instead of href
-<<<<<<< HEAD
-      if (S(this).data(this.data_attr('tab-content'))) {
-        target_hash = '#' + S(this).data(this.data_attr('tab-content')).split('#')[1];
-=======
       if (anchor.data('tab-content')) {
         target_hash = '#' + anchor.data('tab-content').split('#')[1];
->>>>>>> JointsWP-3
         target = S(target_hash);
       }
 
@@ -6210,13 +5572,8 @@
       target.siblings().removeClass(settings.active_class).attr({'aria-hidden' : 'true',  tabindex : -1});
       target.addClass(settings.active_class).attr('aria-hidden', 'false').removeAttr('tabindex');
       settings.callback(tab);
-<<<<<<< HEAD
-      target.triggerHandler('toggled', [tab]);
-      tabs.triggerHandler('toggled', [target]);
-=======
       target.triggerHandler('toggled', [target]);
       tabs.triggerHandler('toggled', [tab]);
->>>>>>> JointsWP-3
 
       tab_link.off('keydown').on('keydown', interpret_keyup_action );
     },
@@ -6241,11 +5598,7 @@
   Foundation.libs.tooltip = {
     name : 'tooltip',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-=======
     version : '5.5.2',
->>>>>>> JointsWP-3
 
     settings : {
       additional_inheritable_classes : [],
@@ -6298,8 +5651,6 @@
 
       self.create(this.S(instance));
 
-<<<<<<< HEAD
-=======
       function _startShow(elt, $this, immediate) {
         if (elt.timer) {
           return;
@@ -6325,7 +5676,6 @@
         self.hide($this);
       }
 
->>>>>>> JointsWP-3
       $(this.scope)
         .off('.tooltip')
         .on('mouseenter.fndtn.tooltip mouseleave.fndtn.tooltip touchstart.fndtn.tooltip MSPointerDown.fndtn.tooltip',
@@ -6341,11 +5691,7 @@
           if (/mouse/i.test(e.type) && self.ie_touch(e)) {
             return false;
           }
-<<<<<<< HEAD
-
-=======
           
->>>>>>> JointsWP-3
           if ($this.hasClass('open')) {
             if (Modernizr.touch && /touchstart|MSPointerDown/i.test(e.type)) {
               e.preventDefault();
@@ -6358,19 +5704,6 @@
               e.preventDefault();
               S(settings.tooltip_class + '.open').hide();
               is_touch = true;
-<<<<<<< HEAD
-            }
-
-            if (/enter|over/i.test(e.type)) {
-              this.timer = setTimeout(function () {
-                var tip = self.showTip($this);
-              }.bind(this), self.settings.hover_delay);
-            } else if (e.type === 'mouseout' || e.type === 'mouseleave') {
-              clearTimeout(this.timer);
-              self.hide($this);
-            } else {
-              self.showTip($this);
-=======
               // close other open tooltips on touch
               if ($('.open[' + self.attr_name() + ']').length > 0) {
                var prevOpen = S($('.open[' + self.attr_name() + ']')[0]);
@@ -6385,7 +5718,6 @@
               _startHide(this, $this);
             } else {
               _startShow(this, $this, true);
->>>>>>> JointsWP-3
             }
           }
         })
@@ -6399,19 +5731,11 @@
           } else if ($(this).data('tooltip-open-event-type') == 'mouse' && /MSPointerDown|touchstart/i.test(e.type)) {
             self.convert_to_touch($(this));
           } else {
-<<<<<<< HEAD
-            self.hide($(this));
-          }
-        })
-        .on('DOMNodeRemoved DOMAttrModified', '[' + this.attr_name() + ']:not(a)', function (e) {
-          self.hide(S(this));
-=======
             _startHide(this, $(this));
           }
         })
         .on('DOMNodeRemoved DOMAttrModified', '[' + this.attr_name() + ']:not(a)', function (e) {
           _startHide(this, S(this));
->>>>>>> JointsWP-3
         });
     },
 
@@ -6441,27 +5765,16 @@
     },
 
     selector : function ($target) {
-<<<<<<< HEAD
-      var id = $target.attr('id'),
-          dataSelector = $target.attr(this.attr_name()) || $target.attr('data-selector');
-
-      if ((id && id.length < 1 || !id) && typeof dataSelector != 'string') {
-=======
       var dataSelector = $target.attr(this.attr_name()) || $target.attr('data-selector');
 
       if (typeof dataSelector != 'string') {
->>>>>>> JointsWP-3
         dataSelector = this.random_str(6);
         $target
           .attr('data-selector', dataSelector)
           .attr('aria-describedby', dataSelector);
       }
 
-<<<<<<< HEAD
-      return (id && id.length > 0) ? id : dataSelector;
-=======
       return dataSelector;
->>>>>>> JointsWP-3
     },
 
     create : function ($target) {
@@ -6525,9 +5838,6 @@
           nub.addClass('rtl');
           left = target.offset().left + target.outerWidth() - tip.outerWidth();
         }
-<<<<<<< HEAD
-        objPos(tip, (target.offset().top + target.outerHeight() + 10), 'auto', 'auto', left);
-=======
 
         objPos(tip, (target.offset().top + target.outerHeight() + 10), 'auto', 'auto', left);
         // reset nub from small styles, if they've been applied
@@ -6535,7 +5845,6 @@
           nub.removeAttr('style');
         }
         
->>>>>>> JointsWP-3
         tip.removeClass('tip-override');
         if (classes && classes.indexOf('tip-top') > -1) {
           if (Foundation.rtl) {
@@ -6604,10 +5913,6 @@
 
     hide : function ($target) {
       var $tip = this.getTip($target);
-<<<<<<< HEAD
-
-=======
->>>>>>> JointsWP-3
       $tip.fadeOut(150, function () {
         $tip.find('.tap-to-close').remove();
         $tip.off('click.fndtn.tooltip.tapclose MSPointerDown.fndtn.tapclose');
@@ -6633,30 +5938,19 @@
   Foundation.libs.topbar = {
     name : 'topbar',
 
-<<<<<<< HEAD
-    version : '5.5.1',
-
-    settings : {
-      index : 0,
-=======
     version : '5.5.2',
 
     settings : {
       index : 0,
       start_offset : 0,
->>>>>>> JointsWP-3
       sticky_class : 'sticky',
       custom_back_text : true,
       back_text : 'Back',
       mobile_show_parent_link : true,
       is_hover : true,
       scrolltop : true, // jump to top when sticky nav menu toggle is clicked
-<<<<<<< HEAD
-      sticky_on : 'all'
-=======
       sticky_on : 'all',
       dropdown_autoclose: true
->>>>>>> JointsWP-3
     },
 
     init : function (section, method, options) {
@@ -6707,26 +6001,6 @@
       var smallMatch = matchMedia(Foundation.media_queries.small).matches;
       var medMatch   = matchMedia(Foundation.media_queries.medium).matches;
       var lrgMatch   = matchMedia(Foundation.media_queries.large).matches;
-<<<<<<< HEAD
-      
-       if (sticky && settings.sticky_on === 'all') {
-          return true;
-       }
-       if (sticky && this.small() && settings.sticky_on.indexOf('small') !== -1) {
-           if (smallMatch && !medMatch && !lrgMatch) { return true; }
-       }
-       if (sticky && this.medium() && settings.sticky_on.indexOf('medium') !== -1) {
-           if (smallMatch && medMatch && !lrgMatch) { return true; }
-       }
-       if (sticky && this.large() && settings.sticky_on.indexOf('large') !== -1) {
-           if (smallMatch && medMatch && lrgMatch) { return true; }
-       }
-
-       // fix for iOS browsers
-       if (sticky && navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-        return true;
-       }
-=======
 
       if (sticky && settings.sticky_on === 'all') {
         return true;
@@ -6741,7 +6015,6 @@
         if (smallMatch && medMatch && lrgMatch) { return true; }
       }
 
->>>>>>> JointsWP-3
        return false;
     },
 
@@ -6825,13 +6098,6 @@
           e.preventDefault();
           self.toggle(this);
         })
-<<<<<<< HEAD
-        .on('click.fndtn.topbar', '.top-bar .top-bar-section li a[href^="#"],[' + this.attr_name() + '] .top-bar-section li a[href^="#"]', function (e) {
-            var li = $(this).closest('li');
-            if (self.breakpoint() && !li.hasClass('back') && !li.hasClass('has-dropdown')) {
-              self.toggle();
-            }
-=======
         .on('click.fndtn.topbar contextmenu.fndtn.topbar', '.top-bar .top-bar-section li a[href^="#"],[' + this.attr_name() + '] .top-bar-section li a[href^="#"]', function (e) {
             var li = $(this).closest('li'),
                 topbar = li.closest('[' + self.attr_name() + ']'),
@@ -6845,7 +6111,6 @@
               self.toggle();
             }
 
->>>>>>> JointsWP-3
         })
         .on('click.fndtn.topbar', '[' + this.attr_name() + '] li.has-dropdown', function (e) {
           var li = S(this),
@@ -6914,11 +6179,7 @@
 
       S(window).off('.topbar').on('resize.fndtn.topbar', self.throttle(function () {
           self.resize.call(self);
-<<<<<<< HEAD
-      }, 50)).trigger('resize').trigger('resize.fndtn.topbar').load(function () {
-=======
       }, 50)).trigger('resize.fndtn.topbar').load(function () {
->>>>>>> JointsWP-3
           // Ensure that the offset is calculated after all of the pages resources have loaded
           S(this).trigger('resize.fndtn.topbar');
       });
@@ -7051,11 +6312,7 @@
         if (!$dropdown.find('.title.back').length) {
 
           if (settings.mobile_show_parent_link == true && url) {
-<<<<<<< HEAD
-            $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li><li class="parent-link hide-for-large-up"><a class="parent-link js-generated" href="' + url + '">' + $link.html() +'</a></li>');
-=======
             $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5></li><li class="parent-link hide-for-medium-up"><a class="parent-link js-generated" href="' + url + '">' + $link.html() +'</a></li>');
->>>>>>> JointsWP-3
           } else {
             $titleLi = $('<li class="title back js-generated"><h5><a href="javascript:void(0)"></a></h5>');
           }
@@ -7107,13 +6364,8 @@
           $window = this.S(window),
           self = this;
 
-<<<<<<< HEAD
-      if (self.settings.sticky_topbar && self.is_sticky(this.settings.sticky_topbar, this.settings.sticky_topbar.parent(), this.settings)) {
-        var distance = this.settings.sticky_topbar.data('stickyoffset');
-=======
       if (self.settings.sticky_topbar && self.is_sticky(this.settings.sticky_topbar,this.settings.sticky_topbar.parent(), this.settings)) {
         var distance = this.settings.sticky_topbar.data('stickyoffset') + this.settings.start_offset;
->>>>>>> JointsWP-3
         if (!self.S(klass).hasClass('expanded')) {
           if ($window.scrollTop() > (distance)) {
             if (!self.S(klass).hasClass('fixed')) {
