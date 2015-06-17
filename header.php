@@ -40,5 +40,4 @@
 							  To see additional nav styles, visit the /parts directory -->
 						 <?php get_template_part( 'parts/nav', 'top-offcanvas' ); ?>
 								 	
-						</div> <!-- end #inner-header -->
 					</header> <!-- end .header -->
