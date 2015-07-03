@@ -1,7 +1,7 @@
 {
   "name": "JointsWP-sass",
-  "version": "1.0.0",
-  "description": "THIS VERSION IS NOT FOR PRODUCTION - YET. PLEASE USE THE MASTER VERSION FOR NOW.",
+  "version": "3.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,6 +25,7 @@
     "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.0.1",
+    "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.5",
     "jshint-stylish": "^2.0.0"
