@@ -1,31 +1,11 @@
 /******************************************************************
-Theme Name: JointsWP (Sass)
+Theme Name: JointsWP
 Theme URI: http://www.jointswp.com
 Description: 
 Author: Your Name Here
 Author URI: http://www.yoururlhere.com
-Version: 1.5 (Sass)
-Tags: 
-
-Foundation Version: 5.3
-
-------------------------------------------------------------------
-
-This theme uses Sass.
-You will find the .scss files in the /library/scss directory.
-Those files compile to the styles.css found in the library/css directory.
-
-Reccomended tools for working with Sass:
-Recommended
-CodeKit: (Best)
-http://incident57.com/codekit/
-
-Compass App: (Windows / Mac Users)
-http://compass.handlino.com/
-
----------------------------------------------------------------
-
-Because this file is not being used for styles,
-feel free to use it to leave notes to yourself.
-
+Version: 3.0
+License: GNU General Public License & MIT
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: Sass
 ******************************************************************/

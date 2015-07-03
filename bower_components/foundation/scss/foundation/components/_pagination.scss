@@ -2,7 +2,7 @@
 // foundation.zurb.com
 // Licensed under MIT Open Source
 
-@import "global";
+@import 'global';
 
 //
 // @variables
@@ -16,23 +16,23 @@ $pagination-margin: rem-calc(-5) !default;
 // We use these to set the list-item properties
 $pagination-li-float: $default-float !default;
 $pagination-li-height: rem-calc(24) !default;
-$pagination-li-font-color: #222 !default;
+$pagination-li-font-color: $jet !default;
 $pagination-li-font-size: rem-calc(14) !default;
 $pagination-li-margin: rem-calc(5) !default;
 
 // We use these for the pagination anchor links
 $pagination-link-pad: rem-calc(1 10 1) !default;
-$pagination-link-font-color: #999 !default;
-$pagination-link-active-bg: scale-color(#fff, $lightness: -10%) !default;
+$pagination-link-font-color: $aluminum !default;
+$pagination-link-active-bg: scale-color($white, $lightness: -10%) !default;
 
 // We use these for disabled anchor links
 $pagination-link-unavailable-cursor: default !default;
-$pagination-link-unavailable-font-color: #999 !default;
+$pagination-link-unavailable-font-color: $aluminum !default;
 $pagination-link-unavailable-bg-active: transparent !default;
 
 // We use these for currently selected anchor links
 $pagination-link-current-background: $primary-color !default;
-$pagination-link-current-font-color: #fff !default;
+$pagination-link-current-font-color: $white !default;
 $pagination-link-current-font-weight: $font-weight-bold !default;
 $pagination-link-current-cursor: default !default;
 $pagination-link-current-active-bg: $primary-color !default;
@@ -48,12 +48,16 @@ $pagination-link-current-active-bg: $primary-color !default;
 // @mixins
 // Style unavailable list items
 @mixin pagination-unavailable-item {
-  a {
+  a, button {
     cursor: $pagination-link-unavailable-cursor;
     color: $pagination-link-unavailable-font-color;
   }
   &:hover a,
-  & a:focus { background: $pagination-link-unavailable-bg-active; }
+  & a:focus,
+
+  &:hover button,
+  & button:focus
+  { background: $pagination-link-unavailable-bg-active; }
 }
 // @mixins
 // Style the current list item. Do not assume that the current item has
@@ -61,22 +65,22 @@ $pagination-link-current-active-bg: $primary-color !default;
 // $has-anchor - Default: true, Options: false
 @mixin pagination-current-item($has-anchor: true) {
   @if $has-anchor {
-    a {
+    a, button {
       background: $pagination-link-current-background;
       color: $pagination-link-current-font-color;
-      font-weight: $pagination-link-current-font-weight;
       cursor: $pagination-link-current-cursor;
+      font-weight: $pagination-link-current-font-weight;
 
       &:hover,
       &:focus { background: $pagination-link-current-active-bg; }
     }
   } @else {
-    height: auto;
-    padding: $pagination-link-pad;
     background: $pagination-link-current-background;
     color: $pagination-link-current-font-color;
-    font-weight: $pagination-link-current-font-weight;
     cursor: $pagination-link-current-cursor;
+    font-weight: $pagination-link-current-font-weight;
+    height: auto;
+    padding: $pagination-link-pad;
     @include radius;
 
     &:hover,
@@ -94,24 +98,32 @@ $pagination-link-current-active-bg: $primary-color !default;
 
   @if $base-style {
     display: block;
-    min-height: $pagination-height;
     margin-#{$default-float}: $pagination-margin;
+    min-height: $pagination-height;
 
     li {
-      height: $pagination-li-height;
       color: $pagination-li-font-color;
       font-size: $pagination-li-font-size;
+      height: $pagination-li-height;
       margin-#{$default-float}: $pagination-li-margin;
 
-      a {
-        display: block;
-        padding: $pagination-link-pad;
-        color: $pagination-link-font-color;
+      a, button {
         @include radius;
+        @include single-transition(background-color);
+        background: none;
+        color: $pagination-link-font-color;
+        display: block;
+        font-size: 1em;
+        font-weight: normal;
+        line-height: inherit;
+        padding: $pagination-link-pad;
       }
 
       &:hover a,
-      a:focus { background: $pagination-link-active-bg; }
+      a:focus,
+      &:hover button,
+      button:focus
+      { background: $pagination-link-active-bg; }
 
       @if $use-default-classes {
         &.unavailable { @include pagination-unavailable-item(); }
@@ -123,11 +135,11 @@ $pagination-link-current-active-bg: $primary-color !default;
   // Left or center align the li elements
   li {
     @if $center {
-      float: none;
       display: inline-block;
+      float: none;
     } @else {
-      float: $pagination-li-float;
       display: block;
+      float: $pagination-li-float;
     }
   }
 }

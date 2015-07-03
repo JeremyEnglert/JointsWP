@@ -1,4 +1,8 @@
-@import "global";
+// Foundation by ZURB
+// foundation.zurb.com
+// Licensed under MIT Open Source
+
+@import 'global';
 
 //
 // @name _tables.scss
@@ -12,18 +16,18 @@
 $include-html-table-classes: $include-html-classes !default;
 
 // These control the background color for the table and even rows
-$table-bg: #fff !default;
-$table-even-row-bg: #f9f9f9 !default;
+$table-bg: $white !default;
+$table-even-row-bg: $snow !default;
 
 // These control the table cell border style
 $table-border-style: solid !default;
 $table-border-size: 1px !default;
-$table-border-color: #ddd !default;
+$table-border-color: $gainsboro !default;
 
 // These control the table head styles
-$table-head-bg: #f5f5f5 !default;
+$table-head-bg: $white-smoke !default;
 $table-head-font-size: rem-calc(14) !default;
-$table-head-font-color: #222 !default;
+$table-head-font-color: $jet !default;
 $table-head-font-weight: $font-weight-bold !default;
 $table-head-padding: rem-calc(8 10 10) !default;
 
@@ -43,10 +47,11 @@ $table-caption-font-weight: bold !default;
 // These control the row padding and font styles
 $table-row-padding: rem-calc(9 10) !default;
 $table-row-font-size: rem-calc(14) !default;
-$table-row-font-color: #222 !default;
+$table-row-font-color: $jet !default;
 $table-line-height: rem-calc(18) !default;
 
-// These are for controlling the display and margin of tables
+// These are for controlling the layout, display and margin of tables
+$table-layout: auto !default;
 $table-display: table-cell !default;
 $table-margin-bottom: rem-calc(20) !default;
 
@@ -57,8 +62,9 @@ $table-margin-bottom: rem-calc(20) !default;
 
 @mixin table {
   background: $table-bg;
-  margin-bottom: $table-margin-bottom;
   border: $table-border-style $table-border-size $table-border-color;
+  margin-bottom: $table-margin-bottom;
+  table-layout: $table-layout;
 
   caption {
     background: $table-caption-bg;
@@ -75,10 +81,10 @@ $table-margin-bottom: rem-calc(20) !default;
     tr {
       th,
       td {
-        padding: $table-head-padding;
+        color: $table-head-font-color;
         font-size: $table-head-font-size;
         font-weight: $table-head-font-weight;
-        color: $table-head-font-color;
+        padding: $table-head-padding;
       }
     }
   }
@@ -89,10 +95,10 @@ $table-margin-bottom: rem-calc(20) !default;
     tr {
       th,
       td {
-        padding: $table-foot-padding;
+        color: $table-foot-font-color;
         font-size: $table-foot-font-size;
         font-weight: $table-foot-font-weight;
-        color: $table-foot-font-color;
+        padding: $table-foot-padding;
       }
     }
   }
@@ -100,9 +106,9 @@ $table-margin-bottom: rem-calc(20) !default;
   tr {
     th,
     td {
-      padding: $table-row-padding;
-      font-size: $table-row-font-size;
       color: $table-row-font-color;
+      font-size: $table-row-font-size;
+      padding: $table-row-padding;
       text-align: $default-float;
     }
 

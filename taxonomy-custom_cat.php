@@ -17,9 +17,9 @@ taxonomy-shoes.php
 			
 			<div id="content">
 			
-				<div id="inner-content" class="row clearfix">
+				<div id="inner-content" class="row">
 			
-				    <div id="main" class="large-8 medium-8 columns first clearfix" role="main">
+				    <div id="main" class="large-8 medium-8 columns first" role="main">
 				
 					    <h1 class="archive-title h2"><span><?php _e("Posts Categorized:", "jointstheme"); ?></span> <?php single_cat_title(); ?></h1>
 
@@ -30,7 +30,7 @@ taxonomy-shoes.php
 						    <header class="article-header">
 							
 							    <h3 class="h2"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
-							    <?php get_template_part( 'partials/content', 'byline' ); ?>
+							    <?php get_template_part( 'parts/content', 'byline' ); ?>
 						
 						    </header> <!-- end article header -->
 					
@@ -60,7 +60,7 @@ taxonomy-shoes.php
 					        
 					    <?php else : ?>
 					
-        					<?php get_template_part( 'partials/content', 'missing' ); ?>
+        					<?php get_template_part( 'parts/content', 'missing' ); ?>
 					
 					    <?php endif; ?>
 			

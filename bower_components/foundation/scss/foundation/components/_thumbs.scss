@@ -2,9 +2,7 @@
 // foundation.zurb.com
 // Licensed under MIT Open Source
 
-@import "global";
-
-
+@import 'global';
 
 //
 // @name _thumbs.scss
@@ -20,8 +18,8 @@ $include-html-media-classes: $include-html-classes !default;
 // We use these to control border styles
 $thumb-border-style: solid !default;
 $thumb-border-width: 4px !default;
-$thumb-border-color: #fff !default;
-$thumb-box-shadow: 0 0 0 1px rgba(#000,.2) !default;
+$thumb-border-color: $white !default;
+$thumb-box-shadow: 0 0 0 1px rgba($black,.2) !default;
 $thumb-box-shadow-hover: 0 0 6px 1px rgba($primary-color,0.5) !default;
 
 // Radius and transition speed for thumbs
@@ -38,14 +36,14 @@ $thumb-transition-speed: 200ms !default;
 // $box-shadow - Box shadow to apply to thumbnail. Default: $thumb-box-shadow.
 // $box-shadow-hover - Box shadow to apply on hover. Default: $thumb-box-shadow-hover.
 @mixin thumb(
-  $border-width:$thumb-border-width, 
-  $box-shadow:$thumb-box-shadow, 
+  $border-width:$thumb-border-width,
+  $box-shadow:$thumb-box-shadow,
   $box-shadow-hover:$thumb-box-shadow-hover) {
-  line-height: 0;
-  display: inline-block;
   border: $thumb-border-style $border-width $thumb-border-color;
-  max-width: 100%;
   box-shadow: $box-shadow;
+  display: inline-block;
+  line-height: 0;
+  max-width: 100%;
 
   &:hover,
   &:focus {
@@ -60,7 +58,7 @@ $thumb-transition-speed: 200ms !default;
     /* Image Thumbnails */
     .th {
       @include thumb;
-      @include single-transition(all,$thumb-transition-speed,ease-out);
+      @include single-transition(all, $thumb-transition-speed, ease-out);
 
       &.radius { @include radius($thumb-radius); }
     }

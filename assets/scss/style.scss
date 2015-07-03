@@ -1,0 +1,37 @@
+/******************************************************************
+
+Stylesheet: Main Stylesheet
+
+Here's where the magic happens. Here is where you import
+all of your Sass files so they can compile into one
+CSS file. 
+******************************************************************/
+
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
+
+// IMPORTING STYLES
+
+// Import normalize from Bower
+@import "../../bower_components/foundation/scss/normalize";
+
+// Import mixins
+@import "mixins";
+
+// Import local Foundation overrides - Don't link to Bower version as it will be overwritten whenever updated
+@import "settings";
+
+// Import foundation.scss from Bower
+@import "../../bower_components/foundation/scss/foundation";
+
+// Make gallery use Foundation block grid
+@import "gallery";
+
+// Import your custom styles
+@import "main";
+
+// Import your retina/HD sty;es
+@import "2x";
+
+// Import your print styles
+@import "print";
+

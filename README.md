@@ -1,13 +1,19 @@
 Find out more here: www.jointswp.com  
 Demo: www.jointswp.com/demo
 
-### A blank, Foundation 5 WordPress theme 
-A project by [@jeremyenglert](https://twitter.com/jeremyenglert) of The Ad Garage. [Follow me](https://twitter.com/jeremyenglert) on Twitter to keep up-to-date with JointsWP.
+### What is JointsWP?
+JointsWP is a blank WordPress theme built with Foundation 5, giving you all the power and flexibility you need to build complex, mobile friendly websites without having to start from scratch.
 
-### Start with a Solid Foundation
-JointsWP is a blank WordPress theme built with [Foundation 5](http://foundation.zurb.com/), giving you all the power and flexibility you need to build complex, mobile friendly websites without having to start from scratch. This includes a grid system (far superior to the grid found in Bootstrap), basic styling for common elements, Javascript features such as an off-canvas navigation and much, much more.
+Starting its humble life as a fork of the popular theme Bones, JointsWP is now the foundation of thousands of websites across the globe.
 
-### Developers Love Joints (don’t we all?)
-This theme is meant to be your starting point, not the end product. No need to use child themes (though you can).  It is not full of shortcodes (that you’ll probably never use) or functions that you’ll probably end up removing anyway. And the features it does have, can be easily removed without breaking the rest of the theme.
+### What comes with JointsWP?
+JointsWP comes pre-baked with all of the great features that are found in the Foundation framework – simply put, if it works in Foundation, it will work in JointsWP. The theme also includes:
 
-Feel free to chop up, slice up, murder or improve any part of it you want. This theme is yours, literally.
+- Foundation Navigation Options
+- Grid and Accordion archive templates
+- Translation Support
+- Bower and Gulp Support
+- And much, much more!
+
+### What tools do I need to use JointsWP?
+You can use whatever you want – seriously. While the Sass version comes with Bower and Gulp support out of the box, you aren’t required to use those by any means. You can use CodeKit, Grunt, Compass or nothing at all. It’s completely up to you how you decide to build you theme – JointsWP won’t get in the way of your workflow.

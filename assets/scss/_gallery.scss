@@ -1,0 +1,63 @@
+@import "../../bower_components/foundation/scss/foundation/components/global";
+
+//
+// Gallery Mixins
+//
+
+// Create a custom gallery using the block grid component in Foundation
+//
+// $per-row - # of items to display per row. Default: false.
+// $spacing - # of ems to use as padding on each gallery item. Default: rem-calc(20).
+// $base-style - Apply a base style to gallery grid. Default: true.
+@mixin block-grid(
+  $per-row:false, 
+  $spacing:$block-grid-default-spacing, 
+  $base-style:true) {
+
+  @if $base-style {
+    display: block;
+    padding: 0;
+    margin: 0 (-$spacing/2);
+    @include clearfix;
+
+    &>.gallery-item {
+      display: inline;
+      height: auto;
+      float: $default-float;
+      padding: 0 ($spacing/2) $spacing;
+    }
+  }
+
+  @if $per-row {
+    &>.gallery-item {
+      width: 100%/$per-row;
+      padding: 0 ($spacing/2) $spacing;
+
+      &:nth-of-type(n) { clear: none; }
+      &:nth-of-type(#{$per-row}n+1) { clear: both; }
+    }
+  }
+
+}
+
+// Generate presentational markup for the gallery
+//
+// ex: gallery-columns-3 
+// 
+@mixin block-grid-html-classes {
+  @for $i from 1 through $block-grid-elements {
+    .gallery-columns-#{($i)} {
+      @include block-grid($i,$block-grid-default-spacing,false);
+    }
+  }
+}
+
+@include exports("gallery-columns") {
+  @if $include-html-grid-classes {
+    
+    [class*="gallery-columns-"] { @include block-grid; }
+    
+    @include block-grid-html-classes;
+
+  }
+}
