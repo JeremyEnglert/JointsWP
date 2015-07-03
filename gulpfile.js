@@ -14,7 +14,10 @@ var gulp  = require('gulp'),
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
   return gulp.src('./assets/scss/**/*.scss')
-    .pipe(plumber())
+    .pipe(plumber(function(error) {
+            gutil.log(gutil.colors.red(error.message));
+            this.emit('end');
+    }))
     .pipe(sass())
     .pipe(autoprefixer({
             browsers: ['last 2 versions'],
