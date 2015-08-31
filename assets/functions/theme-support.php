@@ -11,9 +11,6 @@ function joints_theme_support() {
 
 	// Add RSS Support
 	add_theme_support('automatic-feed-links');
-
-	// Add Support for WP Menus
-	add_theme_support( 'menus' );
 	
 	// Add Support for WP Controlled Title Tag
 	add_theme_support( 'title-tag' );
