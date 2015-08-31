@@ -4,13 +4,13 @@ var gulp  = require('gulp'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
     minifycss = require('gulp-minify-css'),
-    sourcemaps = require('gulp-sourcemaps'),
     jshint = require('gulp-jshint'),
     stylish = require('jshint-stylish'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
-    plumber = require('gulp-plumber')
+    plumber = require('gulp-plumber'),
+    bower = require('gulp-bower')
     
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
@@ -78,6 +78,12 @@ gulp.task('foundation-js', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('./assets/js/min'))
+});
+
+// Update Foundation with Bower
+gulp.task('bower', function() {
+  return bower({ cmd: 'update'})
+    .pipe(gulp.dest('vendor/'))
 });    
 
 // Create a default task 
