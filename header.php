@@ -11,6 +11,7 @@
 		<!-- Mobile Meta -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		
+		<!-- If Site Icon isn't set in customizer -->
 		<?php if ( ! function_exists( 'has_site_icon' ) || ! has_site_icon() ) { ?>
 			<!-- Icons & Favicons -->
 			<link rel="icon" href="<?php echo get_template_directory_uri(); ?>/favicon.png">
