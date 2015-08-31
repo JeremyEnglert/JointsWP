@@ -10,7 +10,8 @@ var gulp  = require('gulp'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
-    bower = require('gulp-bower')
+    bower = require('gulp-bower'),
+    livereload = require('gulp-livereload')
     
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
@@ -28,6 +29,7 @@ gulp.task('styles', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
     .pipe(gulp.dest('./assets/css/'))
+    .pipe(livereload())
 });    
     
 // JSHint, concat, and minify JavaScript
@@ -44,6 +46,7 @@ gulp.task('scripts', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('./assets/js'))
+    .pipe(livereload())
 });    
 
 // JSHint, concat, and minify JavaScript
@@ -78,6 +81,7 @@ gulp.task('foundation-js', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('./assets/js'))
+    .pipe(livereload())
 });
 
 // Update Foundation with Bower and save to /vendor
@@ -93,6 +97,9 @@ gulp.task('default', function() {
 
 // Watch files for changes
 gulp.task('watch', function() {
+	
+  // Live Reload (automatic browser refresh)
+  livereload.listen();
 
   // Watch .scss files
   gulp.watch('./assets/scss/**/*.scss', ['styles']);
