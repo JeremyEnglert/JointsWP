@@ -2,8 +2,8 @@
 // Register menus
 register_nav_menus(
 	array(
-		'main-nav' => __( 'The Main Menu', 'jointstheme' ),   // Main nav in header
-		'footer-links' => __( 'Footer Links', 'jointstheme' ) // Secondary nav in footer
+		'main-nav' => __( 'The Main Menu', 'jointswp' ),   // Main nav in header
+		'footer-links' => __( 'Footer Links', 'jointswp' ) // Secondary nav in footer
 	)
 );
 
@@ -12,7 +12,7 @@ function joints_top_nav() {
 	 wp_nav_menu(array(
         'container' => false,                           // Remove nav container
         'container_class' => '',                        // Class of container
-        'menu' => 'The Top Menu', 'jointstheme',                                   // Menu name
+        'menu' => 'The Top Menu', 'jointswp',                                   // Menu name
         'menu_class' => 'top-bar-menu right',            // Adding custom nav class
         'theme_location' => 'main-nav',                // Where it's located in the theme
         'before' => '',                                 // Before each link <a>
@@ -47,7 +47,7 @@ function joints_footer_links() {
     wp_nav_menu(array(
     	'container' => '',                              // Remove nav container
     	'container_class' => 'footer-links clearfix',   // Class of container (should you choose to use it)
-    	'menu' => __( 'Footer Links', 'jointstheme' ),   // Nav name
+    	'menu' => __( 'Footer Links', 'jointswp' ),   // Nav name
     	'menu_class' => 'sub-nav',      // Adding custom nav class
     	'theme_location' => 'footer-links',             // Where it's located in the theme
     	'before' => '',                                 // Before the menu
