@@ -12,7 +12,7 @@ CSS file.
 // IMPORTING STYLES
 
 // Import normalize from Bower
-@import "../../bower_components/foundation/scss/normalize";
+@import "../../vendor/foundation/scss/normalize";
 
 // Import mixins
 @import "mixins";
@@ -21,7 +21,7 @@ CSS file.
 @import "settings";
 
 // Import foundation.scss from Bower
-@import "../../bower_components/foundation/scss/foundation";
+@import "../../vendor/foundation/scss/foundation";
 
 // Make gallery use Foundation block grid
 @import "gallery";
