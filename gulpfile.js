@@ -80,7 +80,7 @@ gulp.task('foundation-js', function() {
     .pipe(gulp.dest('./assets/js/min'))
 });
 
-// Update Foundation with Bower
+// Update Foundation with Bower and save to /vendor
 gulp.task('bower', function() {
   return bower({ cmd: 'update'})
     .pipe(gulp.dest('vendor/'))
