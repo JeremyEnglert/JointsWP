@@ -34,16 +34,16 @@ gulp.task('styles', function() {
 gulp.task('scripts', function() {
   return gulp.src([	
            // Grab your custom scripts
-  		  './assets/js/site/*.js'
+  		  './assets/js/scripts/*.js'
   ])
     .pipe(plumber())
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('scripts.js'))
-    .pipe(gulp.dest('./assets/js/min'))
+    .pipe(gulp.dest('./assets/js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
-    .pipe(gulp.dest('./assets/js/min'))
+    .pipe(gulp.dest('./assets/js'))
 });    
 
 // JSHint, concat, and minify JavaScript
@@ -74,10 +74,10 @@ gulp.task('foundation-js', function() {
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('foundation.js'))
-    .pipe(gulp.dest('./assets/js/min'))
+    .pipe(gulp.dest('./assets/js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
-    .pipe(gulp.dest('./assets/js/min'))
+    .pipe(gulp.dest('./assets/js'))
 });
 
 // Update Foundation with Bower and save to /vendor
