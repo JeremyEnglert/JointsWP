@@ -24,10 +24,7 @@
 </div>
 						
 <aside class="left-off-canvas-menu show-for-small-only">
-	<ul class="off-canvas-list">
-		<li><label>Navigation</label></li>
-			<?php joints_off_canvas(); ?>    
-	</ul>
+	<?php joints_off_canvas(); ?>    
 </aside>
 			
 <a class="exit-off-canvas"></a>
