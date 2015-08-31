@@ -7,11 +7,11 @@ function joints_scripts_and_styles() {
 	// Removes WP version of jQuery
 	wp_deregister_script('jquery');
 	
-	// Loads jQuery from bower_components
-    wp_enqueue_script( 'jquery', get_template_directory_uri() . '/bower_components/foundation/js/vendor/jquery.js', array(), '2.1.3', true );
+	// Loads jQuery from vendor
+    wp_enqueue_script( 'jquery', get_template_directory_uri() . '/vendor/foundation/js/vendor/jquery.js', array(), '2.1.3', true );
     
-    // Modernizr from bower_components
-    wp_enqueue_script( 'modernizr', get_template_directory_uri() . '/bower_components/foundation/js/vendor/modernizr.js', array(), '2.8.3', true );
+    // Modernizr from vendor
+    wp_enqueue_script( 'modernizr', get_template_directory_uri() . '/vendor/foundation/js/vendor/modernizr.js', array(), '2.8.3', true );
     
     // Adding Foundation scripts file in the footer
    wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/assets/js/min/foundation.min.js', array( 'jquery' ), '', true );
