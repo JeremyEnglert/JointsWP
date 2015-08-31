@@ -23,7 +23,7 @@
 	</nav>
 </div>
 						
-<aside class="left-off-canvas-menu show-for-small-only">
+<aside class="left-off-canvas-menu">
 	<?php joints_off_canvas(); ?>    
 </aside>
 			
