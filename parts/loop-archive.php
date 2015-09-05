@@ -1,4 +1,3 @@
-<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 	
 	<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article">					
 		<header class="article-header">
@@ -16,11 +15,3 @@
 	    	<p class="tags"><?php the_tags('<span class="tags-title">' . __('Tags:', 'jointstheme') . '</span> ', ', ', ''); ?></p>
 		</footer> <!-- end article footer -->				    						
 	</article> <!-- end article -->
-
-<?php endwhile; ?>	
-					
-<?php joints_page_navi(); ?>
-
-<?php else : ?>
-	<?php get_template_part( 'parts/content', 'missing' ); ?>
-<?php endif; ?>
