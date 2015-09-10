@@ -46,4 +46,3 @@ function joints_register_sidebars() {
 
 	*/
 } // don't remove this bracket!
-?>

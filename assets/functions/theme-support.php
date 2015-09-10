@@ -4,13 +4,13 @@
 function joints_theme_support() {
 
 	// Add WP Thumbnail Support
-	add_theme_support('post-thumbnails');
+	add_theme_support( 'post-thumbnails' );
 	
 	// Default thumbnail size
 	set_post_thumbnail_size(125, 125, true);
 
 	// Add RSS Support
-	add_theme_support('automatic-feed-links');
+	add_theme_support( 'automatic-feed-links' );
 	
 	// Add Support for WP Controlled Title Tag
 	add_theme_support( 'title-tag' );
@@ -40,4 +40,3 @@ function joints_theme_support() {
 	); */	
 	
 } /* end theme support */
-?>

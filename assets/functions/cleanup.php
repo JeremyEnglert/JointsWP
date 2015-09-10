@@ -94,5 +94,3 @@ function joints_get_the_author_posts_link() {
 	);
 	return $link;
 }
-
-?>

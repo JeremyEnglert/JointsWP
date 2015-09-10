@@ -26,4 +26,3 @@ function joints_comments($comment, $args, $depth) {
 	<!-- </li> is added by WordPress automatically -->
 <?php
 }
-?>

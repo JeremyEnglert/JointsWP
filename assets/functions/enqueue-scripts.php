@@ -30,4 +30,3 @@ function site_scripts() {
     }
 }
 add_action('wp_enqueue_scripts', 'site_scripts', 999);
-?>

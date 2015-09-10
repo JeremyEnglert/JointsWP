@@ -46,4 +46,3 @@ class Offcanvas_Walker extends Walker_Nav_Menu {
 		$output .= "\n<ul class=\"left-submenu\">\n<li class=\"back\"><a href=\"#\">". __( 'Back', 'jointswp' ) ."</a></li>\n";
 	}
 }
-?>

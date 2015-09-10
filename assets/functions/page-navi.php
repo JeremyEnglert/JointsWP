@@ -54,5 +54,3 @@ function joints_page_navi($before = '', $after = '') {
 	}
 	echo '</ul></nav>'.$after."";
 } /* End page navi */
-
-?>
