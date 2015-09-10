@@ -10,11 +10,11 @@ Template Name: Full Width (No Sidebar)
 			
 				<div id="inner-content" class="row">
 			
-				    <div id="main" class="large-12 medium-12 columns" role="main">
+				    <main id="main" class="large-12 medium-12 columns" role="main">
 					
 						<?php get_template_part( 'parts/loop', 'page' ); ?>
 					    					
-    				</div> <!-- end #main -->
+    				</main> <!-- end #main -->
 				    
 				</div> <!-- end #inner-content -->
     
