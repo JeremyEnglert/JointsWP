@@ -4,11 +4,11 @@
 			
 				<div id="inner-content" class="row">
 			
-				    <div id="main" class="large-8 medium-8 columns" role="main">
+				    <main id="main" class="large-8 medium-8 columns" role="main">
 					
 					    	<?php get_template_part( 'parts/loop', 'page' ); ?>
 					    					
-    				</div> <!-- end #main -->
+    				</main> <!-- end #main -->
     
 				    <?php get_sidebar(); ?>
 				    
