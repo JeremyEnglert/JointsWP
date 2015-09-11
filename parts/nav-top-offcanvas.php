@@ -15,7 +15,9 @@
 <div class="show-for-small-only">
 	<nav class="tab-bar">
 		<section class="middle tab-bar-section">
-			<h1 class="title"><?php bloginfo('name'); ?></h1>
+			<a href="<?php get_site_url(); ?>" title="<?php bloginfo('name'); ?>">
+				<h1 class="title"><?php bloginfo('name'); ?></h1>
+			</a>
 		</section>
 		<section class="left-small">
 			<a href="#" class="left-off-canvas-toggle menu-icon" ><span></span></a>
