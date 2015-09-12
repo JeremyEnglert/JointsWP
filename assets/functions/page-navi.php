@@ -1,13 +1,22 @@
 <?php
 // Numeric Page Navi (built into the theme by default)
-function joints_page_navi($before = '', $after = '') {
-	global $wpdb, $wp_query;
-	$request = $wp_query->request;
-	$posts_per_page = intval(get_query_var('posts_per_page'));
-	$paged = intval(get_query_var('paged'));
-	$numposts = $wp_query->found_posts;
-	$max_page = $wp_query->max_num_pages;
-	if ( $numposts <= $posts_per_page ) { return; }
+function joints_page_navi($before = '', $after = '', $query = '', $paged = '' ) {
+	
+	if( empty($query) ) {
+		global $wpdb, $wp_query;
+		$query = $wp_query;
+	}
+
+	if( empty($paged) ) {
+		$paged = intval(get_query_var('paged'));
+	}
+	
+	$request 		= $query->request;
+	$posts_per_page	= $query->query['posts_per_page'];
+	$numposts 		= $query->found_posts;
+	$max_page 		= $query->max_num_pages;
+
+	if ( $numposts <= $posts_per_page ) { return; } 
 	if(empty($paged) || $paged == 0) {
 		$paged = 1;
 	}
