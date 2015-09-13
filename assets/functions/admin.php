@@ -20,12 +20,6 @@ function disable_default_dashboard_widgets() {
 }
 
 /*
-Now let's talk about adding your own custom Dashboard widget.
-Sometimes you want to show clients feeds relative to their
-site's content. For example, the NBA.com feed for a sports
-site. Here is an example Dashboard Widget that displays recent
-entries from an RSS Feed.
-
 For more information on creating Dashboard Widgets, view:
 http://digwp.com/2010/10/customize-wordpress-dashboard/
 */
@@ -34,8 +28,8 @@ http://digwp.com/2010/10/customize-wordpress-dashboard/
 function joints_rss_dashboard_widget() {
 	if(function_exists('fetch_feed')) {
 		include_once(ABSPATH . WPINC . '/feed.php');               // include the required file
-		$feed = fetch_feed('http://themble.com/feed/rss/');        // specify the source feed
-		$limit = $feed->get_item_quantity(7);                      // specify number of items
+		$feed = fetch_feed('http://jointswp.com/feed/rss/');        // specify the source feed
+		$limit = $feed->get_item_quantity(5);                      // specify number of items
 		$items = $feed->get_items(0, $limit);                      // create an array of items
 	}
 	if ($limit == 0) echo '<div>The RSS Feed is either empty or unavailable.</div>';   // fallback message
@@ -54,7 +48,7 @@ function joints_rss_dashboard_widget() {
 
 // Calling all custom dashboard widgets
 function joints_custom_dashboard_widgets() {
-	wp_add_dashboard_widget('joints_rss_dashboard_widget', __('Recently on Themble (Customize on admin.php)', 'jointswp'), 'joints_rss_dashboard_widget');
+	wp_add_dashboard_widget('joints_rss_dashboard_widget', __('Custom RSS Feed (Customize in admin.php)', 'jointswp'), 'joints_rss_dashboard_widget');
 	/*
 	Be sure to drop any other created Dashboard Widgets
 	in this function and they will all load.

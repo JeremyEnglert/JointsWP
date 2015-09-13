@@ -6632,10 +6632,6 @@ GENERAL STYLES
 LINK STYLES
 *********************/
 a:link, a:visited:link {
-  /*
-		This highlights links on iPhones/iPads.
-		Similar to the :hover selector for mobile devices.
-		*/
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.3); }
 
 /*********************
