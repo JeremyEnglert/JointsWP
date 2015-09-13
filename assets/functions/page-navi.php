@@ -12,7 +12,7 @@ function joints_page_navi($before = '', $after = '', $query = '', $paged = '' ) 
 	}
 	
 	$request 		= $query->request;
-	$posts_per_page	= $query->query['posts_per_page'];
+	$posts_per_page	= $query->query_vars['posts_per_page'];
 	$numposts 		= $query->found_posts;
 	$max_page 		= $query->max_num_pages;
 
