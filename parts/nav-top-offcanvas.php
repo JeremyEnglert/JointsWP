@@ -15,7 +15,7 @@
 <div class="show-for-small-only">
 	<nav class="tab-bar">
 		<section class="middle tab-bar-section">
-			<a href="<?php get_site_url(); ?>" title="<?php bloginfo('name'); ?>">
+			<a href="<?php echo get_site_url(); ?>" title="<?php bloginfo('name'); ?>">
 				<h1 class="title"><?php bloginfo('name'); ?></h1>
 			</a>
 		</section>
