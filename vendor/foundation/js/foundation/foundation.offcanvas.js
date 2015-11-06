@@ -1,152 +1,176 @@
-;(function ($, window, document, undefined) {
-  'use strict';
+/**
+ * OffCanvas module.
+ * @module foundation.offcanvas
+ * @requires foundation.util.triggers
+ * @requires foundation.util.animationFrame
+ */
+!function($, Foundation) {
 
-  Foundation.libs.offcanvas = {
-    name : 'offcanvas',
+'use strict';
 
-    version : '5.5.2',
+/**
+ * Creates a new instance of an off-canvas wrapper.
+ * @class
+ * @fires OffCanvas#init
+ * @param {Object} element - jQuery object to initialize.
+ * @param {Object} options - Overrides to the default plugin settings.
+ */
+function OffCanvas(element) {
+  this.$element = element;
+  this.options = $.extend({}, OffCanvas.defaults, this.$element.data());
+  this.$lastTrigger = $();
 
-    settings : {
-      open_method : 'move',
-      close_on_click : false
-    },
+  this._init();
+  this._events();
 
-    init : function (scope, method, options) {
-      this.bindings(method, options);
-    },
+  /**
+   * Fires when the plugin has been successfully initialized.
+   * @event OffCanvas#init
+   */
+  this.$element.trigger('init.zf.offcanvas');
+}
 
-    events : function () {
-      var self = this,
-          S = self.S,
-          move_class = '',
-          right_postfix = '',
-          left_postfix = '';
+OffCanvas.defaults = {
+  /**
+   * Allow the user to click outside of the menu to close it.
+   * @option
+   * @example true
+   */
+  closeOnClick: true,
 
-      if (this.settings.open_method === 'move') {
-        move_class = 'move-';
-        right_postfix = 'right';
-        left_postfix = 'left';
-      } else if (this.settings.open_method === 'overlap_single') {
-        move_class = 'offcanvas-overlap-';
-        right_postfix = 'right';
-        left_postfix = 'left';
-      } else if (this.settings.open_method === 'overlap') {
-        move_class = 'offcanvas-overlap';
-      }
+  position: 'left'
+}
 
-      S(this.scope).off('.offcanvas')
-        .on('click.fndtn.offcanvas', '.left-off-canvas-toggle', function (e) {
-          self.click_toggle_class(e, move_class + right_postfix);
-          if (self.settings.open_method !== 'overlap') {
-            S('.left-submenu').removeClass(move_class + right_postfix);
-          }
-          $('.left-off-canvas-toggle').attr('aria-expanded', 'true');
-        })
-        .on('click.fndtn.offcanvas', '.left-off-canvas-menu a', function (e) {
-          var settings = self.get_settings(e);
-          var parent = S(this).parent();
+/**
+ * Initializes the off-canvas wrapper by adding the exit overlay (if needed).
+ * @function
+ * @private
+ */
+OffCanvas.prototype._init = function() {
+  var id = this.$element.attr('id');
 
-          if (settings.close_on_click && !parent.hasClass('has-submenu') && !parent.hasClass('back')) {
-            self.hide.call(self, move_class + right_postfix, self.get_wrapper(e));
-            parent.parent().removeClass(move_class + right_postfix);
-          } else if (S(this).parent().hasClass('has-submenu')) {
-            e.preventDefault();
-            S(this).siblings('.left-submenu').toggleClass(move_class + right_postfix);
-          } else if (parent.hasClass('back')) {
-            e.preventDefault();
-            parent.parent().removeClass(move_class + right_postfix);
-          }
-          $('.left-off-canvas-toggle').attr('aria-expanded', 'true');
-        })
-        .on('click.fndtn.offcanvas', '.right-off-canvas-toggle', function (e) {
-          self.click_toggle_class(e, move_class + left_postfix);
-          if (self.settings.open_method !== 'overlap') {
-            S('.right-submenu').removeClass(move_class + left_postfix);
-          }
-          $('.right-off-canvas-toggle').attr('aria-expanded', 'true');
-        })
-        .on('click.fndtn.offcanvas', '.right-off-canvas-menu a', function (e) {
-          var settings = self.get_settings(e);
-          var parent = S(this).parent();
+  this.$element.attr('aria-hidden', 'true');
 
-          if (settings.close_on_click && !parent.hasClass('has-submenu') && !parent.hasClass('back')) {
-            self.hide.call(self, move_class + left_postfix, self.get_wrapper(e));
-            parent.parent().removeClass(move_class + left_postfix);
-          } else if (S(this).parent().hasClass('has-submenu')) {
-            e.preventDefault();
-            S(this).siblings('.right-submenu').toggleClass(move_class + left_postfix);
-          } else if (parent.hasClass('back')) {
-            e.preventDefault();
-            parent.parent().removeClass(move_class + left_postfix);
-          }
-          $('.right-off-canvas-toggle').attr('aria-expanded', 'true');
-        })
-        .on('click.fndtn.offcanvas', '.exit-off-canvas', function (e) {
-          self.click_remove_class(e, move_class + left_postfix);
-          S('.right-submenu').removeClass(move_class + left_postfix);
-          if (right_postfix) {
-            self.click_remove_class(e, move_class + right_postfix);
-            S('.left-submenu').removeClass(move_class + left_postfix);
-          }
-          $('.right-off-canvas-toggle').attr('aria-expanded', 'true');
-        })
-        .on('click.fndtn.offcanvas', '.exit-off-canvas', function (e) {
-          self.click_remove_class(e, move_class + left_postfix);
-          $('.left-off-canvas-toggle').attr('aria-expanded', 'false');
-          if (right_postfix) {
-            self.click_remove_class(e, move_class + right_postfix);
-            $('.right-off-canvas-toggle').attr('aria-expanded', 'false');
-          }
-        });
-    },
+  // Find triggers that affect this element and add aria-expanded to them
+  $(document)
+    .find('[data-open="'+id+'"], [data-close="'+id+'"], [data-toggle="'+id+'"]')
+    .attr('aria-expanded', 'false')
+    .attr('aria-controls', id);
 
-    toggle : function (class_name, $off_canvas) {
-      $off_canvas = $off_canvas || this.get_wrapper();
-      if ($off_canvas.is('.' + class_name)) {
-        this.hide(class_name, $off_canvas);
-      } else {
-        this.show(class_name, $off_canvas);
-      }
-    },
+  // Add a close trigger over the body if necessary
+  if (this.options.closeOnClick && !$('.js-off-canvas-exit').length) {
+    var exiter = document.createElement('div');
+    exiter.setAttribute('class', 'js-off-canvas-exit');
+    $('[data-off-canvas-content]').append(exiter);
 
-    show : function (class_name, $off_canvas) {
-      $off_canvas = $off_canvas || this.get_wrapper();
-      $off_canvas.trigger('open.fndtn.offcanvas');
-      $off_canvas.addClass(class_name);
-    },
+    this.$exiter = $(exiter);
+  }
+}
 
-    hide : function (class_name, $off_canvas) {
-      $off_canvas = $off_canvas || this.get_wrapper();
-      $off_canvas.trigger('close.fndtn.offcanvas');
-      $off_canvas.removeClass(class_name);
-    },
+/**
+ * Adds event handlers to the off-canvas wrapper and the exit overlay.
+ * @function
+ * @private
+ */
+OffCanvas.prototype._events = function() {
+  this.$element.on({
+    'open.zf.trigger': this.open.bind(this),
+    'close.zf.trigger': this.close.bind(this),
+    'toggle.zf.trigger': this.toggle.bind(this),
+    'keydown.zf.offcanvas': this._handleKeyboard.bind(this)
+  });
 
-    click_toggle_class : function (e, class_name) {
-      e.preventDefault();
-      var $off_canvas = this.get_wrapper(e);
-      this.toggle(class_name, $off_canvas);
-    },
+  $(window).on('close.zf.offcanvas', this.close.bind(this));
 
-    click_remove_class : function (e, class_name) {
-      e.preventDefault();
-      var $off_canvas = this.get_wrapper(e);
-      this.hide(class_name, $off_canvas);
-    },
+  if (this.$exiter) {
+    this.$exiter.on('click.zf.offcanvas', function() {
+      $(window).trigger('close.zf.offcanvas');
+    });
+  }
+}
 
-    get_settings : function (e) {
-      var offcanvas  = this.S(e.target).closest('[' + this.attr_name() + ']');
-      return offcanvas.data(this.attr_name(true) + '-init') || this.settings;
-    },
+/**
+ * Opens the off-canvas menu.
+ * @function
+ * @fires OffCanvas#opened
+ */
+OffCanvas.prototype.open = function(event, trigger) {
+  if (this.$element.hasClass('is-open')) return;
 
-    get_wrapper : function (e) {
-      var $off_canvas = this.S(e ? e.target : this.scope).closest('.off-canvas-wrap');
+  var _this = this;
 
-      if ($off_canvas.length === 0) {
-        $off_canvas = this.S('.off-canvas-wrap');
-      }
-      return $off_canvas;
-    },
+  /**
+   * Fires when the off-canvas menu opens.
+   * @event OffCanvas#opened
+   */
+  requestAnimationFrame(function() {
+    $('body').addClass('is-off-canvas-open is-open-'+_this.options.position);
 
-    reflow : function () {}
-  };
-}(jQuery, window, window.document));
+    _this.$element
+      .addClass('is-open')
+      .attr('aria-hidden', 'false')
+      .find('a, button').eq(0).focus().end().end()
+      .trigger('opened.zf.offcanvas');
+  });
+
+  if (trigger) {
+    this.$lastTrigger = trigger.attr('aria-expanded', 'true');
+  }
+}
+
+/**
+ * Closes the off-canvas menu.
+ * @function
+ * @fires OffCanvas#closed
+ */
+OffCanvas.prototype.close = function() {
+  if (!this.$element.hasClass('is-open')) return;
+
+  var _this = this;
+
+  /**
+   * Fires when the off-canvas menu opens.
+   * @event OffCanvas#closed
+   */
+  requestAnimationFrame(function() {
+    $('body').removeClass('is-off-canvas-open is-open-'+_this.options.position);
+
+    _this.$element
+      .removeClass('is-open')
+      .attr('aria-hidden', 'true')
+      .trigger('closed.zf.offcanvas');
+  });
+
+  this.$lastTrigger.attr('aria-expanded', 'false');
+}
+
+/**
+ * Toggles the off-canvas menu open or closed.
+ * @function
+ */
+OffCanvas.prototype.toggle = function(event, trigger) {
+  if (this.$element.hasClass('is-open')) {
+    this.close(event, trigger);
+  }
+  else {
+    this.open(event, trigger);
+  }
+}
+
+/**
+ * Handles keyboard input when detected. When the escape key is pressed, the off-canvas menu closes, and focus is restored to the element that opened the menu.
+ * @function
+ * @private
+ */
+OffCanvas.prototype._handleKeyboard = function(event) {
+  if (event.which !== 27) return;
+
+  event.stopPropagation();
+  event.preventDefault();
+  this.close();
+  this.$lastTrigger.focus();
+}
+
+Foundation.plugin(OffCanvas);
+
+}(jQuery, Foundation)

@@ -1,0 +1,32 @@
+// Foundation for Sites by ZURB
+// foundation.zurb.com
+// Licensed under MIT Open Source
+
+@mixin foundation-drilldown-menu {
+  // Applied to the Menu container
+  .is-drilldown {
+    position: relative;
+    overflow: hidden;
+  }
+
+  // Applied to nested <ul>s
+  .is-drilldown-sub {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index: -1;
+    width: 100%;
+    background: $white;
+    transition: transform 0.15s linear;
+
+    &.is-active {
+      z-index: 1;
+      display: block;
+      transform: translateX(-100%);
+    }
+
+    &.is-closing {
+      transform: translateX(100%);
+    }
+  }
+}

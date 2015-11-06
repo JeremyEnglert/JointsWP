@@ -1,0 +1,44 @@
+// Foundation for Sites by ZURB
+// foundation.zurb.com
+// Licensed under MIT Open Source
+
+////
+/// @group thumbnail
+////
+
+/// Default border around thumbnail images.
+/// @type Border
+$thumbnail-border: solid 4px $white !default;
+
+/// Default box shadow under thumbnail images.
+/// @type Shadow
+$thumbnail-shadow: 0 0 0 1px rgba($black, 0.2) !default;
+
+/// Default box shadow under thumbnail images.
+/// @type Shadow
+$thumbnail-shadow-hover: 0 0 6px 1px rgba($primary-color, 0.5) !default;
+
+/// Transition proprties for thumbnail images.
+/// @type Transition
+$thumbnail-transition: box-shadow 200ms ease-out !default;
+
+/// Adds thumbnail styles to an element.
+@mixin thumbnail {
+  border: $thumbnail-border;
+  box-shadow: $thumbnail-shadow;
+  display: inline-block;
+  line-height: 0;
+  max-width: 100%;
+  transition: $thumbnail-transition;
+
+  &:hover,
+  &:focus {
+    box-shadow: $thumbnail-shadow-hover;
+  }
+}
+
+@mixin foundation-thumbnail {
+  .thumbnail {
+    @include thumbnail;
+  }
+}

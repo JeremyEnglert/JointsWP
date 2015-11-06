@@ -9,7 +9,8 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 		<!-- Mobile Meta -->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta class="foundation-mq">
 		
 		<!-- If Site Icon isn't set in customizer -->
 		<?php if ( ! function_exists( 'has_site_icon' ) || ! has_site_icon() ) { ?>
@@ -41,6 +42,6 @@
 							
 						 <!-- This navs will be applied to the topbar, above all content 
 							  To see additional nav styles, visit the /parts directory -->
-						 <?php get_template_part( 'parts/nav', 'top-offcanvas' ); ?>
+						 <?php get_template_part( 'parts/nav', 'topbar' ); ?>
 								 	
 					</header> <!-- end .header -->

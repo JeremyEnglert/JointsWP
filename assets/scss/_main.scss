@@ -366,7 +366,6 @@ COMMENT STYLES
 
 	// comment reply link  
 	.comment-reply-link {
-		@include button($padding: $button-sml);
 		float: right;
 
 		&:hover,
@@ -496,11 +495,6 @@ SIDEBARS & ASIDES
 			}
 
 		}
-		@media #{$medium-up} {
-			padding: 0 10px;
-			margin: 2.2em 0;
-  		}
-
 	}
 
 #sidebar-offcanvas {

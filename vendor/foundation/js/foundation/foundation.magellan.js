@@ -1,215 +1,135 @@
-;(function ($, window, document, undefined) {
+/**
+ * Magellan module.
+ * @module foundation.magellan
+ * @requires foundation.util.animationFrame
+ */
+!function(Foundation, $) {
   'use strict';
 
-  Foundation.libs['magellan-expedition'] = {
-    name : 'magellan-expedition',
+  /**
+   * Creates a new instance of Magellan.
+   * @class
+   * @fires Magellan#init
+   * @param {Object} element - jQuery object to add the trigger to.
+   * @param {Object} options - Overrides to the default plugin settings.
+   */
+  function Magellan(element, options) {
+    this.$element = element;
+    this.options  = $.extend({}, Magellan.defaults, options);
+    this.$window  = $(window);
+    this.name     = 'magellan';
+    this.attr     = 'data-magellan';
+    this.attrArrival  = 'data-magellan-target';
 
-    version : '5.5.2',
+    this._init();
+    this._events();
 
-    settings : {
-      active_class : 'active',
-      threshold : 0, // pixels from the top of the expedition for it to become fixes
-      destination_threshold : 20, // pixels from the top of destination for it to be considered active
-      throttle_delay : 30, // calculation throttling to increase framerate
-      fixed_top : 0, // top distance in pixels assigend to the fixed element on scroll
-      offset_by_height : true,  // whether to offset the destination by the expedition height. Usually you want this to be true, unless your expedition is on the side.
-      duration : 700, // animation duration time
-      easing : 'swing' // animation easing
-    },
+    /**
+     * Fires when the plugin has been successfuly initialized.
+     * @event Magellan#init
+     */
+    this.$element.trigger('init.zf.magellan');
+  };
 
-    init : function (scope, method, options) {
-      Foundation.inherit(this, 'throttle');
-      this.bindings(method, options);
-    },
+  /**
+   * Default settings for plugin
+   */
+  Magellan.defaults = {
+    animationDuration: 500,
+    animationEasing: 'linear',
+    threshold: null,
+    activeClass: 'active'
+  };
 
-    events : function () {
-      var self = this,
-          S = self.S,
-          settings = self.settings;
+  /**
+   * Initializes the Magellan plugin and calls functions to get equalizer functioning on load.
+   * @private
+   */
+  Magellan.prototype._init = function() {
+  };
 
-      // initialize expedition offset
-      self.set_expedition_position();
+  /**
+   * Initializes events for Magellan.
+   * @private
+   */
+  Magellan.prototype._events = function() {
+    var self = this;
 
-      S(self.scope)
-        .off('.magellan')
-        .on('click.fndtn.magellan', '[' + self.add_namespace('data-magellan-arrival') + '] a[href*=#]', function (e) {
-          var sameHost = ((this.hostname === location.hostname) || !this.hostname),
-              samePath = self.filterPathname(location.pathname) === self.filterPathname(this.pathname),
-              testHash = this.hash.replace(/(:|\.|\/)/g, '\\$1'),
-              anchor = this;
+    this.$window
+      .off('.magellan')
+      .on('resize.fndtn.magellan', Foundation.util.throttle(function () {
+        self._reflow();
+      }.bind(this), 50))
+      .on('scroll.fndtn.magellan', Foundation.util.throttle(function(e) {
+        e.preventDefault();
+        self.updateActiveClass();
+      }, 100));
 
-          if (sameHost && samePath && testHash) {
-            e.preventDefault();
-            var expedition = $(this).closest('[' + self.attr_name() + ']'),
-                settings = expedition.data('magellan-expedition-init'),
-                hash = this.hash.split('#').join(''),
-                target = $('a[name="' + hash + '"]');
+    this.$element
+      .on('click.fndtn.magellan', 'a[href^="#"]', function(e) {
+        e.preventDefault();
+        // include animation settings
+        var arrival   = $(this).attr('href'),
+            navOffset = self.$element.height();
 
-            if (target.length === 0) {
-              target = $('#' + hash);
-
-            }
-
-            // Account for expedition height if fixed position
-            var scroll_top = target.offset().top - settings.destination_threshold + 1;
-            if (settings.offset_by_height) {
-              scroll_top = scroll_top - expedition.outerHeight();
-            }
-            $('html, body').stop().animate({
-              'scrollTop' : scroll_top
-            }, settings.duration, settings.easing, function () {
-              if (history.pushState) {
-                        history.pushState(null, null, anchor.pathname + '#' + hash);
-              }
-                    else {
-                        location.hash = anchor.pathname + '#' + hash;
-                    }
-            });
-          }
-        })
-        .on('scroll.fndtn.magellan', self.throttle(this.check_for_arrivals.bind(this), settings.throttle_delay));
-    },
-
-    check_for_arrivals : function () {
-      var self = this;
-      self.update_arrivals();
-      self.update_expedition_positions();
-    },
-
-    set_expedition_position : function () {
-      var self = this;
-      $('[' + this.attr_name() + '=fixed]', self.scope).each(function (idx, el) {
-        var expedition = $(this),
-            settings = expedition.data('magellan-expedition-init'),
-            styles = expedition.attr('styles'), // save styles
-            top_offset, fixed_top;
-
-        expedition.attr('style', '');
-        top_offset = expedition.offset().top + settings.threshold;
-
-        //set fixed-top by attribute
-        fixed_top = parseInt(expedition.data('magellan-fixed-top'));
-        if (!isNaN(fixed_top)) {
-          self.settings.fixed_top = fixed_top;
-        }
-
-        expedition.data(self.data_attr('magellan-top-offset'), top_offset);
-        expedition.attr('style', styles);
-      });
-    },
-
-    update_expedition_positions : function () {
-      var self = this,
-          window_top_offset = $(window).scrollTop();
-
-      $('[' + this.attr_name() + '=fixed]', self.scope).each(function () {
-        var expedition = $(this),
-            settings = expedition.data('magellan-expedition-init'),
-            styles = expedition.attr('style'), // save styles
-            top_offset = expedition.data('magellan-top-offset');
-
-        //scroll to the top distance
-        if (window_top_offset + self.settings.fixed_top >= top_offset) {
-          // Placeholder allows height calculations to be consistent even when
-          // appearing to switch between fixed/non-fixed placement
-          var placeholder = expedition.prev('[' + self.add_namespace('data-magellan-expedition-clone') + ']');
-          if (placeholder.length === 0) {
-            placeholder = expedition.clone();
-            placeholder.removeAttr(self.attr_name());
-            placeholder.attr(self.add_namespace('data-magellan-expedition-clone'), '');
-            expedition.before(placeholder);
-          }
-          expedition.css({position :'fixed', top : settings.fixed_top}).addClass('fixed');
-        } else {
-          expedition.prev('[' + self.add_namespace('data-magellan-expedition-clone') + ']').remove();
-          expedition.attr('style', styles).css('position', '').css('top', '').removeClass('fixed');
-        }
-      });
-    },
-
-    update_arrivals : function () {
-      var self = this,
-          window_top_offset = $(window).scrollTop();
-
-      $('[' + this.attr_name() + ']', self.scope).each(function () {
-        var expedition = $(this),
-            settings = expedition.data(self.attr_name(true) + '-init'),
-            offsets = self.offsets(expedition, window_top_offset),
-            arrivals = expedition.find('[' + self.add_namespace('data-magellan-arrival') + ']'),
-            active_item = false;
-        offsets.each(function (idx, item) {
-          if (item.viewport_offset >= item.top_offset) {
-            var arrivals = expedition.find('[' + self.add_namespace('data-magellan-arrival') + ']');
-            arrivals.not(item.arrival).removeClass(settings.active_class);
-            item.arrival.addClass(settings.active_class);
-            active_item = true;
-            return true;
-          }
+        $('html, body').animate({
+          scrollTop: $(arrival).offset().top - navOffset
+        },
+        {
+          duration: self.options.animationDuration,
+          easing:   self.options.animationEasing
         });
 
-        if (!active_item) {
-          arrivals.removeClass(settings.active_class);
-        }
-      });
-    },
-
-    offsets : function (expedition, window_offset) {
-      var self = this,
-          settings = expedition.data(self.attr_name(true) + '-init'),
-          viewport_offset = window_offset;
-
-      return expedition.find('[' + self.add_namespace('data-magellan-arrival') + ']').map(function (idx, el) {
-        var name = $(this).data(self.data_attr('magellan-arrival')),
-            dest = $('[' + self.add_namespace('data-magellan-destination') + '=' + name + ']');
-        if (dest.length > 0) {
-          var top_offset = dest.offset().top - settings.destination_threshold;
-          if (settings.offset_by_height) {
-            top_offset = top_offset - expedition.outerHeight();
-          }
-          top_offset = Math.floor(top_offset);
-          return {
-            destination : dest,
-            arrival : $(this),
-            top_offset : top_offset,
-            viewport_offset : viewport_offset
-          }
-        }
-      }).sort(function (a, b) {
-        if (a.top_offset < b.top_offset) {
-          return -1;
-        }
-        if (a.top_offset > b.top_offset) {
-          return 1;
-        }
-        return 0;
-      });
-    },
-
-    data_attr : function (str) {
-      if (this.namespace.length > 0) {
-        return this.namespace + '-' + str;
-      }
-
-      return str;
-    },
-
-    off : function () {
-      this.S(this.scope).off('.magellan');
-      this.S(window).off('.magellan');
-    },
-
-    filterPathname : function (pathname) {
-      pathname = pathname || '';
-      return pathname
-          .replace(/^\//,'')
-          .replace(/(?:index|default).[a-zA-Z]{3,4}$/,'')
-          .replace(/\/$/,'');
-    },
-
-    reflow : function () {
-      var self = this;
-      // remove placeholder expeditions used for height calculation purposes
-      $('[' + self.add_namespace('data-magellan-expedition-clone') + ']', self.scope).remove();
-    }
+        window.location = arrival;
+      })
   };
-}(jQuery, window, window.document));
+  /**
+   * Calls necessary functions to update Magellan upon DOM change
+   * @private
+   */
+  Magellan.prototype._reflow = function() {
+  };
+  /**
+   * Detects the arrival sections and adds the active class to the magellan navigation bar
+   */
+  Magellan.prototype.updateActiveClass = function() {
+    var windowPosition = this.$window.scrollTop(),
+        arrivals       = $('[' + this.attrArrival + ']'),
+        // for sensitivty to trigger the active class, either use the specified
+        // threshold amount, or use the height of the nav item plus a little wiggle room
+        threshold      = this.options.threshold || this.$element.height() + 50,
+        magellanNav    = this.$element,
+        self           = this;
+
+    if (windowPosition + this.$window.height() === $(document).height()) {
+      magellanNav.find('a').removeClass(self.options.activeClass);
+      magellanNav.find('a').last().addClass(self.options.activeClass);
+      return;
+    }
+    arrivals.each(function() {
+      var arrivalTop = $(this).offset().top - threshold,
+          arrivalEnd = arrivalTop + $(this).height();
+
+      if (windowPosition >= arrivalTop && windowPosition <= arrivalEnd) {
+        magellanNav.find('a').removeClass(self.options.activeClass);
+
+        // this feature causes a bit of jumpiness
+        // window.location.hash = $(this).attr('id');
+        // find the corresponding hash/id of the section
+        var activeTarget = magellanNav.find('a[href=#' + $(this).attr('id') +']');
+        activeTarget.addClass(self.options.activeClass);
+      }
+    })
+  };
+
+  Foundation.plugin(Magellan);
+
+  // Exports for AMD/Browserify
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = Magellan;
+  if (typeof define === 'function')
+    define(['foundation'], function() {
+      return Magellan;
+    });
+
+}(Foundation, jQuery);

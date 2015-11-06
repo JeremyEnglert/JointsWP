@@ -1,0 +1,88 @@
+// Foundation for Sites by ZURB
+// foundation.zurb.com
+// Licensed under MIT Open Source
+
+////
+/// @group top-bar
+////
+
+/// Padding for a top bar.
+/// @type Number
+$topbar-padding: 0.5rem;
+
+/// Bottom margin for a top bar.
+/// @type Number
+$topbar-margin: 1rem;
+
+/// Background color for a top bar. This color also cascades to menus within the top bar.
+/// @type Color
+$topbar-background: #eee;
+
+/// Background color for a top bar when using the `.dark` class.
+$topbar-background-dark: #333;
+
+/// Width of `<input>` elements inside a top bar.
+/// @type Number
+$topbar-input-width: 200px;
+
+/// Adds styles for a top bar container.
+@mixin top-bar-container {
+  @include clearfix;
+  padding: $topbar-padding;
+  margin-bottom: $topbar-margin;
+
+  &, ul {
+    background-color: $topbar-background;
+  }
+
+  input {
+    width: $topbar-input-width;
+    margin-right: 1rem;
+  }
+}
+
+@mixin foundation-top-bar {
+  // Top bar container
+  .top-bar {
+    @include top-bar-container;
+  }
+
+  // Coloring classes
+  .top-bar.primary {
+    color: foreground($primary-color);
+
+    &,
+    ul {
+      background-color: $primary-color;
+    }
+
+    a {
+      color: foreground($primary-color);
+    }
+  }
+
+  .top-bar.dark {
+    color: foreground($primary-color);
+    
+    &,
+    ul {
+      background-color: $topbar-background-dark;
+    }
+
+    a {
+      color: #fff;
+    }
+  }
+
+  // Sub-sections
+  // Stack on small screens
+  @include breakpoint(medium) {
+    .top-bar-left {
+      float: left;
+    }
+
+    .top-bar-right {
+      float: right
+    }
+  }
+}

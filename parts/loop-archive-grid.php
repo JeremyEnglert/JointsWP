@@ -33,11 +33,3 @@
 <?php endforeach; ?>    
 
 <?php wp_reset_postdata(); ?>
-					     
-<?php joints_page_navi(); ?>		
-
-<?php if ($posts = 0) : ?>
-
-	<?php get_template_part( 'parts/content', 'missing' ); ?>
-
-<?php endif; ?>

@@ -1,0 +1,96 @@
+// Foundation for Sites by ZURB
+// foundation.zurb.com
+// Licensed under MIT Open Source
+
+.dropdown.menu {
+  .has-submenu {
+    position: relative;
+
+    a::after {
+      float: right;
+      margin-top: 3px;
+      margin-left: 10px;
+    }
+
+    &.is-down-arrow > a::after {
+      @include css-triangle(5px, $anchor-color, down);
+    }
+    &.is-right-arrow > a::after {
+      @include css-triangle(5px, $anchor-color, left);
+      float: left;
+      margin-left: 0;
+      margin-right: 10px;
+    }
+    &.is-left-arrow > a::after {
+      @include css-triangle(5px, $anchor-color, right);
+    }
+  }
+//Chris's amendments *******
+  .submenu {
+    //for left aligned menus only
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 200px;
+    white-space: nowrap;
+    // border: thin solid blue;
+    z-index: 1;
+
+    > li {
+      width: 100%;
+    }
+
+    &.is-right-arrow {
+      left: auto;
+      right: 100%;
+    }
+
+    &.first-sub {
+      top: 100%;
+      left: 0;
+      right: auto;
+      &.is-right-arrow{
+        left: auto;
+        right: 0;
+      }
+    }
+
+//**************
+
+
+    &:not(.js-dropdown-nohover) > .has-submenu:hover > &,
+    &.js-dropdown-active {
+      display: block;
+    }
+  }
+  &.vertical.align-right {
+    float: right;
+  }
+  &.vertical {
+    width: 100px;
+
+    & > li .submenu {
+      top: 0;
+      left: 100%;
+      &.is-right-arrow {
+        left: auto;
+        right: 100%;
+      }
+    }
+  }
+
+}
+
+.submenu {
+  background: white;
+}
+  // .submenu {
+  //   display: none;
+  //   position: absolute;
+  //   top: 100%;
+  //   width: auto;
+  //   white-space: nowrap;
+  //   background: $body-background;
+  //   z-index: 1;
+//need settings for right-aligned dd as well

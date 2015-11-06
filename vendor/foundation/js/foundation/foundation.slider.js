@@ -1,281 +1,428 @@
-;(function ($, window, document, undefined) {
+/**
+ * Slider module.
+ * @module foundation.slider
+ * @requires foundation.util.animationFrame
+ * @requires foundation.util.triggers
+ * @requires foundation.util.keyboard
+ * @requires foundation.util.addtouch
+ */
+!function($, Foundation){
   'use strict';
 
-  Foundation.libs.slider = {
-    name : 'slider',
+  /**
+   * Creates a new instance of a drilldown menu.
+   * @class
+   * @param {jQuery} element - jQuery object to make into an accordion menu.
+   * @param {Object} options - Overrides to the default plugin settings.
+   */
+  function Slider(element, options){
+    this.$element = element;
+    this.options = $.extend({}, Slider.defaults, this.$element.data(), options || {});
 
-    version : '5.5.2',
+    this._init();
 
-    settings : {
-      start : 0,
-      end : 100,
-      step : 1,
-      precision : null,
-      initial : null,
-      display_selector : '',
-      vertical : false,
-      trigger_input_change : false,
-      on_change : function () {}
-    },
+    Foundation.registerPlugin(this);
+  }
 
-    cache : {},
+  Slider.defaults = {
+    start: 0,
+    end: 100,
+    step: 1,
+    initialStart: 0,
+    initialEnd: 100,
+    binding: false,
+    clickSelect: true,
+    vertical: false,
+    draggable: true,
+    disabled: false,
+    doubleSided: false,
+    steps: 100,
+    decimal: 2,
+    dragDelay: 0,
+    moveTime: 200,//update this if changing the transition time in the sass
+    disabledClass: 'disabled'
+  };
+  /**
+   * Initilizes the plugin by reading/setting attributes, creating collections and setting the initial position of the handle(s).
+   * @function
+   * @private
+   */
+  Slider.prototype._init = function(){
+    this.inputs = this.$element.find('input');
+    this.handles = this.$element.find('[data-slider-handle]');
+    this.options.vertical = this.$element.hasClass('vertical');
+    this.$handle = this.handles.eq(0);
+    this.$input = this.inputs.length ? this.inputs.eq(0) : $('#' + this.$handle.attr('aria-controls'));
+    this.$fill = this.$element.find('[data-slider-fill]').css(this.options.vertical ? 'height' : 'width', 0);
 
-    init : function (scope, method, options) {
-      Foundation.inherit(this, 'throttle');
-      this.bindings(method, options);
-      this.reflow();
-    },
+    var isDbl = false,
+        _this = this;
+    if(this.options.disabled || this.$element.hasClass(this.options.disabledClass)){
+      this.options.disabled = true;
+      this.$element.addClass(this.options.disabledClass);
+    }
+    if(!this.inputs.length){
+      this.inputs = $().add(this.$input);
+      this.options.binding = true;
+    }
+    this._setInitAttr(0);
+    this._events(this.$handle);
 
-    events : function () {
-      var self = this;
+    if(this.handles[1]){
+      this.options.doubleSided = true;
+      this.$handle2 = this.handles.eq(1);
+      this.$input2 = this.inputs.length ? this.inputs.eq(1) : $('#' + this.$handle2.attr('aria-controls'));
 
-      $(this.scope)
-        .off('.slider')
-        .on('mousedown.fndtn.slider touchstart.fndtn.slider pointerdown.fndtn.slider',
-        '[' + self.attr_name() + ']:not(.disabled, [disabled]) .range-slider-handle', function (e) {
-          if (!self.cache.active) {
-            e.preventDefault();
-            self.set_active_slider($(e.target));
-          }
-        })
-        .on('mousemove.fndtn.slider touchmove.fndtn.slider pointermove.fndtn.slider', function (e) {
-          if (!!self.cache.active) {
-            e.preventDefault();
-            if ($.data(self.cache.active[0], 'settings').vertical) {
-              var scroll_offset = 0;
-              if (!e.pageY) {
-                scroll_offset = window.scrollY;
-              }
-              self.calculate_position(self.cache.active, self.get_cursor_position(e, 'y') + scroll_offset);
-            } else {
-              self.calculate_position(self.cache.active, self.get_cursor_position(e, 'x'));
-            }
-          }
-        })
-        .on('mouseup.fndtn.slider touchend.fndtn.slider pointerup.fndtn.slider', function (e) {
-          self.remove_active_slider();
-        })
-        .on('change.fndtn.slider', function (e) {
-          self.settings.on_change();
-        });
+      if(!this.inputs[1]){
+        this.inputs = this.inputs.add(this.$input2);
+      }
+      isDbl = true;
 
-      self.S(window)
-        .on('resize.fndtn.slider', self.throttle(function (e) {
-          self.reflow();
-        }, 300));
+      this._setHandlePos(this.$handle, this.options.initialStart, function(){
 
-      // update slider value as users change input value
-      this.S('[' + this.attr_name() + ']').each(function () {
-        var slider = $(this),
-            handle = slider.children('.range-slider-handle')[0],
-            settings = self.initialize_settings(handle);
-
-        if (settings.display_selector != '') {
-          $(settings.display_selector).each(function(){
-            if (this.hasOwnProperty('value')) {
-              $(this).change(function(){
-                // is there a better way to do this?
-                slider.foundation("slider", "set_value", $(this).val());
-              });
-            }
-          });
-        }
+        _this._setHandlePos(_this.$handle2, _this.options.initialEnd);
       });
-    },
+      this.$handle.triggerHandler('click.zf.slider');
+      this._setInitAttr(1);
+      this._events(this.$handle2);
+    }
 
-    get_cursor_position : function (e, xy) {
-      var pageXY = 'page' + xy.toUpperCase(),
-          clientXY = 'client' + xy.toUpperCase(),
-          position;
+    if(!isDbl){
+      this._setHandlePos(this.$handle, this.options.initialStart);
+    }
+  };
+  /**
+   * Sets the position of the selected handle and fill bar.
+   * @function
+   * @private
+   * @param {jQuery} $hndl - the selected handle to move.
+   * @param {Number} location - floating point between the start and end values of the slider bar.
+   * @param {Function} cb - callback function to fire on completion.
+   * @fires Slider#moved
+   */
+  Slider.prototype._setHandlePos = function($hndl, location, cb){
+  //might need to alter that slightly for bars that will have odd number selections.
+    // console.log(str, cb);
+    location = parseFloat(location);//on input change events, convert string to number...grumble.
+    // prevent slider from running out of bounds
+    if(location < this.options.start){ location = this.options.start; }
+    else if(location > this.options.end){ location = this.options.end; }
 
-      if (typeof e[pageXY] !== 'undefined') {
-        position = e[pageXY];
-      } else if (typeof e.originalEvent[clientXY] !== 'undefined') {
-        position = e.originalEvent[clientXY];
-      } else if (e.originalEvent.touches && e.originalEvent.touches[0] && typeof e.originalEvent.touches[0][clientXY] !== 'undefined') {
-        position = e.originalEvent.touches[0][clientXY];
-      } else if (e.currentPoint && typeof e.currentPoint[xy] !== 'undefined') {
-        position = e.currentPoint[xy];
+    var isDbl = this.options.doubleSided,
+        callback = cb || null;
+
+    if(isDbl){
+      if(this.handles.index($hndl) === 0){
+        var h2Val = parseFloat(this.$handle2.attr('aria-valuenow'));
+        location = location >= h2Val ? h2Val - this.options.step : location;
+      }else{
+        var h1Val = parseFloat(this.$handle.attr('aria-valuenow'));
+        location = location <= h1Val ? h1Val + this.options.step : location;
+      }
+    }
+
+    var _this = this,
+        vert = this.options.vertical,
+        hOrW = vert ? 'height' : 'width',
+        lOrT = vert ? 'top' : 'left',
+        halfOfHandle = $hndl[0].getBoundingClientRect()[hOrW] / 2,
+        elemDim = this.$element[0].getBoundingClientRect()[hOrW],
+        pctOfBar = percent(location, this.options.end).toFixed(this.options.decimal),
+        pxToMove = (elemDim - halfOfHandle) * pctOfBar,
+        movement = (percent(pxToMove, elemDim) * 100).toFixed(this.options.decimal),
+        location = location > 0 ? parseFloat(location.toFixed(this.options.decimal)) : 0,
+        anim, prog, start = null, css = {};
+
+
+    this._setValues($hndl, location);
+
+    if(this.options.doubleSided){//update to calculate based on values set to respective inputs??
+      var isLeftHndl = this.handles.index($hndl) === 0,
+          dim,
+          idx = this.handles.index($hndl);
+          // console.log(this.inputs.eq(idx).val());
+
+      if(isLeftHndl){
+        css[lOrT] = (pctOfBar > 0 ? pctOfBar * 100 : 0) + '%';//
+        dim = /*Math.abs*/((percent(this.$handle2.position()[lOrT] + halfOfHandle, elemDim) - parseFloat(pctOfBar)) * 100).toFixed(this.options.decimal) + '%';
+        console.log('left handle', dim);
+        css['min-' + hOrW] = dim;
+        if(cb && typeof cb === 'function'){ cb(); }
+      }else{
+        // dim = ((parseFloat(pctOfBar) - (percent(this.$handle.position()[lOrT] - halfOfHandle, elemDim))) * 100);
+        // dim = (dim > 100 ? 100 : dim.toFixed(this.options.decimal)) + '%';
+        // console.log('location',location, 'left hndl left', this.handles.eq(0)[0].style.left);
+        location = (location < 100 ? location : 100) - parseFloat(this.$handle[0].style.left);
+        // console.log('location',location);
+        css['min-' + hOrW] = location + '%';
+      }
+    }
+
+                  //  console.log('finished with movement', callback);
+    this.$element.one('finished.zf.animate', function(){
+                    _this.animComplete = true;
+                    /**
+                     * Fires when the handle is done moving.
+                     * @event Slider#moved
+                     */
+                    _this.$element.trigger('moved.zf.slider', [$hndl]);
+                });
+
+    Foundation.Move(_this.options.moveTime, $hndl, function(){
+      $hndl.css(lOrT, movement + '%');
+      if(!_this.options.doubleSided){
+        _this.$fill.css(hOrW, pctOfBar * 100 + '%');
+      }else{
+        _this.$fill.css(css);
+      }
+    });
+  };
+  /**
+   * Sets the initial attribute for the slider element.
+   * @function
+   * @private
+   * @param {Number} idx - index of the current handle/input to use.
+   */
+  Slider.prototype._setInitAttr = function(idx){
+    var id = this.inputs.eq(idx).attr('id') || Foundation.GetYoDigits(6, 'slider');
+    this.inputs.eq(idx).attr({
+      'id': id,
+      'max': this.options.end,
+      'min': this.options.start
+
+    });
+    this.handles.eq(idx).attr({
+      'role': 'slider',
+      'aria-controls': id,
+      'aria-valuemax': this.options.end,
+      'aria-valuemin': this.options.start,
+      'aria-valuenow': idx === 0 ? this.options.initialStart : this.options.initialEnd,
+      'aria-orientation': this.options.vertical ? 'vertical' : 'horizontal',
+      'tabindex': 0
+    });
+  };
+  /**
+   * Sets the input and `aria-valuenow` values for the slider element.
+   * @function
+   * @private
+   * @param {jQuery} $handle - the currently selected handle.
+   * @param {Number} val - floating point of the new value.
+   */
+  Slider.prototype._setValues = function($handle, val){
+    var _this = this,
+        idx = this.options.doubleSided ? this.handles.index($handle) : 0;
+    // console.log('index of handle',idx);
+    this.inputs.eq(idx).val(val);
+    $handle.attr('aria-valuenow', val);
+  };
+  /**
+   * Handles events on the slider element.
+   * Calculates the new location of the current handle.
+   * If there are two handles and the bar was clicked, it determines which handle to move.
+   * @function
+   * @private
+   * @param {Object} e - the `event` object passed from the listener.
+   * @param {jQuery} $handle - the current handle to calculate for, if selected.
+   * @param {Number} val - floating point number for the new value of the slider.
+   */
+  Slider.prototype._handleEvent = function(e, $handle, val){
+    if(!val){//click or drag events
+      e.preventDefault();
+      var _this = this,
+          vertical = this.options.vertical,
+          param = vertical ? 'height' : 'width',
+          direction = vertical ? 'top' : 'left',
+          pageXY = vertical ? e.pageY : e.pageX,
+          halfOfHandle = this.$handle[0].getBoundingClientRect()[param] / 2,
+          barDim = this.$element[0].getBoundingClientRect()[param],
+          barOffset = (this.$element.offset()[direction] -  pageXY),
+          barXY = barOffset > 0 ? -halfOfHandle : (barOffset - halfOfHandle) < -barDim ? barDim : Math.abs(barOffset),//if the cursor position is less than or greater than the elements bounding coordinates, set coordinates within those bounds
+          // eleDim = this.$element[0].getBoundingClientRect()[param],
+          offsetPct = percent(barXY, barDim),
+          value = (this.options.end - this.options.start) * offsetPct;
+
+      if(!$handle){//figure out which handle it is, pass it to the next function.
+        var firstHndlPos = absPosition(this.$handle, direction, barXY, param),
+            secndHndlPos = absPosition(this.$handle2, direction, barXY, param);
+            $handle = firstHndlPos <= secndHndlPos ? this.$handle : this.$handle2;
       }
 
-      return position;
-    },
+    }else{//change event on input
+      var value = val;
+    }
 
-    set_active_slider : function ($handle) {
-      this.cache.active = $handle;
-    },
+    this._setHandlePos($handle, value);
+  };
+  /**
+   * Adds event listeners to the slider elements.
+   * @function
+   * @private
+   * @param {jQuery} $handle - the current handle to apply listeners to.
+   */
+  Slider.prototype._events = function($handle){
+    if(this.options.disabled){ return false; }
 
-    remove_active_slider : function () {
-      this.cache.active = null;
-    },
 
-    calculate_position : function ($handle, cursor_x) {
-      var self = this,
-          settings = $.data($handle[0], 'settings'),
-          handle_l = $.data($handle[0], 'handle_l'),
-          handle_o = $.data($handle[0], 'handle_o'),
-          bar_l = $.data($handle[0], 'bar_l'),
-          bar_o = $.data($handle[0], 'bar_o');
+    var _this = this,
+        curHandle,
+        timer;
 
-      requestAnimationFrame(function () {
-        var pct;
-
-        if (Foundation.rtl && !settings.vertical) {
-          pct = self.limit_to(((bar_o + bar_l - cursor_x) / bar_l), 0, 1);
-        } else {
-          pct = self.limit_to(((cursor_x - bar_o) / bar_l), 0, 1);
-        }
-
-        pct = settings.vertical ? 1 - pct : pct;
-
-        var norm = self.normalized_value(pct, settings.start, settings.end, settings.step, settings.precision);
-
-        self.set_ui($handle, norm);
+    if(this.options.binding){
+      this.inputs.on('change.zf.slider', function(e){
+        var idx = _this.inputs.index($(this));
+        _this._handleEvent(e, _this.handles.eq(idx), $(this).val());
       });
-    },
+    }
 
-    set_ui : function ($handle, value) {
-      var settings = $.data($handle[0], 'settings'),
-          handle_l = $.data($handle[0], 'handle_l'),
-          bar_l = $.data($handle[0], 'bar_l'),
-          norm_pct = this.normalized_percentage(value, settings.start, settings.end),
-          handle_offset = norm_pct * (bar_l - handle_l) - 1,
-          progress_bar_length = norm_pct * 100,
-          $handle_parent = $handle.parent(),
-          $hidden_inputs = $handle.parent().children('input[type=hidden]');
 
-      if (Foundation.rtl && !settings.vertical) {
-        handle_offset = -handle_offset;
-      }
-
-      handle_offset = settings.vertical ? -handle_offset + bar_l - handle_l + 1 : handle_offset;
-      this.set_translate($handle, handle_offset, settings.vertical);
-
-      if (settings.vertical) {
-        $handle.siblings('.range-slider-active-segment').css('height', progress_bar_length + '%');
-      } else {
-        $handle.siblings('.range-slider-active-segment').css('width', progress_bar_length + '%');
-      }
-
-      $handle_parent.attr(this.attr_name(), value).trigger('change.fndtn.slider');
-
-      $hidden_inputs.val(value);
-      if (settings.trigger_input_change) {
-          $hidden_inputs.trigger('change.fndtn.slider');
-      }
-
-      if (!$handle[0].hasAttribute('aria-valuemin')) {
-        $handle.attr({
-          'aria-valuemin' : settings.start,
-          'aria-valuemax' : settings.end
-        });
-      }
-      $handle.attr('aria-valuenow', value);
-
-      if (settings.display_selector != '') {
-        $(settings.display_selector).each(function () {
-          if (this.hasAttribute('value')) {
-            $(this).val(value);
-          } else {
-            $(this).text(value);
-          }
-        });
-      }
-
-    },
-
-    normalized_percentage : function (val, start, end) {
-      return Math.min(1, (val - start) / (end - start));
-    },
-
-    normalized_value : function (val, start, end, step, precision) {
-      var range = end - start,
-          point = val * range,
-          mod = (point - (point % step)) / step,
-          rem = point % step,
-          round = ( rem >= step * 0.5 ? step : 0);
-      return ((mod * step + round) + start).toFixed(precision);
-    },
-
-    set_translate : function (ele, offset, vertical) {
-      if (vertical) {
-        $(ele)
-          .css('-webkit-transform', 'translateY(' + offset + 'px)')
-          .css('-moz-transform', 'translateY(' + offset + 'px)')
-          .css('-ms-transform', 'translateY(' + offset + 'px)')
-          .css('-o-transform', 'translateY(' + offset + 'px)')
-          .css('transform', 'translateY(' + offset + 'px)');
-      } else {
-        $(ele)
-          .css('-webkit-transform', 'translateX(' + offset + 'px)')
-          .css('-moz-transform', 'translateX(' + offset + 'px)')
-          .css('-ms-transform', 'translateX(' + offset + 'px)')
-          .css('-o-transform', 'translateX(' + offset + 'px)')
-          .css('transform', 'translateX(' + offset + 'px)');
-      }
-    },
-
-    limit_to : function (val, min, max) {
-      return Math.min(Math.max(val, min), max);
-    },
-
-    initialize_settings : function (handle) {
-      var settings = $.extend({}, this.settings, this.data_options($(handle).parent())),
-          decimal_places_match_result;
-
-      if (settings.precision === null) {
-        decimal_places_match_result = ('' + settings.step).match(/\.([\d]*)/);
-        settings.precision = decimal_places_match_result && decimal_places_match_result[1] ? decimal_places_match_result[1].length : 0;
-      }
-
-      if (settings.vertical) {
-        $.data(handle, 'bar_o', $(handle).parent().offset().top);
-        $.data(handle, 'bar_l', $(handle).parent().outerHeight());
-        $.data(handle, 'handle_o', $(handle).offset().top);
-        $.data(handle, 'handle_l', $(handle).outerHeight());
-      } else {
-        $.data(handle, 'bar_o', $(handle).parent().offset().left);
-        $.data(handle, 'bar_l', $(handle).parent().outerWidth());
-        $.data(handle, 'handle_o', $(handle).offset().left);
-        $.data(handle, 'handle_l', $(handle).outerWidth());
-      }
-
-      $.data(handle, 'bar', $(handle).parent());
-      return $.data(handle, 'settings', settings);
-    },
-
-    set_initial_position : function ($ele) {
-      var settings = $.data($ele.children('.range-slider-handle')[0], 'settings'),
-          initial = ((typeof settings.initial == 'number' && !isNaN(settings.initial)) ? settings.initial : Math.floor((settings.end - settings.start) * 0.5 / settings.step) * settings.step + settings.start),
-          $handle = $ele.children('.range-slider-handle');
-      this.set_ui($handle, initial);
-    },
-
-    set_value : function (value) {
-      var self = this;
-      $('[' + self.attr_name() + ']', this.scope).each(function () {
-        $(this).attr(self.attr_name(), value);
-      });
-      if (!!$(this.scope).attr(self.attr_name())) {
-        $(this.scope).attr(self.attr_name(), value);
-      }
-      self.reflow();
-    },
-
-    reflow : function () {
-      var self = this;
-      self.S('[' + this.attr_name() + ']').each(function () {
-        var handle = $(this).children('.range-slider-handle')[0],
-            val = $(this).attr(self.attr_name());
-        self.initialize_settings(handle);
-
-        if (val) {
-          self.set_ui($(handle), parseFloat(val));
-        } else {
-          self.set_initial_position($(this));
+    if(this.options.clickSelect){
+      this.$element.off('click.zf.slider').on('click.zf.slider', function(e){
+        if(_this.$element.data('dragging')){ return false; }
+        _this.animComplete = false;
+        if(_this.options.doubleSided){
+          _this._handleEvent(e);
+        }else{
+          _this._handleEvent(e, _this.$handle);
         }
       });
     }
-  };
 
-}(jQuery, window, window.document));
+    if(this.options.draggable){
+      this.handles.addTouch();
+      var curHandle,
+          timer,
+          $body = $('body');
+
+      $handle
+        .off('mousedown.zf.slider touchstart.zf.slider')
+        .on('mousedown.zf.slider', function(e){
+          e.preventDefault();
+
+          $handle.addClass('is-dragging');
+          _this.$fill.addClass('is-dragging');
+          _this.$element.attr('data-dragging', true);
+          _this.animComplete = false;
+          curHandle = $(e.currentTarget);
+
+          $body.on('mousemove.zf.slider', function(e){
+            e.preventDefault();
+
+            timer = setTimeout(function(){
+              _this._handleEvent(e, curHandle);
+            }, _this.options.dragDelay);
+          }).on('mouseup.zf.slider', function(e){
+            clearTimeout(timer);
+
+            _this.animComplete = true;
+            _this._handleEvent(e, curHandle);
+            $handle.removeClass('is-dragging');
+            _this.$fill.removeClass('is-dragging');
+            _this.$element.data('dragging', false);
+            // Foundation.reflow(_this.$element, 'slider');
+            $body.off('mousemove.zf.slider mouseup.zf.slider');
+          })
+      });
+    }
+    $handle.on('keydown.zf.slider', function(e){
+      var idx = _this.options.doubleSided ? _this.handles.index($(this)) : 0,
+        oldValue = Number(_this.inputs.eq(idx).val()),
+        newValue;
+
+      var _$handle = $(this);
+
+      // handle keyboard event with keyboard util
+      Foundation.handleKey(e, _this, {
+        decrease: function() {
+          newValue = oldValue - _this.options.step;
+        },
+        increase: function() {
+          newValue = oldValue + _this.options.step;
+        },
+        decrease_fast: function() {
+          newValue = oldValue - _this.options.step * 10;
+        },
+        increase_fast: function() {
+          newValue = oldValue + _this.options.step * 10;
+        },
+        handled: function() { // only set handle pos when event was handled specially
+          e.preventDefault();
+          _this._setHandlePos(_$handle, newValue);
+        }
+      });
+      /*if (newValue) { // if pressed key has special function, update value
+        e.preventDefault();
+        _this._setHandlePos(_$handle, newValue);
+      }*/
+    });
+  };
+  /**
+   * Destroys the slider plugin.
+   */
+   Slider.prototype.destroy = function(){
+     this.handles.off('.zf.slider');
+     this.inputs.off('.zf.slider');
+     this.$element.off('.zf.slider');
+
+     Foundation.unregisterPlugin(this);
+   };
+
+  Foundation.plugin(Slider);
+
+  function percent(frac, num){
+    return (frac / num);
+  }
+  function absPosition($handle, dir, clickPos, param){
+    return Math.abs(($handle.position()[dir] + ($handle[param]() / 2)) - clickPos);
+  }
+}(jQuery, window.Foundation);
+
+//*********this is in case we go to static, absolute positions instead of dynamic positioning********
+// this.setSteps(function(){
+//   _this._events();
+//   var initStart = _this.options.positions[_this.options.initialStart - 1] || null;
+//   var initEnd = _this.options.initialEnd ? _this.options.position[_this.options.initialEnd - 1] : null;
+//   if(initStart || initEnd){
+//     _this._handleEvent(initStart, initEnd);
+//   }
+// });
+
+//***********the other part of absolute positions*************
+// Slider.prototype.setSteps = function(cb){
+//   var posChange = this.$element.outerWidth() / this.options.steps;
+//   var counter = 0
+//   while(counter < this.options.steps){
+//     if(counter){
+//       this.options.positions.push(this.options.positions[counter - 1] + posChange);
+//     }else{
+//       this.options.positions.push(posChange);
+//     }
+//     counter++;
+//   }
+//   cb();
+// };
+!function(){
+  $.fn.addTouch = function(){
+    this.each(function(i,el){
+      $(el).bind('touchstart touchmove touchend touchcancel',function(){
+        //we pass the original event object because the jQuery event
+        //object is normalized to w3c specs and does not provide the TouchList
+        handleTouch(event);
+      });
+    });
+
+    var handleTouch = function(event){
+      var touches = event.changedTouches,
+          first = touches[0],
+          eventTypes = {
+            touchstart: 'mousedown',
+            touchmove: 'mousemove',
+            touchend: 'mouseup'
+          },
+          type = eventTypes[event.type];
+
+      var simulatedEvent = document.createEvent('MouseEvent');
+      simulatedEvent.initMouseEvent(type, true, true, window, 1, first.screenX, first.screenY, first.clientX, first.clientY, false, false, false, false, 0/*left*/, null);
+      first.target.dispatchEvent(simulatedEvent);
+    };
+  };
+}();

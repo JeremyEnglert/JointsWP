@@ -54,25 +54,39 @@ gulp.task('foundation-js', function() {
   return gulp.src([	
   		  
   		  // Foundation core - needed if you want to use any of the components below
-          './vendor/foundation/js/foundation/foundation.js',
+          './vendor/foundation/js/foundation/foundation.core.js',
           
           // Pick the componenets you need in your project
+          './vendor/foundation/js/foundation/foundation.util.animationFrame.js',
+          './vendor/foundation/js/foundation/foundation.util.keyboard.js',
+          './vendor/foundation/js/foundation/foundation.util.mediaQuery.js',
+          './vendor/foundation/js/foundation/foundation.util.menu-nester.js',
+          './vendor/foundation/js/foundation/foundation.util.motion.js',
+          './vendor/foundation/js/foundation/foundation.util.randomId.js',
+          './vendor/foundation/js/foundation/foundation.util.size-and-collision.js',
+          './vendor/foundation/js/foundation/foundation.util.swipe.js',
+          './vendor/foundation/js/foundation/foundation.util.triggers.js',
+          './vendor/foundation/js/foundation/foundation.utils.timer.js',
           './vendor/foundation/js/foundation/foundation.abide.js',
           './vendor/foundation/js/foundation/foundation.accordion.js',
-          './vendor/foundation/js/foundation/foundation.alert.js',
-          './vendor/foundation/js/foundation/foundation.clearing.js',
+          './vendor/foundation/js/foundation/foundation.accordionMenu.js',
+          './vendor/foundation/js/foundation/foundation.drilldown.js',
+          './vendor/foundation/js/foundation/foundation.dropdown-menu.js',
           './vendor/foundation/js/foundation/foundation.dropdown.js',
           './vendor/foundation/js/foundation/foundation.equalizer.js',
           './vendor/foundation/js/foundation/foundation.interchange.js',
-          './vendor/foundation/js/foundation/foundation.joyride.js',
           './vendor/foundation/js/foundation/foundation.magellan.js',
           './vendor/foundation/js/foundation/foundation.offcanvas.js',
           './vendor/foundation/js/foundation/foundation.orbit.js',
+          './vendor/foundation/js/foundation/foundation.responsiveMenu.js',
+          './vendor/foundation/js/foundation/foundation.responsiveToggle.js',
           './vendor/foundation/js/foundation/foundation.reveal.js',
           './vendor/foundation/js/foundation/foundation.slider.js',
-          './vendor/foundation/js/foundation/foundation.tab.js',
+          './vendor/foundation/js/foundation/foundation.sticky.js',
+          './vendor/foundation/js/foundation/foundation.tabs.js',
+          './vendor/foundation/js/foundation/foundation.toggler.js',
           './vendor/foundation/js/foundation/foundation.tooltip.js',
-          './vendor/foundation/js/foundation/foundation.topbar.js',      
+          './vendor/motion-ui/dist/motion-ui.min.js'
   ])
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
