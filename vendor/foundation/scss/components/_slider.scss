@@ -41,6 +41,10 @@ $slider-handle-background: $primary-color !default;
 /// @type Number
 $slider-opacity-disabled: 0.25 !default;
 
+/// Default radius for slider.
+/// @type Number
+$slider-radius: $global-radius !default;
+
 /// Transition properties to apply to the slider handle and fill.
 /// @type Transition
 $slider-transition: all 0.2s ease-in-out !default;
@@ -74,6 +78,7 @@ $slider-transition: all 0.2s ease-in-out !default;
 
 /// Adds the general styles for the slider handles.
 @mixin slider-handle {
+  @include disable-mouse-outline;
   @include v-align-middle;
   position: absolute;
   left: 0;
@@ -84,6 +89,7 @@ $slider-transition: all 0.2s ease-in-out !default;
   background-color: $slider-handle-background;
   transition: $slider-transition;
   touch-action: manipulation;
+  border-radius: $slider-radius;
 
   &:hover {
     background-color: scale-color($slider-handle-background, $lightness: -15%);
@@ -104,6 +110,7 @@ $slider-transition: all 0.2s ease-in-out !default;
   width: $slider-width-vertical;
   height: 12.5rem;
   margin: 0 1.25rem;
+  transform: scale(1, -1);
 
   .slider-fill {
     top: 0;

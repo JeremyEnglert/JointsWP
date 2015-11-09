@@ -38,8 +38,9 @@ CSS file.
 @include foundation-close-button;
 @include foundation-drilldown-menu;
 @include foundation-dropdown;
-// @include foundation-dropdown-menu
+@include foundation-dropdown-menu;
 @include foundation-flex-video;
+// @include foundation-joyride;
 @include foundation-label;
 @include foundation-media-object;
 @include foundation-menu;
@@ -58,10 +59,6 @@ CSS file.
 @include foundation-tooltip;
 @include foundation-top-bar;
 
-// Import Motion UI from ZURB
-@import "../../vendor/motion-ui/src/motion-ui";
-@include motion-ui-transitions;
-@include motion-ui-animations;
 
 // Import your custom styles
 @import "main";

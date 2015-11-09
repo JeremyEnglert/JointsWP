@@ -16,13 +16,23 @@
    */
   function DropdownMenu(element, options) {
     this.$element = element;
-    this.options = $.extend({}, DropdownMenu.defaults, this.$element.data(), options || {});
+    this.options = $.extend({}, DropdownMenu.defaults, this.$element.data(), options);
 
     Foundation.FeatherNest(this.$element, 'dropdown');
 
     this._init();
 
     Foundation.registerPlugin(this);
+    Foundation.Keyboard.register('DropdownMenu', {
+      'ENTER': 'open',
+      'SPACE': 'open',
+      'ARROW_RIGHT': 'next',
+      'ARROW_UP': 'up',
+      'ARROW_DOWN': 'down',
+      'ARROW_LEFT': 'previous',
+      'ESCAPE': 'close'
+    });
+
     // /**
     //  * Fires when the plugin has been successfuly initialized.
     //  * @event DropdownMenu#init
@@ -97,9 +107,9 @@
     this.$submenus.each(function(){
       var $sub = $(this);
 
-      if(_this.options.alignment === 'right'){
-        $sub.children('[data-submenu]').addClass('is-right-arrow');
-      }
+      // if(_this.options.alignment === 'right'){
+      //   $sub.children('[data-submenu]').addClass('is-right-arrow');
+      // }
 
       $sub.children('[data-submenu]')
           .attr({
@@ -121,7 +131,7 @@
     var _this = this;
 
     if(this.options.clickOpen){
-      $elem.on('click.zf.dropdownmenu tap.zf.dropdownmenu touchend.zf.dropdownmenu', function(e){
+      $elem.children('a').on('click.zf.dropdownmenu touchend.zf.dropdownmenu', function(e){
         if($(e.target).parent('li').hasClass('has-submenu')){
           e.preventDefault();
           e.stopPropagation();
@@ -253,7 +263,7 @@
           });
         }
       }
-      Foundation.handleKey(e, _this, functions);
+      Foundation.Keyboard.handleKey(e, _this, functions);
     });
      // end keyboardAccess
   };

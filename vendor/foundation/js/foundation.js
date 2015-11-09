@@ -277,6 +277,7 @@ function hyphenate(str) {
  ******************************************/
 !function($, Foundation){
   'use strict';
+  Foundation.Keyboard = {};
 
   var keyCodes = {
     9: 'TAB',
@@ -296,7 +297,7 @@ function hyphenate(str) {
     return k;
   })(keyCodes);
 
-  Foundation.keys = keys;
+  Foundation.Keyboard.keys = keys;
 
   /**
    * Parses the (keyboard) event and returns a String that represents its key
@@ -311,75 +312,11 @@ function hyphenate(str) {
     if (event.altKey) key = 'ALT_' + key;
     return key;
   };
-  Foundation.parseKey = parseKey;
+  Foundation.Keyboard.parseKey = parseKey;
 
 
   // plain commands per component go here, ltr and rtl are merged based on orientation
-  var commands = {
-    'Slider': {
-        'ltr': {
-          'ARROW_RIGHT': 'increase',
-          'ARROW_UP': 'increase',
-          'ARROW_DOWN': 'decrease',
-          'ARROW_LEFT': 'decrease',
-          'SHIFT_ARROW_RIGHT': 'increase_fast',
-          'SHIFT_ARROW_UP': 'increase_fast',
-          'SHIFT_ARROW_DOWN': 'decrease_fast',
-          'SHIFT_ARROW_LEFT': 'decrease_fast'
-        },
-        'rtl': {
-          'ARROW_LEFT': 'increase',
-          'ARROW_RIGHT': 'decrease',
-          'SHIFT_ARROW_LEFT': 'increase_fast',
-          'SHIFT_ARROW_RIGHT': 'decrease_fast'
-        }
-    },
-    'Reveal': {
-      'ENTER': 'open',
-      'SPACE': 'open',
-      'ESCAPE': 'close',
-      'TAB': 'tab_forward',
-      'SHIFT_TAB': 'tab_backward'
-    },
-    'Tabs': {
-      'ENTER': 'open',
-      'SPACE': 'open',
-      'ARROW_RIGHT': 'next',
-      'ARROW_UP': 'previous',
-      'ARROW_DOWN': 'next',
-      'ARROW_LEFT': 'previous',
-      // 'TAB': 'next',
-      // 'SHIFT_TAB': 'previous'
-    },
-    'Orbit': {
-        'ltr': {
-          'ARROW_RIGHT': 'next',
-          'ARROW_LEFT': 'previous'
-        },
-        'rtl': {
-          'ARROW_LEFT': 'next',
-          'ARROW_RIGHT': 'previous'
-        }
-    },
-    'Accordion': {
-      'ENTER': 'toggle',
-      'SPACE': 'toggle',
-      'ARROW_DOWN': 'next',
-      'ARROW_UP': 'previous'
-
-    },
-    'DropdownMenu': {
-          'ENTER': 'open',
-          'SPACE': 'open',
-          'ARROW_RIGHT': 'next',
-          'ARROW_UP': 'up',
-          'ARROW_DOWN': 'down',
-          'ARROW_LEFT': 'previous',
-          'ESCAPE': 'close'
-        }
-  };
-
-
+  var commands = {};
 
   /**
    * Handles the given (keyboard) event
@@ -398,7 +335,8 @@ function hyphenate(str) {
     if (typeof commandList.ltr === 'undefined') { // this component does not differentiate between ltr and rtl
         cmds = commandList; // use plain list
     } else { // merge ltr and rtl: if document is rtl, rtl overwrites ltr and vice versa
-        if (isRtl()) cmds = $.extend({}, commandList.ltr, commandList.rtl);
+        if (Foundation.rtl()) cmds = $.extend({}, commandList.ltr, commandList.rtl);
+
         else cmds = $.extend({}, commandList.rtl, commandList.ltr);
     }
     command = cmds[keyCode];
@@ -416,7 +354,20 @@ function hyphenate(str) {
         }
     }
   };
-  Foundation.handleKey = handleKey;
+  Foundation.Keyboard.handleKey = handleKey;
+
+
+
+  /**
+   * Returns the component name name
+   * @param {Object} component - Foundation component, e.g. Slider or Reveal
+   * @return String componentName
+   */
+
+  var register = function(componentName, cmds) {
+    commands[componentName] = cmds;
+  };
+  Foundation.Keyboard.register = register;
 
   /**
    * Returns the component name name
@@ -427,13 +378,6 @@ function hyphenate(str) {
     return (/function (.+)\(/).exec((component).constructor.toString())[1] || '';
   };
 
-  /**
-   * Checks if the document is rtl directed, based on html-tag's dir-attribute
-   * @return String direction - either 'ltr' or 'rtl'
-   */
-  var isRtl = function() {
-    return $('html').attr('dir') === 'rtl';
-  };
 }(jQuery, window.Foundation);
 
 !function($, Foundation) {
@@ -1329,7 +1273,7 @@ Foundation.IFeelYou = closemeListener;
    */
   function Abide(element, options) {
     this.$element = element;
-    this.options  = $.extend({}, Abide.defaults, this.$element.data(), options || {});
+    this.options  = $.extend({}, Abide.defaults, this.$element.data(), options);
     this.$window  = $(window);
     this.name     = 'Abide';
     this.attr     = 'data-abide';
@@ -1729,14 +1673,20 @@ Foundation.IFeelYou = closemeListener;
    */
   function Accordion(element, options){
     this.$element = element;
-    this.options = $.extend({}, Accordion.defaults, this.$element.data(), options || {});
+    this.options = $.extend({}, Accordion.defaults, this.$element.data(), options);
 
     this._init();
     /**
      * Fires when the plugin has been successfuly initialized.
      * @event Accordion#init
      */
-     Foundation.registerPlugin(this);
+    Foundation.registerPlugin(this);
+    Foundation.Keyboard.register('Accordion', {
+      'ENTER': 'toggle',
+      'SPACE': 'toggle',
+      'ARROW_DOWN': 'next',
+      'ARROW_UP': 'previous'
+    });
   }
 
   Accordion.defaults = {
@@ -1751,7 +1701,7 @@ Foundation.IFeelYou = closemeListener;
    */
   Accordion.prototype._init = function() {
     this.$element.attr('role', 'tablist');
-    this.$tabs = this.$element.find('li');
+    this.$tabs = this.$element.children('li');
     this.$tabs.each(function(idx, el){
 
       var $el = $(el),
@@ -1759,7 +1709,13 @@ Foundation.IFeelYou = closemeListener;
           id = $content[0].id || Foundation.GetYoDigits(6, 'accordion'),
           linkId = el.id || id + '-label';
 
-      $el.find('a').attr({'aria-controls': id, 'role': 'tab', 'id': linkId});
+      $el.find('a:first').attr({
+        'aria-controls': id,
+        'role': 'tab',
+        'id': linkId,
+        'aria-expanded': false,
+        'aria-selected': false
+      });
       $content.attr({'role': 'tabpanel', 'aria-labelledby': linkId, 'aria-hidden': true, 'id': id});
     });
     var $initActive = this.$element.find('.is-active').children('[data-tab-content]');
@@ -1793,7 +1749,7 @@ Foundation.IFeelYou = closemeListener;
             _this.down($tabContent);
           }
         }).on('keydown.zf.accordion', function(e){
-          Foundation.handleKey(e, _this, {
+          Foundation.Keyboard.handleKey(e, _this, {
             toggle: function() {
               _this.toggle($tabContent);
             },
@@ -1848,6 +1804,10 @@ Foundation.IFeelYou = closemeListener;
     if(!firstTime){
       Foundation._reflow(this.$element.data('accordion'));
     }
+    $('#' + $target.attr('aria-labelledby')).attr({
+      'aria-expanded': true,
+      'aria-selected': true
+    })
     /**
      * Fires when the tab is done opening.
      * @event Accordion#down
@@ -1875,6 +1835,11 @@ Foundation.IFeelYou = closemeListener;
 
     $target.attr('aria-hidden', true)
            .parent().removeClass('is-active');
+
+    $('#' + $target.attr('aria-labelledby')).attr({
+     'aria-expanded': false,
+     'aria-selected': false
+    })
 
     /**
      * Fires when the tab is done collapsing up.
@@ -1920,7 +1885,7 @@ Foundation.IFeelYou = closemeListener;
    */
   function AccordionMenu(element, options) {
     this.$element = element;
-    this.options = $.extend({}, AccordionMenu.defaults, this.$element.data(), options || {});
+    this.options = $.extend({}, AccordionMenu.defaults, this.$element.data(), options);
 
     Foundation.FeatherNest(this.$element, 'accordion');
 
@@ -2140,20 +2105,30 @@ Foundation.IFeelYou = closemeListener;
    */
   function Drilldown(element, options){
     this.$element = element;
-    this.options = $.extend({}, Drilldown.defaults, this.$element.data(), options || {});
+    this.options = $.extend({}, Drilldown.defaults, this.$element.data(), options);
 
     Foundation.FeatherNest(this.$element, 'drilldown');
 
     this._init();
 
     Foundation.registerPlugin(this);
+    Foundation.registerKeyCommands('Drilldown', {
+      'ENTER': 'open',
+      'SPACE': 'open',
+      'ARROW_RIGHT': 'next',
+      'ARROW_UP': 'up',
+      'ARROW_DOWN': 'down',
+      'ARROW_LEFT': 'previous',
+      'ESCAPE': 'close',
+      'TAB': 'down',
+      'SHIFT_TAB': 'up'
+    });
   }
   Drilldown.defaults = {
-    backButton: '<li class="js-drilldown-back"><a>Back</a></li>',
+    backButton: '<li class="js-drilldown-back" tabindex="0"><a>Back</a></li>',
     wrapper: '<div></div>',
     closeOnClick: false,
-    holdOpen: false,
-    maxWidth: 200
+    holdOpen: false
   };
   /**
    * Initializes the drilldown by creating jQuery collections of elements
@@ -2169,6 +2144,8 @@ Foundation.IFeelYou = closemeListener;
     // console.log(this.$wrapper.outerHeight(), this.$wrapper.css());
     this._prepareMenu();
     // this.getMaxHeight();
+
+    this._keyboardEvents();
   };
   /**
    * prepares drilldown menu by setting attributes to links and elements
@@ -2198,8 +2175,8 @@ Foundation.IFeelYou = closemeListener;
       $menu.prepend(_this.options.backButton);
       _this._back($menu);
     });
-    this.$wrapper = $(this.options.wrapper).addClass('is-drilldown').css(this.getMaxHeight());
     if(!this.$element.parent().hasClass('is-drilldown')){
+      this.$wrapper = $(this.options.wrapper).addClass('is-drilldown').css(this.getMaxHeight());
       this.$element.wrap(this.$wrapper);
     }
 
@@ -2233,15 +2210,66 @@ Foundation.IFeelYou = closemeListener;
           $body.off('.zf.drilldown');
         });
       }
-    }).on('focus.zf.drilldown', function(){
-      // console.log('something');
-      _this._show($elem);
     });
     $elem.find('.js-drilldown-back').eq(0).on('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown', function(e){
       //do stuff
       // console.log('back button');
     });
   };
+  Drilldown.prototype._keyboardEvents = function() {
+    var _this = this;
+    this.$menuItems.add(this.$element.find('.js-drilldown-back')).on('keydown.zf.drilldown', function(e){
+      var $element = $(this),
+          $elements = $element.parent('ul').children('li'),
+          $prevElement,
+          $nextElement;
+
+      $elements.each(function(i) {
+        if ($(this).is($element)) {
+          $prevElement = $elements.eq(Math.max(0, i-1));
+          $nextElement = $elements.eq(Math.min(i+1, $elements.length-1));
+          return;
+        }
+      });
+      Foundation.handleKey(e, _this, {
+        next: function() {
+          if ($element.is(_this.$submenuAnchors)) {
+            _this._show($element);
+            setTimeout(function(){$element.find('ul li').filter(_this.$menuItems).first().focus()}, 1);
+          }
+        },
+        previous: function() {
+          _this._hide($element.parent('ul'));
+          setTimeout(function(){$element.parent('ul').parent('li').focus()}, 1);
+        },
+        up: function() {
+          $prevElement.focus();
+        },
+        down: function() {
+          $nextElement.focus();
+        },
+        close: function() {
+          _this._back();
+          //_this.$menuItems.first().focus(); // focus to first element
+        },
+        open: function() {
+          console.log('Open');
+          if (!$element.is(_this.$menuItems)) { // not menu item means back button
+            _this._hide($element.parent('ul'));
+            setTimeout(function(){$element.parent('ul').parent('li').focus()}, 1);
+          } else if ($element.is(_this.$submenuAnchors)) {
+            _this._show($element);
+            setTimeout(function(){$element.find('ul li').filter(_this.$menuItems).first().focus()}, 1);
+          }
+        },
+        handled: function() {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
+      });
+    }); // end keyboardAccess
+  };
+
   /**
    * Closes all open elements, and returns to root menu.
    * @function
@@ -2269,19 +2297,10 @@ Foundation.IFeelYou = closemeListener;
     var _this = this;
     $elem.off('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown');
     $elem.children('.js-drilldown-back')
-        .on('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown', function(e){
-          // console.log('mouseup on back');
-          $elem.addClass('is-closing').on('transitionend.zf.drilldown', function(e){
-            // e.stopImmediatePropagation();
-            // console.log('different transitionend');
-            $elem.removeClass('is-active is-closing').off('transitionend.zf.drilldown');
-            /**
-             * Fires when element has closed an open menu.
-             * @event Drilldown#back
-             */
-            _this.$element.trigger('back.zf.drilldown');
-          });
-        });
+      .on('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown', function(e){
+        // console.log('mouseup on back');
+        _this._hide($elem);
+      });
   };
   /**
    * Adds event listener to menu items w/o submenus to close open menus on click.
@@ -2306,9 +2325,29 @@ Foundation.IFeelYou = closemeListener;
    * @param {jQuery} $elem - the current element with a submenu to open.
    */
   Drilldown.prototype._show = function($elem){
+    console.log('Showing', $elem);
     $elem.children('[data-submenu]').addClass('is-active');
 
     this.$element.trigger('open.zf.drilldown', [$elem]);
+  };
+  /**
+   * Hides a submenu
+   * @function
+   * @fires Drilldown#hide
+   * @param {jQuery} $elem - the current sub-menu to add `back` event.
+   */
+  Drilldown.prototype._hide = function($elem){
+    var _this = this;
+    $elem.addClass('is-closing').on('transitionend.zf.drilldown', function(e){
+      // e.stopImmediatePropagation();
+      // console.log('different transitionend');
+      $elem.removeClass('is-active is-closing').off('transitionend.zf.drilldown');
+      /**
+       * Fires when element has closed an open menu.
+       * @event Drilldown#back
+       */
+      _this.$element.trigger('hide.zf.drilldown');
+    });
   };
   /**
    * Iterates through the nested menus to calculate the min-height, and max-width for the menu.
@@ -2322,10 +2361,9 @@ Foundation.IFeelYou = closemeListener;
       var numOfElems = $(this).children('li').length;
       max = numOfElems > max ? numOfElems : max;
     });
-    // console.log('1',this.$menuItems[0].getBoundingClientRect().height);
+
     result.height = max * this.$menuItems[0].getBoundingClientRect().height + 'px';
-    // result.width = this.$menuItems[0].getBoundingClientRect().width + 'px';
-    result.width = this.options.maxWidth;
+    result.width = this.$element[0].getBoundingClientRect().width + 'px';
 
     return result;
   };
@@ -2491,6 +2529,245 @@ Foundation.IFeelYou = closemeListener;
 // }(window.Foundation, jQuery);
 
 /**
+ * Dropdown module.
+ * @module foundation.dropdown
+ * @requires foundation.util.keyboard
+ * @requires foundation.util.size-and-collision
+ */
+!function($, Foundation){
+  'use strict';
+  /**
+   * Creates a new instance of a dropdown.
+   * @class
+   * @param {jQuery} element - jQuery object to make into an accordion menu.
+   * @param {Object} options - Overrides to the default plugin settings.
+   */
+  function Dropdown(element, options){
+    this.$element = element;
+    this.options = $.extend({}, Dropdown.defaults, this.$element.data(), options);
+    this._init();
+
+    Foundation.registerPlugin(this);
+  }
+
+  Dropdown.defaults = {
+    hoverDelay: 250,
+    hover: false,
+    vOffset: 1,
+    hOffset: 1,
+    positionClass: ''
+  };
+  /**
+   * Initializes the plugin by setting/checking options and attributes, adding helper variables, and saving the anchor.
+   * @function
+   * @private
+   */
+  Dropdown.prototype._init = function(){
+    var $id = this.$element.attr('id');
+
+    this.$anchor = $('[data-toggle="' + $id + '"]') || $('[data-open="' + $id + '"]');
+    this.$anchor.attr({
+      'aria-controls': $id,
+      'data-is-focus': false,
+      'data-yeti-box': $id,
+      'aria-haspopup': true
+      // 'data-resize': $id
+    });
+
+    this.options.positionClass = this.getPositionClass();
+    this.counter = 4;
+    this.usedPositions = [];
+    this.$element.attr({
+      'aria-hidden': 'true',
+      'data-yeti-box': $id,
+      'data-resize': $id
+    });
+    this._events();
+  };
+  /**
+   * Helper function to determine current orientation of dropdown pane.
+   * @function
+   * @returns {String} position - string value of a position class.
+   */
+  Dropdown.prototype.getPositionClass = function(){
+    var position = this.$element[0].className.match(/(top|left|right)/g);
+        position = position ? position[0] : '';
+    return position;
+  };
+  /**
+   * Adjusts the dropdown panes orientation by adding/removing positioning classes.
+   * @function
+   * @private
+   * @param {String} position - position class to remove.
+   */
+  Dropdown.prototype.reposition = function(position){
+    this.usedPositions.push(position ? position : 'bottom');
+    //default, try switching to opposite side
+    if(!position && (this.usedPositions.indexOf('top') < 0)){
+      this.$element.addClass('top');
+    }else if(position === 'top' && (this.usedPositions.indexOf('bottom') < 0)){
+      this.$element.removeClass(position);
+    }else if(position === 'left' && (this.usedPositions.indexOf('right') < 0)){
+      this.$element.removeClass(position)
+          .addClass('right');
+    }else if(position === 'right' && (this.usedPositions.indexOf('left') < 0)){
+      this.$element.removeClass(position)
+          .addClass('left');
+    }
+
+    //if default change didn't work, try bottom or left first
+    else if(!position && (this.usedPositions.indexOf('top') > -1) && (this.usedPositions.indexOf('left') < 0)){
+      this.$element.addClass('left');
+    }else if(position === 'top' && (this.usedPositions.indexOf('bottom') > -1) && (this.usedPositions.indexOf('left') < 0)){
+      this.$element.removeClass(position)
+          .addClass('left');
+    }else if(position === 'left' && (this.usedPositions.indexOf('right') > -1) && (this.usedPositions.indexOf('bottom') < 0)){
+      this.$element.removeClass(position);
+    }else if(position === 'right' && (this.usedPositions.indexOf('left') > -1) && (this.usedPositions.indexOf('bottom') < 0)){
+      this.$element.removeClass(position);
+    }
+    //if nothing cleared, set to bottom
+    else{
+      this.$element.removeClass(position);
+    }
+    this.classChanged = true;
+    this.counter--;
+  };
+  /**
+   * Sets the position and orientation of the dropdown pane, checks for collisions.
+   * Recursively calls itself if a collision is detected, with a new position class.
+   * @function
+   * @private
+   */
+  Dropdown.prototype.setPosition = function(){
+    var position = this.getPositionClass(),
+        $eleDims = Foundation.GetDimensions(this.$element),
+        $anchorDims = Foundation.GetDimensions(this.$anchor),
+        _this = this,
+        direction = (position === 'left' ? 'left' : ((position === 'right') ? 'left' : 'top')),
+        param = (direction === 'top') ? 'height' : 'width',
+        offset = (param === 'height') ? this.options.vOffset : this.options.hOffset;
+
+    // console.log($eleDims.width >= $eleDims.windowDims.width);
+    if(($eleDims.width >= $eleDims.windowDims.width) || (!this.counter && !Foundation.ImNotTouchingYou(this.$element))){
+      this.$element.offset(Foundation.GetOffsets(this.$element, this.$anchor, 'center bottom', this.options.vOffset, this.options.hOffset, true)).css({
+        'width': $eleDims.windowDims.width - (this.options.hOffset * 2),
+        'height': 'auto',
+      });
+      this.classChanged = true;
+      return false;
+    }
+
+    this.$element.offset(Foundation.GetOffsets(this.$element, this.$anchor, position, this.options.vOffset, this.options.hOffset));
+
+    while(!Foundation.ImNotTouchingYou(this.$element) && this.counter){
+      this.reposition(position);
+      this.setPosition();
+    }
+  };
+  /**
+   * Adds event listeners to the element utilizing the triggers utility library.
+   * @function
+   * @private
+   */
+  Dropdown.prototype._events = function(){
+    var _this = this;
+    this.$element.on({
+      'open.zf.trigger': this.open.bind(this),
+      'close.zf.trigger': this.close.bind(this),
+      'toggle.zf.trigger': this.toggle.bind(this),
+      'resizeme.zf.trigger': this.setPosition.bind(this)
+    });
+
+    if(this.options.hover){
+      clearTimeout(_this.timeout);
+      this.$anchor.on('mouseenter.zf.dropdown mouseleave.zf.dropdown', function(){
+        _this.timeOut = setTimeout(function(){
+          _this.toggle();
+        }, _this.options.hoverDelay);
+      });
+    }
+  };
+  /**
+   * Opens the dropdown pane, and fires a bubbling event to close other dropdowns.
+   * @function
+   * @fires Dropdown#closeme
+   * @fires Dropdown#show
+   */
+  Dropdown.prototype.open = function(){
+    /**
+     * Fires to close other open dropdowns
+     * @event Dropdown#closeme
+     */
+    this.$element.trigger('closeme.zf.dropdown', this.$element.attr('id'));
+    var _this = this;
+    this.$element.show();
+    this.setPosition();
+    this.$element.addClass('is-open')
+        .attr('aria-hidden', 'false');
+    this.$anchor.addClass('hover');
+    /**
+     * Fires once the dropdown is visible.
+     * @event Dropdown#show
+     */
+     this.$element.trigger('show.zf.dropdown', [this.$element]);
+    //why does this not work correctly for this plugin?
+    // Foundation.reflow(this.$element, 'dropdown');
+    // Foundation._reflow(this.$element.data('dropdown'));
+  };
+
+  /**
+   * Closes the open dropdown pane.
+   * @function
+   * @fires Dropdown#hide
+   */
+  Dropdown.prototype.close = function(){
+    if(!this.$element.hasClass('is-open')){
+      return false;
+    }
+    this.$element.removeClass('is-open')
+        .attr('aria-hidden', 'true');
+    this.$anchor.removeClass('hover');
+    if(this.classChanged){
+      var curPositionClass = this.getPositionClass();
+      if(curPositionClass){
+        this.$element.removeClass(curPositionClass);
+      }
+      this.$element.addClass(this.options.positionClass)
+          .hide().css({height: '', width: ''});
+      this.classChanged = false;
+      this.counter = 4;
+      this.usedPositions.length = 0;
+    }
+    this.$element.trigger('hide.zf.dropdown', [this.$element]);
+    // Foundation.reflow(this.$element, 'dropdown');
+  };
+  /**
+   * Toggles the dropdown pane's visibility.
+   * @function
+   */
+  Dropdown.prototype.toggle = function(){
+    if(this.$element.hasClass('is-open')){
+      this.close();
+    }else{
+      this.open();
+    }
+  };
+  /**
+   * Destroys the dropdown.
+   * @function
+   */
+  Dropdown.prototype.destroy = function(){
+    this.$element.off('.zf.trigger').hide();
+    this.$anchor.off('.zf.dropdown');
+
+    Foundation.unregisterPlugin(this);
+  }
+
+  Foundation.plugin(Dropdown);
+}(jQuery, window.Foundation);
+
+/**
  * DropdownMenu module.
  * @module foundation.dropdown-menu
  * @requires foundation.util.keyboard
@@ -2508,13 +2785,23 @@ Foundation.IFeelYou = closemeListener;
    */
   function DropdownMenu(element, options) {
     this.$element = element;
-    this.options = $.extend({}, DropdownMenu.defaults, this.$element.data(), options || {});
+    this.options = $.extend({}, DropdownMenu.defaults, this.$element.data(), options);
 
     Foundation.FeatherNest(this.$element, 'dropdown');
 
     this._init();
 
     Foundation.registerPlugin(this);
+    Foundation.Keyboard.register('DropdownMenu', {
+      'ENTER': 'open',
+      'SPACE': 'open',
+      'ARROW_RIGHT': 'next',
+      'ARROW_UP': 'up',
+      'ARROW_DOWN': 'down',
+      'ARROW_LEFT': 'previous',
+      'ESCAPE': 'close'
+    });
+
     // /**
     //  * Fires when the plugin has been successfuly initialized.
     //  * @event DropdownMenu#init
@@ -2745,7 +3032,7 @@ Foundation.IFeelYou = closemeListener;
           });
         }
       }
-      Foundation.handleKey(e, _this, functions);
+      Foundation.Keyboard.handleKey(e, _this, functions);
     });
      // end keyboardAccess
   };
@@ -2893,245 +3180,6 @@ Foundation.IFeelYou = closemeListener;
 
 }(Foundation, jQuery);
 
-/**
- * Dropdown module.
- * @module foundation.dropdown
- * @requires foundation.util.keyboard
- * @requires foundation.util.size-and-collision
- */
-!function($, Foundation){
-  'use strict';
-  /**
-   * Creates a new instance of a dropdown.
-   * @class
-   * @param {jQuery} element - jQuery object to make into an accordion menu.
-   * @param {Object} options - Overrides to the default plugin settings.
-   */
-  function Dropdown(element, options){
-    this.$element = element;
-    this.options = $.extend({}, Dropdown.defaults, this.$element.data(), options || {});
-    this._init();
-
-    Foundation.registerPlugin(this);
-  }
-
-  Dropdown.defaults = {
-    hoverDelay: 250,
-    hover: false,
-    vOffset: 1,
-    hOffset: 1,
-    positionClass: ''
-  };
-  /**
-   * Initializes the plugin by setting/checking options and attributes, adding helper variables, and saving the anchor.
-   * @function
-   * @private
-   */
-  Dropdown.prototype._init = function(){
-    var $id = this.$element.attr('id');
-
-    this.$anchor = $('[data-toggle="' + $id + '"]') || $('[data-open="' + $id + '"]');
-    this.$anchor.attr({
-      'aria-controls': $id,
-      'data-is-focus': false,
-      'data-yeti-box': $id,
-      'aria-haspopup': true
-      // 'data-resize': $id
-    });
-
-    this.options.positionClass = this.getPositionClass();
-    this.counter = 4;
-    this.usedPositions = [];
-    this.$element.attr({
-      'aria-hidden': 'true',
-      'data-yeti-box': $id,
-      'data-resize': $id
-    });
-    this._events();
-  };
-  /**
-   * Helper function to determine current orientation of dropdown pane.
-   * @function
-   * @returns {String} position - string value of a position class.
-   */
-  Dropdown.prototype.getPositionClass = function(){
-    var position = this.$element[0].className.match(/(top|left|right)/g);
-        position = position ? position[0] : '';
-    return position;
-  };
-  /**
-   * Adjusts the dropdown panes orientation by adding/removing positioning classes.
-   * @function
-   * @private
-   * @param {String} position - position class to remove.
-   */
-  Dropdown.prototype.reposition = function(position){
-    this.usedPositions.push(position ? position : 'bottom');
-    //default, try switching to opposite side
-    if(!position && (this.usedPositions.indexOf('top') < 0)){
-      this.$element.addClass('top');
-    }else if(position === 'top' && (this.usedPositions.indexOf('bottom') < 0)){
-      this.$element.removeClass(position);
-    }else if(position === 'left' && (this.usedPositions.indexOf('right') < 0)){
-      this.$element.removeClass(position)
-          .addClass('right');
-    }else if(position === 'right' && (this.usedPositions.indexOf('left') < 0)){
-      this.$element.removeClass(position)
-          .addClass('left');
-    }
-
-    //if default change didn't work, try bottom or left first
-    else if(!position && (this.usedPositions.indexOf('top') > -1) && (this.usedPositions.indexOf('left') < 0)){
-      this.$element.addClass('left');
-    }else if(position === 'top' && (this.usedPositions.indexOf('bottom') > -1) && (this.usedPositions.indexOf('left') < 0)){
-      this.$element.removeClass(position)
-          .addClass('left');
-    }else if(position === 'left' && (this.usedPositions.indexOf('right') > -1) && (this.usedPositions.indexOf('bottom') < 0)){
-      this.$element.removeClass(position);
-    }else if(position === 'right' && (this.usedPositions.indexOf('left') > -1) && (this.usedPositions.indexOf('bottom') < 0)){
-      this.$element.removeClass(position);
-    }
-    //if nothing cleared, set to bottom
-    else{
-      this.$element.removeClass(position);
-    }
-    this.classChanged = true;
-    this.counter--;
-  };
-  /**
-   * Sets the position and orientation of the dropdown pane, checks for collisions.
-   * Recursively calls itself if a collision is detected, with a new position class.
-   * @function
-   * @private
-   */
-  Dropdown.prototype.setPosition = function(){
-    var position = this.getPositionClass(),
-        $eleDims = Foundation.GetDimensions(this.$element),
-        $anchorDims = Foundation.GetDimensions(this.$anchor),
-        _this = this,
-        direction = (position === 'left' ? 'left' : ((position === 'right') ? 'left' : 'top')),
-        param = (direction === 'top') ? 'height' : 'width',
-        offset = (param === 'height') ? this.options.vOffset : this.options.hOffset;
-
-    // console.log($eleDims.width >= $eleDims.windowDims.width);
-    if(($eleDims.width >= $eleDims.windowDims.width) || (!this.counter && !Foundation.ImNotTouchingYou(this.$element))){
-      this.$element.offset(Foundation.GetOffsets(this.$element, this.$anchor, 'center bottom', this.options.vOffset, this.options.hOffset, true)).css({
-        'width': $eleDims.windowDims.width - (this.options.hOffset * 2),
-        'height': 'auto',
-      });
-      this.classChanged = true;
-      return false;
-    }
-
-    this.$element.offset(Foundation.GetOffsets(this.$element, this.$anchor, position, this.options.vOffset, this.options.hOffset));
-
-    while(!Foundation.ImNotTouchingYou(this.$element) && this.counter){
-      this.reposition(position);
-      this.setPosition();
-    }
-  };
-  /**
-   * Adds event listeners to the element utilizing the triggers utility library.
-   * @function
-   * @private
-   */
-  Dropdown.prototype._events = function(){
-    var _this = this;
-    this.$element.on({
-      'open.zf.trigger': this.open.bind(this),
-      'close.zf.trigger': this.close.bind(this),
-      'toggle.zf.trigger': this.toggle.bind(this),
-      'resizeme.zf.trigger': this.setPosition.bind(this)
-    });
-
-    if(this.options.hover){
-      clearTimeout(_this.timeout);
-      this.$anchor.on('mouseenter.zf.dropdown mouseleave.zf.dropdown', function(){
-        _this.timeOut = setTimeout(function(){
-          _this.toggle();
-        }, _this.options.hoverDelay);
-      });
-    }
-  };
-  /**
-   * Opens the dropdown pane, and fires a bubbling event to close other dropdowns.
-   * @function
-   * @fires Dropdown#closeme
-   * @fires Dropdown#show
-   */
-  Dropdown.prototype.open = function(){
-    /**
-     * Fires to close other open dropdowns
-     * @event Dropdown#closeme
-     */
-    this.$element.trigger('closeme.zf.dropdown', this.$element.attr('id'));
-    var _this = this;
-    this.$element.show();
-    this.setPosition();
-    this.$element.addClass('is-open')
-        .attr('aria-hidden', 'false');
-    this.$anchor.addClass('hover');
-    /**
-     * Fires once the dropdown is visible.
-     * @event Dropdown#show
-     */
-     this.$element.trigger('show.zf.dropdown', [this.$element]);
-    //why does this not work correctly for this plugin?
-    // Foundation.reflow(this.$element, 'dropdown');
-    // Foundation._reflow(this.$element.data('dropdown'));
-  };
-
-  /**
-   * Closes the open dropdown pane.
-   * @function
-   * @fires Dropdown#hide
-   */
-  Dropdown.prototype.close = function(){
-    if(!this.$element.hasClass('is-open')){
-      return false;
-    }
-    this.$element.removeClass('is-open')
-        .attr('aria-hidden', 'true');
-    this.$anchor.removeClass('hover');
-    if(this.classChanged){
-      var curPositionClass = this.getPositionClass();
-      if(curPositionClass){
-        this.$element.removeClass(curPositionClass);
-      }
-      this.$element.addClass(this.options.positionClass)
-          .hide().css({height: '', width: ''});
-      this.classChanged = false;
-      this.counter = 4;
-      this.usedPositions.length = 0;
-    }
-    this.$element.trigger('hide.zf.dropdown', [this.$element]);
-    // Foundation.reflow(this.$element, 'dropdown');
-  };
-  /**
-   * Toggles the dropdown pane's visibility.
-   * @function
-   */
-  Dropdown.prototype.toggle = function(){
-    if(this.$element.hasClass('is-open')){
-      this.close();
-    }else{
-      this.open();
-    }
-  };
-  /**
-   * Destroys the dropdown.
-   * @function
-   */
-  Dropdown.prototype.destroy = function(){
-    this.$element.off('.zf.trigger').hide();
-    this.$anchor.off('.zf.dropdown');
-
-    Foundation.unregisterPlugin(this);
-  }
-
-  Foundation.plugin(Dropdown);
-}(jQuery, window.Foundation);
-
 !function(Foundation, $) {
   'use strict';
 
@@ -3142,20 +3190,22 @@ Foundation.IFeelYou = closemeListener;
    * @param {Object} element - jQuery object to add the trigger to.
    * @param {Object} options - Overrides to the default plugin settings.
    */
-  function Equalizer(element) {
+  function Equalizer(element, options) {
     this.$element = element;
-    this.options  = $.extend({}, Equalizer.defaults, this.$element.data());
+    this.options  = $.extend({}, Equalizer.defaults, this.$element.data(), options);
     this.$window  = $(window);
     this.name     = 'equalizer';
     this.attr     = 'data-equalizer';
 
     this._init();
     this._events();
-    /**
-     * Fires when the plugin has been successfuly initialized.
-     * @event Equalizer#init
-     */
-    this.$element.trigger('init.zf.equalizer');
+
+    Foundation.registerPlugin(this);
+    // /**
+    //  * Fires when the plugin has been successfuly initialized.
+    //  * @event Equalizer#init
+    //  */
+    // this.$element.trigger('init.zf.equalizer');
   }
 
   /**
@@ -3335,11 +3385,12 @@ Foundation.IFeelYou = closemeListener;
     this._init();
     this._events();
 
-    /**
-     * Fires when the plugin has been successfuly initialized.
-     * @event Interchange#init
-     */
-    this.$element.trigger('init.zf.interchange');
+    Foundation.registerPlugin(this);
+    // /**
+    //  * Fires when the plugin has been successfuly initialized.
+    //  * @event Interchange#init
+    //  */
+    // this.$element.trigger('init.zf.interchange');
   }
 
   /**
@@ -3490,6 +3541,302 @@ Foundation.IFeelYou = closemeListener;
 }(Foundation, jQuery);
 
 /**
+ * Joyride module.
+ * @module foundation.joyride
+ * @requires foundation.util.keyboard
+ * @requires foundation.Tooltip
+ * @requires foundation.Reveal
+ */
+!function(Foundation, $) {
+  'use strict';
+
+  /**
+   * Creates a new instance of Joyride.
+   * @class
+   * @fires Joyride#init
+   * @param {Object} element - jQuery object (list) to be used as the structure.
+   * @param {Object} options - object to extend the default configuration.
+   */
+
+  function Joyride(element, options) {
+    this.$element = element;
+    this.options = $.extend({}, Joyride.defaults, this.$element.data(), options || {});
+    this._init();
+
+    /**
+     * Fires when the plugin has been successfuly initialized.
+     * @event Joyride#init
+     */
+    this.$element.trigger('init.zf.joyride');
+  }
+
+  Joyride.defaults = {
+    autostart: false,
+    scrollSpeed: 1000,
+    keyboardAccess: true,
+    closable: true,
+    nextText: 'Next',
+    prevText: 'Previous',
+    closeText: 'Close',
+    showNext: true,
+    showPrev: true,
+    vOffset: 10,
+    hOffset: 12,
+    scrollOffset: 50,
+    position: 'top center',
+    templates : { // HTML templates
+      closeButton: '<a href="#close" class="close" data-joyride-close><span aria-hidden="true">&times</span><span class="show-for-sr"></span></a>',
+      nextButton: '<button class="button" data-joyride-next></button>',
+      prevButton: '<button class="button" data-joyride-prev></button>',
+    }
+  };
+
+  /**
+   * Initializes the joyride by rendering required markup
+   * @private
+   */
+  Joyride.prototype._init = function(){
+    this.id = this.$element.attr('id') || Foundation.GetYoDigits(6, 'joyride');
+    this.current = 0;
+    this.$items = $([]); // initialize empty collection
+    this.structure = this._parseList();
+    this._render(this.structure);
+    this._events();
+
+    if (this.options.autostart) {
+      this.start();
+    }
+  };
+
+  /**
+   * Parses the list of the instance, stored in $element.
+   * @private
+   * @return {Array} structure
+   */
+  Joyride.prototype._parseList = function(){
+    var structure = [];
+    this.$element.find('li').each(function(i) {
+      var item = $.extend({}, {
+        text: $(this).html(),
+        $target: $($(this).data('target')),
+        isModal: !!!$($(this).data('target')).length,
+        closable: Joyride.defaults.closable 
+      }, $(this).data());
+      structure.push(item);
+    });
+    return structure;
+  };
+
+  /**
+   * Creates the markup for the items
+   * @private
+   * @param {Array} structure the joyride's structure from _parseList
+   * @return {Object} markup jQuery representation of the generated markup
+   */
+  Joyride.prototype._render = function(structure) {      
+    for (var s in structure) {
+      var options = $.extend({}, this.options, structure[s]),// if specifc item has config, this should overwrite global settings
+        $item; 
+
+      if (options.$target.length) { // target element exists, create tooltip
+        var tooltip = new Foundation.Tooltip(structure[s].$target, {
+          positionClass: options.position,
+          disableHover: true,
+          clickOpen: false,
+          tooltipClass: 'tooltip joyride',
+          triggerClass: '',
+          hOffset: this.options.hOffset,
+          vOffset: this.options.vOffset
+        });
+        this.structure[s].item = tooltip;
+        $item = tooltip.template;
+        
+      } else { // not target, create modal with Reveal
+        var modal = new Foundation.Reveal($('<div class="reveal joyride"/>').appendTo($('body')));
+        this.structure[s].item = modal;
+        $item = modal.$element;
+      }
+      $item.attr({
+        'data-index': s,
+        'data-joyride-for': structure[s].target
+      })
+      .html(structure[s].text);
+      if (options.keyboardAccess) {
+        $item.attr('tabindex', '-1');
+      }
+
+      this.$items = this.$items.add($item);
+
+      // add buttons
+      if (
+        (structure[s].nextText || (options.showNext && s < structure.length -1))
+        || (structure[s].prevText || (options.showPrev && s > 0))
+      ) {
+        var $buttons = $('<div class="joyride-buttons"/>');
+        if (structure[s].prevText || (options.showPrev && s > 0)) {
+          $buttons.append($(this.options.templates.prevButton).text(options.prevText));
+        }
+        if (structure[s].nextText || (options.showNext && s < structure.length -1)) {
+          $buttons.append($(this.options.templates.nextButton).text(options.nextText));
+        }
+        $item.append($buttons);
+      }
+
+      // add close button
+      if (options.closable) {
+        var $close = $(this.options.templates.closeButton);
+        $close.find('.show-for-sr').text(this.options.closeText);
+        $item.prepend($close);
+      }
+    }
+  };
+
+  /**
+   * Shows the item with the given index
+   * @private
+   * @param {Number} index of the item to be displayed
+   */
+  Joyride.prototype._showItem = function(index) {
+    if (this.structure[index].isModal) {
+      this.structure[index].item._open();
+    } else {
+      this.structure[index].item._show();
+    }
+    // scroll target into view if target exists
+    if (this.structure[index].$target.length) {
+      $('html, body').stop().animate({
+        'scrollTop': Math.max(0, this.$items.eq(index).offset().top - this.options.scrollOffset)
+      }, this.options.scrollSpeed);
+    }
+    if (this.options.keyboardAccess) {
+       this.$items.eq(index).focus();
+    }
+    this.current = index;
+  };
+
+  /**
+   * Hides the item with the given index
+   * @private
+   * @param {Number} index of the item to be hidden
+   */
+  Joyride.prototype._hideItem = function(index) {
+    if (this.structure[index].isModal) {
+      this.structure[index].item._close();
+    } else {
+      this.structure[index].item._hide();
+    }
+  };
+  /**
+   * Hides all items
+   * @private
+   */
+  Joyride.prototype._hideAll = function() {
+    for (var s in this.structure) {
+      this._hideItem(s);
+    }
+  };
+
+  /**
+   * Shows the next item in the ride
+   * @private
+   */
+  Joyride.prototype.showNext = function() {
+    this._hideItem(this.current);
+    this._showItem(this.current + 1);
+  };
+
+  /**
+   * Shows the previous item in the ride
+   * @private
+   */
+  Joyride.prototype.showPrev = function() {
+    this._hideItem(this.current);
+    this._showItem(this.current - 1);
+  };
+
+  /**
+   * Starts the ride
+   * @private
+   * @return {Number} index - the index where to start, 0 by default
+   */
+  Joyride.prototype.start = function(index) {
+    var index = index || 0;
+    this._hideAll();
+    this._showItem(index);
+  };
+
+  /**
+   * Adds event handlers for the modal.
+   * @private
+   */
+  Joyride.prototype._events = function(){
+    var _this = this;
+    $('[data-joyride-start="#'+_this.id+'"]').click(function() {
+      console.log('Starting!');
+      _this.start();
+    });
+
+    this.$items.on('click.zf.joyride', '[data-joyride-next]', function(e) {
+      _this.showNext();
+    }).on('click.zf.joyride', '[data-joyride-prev]', function(e) {
+      _this.showPrev();
+    }).on('click.zf.joyride', '[data-joyride-close]', function(e) {
+      e.preventDefault();
+      if (_this.structure[_this.current].closable) {
+        _this._hideItem(_this.current);
+      }
+    }).on('keydown.zf.joyride', function(e) {
+      var $element = $(this);
+      Foundation.handleKey(e, _this, {
+        next: function() {
+          if ($element.data('index') < _this.structure.length - 1) {
+            this.showNext();  
+          }
+        },
+        previous: function() {
+          if ($element.data('index') > 0) {
+            this.showPrev();
+          }
+        },
+        close: function() {
+          if (this.structure[this.current].closable) {
+            this._hideItem(this.current);
+          }
+        },
+        handled: function() {
+          e.preventDefault();
+        }
+      });
+    });
+  };
+
+  /**
+   * Destroys an instance of a Joyride.
+   * @fires Joyride#destroyed
+   */
+  Joyride.prototype.destroy = function() {
+    this.$element.hide();
+    this.$items.destroy();
+    /**
+     * Fires when the plugin has been destroyed.
+     * @event Reveal#destroyed
+     */
+    this.$element.trigger('destroyed.zf.joyride');
+  }
+
+  Foundation.plugin(Joyride);
+
+  // Exports for AMD/Browserify
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = Joyride;
+  if (typeof define === 'function')
+    define(['foundation'], function() {
+      return Joyride;
+    });
+
+}(Foundation, jQuery);
+
+/**
  * Magellan module.
  * @module foundation.magellan
  * @requires foundation.util.animationFrame
@@ -3515,11 +3862,12 @@ Foundation.IFeelYou = closemeListener;
     this._init();
     this._events();
 
-    /**
-     * Fires when the plugin has been successfuly initialized.
-     * @event Magellan#init
-     */
-    this.$element.trigger('init.zf.magellan');
+    Foundation.registerPlugin(this);
+    // /**
+    //  * Fires when the plugin has been successfuly initialized.
+    //  * @event Magellan#init
+    //  */
+    // this.$element.trigger('init.zf.magellan');
   };
 
   /**
@@ -3642,19 +3990,20 @@ Foundation.IFeelYou = closemeListener;
  * @param {Object} element - jQuery object to initialize.
  * @param {Object} options - Overrides to the default plugin settings.
  */
-function OffCanvas(element) {
+function OffCanvas(element, options) {
   this.$element = element;
-  this.options = $.extend({}, OffCanvas.defaults, this.$element.data());
+  this.options = $.extend({}, OffCanvas.defaults, this.$element.data(), options);
   this.$lastTrigger = $();
 
   this._init();
   this._events();
 
-  /**
-   * Fires when the plugin has been successfully initialized.
-   * @event OffCanvas#init
-   */
-  this.$element.trigger('init.zf.offcanvas');
+  Foundation.registerPlugin(this);
+  // /**
+  //  * Fires when the plugin has been successfully initialized.
+  //  * @event OffCanvas#init
+  //  */
+  // this.$element.trigger('init.zf.offcanvas');
 }
 
 OffCanvas.defaults = {
@@ -3820,11 +4169,21 @@ Foundation.plugin(OffCanvas);
    */
   function Orbit(element, options){
     this.$element = element;
-    this.options = $.extend({}, Orbit.defaults, this.$element.data(), options || {});
+    this.options = $.extend({}, Orbit.defaults, this.$element.data(), options);
 
     this._init();
 
     Foundation.registerPlugin(this);
+    Foundation.Keyboard.register('Orbit', {
+        'ltr': {
+          'ARROW_RIGHT': 'next',
+          'ARROW_LEFT': 'previous'
+        },
+        'rtl': {
+          'ARROW_LEFT': 'next',
+          'ARROW_RIGHT': 'previous'
+        }
+    });
     // this.$element.trigger('init.zf.orbit');
   }
   Orbit.defaults = {
@@ -4009,7 +4368,7 @@ Foundation.plugin(OffCanvas);
 
     this.$wrapper.add(this.$bullets).on('keydown.zf.orbit', function(e){
       // handle keyboard event with keyboard util
-      Foundation.handleKey(e, _this, {
+      Foundation.Keyboard.handleKey(e, _this, {
         next: function() {
           _this.timer.restart();
           _this.changeSlide(true);
@@ -4161,11 +4520,12 @@ Foundation.plugin(OffCanvas);
     this._init();
     this._events();
 
-    /**
-     * Fires when the plugin has been successfuly initialized.
-     * @event ResponsiveMenu#init
-     */
-     this.$element.trigger('init.zf.ResponsiveMenu');
+    Foundation.registerPlugin(this);
+    // /**
+    //  * Fires when the plugin has been successfuly initialized.
+    //  * @event ResponsiveMenu#init
+    //  */
+    //  this.$element.trigger('init.zf.ResponsiveMenu');
   }
 
   ResponsiveMenu.defaults = {};
@@ -4282,11 +4642,12 @@ function ResponsiveToggle(element, options) {
   this._init();
   this._events();
 
-  /**
-   * Fires when the plugin has been successfully initialized.
-   * @event ResponsiveToggle#init
-   */
-  this.$element.trigger('init.zf.ResponsiveToggle');
+  Foundation.registerPlugin(this);
+  // /**
+  //  * Fires when the plugin has been successfully initialized.
+  //  * @event ResponsiveToggle#init
+  //  */
+  // this.$element.trigger('init.zf.ResponsiveToggle');
 }
 
 ResponsiveToggle.defaults = {
@@ -4389,10 +4750,17 @@ Foundation.plugin(ResponsiveToggle);
 
   function Reveal(element, options) {
     this.$element = element;
-    this.options = $.extend({}, Reveal.defaults, this.$element.data(), options || {});
+    this.options = $.extend({}, Reveal.defaults, this.$element.data(), options);
     this._init();
 
     Foundation.registerPlugin(this);
+    Foundation.Keyboard.register('Reveal', {
+      'ENTER': 'open',
+      'SPACE': 'open',
+      'ESCAPE': 'close',
+      'TAB': 'tab_forward',
+      'SHIFT_TAB': 'tab_backward'
+    });
     // /**
     //  * Fires when the plugin has been successfuly initialized.
     //  * @event Reveal#init
@@ -4641,7 +5009,7 @@ Foundation.plugin(ResponsiveToggle);
         return true;
       });
       // handle keyboard event with keyboard util
-      Foundation.handleKey(e, _this, {
+      Foundation.Keyboard.handleKey(e, _this, {
         tab_forward: function() {
           if (this.$element.find(':focus').is(visibleFocusableElements.eq(-1))) { // left modal downwards, setting focus to first element
             visibleFocusableElements.eq(0).focus();
@@ -4795,11 +5163,29 @@ Foundation.plugin(ResponsiveToggle);
    */
   function Slider(element, options){
     this.$element = element;
-    this.options = $.extend({}, Slider.defaults, this.$element.data(), options || {});
+    this.options = $.extend({}, Slider.defaults, this.$element.data(), options);
 
     this._init();
 
     Foundation.registerPlugin(this);
+    Foundation.Keyboard.register('Slider', {
+      'ltr': {
+        'ARROW_RIGHT': 'increase',
+        'ARROW_UP': 'increase',
+        'ARROW_DOWN': 'decrease',
+        'ARROW_LEFT': 'decrease',
+        'SHIFT_ARROW_RIGHT': 'increase_fast',
+        'SHIFT_ARROW_UP': 'increase_fast',
+        'SHIFT_ARROW_DOWN': 'decrease_fast',
+        'SHIFT_ARROW_LEFT': 'decrease_fast'
+      },
+      'rtl': {
+        'ARROW_LEFT': 'increase',
+        'ARROW_RIGHT': 'decrease',
+        'SHIFT_ARROW_LEFT': 'increase_fast',
+        'SHIFT_ARROW_RIGHT': 'decrease_fast'
+      }
+    });
   }
 
   Slider.defaults = {
@@ -5072,12 +5458,11 @@ Foundation.plugin(ResponsiveToggle);
           $body = $('body');
 
       $handle
-        .off('mousedown.zf.slider touchstart.zf.slider')
+        .off('mousedown.zf.slider touchstart.zf.slider keydown.zf.slider')
         .on('mousedown.zf.slider', function(e){
-          e.preventDefault();
 
           $handle.addClass('is-dragging');
-          _this.$fill.addClass('is-dragging');
+          _this.$fill.addClass('is-dragging');//
           _this.$element.attr('data-dragging', true);
           _this.animComplete = false;
           curHandle = $(e.currentTarget);
@@ -5107,9 +5492,9 @@ Foundation.plugin(ResponsiveToggle);
         newValue;
 
       var _$handle = $(this);
-
+      console.log('Handle keydown');
       // handle keyboard event with keyboard util
-      Foundation.handleKey(e, _this, {
+      Foundation.Keyboard.handleKey(e, _this, {
         decrease: function() {
           newValue = oldValue - _this.options.step;
         },
@@ -5222,7 +5607,7 @@ Foundation.plugin(ResponsiveToggle);
    */
   function Sticky(element, options){
     this.$element = element;
-    this.options = $.extend({}, Sticky.defaults, this.$element.data(), options || {});
+    this.options = $.extend({}, Sticky.defaults, this.$element.data(), options);
 
     this._init();
 
@@ -5238,7 +5623,7 @@ Foundation.plugin(ResponsiveToggle);
     stickyOn: 'medium',
     stickyClass: 'sticky',
     containerClass: 'sticky-container',
-    checkEvery: 25
+    checkEvery: 50
   };
 
   /**
@@ -5547,12 +5932,22 @@ Foundation.plugin(ResponsiveToggle);
    * @param {jQuery} element - jQuery object to make into tabs.
    * @param {Object} options - Overrides to the default plugin settings.
    */
-  function Tabs(element){
+  function Tabs(element, options){
     this.$element = element;
-    this.options = $.extend({}, Tabs.defaults, this.$element.data());
+    this.options = $.extend({}, Tabs.defaults, this.$element.data(), options);
 
     this._init();
     Foundation.registerPlugin(this);
+    Foundation.Keyboard.register('Tabs', {
+      'ENTER': 'open',
+      'SPACE': 'open',
+      'ARROW_RIGHT': 'next',
+      'ARROW_UP': 'previous',
+      'ARROW_DOWN': 'next',
+      'ARROW_LEFT': 'previous',
+      // 'TAB': 'next',
+      // 'SHIFT_TAB': 'previous'
+    });
     // /**
     //  * Fires when the plugin has been successfuly initialized.
     //  * @event Tabs#init
@@ -5576,10 +5971,11 @@ Foundation.plugin(ResponsiveToggle);
    * @private
    */
   Tabs.prototype._init = function(){
-    var _this = this,
-        tabIndex = 1;
+    var _this = this;
+
     this.$tabTitles = this.$element.find('.' + this.options.linkClass);
     this.$tabContent = $('[data-tabs-content="' + this.$element[0].id + '"]');
+
     this.$tabTitles.each(function(){
       var $elem = $(this),
           $link = $elem.find('a'),
@@ -5606,7 +6002,6 @@ Foundation.plugin(ResponsiveToggle);
       if(isActive && _this.options.autoFocus){
         $link.focus();
       }
-      tabIndex++
     });
     if(this.options.matchHeight){
       this.setHeight();
@@ -5654,35 +6049,38 @@ Foundation.plugin(ResponsiveToggle);
     this.$tabTitles.off('keydown.zf.tabs').on('keydown.zf.tabs', function(e){
       e.stopPropagation();
       e.preventDefault();
-      var $tabTitle = $(this),
-          $prev = $tabTitle.prev(),
-          $next = $tabTitle.next();
-      if(checkClass($prev) || checkClass($next)){
-        return;
-      }
-      if(_this.options.wrapOnKeys){
-        $prev = $prev.length ? $prev : $lastTab;
-        $next = $next.length ? $next : $firstTab;
-        if(checkClass($prev) || checkClass($next)){
+
+      var $element = $(this),
+        $elements = $element.parent('ul').children('li'),
+        $prevElement,
+        $nextElement;
+
+      $elements.each(function(i) {
+        if ($(this).is($element)) {
+          if (_this.options.wrapOnKeys) {
+            $prevElement = i === 0 ? $elements.last() : $elements.eq(i-1);
+            $nextElement = i === $elements.length -1 ? $elements.first() : $elements.eq(i+1);
+          } else {
+            $prevElement = $elements.eq(Math.max(0, i-1));
+            $nextElement = $elements.eq(Math.min(i+1, $elements.length-1));
+          }
           return;
         }
-      }
+      });
 
       // handle keyboard event with keyboard util
-      Foundation.handleKey(e, _this, {
+      Foundation.Keyboard.handleKey(e, _this, {
         open: function() {
-          $tabTitle.focus();
-          _this._handleTabChange($tabTitle);
+          $element.find('[role="tab"]').focus();
+          _this._handleTabChange($element);
         },
         previous: function() {
-          if(checkClass($prev)){ return; }
-          $prev.focus();
-          _this._handleTabChange($prev)
+          $prevElement.find('[role="tab"]').focus();
+          _this._handleTabChange($prevElement)
         },
         next: function() {
-          if(checkClass($next)){ return; }
-          $next.focus();
-          _this._handleTabChange($next)
+          $nextElement.find('[role="tab"]').focus();
+          _this._handleTabChange($nextElement)
         }
       });
     });
@@ -5793,19 +6191,20 @@ Foundation.plugin(ResponsiveToggle);
    * @param {Object} element - jQuery object to add the trigger to.
    * @param {Object} options - Overrides to the default plugin settings.
    */
-  function Toggler(element) {
+  function Toggler(element, options) {
     this.$element = element;
-    this.options = $.extend({}, Toggler.defaults, element.data());
+    this.options = $.extend({}, Toggler.defaults, element.data(), options);
     this.className = '';
 
     this._init();
     this._events();
 
-    /**
-     * Fires when the plugin has been successfuly initialized.
-     * @event Toggler#init
-     */
-    this.$element.trigger('init.zf.toggler');
+    Foundation.registerPlugin(this);
+    // /**
+    //  * Fires when the plugin has been successfuly initialized.
+    //  * @event Toggler#init
+    //  */
+    // this.$element.trigger('init.zf.toggler');
   }
 
   Toggler.defaults = {
@@ -5960,19 +6359,23 @@ Foundation.plugin(ResponsiveToggle);
    * @class
    * @fires Tooltip#init
    * @param {jQuery} element - jQuery object to attach a tooltip to.
+   * @param {Object} options - object to extend the default configuration.
    */
-  function Tooltip(element){
+  function Tooltip(element, options){
     this.$element = element;
-    this.options = $.extend({}, Tooltip.defaults, this.$element.data());
+    this.options = $.extend({}, Tooltip.defaults, this.$element.data(), options);
+
     this.isActive = false;
     this.isClick = false;
     this._init();
 
-    /**
-     * Fires when the plugin has been successfully initialized
-     * @event Tooltip#init
-     */
-    this.$element.trigger('init.zf.tooltip');
+    Foundation.registerPlugin(this);
+
+    // /**
+    //  * Fires when the plugin has been successfully initialized
+    //  * @event Tooltip#init
+    //  */
+    // this.$element.trigger('init.zf.tooltip');
   }
 
   Tooltip.defaults = {
@@ -5983,6 +6386,7 @@ Foundation.plugin(ResponsiveToggle);
     disableHover: false,
     templateClasses: '',
     tooltipClass: 'tooltip',
+    triggerClass: 'has-tip',
     showOn: 'all',
     template: '',
     tipText: '',
@@ -6015,7 +6419,7 @@ Foundation.plugin(ResponsiveToggle);
       'data-yeti-box': elemId,
       'data-toggle': elemId,
       'data-resize': elemId
-    }).addClass('has-tip');
+    }).addClass(this.triggerClass);
 
     //helper variables to track movement on collisions
     this.usedPositions = [];
@@ -6282,9 +6686,20 @@ Foundation.plugin(ResponsiveToggle);
       this._show();
     }
   };
+  Tooltip.prototype.destroy = function(){
+    this.$element.attr('title', this.template.text())
+                 .off('.zf.trigger .zf.tootip')
+                 .removeClass('has-tip')
+                 .removeAttr('aria-describedby')
+                 .removeAttr('data-yeti-box')
+                 .removeAttr('data-toggle')
+                 .removeAttr('data-resize');
 
+    this.template.remove();
+
+    Foundation.unregisterPlugin(this);
+  };
   /**
-   * TODO create destroy method
    * TODO utilize resize event trigger
    */
 
@@ -6337,3 +6752,121 @@ Foundation.plugin(ResponsiveToggle);
   Foundation.NanuNanu = Timer;
 
 }(jQuery, window.Foundation);
+
+;(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(['jquery'], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory(require('jquery'));
+  } else {
+    root.MotionUI = factory(root.jQuery);
+  }
+}(this, function($) {
+'use strict';
+
+// Polyfill for requestAnimationFrame
+(function() {
+  if (!Date.now)
+    Date.now = function() { return new Date().getTime(); };
+
+  var vendors = ['webkit', 'moz'];
+  for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
+      var vp = vendors[i];
+      window.requestAnimationFrame = window[vp+'RequestAnimationFrame'];
+      window.cancelAnimationFrame = (window[vp+'CancelAnimationFrame']
+                                 || window[vp+'CancelRequestAnimationFrame']);
+  }
+  if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent)
+    || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
+    var lastTime = 0;
+    window.requestAnimationFrame = function(callback) {
+        var now = Date.now();
+        var nextTime = Math.max(lastTime + 16, now);
+        return setTimeout(function() { callback(lastTime = nextTime); },
+                          nextTime - now);
+    };
+    window.cancelAnimationFrame = clearTimeout;
+  }
+})();
+
+var initClasses   = ['mui-enter', 'mui-leave'];
+var activeClasses = ['mui-enter-active', 'mui-leave-active'];
+
+// Find the right "transitionend" event for this browser
+var endEvent = (function() {
+  var transitions = {
+    'transition': 'transitionend',
+    'WebkitTransition': 'webkitTransitionEnd',
+    'MozTransition': 'transitionend',
+    'OTransition': 'otransitionend'
+  }
+  var elem = window.document.createElement('div');
+
+  for (var t in transitions) {
+    if (typeof elem.style[t] !== 'undefined') {
+      return transitions[t];
+    }
+  }
+
+  return null;
+})();
+
+function animate(isIn, element, animation, cb) {
+  element = $(element).eq(0);
+
+  if (!element.length) return;
+
+  if (endEvent === null) {
+    isIn ? element.show() : element.hide();
+    cb();
+    return;
+  }
+
+  var initClass = isIn ? initClasses[0] : initClasses[1];
+  var activeClass = isIn ? activeClasses[0] : activeClasses[1];
+
+  // Set up the animation
+  reset();
+  element.addClass(animation);
+  element.css('transition', 'none');
+  requestAnimationFrame(function() {
+    element.addClass(initClass);
+    if (isIn) element.show();
+  });
+
+  // Start the animation
+  requestAnimationFrame(function() {
+    element[0].offsetWidth;
+    element.css('transition', '');
+    element.addClass(activeClass);
+  });
+
+  // Clean up the animation when it finishes
+  element.one('transitionend', finish);
+
+  // Hides the element (for out animations), resets the element, and runs a callback
+  function finish() {
+    if (!isIn) element.hide();
+    reset();
+    if (cb) cb.apply(element);
+  }
+
+  // Resets transitions and removes motion-specific classes
+  function reset() {
+    element[0].style.transitionDuration = 0;
+    element.removeClass(initClass + ' ' + activeClass + ' ' + animation);
+  }
+}
+
+var MotionUI = {
+  animateIn: function(element, animation, cb) {
+    animate(true, element, animation, cb);
+  },
+
+  animateOut: function(element, animation, cb) {
+    animate(false, element, animation, cb);
+  }
+}
+
+return MotionUI;
+}));

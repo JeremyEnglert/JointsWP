@@ -60,10 +60,11 @@ gulp.task('foundation-js', function() {
           './vendor/foundation/js/foundation/foundation.util.animationFrame.js',
           './vendor/foundation/js/foundation/foundation.util.keyboard.js',
           './vendor/foundation/js/foundation/foundation.util.mediaQuery.js',
-          './vendor/foundation/js/foundation/foundation.util.menu-nester.js',
+          './vendor/foundation/js/foundation/foundation.util.menuNester.js',
           './vendor/foundation/js/foundation/foundation.util.motion.js',
+          './vendor/foundation/js/foundation/foundation.util.onImagesLoaded.js',
           './vendor/foundation/js/foundation/foundation.util.randomId.js',
-          './vendor/foundation/js/foundation/foundation.util.size-and-collision.js',
+          './vendor/foundation/js/foundation/foundation.util.sizeAndCollision.js',
           './vendor/foundation/js/foundation/foundation.util.swipe.js',
           './vendor/foundation/js/foundation/foundation.util.triggers.js',
           './vendor/foundation/js/foundation/foundation.utils.timer.js',
@@ -71,10 +72,11 @@ gulp.task('foundation-js', function() {
           './vendor/foundation/js/foundation/foundation.accordion.js',
           './vendor/foundation/js/foundation/foundation.accordionMenu.js',
           './vendor/foundation/js/foundation/foundation.drilldown.js',
-          './vendor/foundation/js/foundation/foundation.dropdown-menu.js',
           './vendor/foundation/js/foundation/foundation.dropdown.js',
+          './vendor/foundation/js/foundation/foundation.dropdownMenu.js',
           './vendor/foundation/js/foundation/foundation.equalizer.js',
           './vendor/foundation/js/foundation/foundation.interchange.js',
+          './vendor/foundation/js/foundation/foundation.joyride.js',
           './vendor/foundation/js/foundation/foundation.magellan.js',
           './vendor/foundation/js/foundation/foundation.offcanvas.js',
           './vendor/foundation/js/foundation/foundation.orbit.js',
@@ -86,7 +88,7 @@ gulp.task('foundation-js', function() {
           './vendor/foundation/js/foundation/foundation.tabs.js',
           './vendor/foundation/js/foundation/foundation.toggler.js',
           './vendor/foundation/js/foundation/foundation.tooltip.js',
-          './vendor/motion-ui/dist/motion-ui.min.js'
+          './vendor/foundation/js/foundation/motion-ui.js'
   ])
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))

@@ -8,7 +8,7 @@
 
 /// Default position of the close button. The first value should be `right` or `left`, and the second value should be `top` or `bottom`.
 /// @type List
-$closebutton-position: right top !default;
+$closebutton-position: $global-right top !default;
 
 /// Right (or left) offset for a close button.
 /// @type Number
@@ -39,6 +39,7 @@ $closebutton-color-hover: $black !default;
   $x: nth($closebutton-position, 1);
   $y: nth($closebutton-position, 2);
 
+  @include disable-mouse-outline;
   position: absolute;
   color: $closebutton-color;
   #{$x}: $closebutton-offset-horizontal;
@@ -47,7 +48,8 @@ $closebutton-color-hover: $black !default;
   line-height: $closebutton-lineheight;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: $closebutton-color-hover;
   }
 }
