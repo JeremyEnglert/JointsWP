@@ -11,34 +11,15 @@ register_nav_menus(
 function joints_top_nav() {
 	 wp_nav_menu(array(
         'container' => false,                           // Remove nav container
-        'container_class' => '',                        // Class of container
-        'menu_class' => 'dropdown menu',                // Adding custom nav class
-        'before' => '',                                 // Before each link <a>
-        'after' => '',                                  // After each link </a>
-        'link_before' => '',                            // Before each link text
-        'link_after' => '',                             // After each link text
+        'menu_class' => 'vertical medium-horizontal menu',       // Adding custom nav class
+        'items_wrap' => '<ul id="%1$s" class="%2$s" data-responsive-menu="accordion medium-dropdown">%3$s</ul>',
+        'theme_location' => 'main-nav',        			// Where it's located in the theme
         'depth' => 5,                                   // Limit the depth of the nav
         'fallback_cb' => false,                         // Fallback function (see below)
-        'walker' => ''
+       
+        'walker' => new Foundation_Menu_Walker()
     ));
 } /* End Top Menu */
-
-function joints_off_canvas() {
-    wp_nav_menu(array(
-        'container' => false,                           // Remove nav container
-        'container_class' => '',                        // Class of container
-        'menu' => '',                                   // Menu name
-        'menu_class' => 'off-canvas-list',              // Adding custom nav class
-        'theme_location' => 'main-nav',        			// Where it's located in the theme
-        'before' => '',                                 // Before each link <a>
-        'after' => '',                                  // After each link </a>
-        'link_before' => '',                            // Before each link text
-        'link_after' => '',                             // After each link text
-        'depth' => 5,                                   // Limit the depth of the nav
-        'fallback_cb' => false,                         // Fallback function (see below)
-        'walker' => new Offcanvas_Walker(),
-    ));
-}
 
 // The Footer Menu
 function joints_footer_links() {
