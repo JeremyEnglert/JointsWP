@@ -3576,11 +3576,7 @@ COMMENT STYLES
 .commentlist li:not(.depth-1) {
   margin-left: 10px;
   margin-top: 0;
-  padding-bottom: 0;
-  background: #777; }
-
-.commentlist li.depth-3 {
-  background: #6a6a6a; }
+  padding-bottom: 0; }
 
 .commentlist .vcard {
   margin-left: 50px; }
@@ -3673,9 +3669,6 @@ SIDEBARS & ASIDES
   .widget ul li {
     list-style: none; }
 
-#sidebar-offcanvas .widgettitle {
-  color: #fff; }
-
 /*********************
 FOOTER STYLES
 *********************/
@@ -3686,9 +3679,6 @@ FOOTER STYLES
 /*********************
 FOUNDATION STYLES
 *********************/
-.clearing-assembled.clearing-blackout a:hover {
-  background: none; }
-
 /*********************
 PLUGIN STYLES
 *********************/
