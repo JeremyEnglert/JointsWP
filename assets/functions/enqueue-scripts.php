@@ -13,7 +13,8 @@ function site_scripts() {
     wp_enqueue_script( 'modernizr', get_template_directory_uri() . '/vendor/foundation/js/vendor/modernizr.js', array(), '', true );
     
     // Adding Foundation scripts file in the footer
-   wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/assets/js/foundation.js', array( 'jquery' ), '6.0', true );
+   //wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/assets/js/foundation.js', array( 'jquery' ), '6.0', true );
+      wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/vendor/foundation/js/foundation.js', array( 'jquery' ), '6.0', true );
     
     // Adding scripts file in the footer
     wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/js/scripts.js', array( 'jquery' ), '', true );
