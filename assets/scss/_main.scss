@@ -273,12 +273,10 @@ COMMENT STYLES
 		margin-left: 10px;
 		margin-top: 0;
 		padding-bottom: 0;
-		background: $secondary-color;
 	}
 
 	li.depth-2 {}
 	li.depth-3 {
-		background: darken($secondary-color, 5%);
 	}
 	li.depth-4 {}
 	li.depth-5 {}
@@ -471,36 +469,30 @@ SIDEBARS & ASIDES
 .sidebar {
 }
 
-	#searchsubmit {
-	}
+#searchsubmit {
+}
 
-	.widgettitle {}
+.widgettitle {
+}
 
-	.widget {
-		ul {
-			margin: 0;
+.widget {
+	ul {
+		margin: 0;
 
-			li {
-				list-style: none;
+		li {
+			list-style: none;
 
-				&:first-child {}
+			&:first-child {}
 
-				&:last-child {}
+			&:last-child {}
 
-				a {}
+			a {}
 
-				// deep nesting  
-				ul {}
-
-			}
+			// deep nesting  
+			ul {}
 
 		}
 	}
-
-#sidebar-offcanvas {
-	.widgettitle {
-		color: #fff;
-	}	
 }
 /*********************
 FOOTER STYLES
@@ -513,9 +505,6 @@ FOOTER STYLES
 /*********************
 FOUNDATION STYLES
 *********************/
-.clearing-assembled.clearing-blackout a:hover {
-	background: none;
-}
 
 /*********************
 PLUGIN STYLES

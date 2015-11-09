@@ -35,13 +35,14 @@
 	</head>
 
 	<body <?php body_class(); ?>>
-		<div class="off-canvas-wrap" data-offcanvas>
-			<div class="inner-wrap">
-				<div id="container">
-					<header class="header" role="banner">
-							
-						 <!-- This navs will be applied to the topbar, above all content 
-							  To see additional nav styles, visit the /parts directory -->
-						 <?php get_template_part( 'parts/nav', 'topbar' ); ?>
-								 	
-					</header> <!-- end .header -->
+		<div class="off-canvas position-left" id="hello" data-off-canvas data-position="left">
+			<h1>Hello</h1>
+		</div>
+		<div class="main-content" data-off-canvas-content>
+			<header class="header" role="banner">
+					
+				 <!-- This navs will be applied to the topbar, above all content 
+					  To see additional nav styles, visit the /parts directory -->
+				 <?php get_template_part( 'parts/nav', 'topbar' ); ?>
+						 	
+			</header> <!-- end .header -->
