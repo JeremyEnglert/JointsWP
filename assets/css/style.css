@@ -2642,9 +2642,9 @@ select {
   font-weight: bold;
   color: inherit;
   line-height: 1;
-  padding: 0.7rem 1rem;
   padding-top: 0;
-  padding-bottom: 0; }
+  padding-bottom: 0;
+  padding: 0.7rem 1rem; }
 
 html,
 body {
