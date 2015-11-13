@@ -35,7 +35,7 @@
 	</head>
 
 	<body <?php body_class(); ?>>
-		<div class="off-canvas position-left" id="hello" data-off-canvas data-position="left">
+		<div class="off-canvas position-right" id="offCanvas" data-off-canvas data-position="right">
 			<h1>Hello</h1>
 		</div>
 		<div class="main-content" data-off-canvas-content>
@@ -44,5 +44,7 @@
 				 <!-- This navs will be applied to the topbar, above all content 
 					  To see additional nav styles, visit the /parts directory -->
 				 <?php get_template_part( 'parts/nav', 'topbar' ); ?>
+				 <button type="button" class="button" data-toggle="offCanvas">Open Menu</button>
+
 						 	
 			</header> <!-- end .header -->
