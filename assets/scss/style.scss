@@ -22,6 +22,10 @@ CSS file.
 // Import foundation.scss from vendor files
 @import "../../vendor/foundation/scss/foundation";
 
+// Import Motion-UI from vendor files
+@import "../../vendor/motion-ui/src/motion-ui";
+@include motion-ui-transitions;
+
 // Select the components you want to use
 @include foundation-global-styles;
 @include foundation-grid;

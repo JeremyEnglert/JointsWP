@@ -158,7 +158,8 @@ var Foundation = {
         $(this).data('zf-plugin', new plugin($(this)));
       });
     });
-  }
+  },
+  getFnName: functionName
 }
 
 Foundation.util = {
@@ -255,12 +256,18 @@ function hyphenate(str) {
 !function($, Foundation, window){
   function Move(duration, elem, fn){
     var anim, prog, start = null, _this = this;
-
+    this.dont = function(){
+      if(anim !== undefined){
+        window.cancelAnimationFrame(anim);
+        duration = 0;
+        return true;
+      }
+      return false;
+    }
     this.do = function(ts){//timestamp returned from requestAnimationFrame
-      if(!start){ start = ts; }
+      if(!ts){ start = ts = window.performance.now(); }
       prog = ts - start;
       fn.apply(elem);//call the cb
-
       if(prog < duration){
         anim = window.requestAnimationFrame(_this.do, elem);
       }else{
@@ -268,7 +275,7 @@ function hyphenate(str) {
         elem.trigger('finished.zf.animate', [elem]);
       }
     };
-    window.requestAnimationFrame(this.do);
+    // window.requestAnimationFrame(this.do);
   }
   Foundation.Move = Move;
 }(jQuery, window.Foundation, window);
@@ -1386,6 +1393,56 @@ Foundation.ISeeYou = scrollListener;
 Foundation.IFeelYou = closemeListener;
 
 }(window.Foundation, window.jQuery)
+
+!function($, Foundation){
+
+  /******************************************************************
+  /** A very simple timer for animated elements within Foundation. **
+  /** Allows your script to pause and restart later with fn call.  **
+  /**  Feel free to add features, comments, or use case examples.  **
+  /*****************************************************************/
+
+  function Timer(elem, options, cb){
+    var _this = this,
+        duration = options.duration,//options is an object for easily adding features later.
+        nameSpace = Object.keys(elem.data())[0] || 'timer',
+        remain = -1,
+        start,
+        timer;
+
+    this.restart = function(){
+        remain = -1;
+        clearTimeout(timer);
+        this.start();
+    };
+
+    this.start = function(){
+      // if(!elem.data('paused')){ return false; }//maybe implement this sanity check if used for other things.
+      remain = remain <= 0 ? duration : remain;
+      elem.data('paused', false);
+      start = Date.now();
+      timer = setTimeout(function(){
+        if(options.infinite){
+          _this.restart();//rerun the timer.
+        }
+        cb();
+      }, remain);
+      elem.trigger('timerstart.zf.' + nameSpace);
+    };
+
+    this.pause = function(){
+      //if(elem.data('paused')){ return false; }//maybe implement this sanity check if used for other things.
+      clearTimeout(timer);
+      elem.data('paused', true);
+      var end = Date.now();
+      remain = remain - (end - start);
+      elem.trigger('timerpaused.zf.' + nameSpace);
+    };
+  }
+
+  Foundation.NanuNanu = Timer;
+
+}(jQuery, window.Foundation);
 
 !function(Foundation, $) {
   'use strict';
@@ -3032,9 +3089,9 @@ Foundation.IFeelYou = closemeListener;
     this.$submenus.each(function(){
       var $sub = $(this);
 
-      if(_this.options.alignment === 'right'){
-        $sub.children('[data-submenu]').addClass('is-right-arrow');
-      }
+      // if(_this.options.alignment === 'right'){
+      //   $sub.children('[data-submenu]').addClass('is-right-arrow');
+      // }
 
       $sub.children('[data-submenu]')
           .attr({
@@ -3056,7 +3113,7 @@ Foundation.IFeelYou = closemeListener;
     var _this = this;
 
     if(this.options.clickOpen){
-      $elem.on('click.zf.dropdownmenu tap.zf.dropdownmenu touchend.zf.dropdownmenu', function(e){
+      $elem.children('a').on('click.zf.dropdownmenu touchend.zf.dropdownmenu', function(e){
         if($(e.target).parent('li').hasClass('has-submenu')){
           e.preventDefault();
           e.stopPropagation();
@@ -5453,8 +5510,8 @@ Foundation.plugin(ResponsiveToggle);
                      */
                     _this.$element.trigger('moved.zf.slider', [$hndl]);
                 });
-
-    Foundation.Move(_this.options.moveTime, $hndl, function(){
+    var moveTime = _this.$element.data('dragging') ? 1000/60 : _this.options.moveTime;
+    var move = new Foundation.Move(moveTime, $hndl, function(){
       $hndl.css(lOrT, movement + '%');
       if(!_this.options.doubleSided){
         _this.$fill.css(hOrW, pctOfBar * 100 + '%');
@@ -5462,6 +5519,7 @@ Foundation.plugin(ResponsiveToggle);
         _this.$fill.css(css);
       }
     });
+    move.do();
   };
   /**
    * Sets the initial attribute for the slider element.
@@ -5558,7 +5616,7 @@ Foundation.plugin(ResponsiveToggle);
       });
 
     if(this.options.clickSelect){
-      this.$element.off('click.zf.slider').on('click.zf.slider', function(e){
+      this.$element.off('mousedown.zf.slider').on('mousedown.zf.slider', function(e){
         if(_this.$element.data('dragging')){ return false; }
         _this.animComplete = false;
         if(_this.options.doubleSided){
@@ -5581,7 +5639,7 @@ Foundation.plugin(ResponsiveToggle);
 
           $handle.addClass('is-dragging');
           _this.$fill.addClass('is-dragging');//
-          _this.$element.attr('data-dragging', true);
+          _this.$element.data('dragging', true);
           _this.animComplete = false;
           curHandle = $(e.currentTarget);
 
@@ -5829,15 +5887,24 @@ Foundation.plugin(ResponsiveToggle);
 
       $(window).off(scrollListener)
                .on(scrollListener, function(e){
-                if(_this.scrollCount){
-                  _this.scrollCount--;
-                  _this._calc(false, e.currentTarget.scrollY);
-                }else{
-                  _this.scrollCount = _this.options.checkEvery;
-                  _this._setSizes(function(){
-                    _this._calc(false, e.currentTarget.scrollY);
-                  })
-                }
+                 if(_this.scrollCount === 0){
+                   _this.scrollCount = _this.options.checkEvery;
+                   _this._setSizes(function(){
+                     _this._calc(false, e.currentTarget.scrollY);
+                   });
+                 }else{
+                   _this.scrollCount--;
+                   _this._calc(false, e.currentTarget.scrollY);
+                 }
+                // if(_this.scrollCount > 0){
+                //   _this.scrollCount--;
+                //   _this._calc(false, e.currentTarget.scrollY);
+                // }else{
+                //   _this.scrollCount = _this.options.checkEvery;
+                //   _this._setSizes(function(){
+                //     _this._calc(false, e.currentTarget.scrollY);
+                //   })
+                // }
               });
     }
 
@@ -6868,56 +6935,6 @@ Foundation.plugin(ResponsiveToggle);
 
   Foundation.plugin(Tooltip);
 }(jQuery, window.document, window.Foundation);
-
-!function($, Foundation){
-
-  /******************************************************************
-  /** A very simple timer for animated elements within Foundation. **
-  /** Allows your script to pause and restart later with fn call.  **
-  /**  Feel free to add features, comments, or use case examples.  **
-  /*****************************************************************/
-
-  function Timer(elem, options, cb){
-    var _this = this,
-        duration = options.duration,//options is an object for easily adding features later.
-        nameSpace = Object.keys(elem.data())[0] || 'timer',
-        remain = -1,
-        start,
-        timer;
-
-    this.restart = function(){
-        remain = -1;
-        clearTimeout(timer);
-        this.start();
-    };
-
-    this.start = function(){
-      // if(!elem.data('paused')){ return false; }//maybe implement this sanity check if used for other things.
-      remain = remain <= 0 ? duration : remain;
-      elem.data('paused', false);
-      start = Date.now();
-      timer = setTimeout(function(){
-        if(options.infinite){
-          _this.restart();//rerun the timer.
-        }
-        cb();
-      }, remain);
-      elem.trigger('timerstart.zf.' + nameSpace);
-    };
-
-    this.pause = function(){
-      //if(elem.data('paused')){ return false; }//maybe implement this sanity check if used for other things.
-      clearTimeout(timer);
-      elem.data('paused', true);
-      var end = Date.now();
-      remain = remain - (end - start);
-      elem.trigger('timerpaused.zf.' + nameSpace);
-    };
-  }
-
-  Foundation.NanuNanu = Timer;
-
-}(jQuery, window.Foundation);
 
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
