@@ -231,6 +231,12 @@ $.fn.foundation = foundation;
     };
     window.cancelAnimationFrame = clearTimeout;
   }
+  window.performance = (window.performance || {
+    start: Date.now(),
+    now: function(){
+        return Date.now() - this.start;
+    }
+  });
 })();
 
 // Polyfill to get the name of a function in IE9
@@ -239,6 +245,9 @@ function functionName(fn) {
     var funcNameRegex = /function\s([^(]{1,})\(/;
     var results = (funcNameRegex).exec((fn).toString());
     return (results && results.length > 1) ? results[1].trim() : "";
+  }
+  else if (fn.prototype === undefined) {
+    return fn.constructor.name;
   }
   else {
     return fn.prototype.constructor.name;
@@ -254,7 +263,7 @@ function hyphenate(str) {
 }(jQuery);
 
 !function($, Foundation, window){
-  function Move(duration, elem, fn){
+   var Move = function(duration, elem, fn){
     var anim, prog, start = null, _this = this;
     this.dont = function(){
       if(anim !== undefined){
@@ -263,10 +272,11 @@ function hyphenate(str) {
         return true;
       }
       return false;
-    }
+    };
     this.do = function(ts){//timestamp returned from requestAnimationFrame
-      if(!ts){ start = ts = window.performance.now(); }
+      if(!ts || !start){ start = ts = window.performance.now(); }
       prog = ts - start;
+      // console.log(prog, ts, start);
       fn.apply(elem);//call the cb
       if(prog < duration){
         anim = window.requestAnimationFrame(_this.do, elem);
@@ -275,10 +285,180 @@ function hyphenate(str) {
         elem.trigger('finished.zf.animate', [elem]);
       }
     };
-    // window.requestAnimationFrame(this.do);
-  }
+    window.requestAnimationFrame(this.do);
+  };
   Foundation.Move = Move;
 }(jQuery, window.Foundation, window);
+
+!function(Foundation, window){
+  /**
+   * Compares the dimensions of an element to a container and determines collision events with container.
+   * @function
+   * @param {jQuery} element - jQuery object to test for collisions.
+   * @param {jQuery} parent - jQuery object to use as bounding container.
+   * @param {Boolean} lrOnly - set to true to check left and right values only.
+   * @param {Boolean} tbOnly - set to true to check top and bottom values only.
+   * @default if no parent object passed, detects collisions with `window`.
+   * @returns {Boolean} - true if collision free, false if a collision in any direction.
+   */
+  var ImNotTouchingYou = function(element, parent, lrOnly, tbOnly){
+    var eleDims = GetDimensions(element),
+        top, bottom, left, right;
+
+    if(parent){
+      var parDims = GetDimensions(parent);
+
+      bottom = (eleDims.offset.top + eleDims.height <= parDims.height + parDims.offset.top);
+      top    = (eleDims.offset.top >= parDims.offset.top);
+      left   = (eleDims.offset.left >= parDims.offset.left);
+      right  = (eleDims.offset.left + eleDims.width <= parDims.width);
+    }else{
+      bottom = (eleDims.offset.top + eleDims.height <= eleDims.windowDims.height + eleDims.windowDims.offset.top);
+      top    = (eleDims.offset.top >= eleDims.windowDims.offset.top);
+      left   = (eleDims.offset.left >= eleDims.windowDims.offset.left);
+      right  = (eleDims.offset.left + eleDims.width <= eleDims.windowDims.width);
+    }
+    var allDirs = [bottom, top, left, right];
+
+    if(lrOnly){ return left === right === true; }
+    if(tbOnly){ return top === bottom === true; }
+
+    return allDirs.indexOf(false) === -1;
+  };
+
+  /**
+   * Uses native methods to return an object of dimension values.
+   * @function
+   * @param {jQuery || HTML} element - jQuery object or DOM element for which to get the dimensions. Can be any element other that document or window.
+   * @returns {Object} - nested object of integer pixel values
+   * TODO - if element is window, return only those values.
+   */
+  var GetDimensions = function(elem, test){
+    elem = elem.length ? elem[0] : elem;
+
+    if(elem === window || elem === document){ throw new Error("I'm sorry, Dave. I'm afraid I can't do that."); }
+
+    var rect = elem.getBoundingClientRect(),
+        parRect = elem.parentNode.getBoundingClientRect(),
+        winRect = document.body.getBoundingClientRect(),
+        winY = window.pageYOffset,
+        winX = window.pageXOffset;
+
+    return {
+      width: rect.width,
+      height: rect.height,
+      offset: {
+        top: rect.top + winY,
+        left: rect.left + winX
+      },
+      parentDims: {
+        width: parRect.width,
+        height: parRect.height,
+        offset: {
+          top: parRect.top + winY,
+          left: parRect.left + winX
+        }
+      },
+      windowDims: {
+        width: winRect.width,
+        height: winRect.height,
+        offset: {
+          top: winY,
+          left: winX
+        }
+      }
+    };
+  };
+  /**
+   * Returns an object of top and left integer pixel values for dynamically rendered elements,
+   * such as: Tooltip, Reveal, and Dropdown
+   * @function
+   * @param {jQuery} element - jQuery object for the element being positioned.
+   * @param {jQuery} anchor - jQuery object for the element's anchor point.
+   * @param {String} position - a string relating to the desired position of the element, relative to it's anchor
+   * @param {Number} vOffset - integer pixel value of desired vertical separation between anchor and element.
+   * @param {Number} hOffset - integer pixel value of desired horizontal separation between anchor and element.
+   * @param {Boolean} isOverflow - if a collision event is detected, sets to true to default the element to full width - any desired offset.
+   * TODO alter/rewrite to work with `em` values as well/instead of pixels
+   */
+  var GetOffsets = function(element, anchor, position, vOffset, hOffset, isOverflow){
+    var $eleDims = GetDimensions(element),
+    // var $eleDims = GetDimensions(element),
+        $anchorDims = anchor ? GetDimensions(anchor) : null;
+        // $anchorDims = anchor ? GetDimensions(anchor) : null;
+    switch(position){
+      case 'top':
+        return {
+          left: $anchorDims.offset.left,
+          top: $anchorDims.offset.top - ($eleDims.height + vOffset)
+        };
+        break;
+      case 'left':
+        return {
+          left: $anchorDims.offset.left - ($eleDims.width + hOffset),
+          top: $anchorDims.offset.top
+        };
+        break;
+      case 'right':
+        return {
+          left: $anchorDims.offset.left + $anchorDims.width + hOffset,
+          top: $anchorDims.offset.top
+        };
+        break;
+      case 'center top':
+        return {
+          left: ($anchorDims.offset.left + ($anchorDims.width / 2)) - ($eleDims.width / 2),
+          top: $anchorDims.offset.top - ($eleDims.height + vOffset)
+        };
+        break;
+      case 'center bottom':
+        return {
+          left: isOverflow ? hOffset : (($anchorDims.offset.left + ($anchorDims.width / 2)) - ($eleDims.width / 2)),
+          top: $anchorDims.offset.top + $anchorDims.height + vOffset
+        };
+        break;
+      case 'center left':
+        return {
+          left: $anchorDims.offset.left - ($eleDims.width + hOffset),
+          top: ($anchorDims.offset.top + ($anchorDims.height / 2)) - ($eleDims.height / 2)
+        };
+        break;
+      case 'center right':
+        return {
+          left: $anchorDims.offset.left + $anchorDims.width + hOffset + 1,
+          top: ($anchorDims.offset.top + ($anchorDims.height / 2)) - ($eleDims.height / 2)
+        };
+        break;
+      case 'center':
+        return {
+          left: ($eleDims.windowDims.offset.left + ($eleDims.windowDims.width / 2)) - ($eleDims.width / 2),
+          top: ($eleDims.windowDims.offset.top + ($eleDims.windowDims.height / 2)) - ($eleDims.height / 2)
+        };
+        break;
+      case 'reveal':
+        return {
+          left: ($eleDims.windowDims.width - $eleDims.width) / 2,
+          top: $eleDims.windowDims.offset.top + vOffset
+        };
+      case 'reveal full':
+        return {
+          left: $eleDims.windowDims.offset.left,
+          top: $eleDims.windowDims.offset.top,
+        };
+        break;
+      default:
+        return {
+          left: $anchorDims.offset.left,
+          top: $anchorDims.offset.top + $anchorDims.height + vOffset
+        };
+    }
+  };
+  Foundation.Box = {
+    ImNotTouchingYou: ImNotTouchingYou,
+    GetDimensions: GetDimensions,
+    GetOffsets: GetOffsets
+  };
+}(window.Foundation, window);
 
 /*******************************************
  *                                         *
@@ -318,7 +498,7 @@ function hyphenate(str) {
    * @return String key - String that represents the key pressed
    */
   var parseKey = function(event) {
-    var key = keyCodes[event.which || event.keyCode];
+    var key = keyCodes[event.which || event.keyCode] || String.fromCharCode(event.which).toUpperCase();
     if (event.shiftKey) key = 'SHIFT_' + key;
     if (event.ctrlKey) key = 'CTRL_' + key;
     if (event.altKey) key = 'ALT_' + key;
@@ -337,7 +517,7 @@ function hyphenate(str) {
    * @param {Objects} functions - collection of functions that are to be executed
    */
   var handleKey = function(event, component, functions) {
-    var commandList = commands[getComponentName(component)],
+    var commandList = commands[Foundation.getFnName(component)],
       keyCode = parseKey(event),
       cmds,
       command,
@@ -368,7 +548,18 @@ function hyphenate(str) {
   };
   Foundation.Keyboard.handleKey = handleKey;
 
-
+  /**
+   * Finds all focusable elements within the given `$element`
+   * @param {jQuery} $element - jQuery object to search within
+   * @return {jQuery} $focusable - all focusable elements within `$element`
+   */
+  var findFocusable = function($element) {
+    return $element.find('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]').filter(function() {
+      if (!$(this).is(':visible') || $(this).attr('tabindex') < 0) { return false; } //only have visible elements and those that have a tabindex greater or equal 0
+      return true;
+    });
+  };
+  Foundation.Keyboard.findFocusable = findFocusable;
 
   /**
    * Returns the component name name
@@ -380,16 +571,6 @@ function hyphenate(str) {
     commands[componentName] = cmds;
   };
   Foundation.Keyboard.register = register;
-
-  /**
-   * Returns the component name name
-   * @param {Object} component - Foundation component, e.g. Slider or Reveal
-   * @return String componentName
-   */
-  var getComponentName = function(component) {
-    return (/function (.+)\(/).exec((component).constructor.toString())[1] || '';
-  };
-
 }(jQuery, window.Foundation);
 
 !function($, Foundation) {
@@ -451,14 +632,14 @@ var MediaQuery = {
     var self = this;
     var extractedStyles = $('.foundation-mq').css('font-family');
     var namedQueries;
-    
+
     namedQueries = parseStyleToObject(extractedStyles);
 
     for (var key in namedQueries) {
       self.queries.push({
         name: key,
         value: 'only screen and (min-width: ' + namedQueries[key] + ')'
-      })
+      });
     }
 
     this.current = this._getCurrentSize();
@@ -509,7 +690,7 @@ var MediaQuery = {
       }
     });
   }
-}
+};
 
 Foundation.MediaQuery = MediaQuery;
 
@@ -598,31 +779,6 @@ function parseStyleToObject(str) {
 }
 
 }(jQuery, Foundation)
-!function($, Foundation){
-  'use strict';
-
-  function FeatherNest(menu, type){
-    menu.attr('role', 'menubar');
-    var items = menu.find('li').attr({'role': 'menuitem', 'tabindex': 0}),
-        type = type || 'zf',
-        subMenuClass = 'is-' + type + '-submenu',
-        subItemClass = subMenuClass + '-item';
-
-    items.each(function(){
-      var $item = $(this),
-          $sub = $item.children('ul');
-      if($sub.length){
-        $item.addClass('has-submenu')
-        $sub.addClass('submenu ' + subMenuClass).attr('data-submenu', '');
-      }
-      if($item.parent('[data-submenu]').length){
-        $item.addClass('is-submenu-item ' + subItemClass);
-      }
-    });
-    return;
-  }
-  Foundation.FeatherNest = FeatherNest;
-}(jQuery, window.Foundation);
 
 /**
  * Motion module.
@@ -708,12 +864,57 @@ Foundation.Motion = Motion;
 
 !function($, Foundation){
   'use strict';
+  Foundation.Nest = {
+    Feather: function(menu, type){
+      menu.attr('role', 'menubar');
+      var items = menu.find('li').attr({'role': 'menuitem', 'tabindex': 0}),
+          type = type || 'zf',
+          subMenuClass = 'is-' + type + '-submenu',
+          subItemClass = subMenuClass + '-item';
+
+      items.each(function(){
+        var $item = $(this),
+            $sub = $item.children('ul');
+        if($sub.length){
+          $item.addClass('has-submenu');
+          $sub.addClass('submenu ' + subMenuClass).attr('data-submenu', '');
+        }
+        if($item.parent('[data-submenu]').length){
+          $item.addClass('is-submenu-item ' + subItemClass);
+        }
+      });
+      return;
+    },
+    Burn: function(menu, type){
+      var items = menu.find('li').removeAttr('tabindex'),
+          subMenuClass = 'is-' + type + '-submenu',
+          subItemClass = subMenuClass + '-item';
+
+      menu.find('.is-active').removeClass('is-active');
+
+      items.each(function(){
+        var $item = $(this),
+            $sub = $item.children('ul');
+        if($item.parent('[data-submenu]').length){
+          $item.removeClass('is-submenu-item ' + subItemClass);
+        }
+        if($sub.length){
+          $item.removeClass('has-submenu');
+          $sub.removeClass('submenu ' + subMenuClass).removeAttr('data-submenu');
+        }
+      });
+    }
+  };
+}(jQuery, window.Foundation);
+
+!function($, Foundation){
+  'use strict';
   /**
    * Runs a callback function when images are fully loaded.
    * @param {Object} images - Image(s) to check if loaded.
    * @param {Func} callback - Function to execute when image is fully loaded.
    */
-  function onImagesLoaded(images, callback) {
+  var onImagesLoaded = function(images, callback){
     var self = this,
         unloaded = images.length;
 
@@ -726,7 +927,7 @@ Foundation.Motion = Motion;
       if (unloaded === 0) {
         callback();
       }
-    }
+    };
 
     images.each(function() {
       if (this.complete) {
@@ -741,177 +942,9 @@ Foundation.Motion = Motion;
         });
       }
     });
-  }
+  };
   Foundation.onImagesLoaded = onImagesLoaded;
 }(jQuery, window.Foundation);
-
-// !function(){
-//   /**
-//    * returns a random base-36 uid with namespacing
-//    * @function
-//    * @param {Number} length - number of random base-36 digits desired. Increase for more random strings.
-//    * @param {String} plugin - name of plugin to be incorporated in uid, optional.
-//    * @default {String} -zf-rnd - if no plugin name is provided, value appended to uid.
-//    * @returns {String} - unique id
-//    */
-//   function randomIdGen(length, plugin){
-//     return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1) + (plugin ? '-' + plugin : '-zf-rnd');
-//   }
-//
-//   Foundation.GetYoDigits = randomIdGen;
-// }(window.Foundation);
-
-!function($, Foundation, window){
-  /**
-   * Compares the dimensions of an element to a container and determines collision events with container.
-   * @function
-   * @param {jQuery} element - jQuery object to test for collisions.
-   * @param {jQuery} parent - jQuery object to use as bounding container.
-   * @param {Boolean} lrOnly - set to true to check left and right values only.
-   * @param {Boolean} tbOnly - set to true to check top and bottom values only.
-   * @default if no parent object passed, detects collisions with `window`.
-   * @returns {Boolean} - true if collision free, false if a collision in any direction.
-   */
-  function ImNotTouchingYou(element, parent, lrOnly, tbOnly){
-    var eleDims = GetDimensions(element),
-        top, bottom, left, right;
-
-    if(parent){
-      var parDims = GetDimensions(parent);
-
-      bottom = (eleDims.offset.top + eleDims.height <= parDims.height + parDims.offset.top);
-      top    = (eleDims.offset.top >= parDims.offset.top);
-      left   = (eleDims.offset.left >= parDims.offset.left);
-      right  = (eleDims.offset.left + eleDims.width <= parDims.width);
-    }else{
-      bottom = (eleDims.offset.top + eleDims.height <= eleDims.windowDims.height + eleDims.windowDims.offset.top);
-      top    = (eleDims.offset.top >= eleDims.windowDims.offset.top);
-      left   = (eleDims.offset.left >= eleDims.windowDims.offset.left);
-      right  = (eleDims.offset.left + eleDims.width <= eleDims.windowDims.width);
-    }
-    var allDirs = [bottom, top, left, right];
-
-    if(lrOnly){ return left === right === true; }
-    if(tbOnly){ return top === bottom === true; }
-
-    return allDirs.indexOf(false) === -1;
-  }
-
-  /**
-   * Uses jQuery methods to return an object of dimension values.
-   * @function
-   * @param {jQuery} element - jQuery object for which to get the dimensions.
-   * @returns {Object} - nested object of integer pixel values
-   * TODO - if element is window, return only those values.
-   */
-  function GetDimensions(element){
-    var $window = $(window);
-    return {
-      width: element.outerWidth(),
-      height: element.outerHeight(),
-      offset: element.offset(),
-      parentDims: {
-        width: element.parent().outerWidth(),
-        height: element.parent().outerHeight(),
-        offset: element.parent().offset()
-      },
-      windowDims: {
-        width: $window.width(),
-        height: $window.height(),
-        offset: {
-          top: $window.scrollTop(),
-          left: $window.scrollLeft()
-        }
-      }
-    };
-  }
-  /**
-   * Returns an object of top and left integer pixel values for dynamically rendered elements,
-   * such as: Tooltip, Reveal, and Dropdown
-   * @function
-   * @param {jQuery} element - jQuery object for the element being positioned.
-   * @param {jQuery} anchor - jQuery object for the element's anchor point.
-   * @param {String} position - a string relating to the desired position of the element, relative to it's anchor
-   * @param {Number} vOffset - integer pixel value of desired vertical separation between anchor and element.
-   * @param {Number} hOffset - integer pixel value of desired horizontal separation between anchor and element.
-   * @param {Boolean} isOverflow - if a collision event is detected, sets to true to default the element to full width - any desired offset.
-   * TODO alter/rewrite to work with `em` values as well/instead of pixels
-   */
-  function GetOffsets(element, anchor, position, vOffset, hOffset, isOverflow){
-    var $eleDims = GetDimensions(element),
-        $anchorDims = anchor ? GetDimensions(anchor) : null;
-    switch(position){
-      case 'top':
-        return {
-          left: $anchorDims.offset.left,
-          top: $anchorDims.offset.top - ($eleDims.height + vOffset)
-        };
-        break;
-      case 'left':
-        return {
-          left: $anchorDims.offset.left - ($eleDims.width + hOffset),
-          top: $anchorDims.offset.top
-        };
-        break;
-      case 'right':
-        return {
-          left: $anchorDims.offset.left + $anchorDims.width + hOffset,
-          top: $anchorDims.offset.top
-        };
-        break;
-      case 'center top':
-        return {
-          left: ($anchorDims.offset.left + ($anchorDims.width / 2)) - ($eleDims.width / 2),
-          top: $anchorDims.offset.top - ($eleDims.height + vOffset)
-        };
-        break;
-      case 'center bottom':
-        return {
-          left: isOverflow ? hOffset : (($anchorDims.offset.left + ($anchorDims.width / 2)) - ($eleDims.width / 2)),
-          top: $anchorDims.offset.top + $anchorDims.height + vOffset
-        };
-        break;
-      case 'center left':
-        return {
-          left: $anchorDims.offset.left - ($eleDims.width + hOffset),
-          top: ($anchorDims.offset.top + ($anchorDims.height / 2)) - ($eleDims.height / 2)
-        };
-        break;
-      case 'center right':
-        return {
-          left: $anchorDims.offset.left + $anchorDims.width + hOffset + 1,
-          top: ($anchorDims.offset.top + ($anchorDims.height / 2)) - ($eleDims.height / 2)
-        };
-        break;
-      case 'center':
-        return {
-          left: ($eleDims.windowDims.offset.left + ($eleDims.windowDims.width / 2)) - ($eleDims.width / 2),
-          top: ($eleDims.windowDims.offset.top + ($eleDims.windowDims.height / 2)) - ($eleDims.height / 2)
-        };
-        break;
-      case 'reveal':
-        return {
-          left: ($eleDims.windowDims.width - $eleDims.width) / 2,
-          top: $eleDims.windowDims.offset.top + vOffset
-        };
-      case 'reveal full':
-        return {
-          left: $eleDims.windowDims.offset.left,
-          top: $eleDims.windowDims.offset.top,
-        };
-        break;
-      default:
-        return {
-          left: $anchorDims.offset.left,
-          top: $anchorDims.offset.top + $anchorDims.height + vOffset
-        };
-    }
-  }
-
-  Foundation.ImNotTouchingYou = ImNotTouchingYou;
-  Foundation.GetDimensions = GetDimensions;
-  Foundation.GetOffsets = GetOffsets;
-}(jQuery, window.Foundation, window);
 
 //**************************************************
 //**Work inspired by multiple jquery swipe plugins**
@@ -1317,7 +1350,7 @@ Foundation.Motion = Motion;
   // }
 
   //******** only fires this function once on load, if there's something to watch ********
-  function closemeListener(pluginName){
+  var closemeListener = function(pluginName){
     var yetiBoxes = $('[data-yeti-box]'),
         plugNames = ['dropdown', 'tooltip', 'reveal'];
 
@@ -1341,14 +1374,14 @@ Foundation.Motion = Motion;
 
         plugins.each(function(){
           var _this = $(this);
-          // console.log(_this);
+        
           _this.triggerHandler('close.zf.trigger', [_this]);
         });
 
       });
     }
-  }
-  function resizeListener(debounce){
+  };
+  var resizeListener = function(debounce){
     var timer, i, len,
         nodes = $('[data-resize]');
     if(nodes.length){
@@ -1359,14 +1392,14 @@ Foundation.Motion = Motion;
           timer = setTimeout(function(){
 
             for(i = 0, len = nodes.length; i < len; i++){
-              var $elem = $(nodes[i])
+              var $elem = $(nodes[i]);
               $elem.triggerHandler('resizeme.zf.trigger', [$elem]);
             }
           }, debounce || 10);//default time to emit resize event
       });
     }
-  }
-  function scrollListener(debounce){
+  };
+  var scrollListener = function(debounce){
     var timer, i, len,
         nodes = $('[data-scroll]');
     if(nodes.length){
@@ -1377,13 +1410,13 @@ Foundation.Motion = Motion;
           timer = setTimeout(function(){
 
             for(i = 0, len = nodes.length; i < len; i++){
-              var $elem = $(nodes[i])
-              $elem.triggerHandler('scrollme.zf.trigger', [$elem]);
+              var $elem = $(nodes[i]);
+              $elem.triggerHandler('scrollme.zf.trigger', [$elem, window.scrollY]);
             }
           }, debounce || 50);//default time to emit scroll event
       });
     }
-  }
+  };
 // ------------------------------------
 
   // [PH]
@@ -1392,57 +1425,7 @@ Foundation.IHearYou = resizeListener;
 Foundation.ISeeYou = scrollListener;
 Foundation.IFeelYou = closemeListener;
 
-}(window.Foundation, window.jQuery)
-
-!function($, Foundation){
-
-  /******************************************************************
-  /** A very simple timer for animated elements within Foundation. **
-  /** Allows your script to pause and restart later with fn call.  **
-  /**  Feel free to add features, comments, or use case examples.  **
-  /*****************************************************************/
-
-  function Timer(elem, options, cb){
-    var _this = this,
-        duration = options.duration,//options is an object for easily adding features later.
-        nameSpace = Object.keys(elem.data())[0] || 'timer',
-        remain = -1,
-        start,
-        timer;
-
-    this.restart = function(){
-        remain = -1;
-        clearTimeout(timer);
-        this.start();
-    };
-
-    this.start = function(){
-      // if(!elem.data('paused')){ return false; }//maybe implement this sanity check if used for other things.
-      remain = remain <= 0 ? duration : remain;
-      elem.data('paused', false);
-      start = Date.now();
-      timer = setTimeout(function(){
-        if(options.infinite){
-          _this.restart();//rerun the timer.
-        }
-        cb();
-      }, remain);
-      elem.trigger('timerstart.zf.' + nameSpace);
-    };
-
-    this.pause = function(){
-      //if(elem.data('paused')){ return false; }//maybe implement this sanity check if used for other things.
-      clearTimeout(timer);
-      elem.data('paused', true);
-      var end = Date.now();
-      remain = remain - (end - start);
-      elem.trigger('timerpaused.zf.' + nameSpace);
-    };
-  }
-
-  Foundation.NanuNanu = Timer;
-
-}(jQuery, window.Foundation);
+}(window.Foundation, window.jQuery);
 
 !function(Foundation, $) {
   'use strict';
@@ -1548,7 +1531,6 @@ Foundation.IFeelYou = closemeListener;
       .find('input, textarea, select')
         .off('.abide')
         .on('blur.fndtn.abide change.fndtn.abide', function (e) {
-          // console.log($(e.target));
           if (self.options.validateOn === 'fieldChange') {
             self.validateInput($(e.target), self.$element);
           }
@@ -1759,9 +1741,9 @@ Foundation.IFeelYou = closemeListener;
     var self = this,
         valid = false,
         patternLib = this.options.patterns,
-        inputText = $(el).val(),
+        inputText = $($el).val(),
         // maybe have a different way of parsing this bc people might use type
-        pattern = $(el).attr('pattern');
+        pattern = $($el).attr('pattern');
 
     // if there's no value, then return true
     // since required check has already been done
@@ -1990,7 +1972,7 @@ Foundation.IFeelYou = closemeListener;
     $('#' + $target.attr('aria-labelledby')).attr({
       'aria-expanded': true,
       'aria-selected': true
-    })
+    });
     /**
      * Fires when the tab is done opening.
      * @event Accordion#down
@@ -2013,7 +1995,7 @@ Foundation.IFeelYou = closemeListener;
     }
 
     Foundation.Move(this.options.slideSpeed, $target, function(){
-      $target.slideUp(_this.options.slideSpeed)
+      $target.slideUp(_this.options.slideSpeed);
     });
 
     $target.attr('aria-hidden', true)
@@ -2022,7 +2004,7 @@ Foundation.IFeelYou = closemeListener;
     $('#' + $target.attr('aria-labelledby')).attr({
      'aria-expanded': false,
      'aria-selected': false
-    })
+   });
 
     /**
      * Fires when the tab is done collapsing up.
@@ -2045,7 +2027,7 @@ Foundation.IFeelYou = closemeListener;
      */
     // this.$element.trigger('destroyed.zf.accordion');
     Foundation.unregisterPlugin(this);
-  }
+  };
 
   Foundation.plugin(Accordion);
 }(jQuery);
@@ -2070,7 +2052,7 @@ Foundation.IFeelYou = closemeListener;
     this.$element = element;
     this.options = $.extend({}, AccordionMenu.defaults, this.$element.data(), options);
 
-    Foundation.FeatherNest(this.$element, 'accordion');
+    Foundation.Nest.Feather(this.$element, 'accordion');
 
     this._init();
 
@@ -2097,9 +2079,9 @@ Foundation.IFeelYou = closemeListener;
   AccordionMenu.defaults = {
     slideSpeed: 250,
     wrapOnKeys: false,
-    multiOpen: false
+    multiOpen: true
 
-  }
+  };
 
   /**
    * Initializes the accordion menu by hiding all nested menus.
@@ -2192,7 +2174,6 @@ Foundation.IFeelYou = closemeListener;
           if ($target.is(':hidden')) {
             _this.down($target);
             $target.find('li').first().focus();
-            console.log($target.find('li').first());
           }
         },
         close: function() {
@@ -2222,7 +2203,7 @@ Foundation.IFeelYou = closemeListener;
           e.stopImmediatePropagation();
         }
       });
-    })//.attr('tabindex', 0);
+    });//.attr('tabindex', 0);
   };
   AccordionMenu.prototype.hideAll = function(){
     this.$element.find('[data-submenu]').slideUp(this.options.slideSpeed);
@@ -2251,7 +2232,7 @@ Foundation.IFeelYou = closemeListener;
       .parent('.has-submenu').attr({'aria-expanded': true, 'aria-selected': true});
 
       Foundation.Move(this.options.slideSpeed, $target, function(){
-        $target.slideDown(_this.options.slideSpeed)
+        $target.slideDown(_this.options.slideSpeed);
       });
     /**
      * Fires when the menu is done collapsing up.
@@ -2266,9 +2247,16 @@ Foundation.IFeelYou = closemeListener;
    * @fires AccordionMenu#up
    */
   AccordionMenu.prototype.up = function($target) {
-    $target.slideUp(this.options.slideSpeed, function() {
-      $target.find('[data-submenu]').slideUp(0).attr('aria-hidden', true);
-    }).attr('aria-hidden', true).parent('.has-submenu').attr({'aria-expanded': false, 'aria-selected': false});
+    var _this = this;
+    Foundation.Move(this.options.slideSpeed, $target, function(){
+      $target.slideUp(_this.options.slideSpeed);
+    });
+    $target.find('[data-submenu]').slideUp(0).attr('aria-hidden', true)
+           .attr('aria-hidden', true).parent('.has-submenu')
+           .attr({'aria-expanded': false, 'aria-selected': false});
+    // $target.slideUp(this.options.slideSpeed, function() {
+    //   $target.find('[data-submenu]').slideUp(0).attr('aria-hidden', true);
+    // }).attr('aria-hidden', true).parent('.has-submenu').attr({'aria-expanded': false, 'aria-selected': false});
 
     /**
      * Fires when the menu is done collapsing up.
@@ -2294,7 +2282,7 @@ Foundation.IFeelYou = closemeListener;
   };
 
   Foundation.plugin(AccordionMenu);
-}(jQuery)
+}(jQuery, window.Foundation);
 
 /**
  * Drilldown module.
@@ -2315,12 +2303,12 @@ Foundation.IFeelYou = closemeListener;
     this.$element = element;
     this.options = $.extend({}, Drilldown.defaults, this.$element.data(), options);
 
-    Foundation.FeatherNest(this.$element, 'drilldown');
+    Foundation.Nest.Feather(this.$element, 'drilldown');
 
     this._init();
 
     Foundation.registerPlugin(this);
-    Foundation.registerKeyCommands('Drilldown', {
+    Foundation.Keyboard.register('Drilldown', {
       'ENTER': 'open',
       'SPACE': 'open',
       'ARROW_RIGHT': 'next',
@@ -2337,6 +2325,7 @@ Foundation.IFeelYou = closemeListener;
     wrapper: '<div></div>',
     closeOnClick: false,
     holdOpen: false
+    // transitionendEvt: Foundation.Prefixer('transitionend')
   };
   /**
    * Initializes the drilldown by creating jQuery collections of elements
@@ -2379,9 +2368,12 @@ Foundation.IFeelYou = closemeListener;
       _this._events($sub);
     });
     this.$submenus.each(function(){
-      var $menu = $(this);
-      $menu.prepend(_this.options.backButton);
-      _this._back($menu);
+      var $menu = $(this),
+          $back = $menu.find('.js-drilldown-back');
+      if(!$back.length){
+        $menu.prepend(_this.options.backButton);
+        _this._back($menu);
+      }
     });
     if(!this.$element.parent().hasClass('is-drilldown')){
       this.$wrapper = $(this.options.wrapper).addClass('is-drilldown').css(this.getMaxHeight());
@@ -2439,7 +2431,7 @@ Foundation.IFeelYou = closemeListener;
           return;
         }
       });
-      Foundation.handleKey(e, _this, {
+      Foundation.Keyboard.handleKey(e, _this, {
         next: function() {
           if ($element.is(_this.$submenuAnchors)) {
             _this._show($element);
@@ -2469,10 +2461,10 @@ Foundation.IFeelYou = closemeListener;
         open: function() {
           if (!$element.is(_this.$menuItems)) { // not menu item means back button
             _this._hide($element.parent('ul'));
-            setTimeout(function(){$element.parent('ul').parent('li').focus()}, 1);
+            setTimeout(function(){$element.parent('ul').parent('li').focus();}, 1);
           } else if ($element.is(_this.$submenuAnchors)) {
             _this._show($element);
-            setTimeout(function(){$element.find('ul li').filter(_this.$menuItems).first().focus()}, 1);
+            setTimeout(function(){$element.find('ul li').filter(_this.$menuItems).first().focus();}, 1);
           }
         },
         handled: function() {
@@ -2528,7 +2520,7 @@ Foundation.IFeelYou = closemeListener;
           // e.stopImmediatePropagation();
           setTimeout(function(){
             _this._hideAll();
-          }, 0)
+          }, 0);
       });
   };
   /**
@@ -2586,6 +2578,7 @@ Foundation.IFeelYou = closemeListener;
    */
   Drilldown.prototype.destroy = function(){
     this._hideAll();
+    Foundation.Nest.Burn(this.$element, 'drilldown');
     this.$element.unwrap()
                  .find('.js-drilldown-back').remove()
                  .end().find('.is-active, .is-closing, .is-drilldown-sub').removeClass('is-active is-closing is-drilldown-sub')
@@ -2761,6 +2754,13 @@ Foundation.IFeelYou = closemeListener;
     this._init();
 
     Foundation.registerPlugin(this);
+    Foundation.Keyboard.register('Dropdown', {
+      'ENTER': 'open',
+      'SPACE': 'open',
+      'ESCAPE': 'close',
+      'TAB': 'tab_forward',
+      'SHIFT_TAB': 'tab_backward'
+    });
   }
 
   Dropdown.defaults = {
@@ -2768,7 +2768,8 @@ Foundation.IFeelYou = closemeListener;
     hover: false,
     vOffset: 1,
     hOffset: 1,
-    positionClass: ''
+    positionClass: '',
+    trapFocus: false
   };
   /**
    * Initializes the plugin by setting/checking options and attributes, adding helper variables, and saving the anchor.
@@ -2783,7 +2784,8 @@ Foundation.IFeelYou = closemeListener;
       'aria-controls': $id,
       'data-is-focus': false,
       'data-yeti-box': $id,
-      'aria-haspopup': true
+      'aria-haspopup': true,
+      'aria-expanded': false
       // 'data-resize': $id
     });
 
@@ -2793,7 +2795,8 @@ Foundation.IFeelYou = closemeListener;
     this.$element.attr({
       'aria-hidden': 'true',
       'data-yeti-box': $id,
-      'data-resize': $id
+      'data-resize': $id,
+      'aria-labelledby': this.$anchor[0].id || Foundation.GetYoDigits(6, 'dd-anchor')
     });
     this._events();
   };
@@ -2853,17 +2856,17 @@ Foundation.IFeelYou = closemeListener;
    * @private
    */
   Dropdown.prototype.setPosition = function(){
+    if(this.$anchor.attr('aria-expanded') === 'false'){ return false; }
     var position = this.getPositionClass(),
-        $eleDims = Foundation.GetDimensions(this.$element),
-        $anchorDims = Foundation.GetDimensions(this.$anchor),
+        $eleDims = Foundation.Box.GetDimensions(this.$element),
+        $anchorDims = Foundation.Box.GetDimensions(this.$anchor),
         _this = this,
         direction = (position === 'left' ? 'left' : ((position === 'right') ? 'left' : 'top')),
         param = (direction === 'top') ? 'height' : 'width',
         offset = (param === 'height') ? this.options.vOffset : this.options.hOffset;
 
-    // console.log($eleDims.width >= $eleDims.windowDims.width);
-    if(($eleDims.width >= $eleDims.windowDims.width) || (!this.counter && !Foundation.ImNotTouchingYou(this.$element))){
-      this.$element.offset(Foundation.GetOffsets(this.$element, this.$anchor, 'center bottom', this.options.vOffset, this.options.hOffset, true)).css({
+    if(($eleDims.width >= $eleDims.windowDims.width) || (!this.counter && !Foundation.Box.ImNotTouchingYou(this.$element))){
+      this.$element.offset(Foundation.Box.GetOffsets(this.$element, this.$anchor, 'center bottom', this.options.vOffset, this.options.hOffset, true)).css({
         'width': $eleDims.windowDims.width - (this.options.hOffset * 2),
         'height': 'auto',
       });
@@ -2871,9 +2874,9 @@ Foundation.IFeelYou = closemeListener;
       return false;
     }
 
-    this.$element.offset(Foundation.GetOffsets(this.$element, this.$anchor, position, this.options.vOffset, this.options.hOffset));
+    this.$element.offset(Foundation.Box.GetOffsets(this.$element, this.$anchor, position, this.options.vOffset, this.options.hOffset));
 
-    while(!Foundation.ImNotTouchingYou(this.$element) && this.counter){
+    while(!Foundation.Box.ImNotTouchingYou(this.$element) && this.counter){
       this.reposition(position);
       this.setPosition();
     }
@@ -2900,6 +2903,41 @@ Foundation.IFeelYou = closemeListener;
         }, _this.options.hoverDelay);
       });
     }
+    this.$anchor.add(this.$element).on('keydown.zf.dropdown', function(e) {
+
+      var visibleFocusableElements = Foundation.Keyboard.findFocusable(_this.$element);
+
+      Foundation.Keyboard.handleKey(e, _this, {
+        tab_forward: function() {
+          if (this.$element.find(':focus').is(visibleFocusableElements.eq(-1))) { // left modal downwards, setting focus to first element
+            if (this.options.trapFocus) { // if focus shall be trapped
+              visibleFocusableElements.eq(0).focus();
+              e.preventDefault();
+            } else { // if focus is not trapped, close dropdown on focus out
+              this.close();
+            }
+          }
+        },
+        tab_backward: function() {
+          if (this.$element.find(':focus').is(visibleFocusableElements.eq(0)) || this.$element.is(':focus')) { // left modal upwards, setting focus to last element
+            if (this.options.trapFocus) { // if focus shall be trapped
+              visibleFocusableElements.eq(-1).focus();
+              e.preventDefault();
+            } else { // if focus is not trapped, close dropdown on focus out
+              this.close();
+            }
+          }
+        },
+        open: function() {
+          _this.open();
+          _this.$element.attr('tabindex', -1).focus();
+        },
+        close: function() {
+          _this.close();
+          _this.$anchor.focus();
+        }
+      });
+    });
   };
   /**
    * Opens the dropdown pane, and fires a bubbling event to close other dropdowns.
@@ -2908,17 +2946,21 @@ Foundation.IFeelYou = closemeListener;
    * @fires Dropdown#show
    */
   Dropdown.prototype.open = function(){
+    // var _this = this;
     /**
      * Fires to close other open dropdowns
      * @event Dropdown#closeme
      */
     this.$element.trigger('closeme.zf.dropdown', this.$element.attr('id'));
-    var _this = this;
-    this.$element.show();
+    this.$anchor.addClass('hover')
+        .attr({'aria-expanded': true});
+    // this.$element/*.show()*/;
     this.setPosition();
     this.$element.addClass('is-open')
-        .attr('aria-hidden', 'false');
-    this.$anchor.addClass('hover');
+        .attr({'aria-hidden': false});
+
+
+
     /**
      * Fires once the dropdown is visible.
      * @event Dropdown#show
@@ -2926,7 +2968,7 @@ Foundation.IFeelYou = closemeListener;
      this.$element.trigger('show.zf.dropdown', [this.$element]);
     //why does this not work correctly for this plugin?
     // Foundation.reflow(this.$element, 'dropdown');
-    // Foundation._reflow(this.$element.data('dropdown'));
+    Foundation._reflow(this.$element.attr('data-dropdown'));
   };
 
   /**
@@ -2939,15 +2981,18 @@ Foundation.IFeelYou = closemeListener;
       return false;
     }
     this.$element.removeClass('is-open')
-        .attr('aria-hidden', 'true');
-    this.$anchor.removeClass('hover');
+        .attr({'aria-hidden': true});
+
+    this.$anchor.removeClass('hover')
+        .attr('aria-expanded', false);
+
     if(this.classChanged){
       var curPositionClass = this.getPositionClass();
       if(curPositionClass){
         this.$element.removeClass(curPositionClass);
       }
       this.$element.addClass(this.options.positionClass)
-          .hide().css({height: '', width: ''});
+          /*.hide()*/.css({height: '', width: ''});
       this.classChanged = false;
       this.counter = 4;
       this.usedPositions.length = 0;
@@ -2975,7 +3020,7 @@ Foundation.IFeelYou = closemeListener;
     this.$anchor.off('.zf.dropdown');
 
     Foundation.unregisterPlugin(this);
-  }
+  };
 
   Foundation.plugin(Dropdown);
 }(jQuery, window.Foundation);
@@ -3000,7 +3045,7 @@ Foundation.IFeelYou = closemeListener;
     this.$element = element;
     this.options = $.extend({}, DropdownMenu.defaults, this.$element.data(), options);
 
-    Foundation.FeatherNest(this.$element, 'dropdown');
+    Foundation.Nest.Feather(this.$element, 'dropdown');
 
     this._init();
 
@@ -3065,12 +3110,12 @@ Foundation.IFeelYou = closemeListener;
     this.$menuItems.children('a').attr('tabindex', -1);
     if(this.$element.hasClass(this.options.rightClass)){
       this.options.alignment = 'right';
-      this.$submenus.addClass('is-right-arrow');
+      this.$submenus.addClass('is-left-arrow opens-left');
     }else{
-      this.$submenus.addClass('is-left-arrow');
+      this.$submenus.addClass('is-right-arrow opens-right');
     }
     if(!this.vertical){
-      this.$tabs.removeClass('is-right-arrow is-left-arrow').addClass('is-down-arrow');
+      this.$tabs.removeClass('is-right-arrow is-left-arrow opens-left opens-right').addClass('is-down-arrow');
     }
 
     this.$tabs.each(function(){
@@ -3273,7 +3318,7 @@ Foundation.IFeelYou = closemeListener;
     $body.not(_this.$element).on('click.zf.dropdownmenu tap.zf.dropdownmenu touchend.zf.dropdownmenu', function(e){
       _this._hideAll();
       $body.off('click.zf.dropdownmenu tap.zf.dropdownmenu touchend.zf.dropdownmenu');
-    })
+    });
   };
 //show & hide stuff @private
   /**
@@ -3294,14 +3339,21 @@ Foundation.IFeelYou = closemeListener;
 
 
     //break this into own function
-    var clear = Foundation.ImNotTouchingYou($sub, null, true);
+    var clear = Foundation.Box.ImNotTouchingYou($sub, null, true);
     if(!clear){
       if(this.options.alignment === 'left'){
-        $sub.removeClass('is-left-arrow').addClass('is-right-arrow');
+        $elem.removeClass('opens-left').addClass('opens-right');
       }else{
-        $sub.removeClass('is-right-arrow').addClass('is-left-arrow');
+        $elem.removeClass('opens-right').addClass('opens-left');
       }
       this.changed = true;
+
+      // still not clear, small screen, add inner class
+      clear = Foundation.Box.ImNotTouchingYou($sub, null, true);
+      if (!clear) {
+        $elem.removeClass('opens-left opens-right').addClass('opens-inner');
+        this.changed = true;
+      }
     }
     $sub.css('visibility', '');
     /**
@@ -3333,7 +3385,7 @@ Foundation.IFeelYou = closemeListener;
       //   console.log('true');
       //   $elems.blur();
       // }
-      $elems.removeClass('is-active').data('isClick', false)
+      $elems.removeClass('is-active opens-inner').data('isClick', false)
 
             .find('.is-active').removeClass('is-active').data('isClick', false).end()
 
@@ -3343,9 +3395,9 @@ Foundation.IFeelYou = closemeListener;
       if(this.changed){
         //remove position class
         if(this.options.alignment === 'left'){
-          $elems.find('.is-right-arrow').removeClass('is-right-arrow').addClass('is-left-arrow');
+          $elems.find('.opens-right').removeClass('opens-right').addClass('opens-left');
         }else{
-          $elems.find('.is-left-arrow').removeClass('is-left-arrow').addClass('is-right-arrow');
+          $elems.find('.opens-left').removeClass('opens-left').addClass('opens-right');
         }
       }
       /**
@@ -3387,9 +3439,9 @@ Foundation.IFeelYou = closemeListener;
   };
   Foundation.plugin(DropdownMenu);
 
-  function checkClass($elem){
+  var checkClass = function($elem){
     return $elem.hasClass('is-active');
-  }
+  };
 
 }(Foundation, jQuery);
 
@@ -3565,11 +3617,6 @@ Foundation.IFeelYou = closemeListener;
     this._events();
 
     Foundation.registerPlugin(this);
-    // /**
-    //  * Fires when the plugin has been successfuly initialized.
-    //  * @event Interchange#init
-    //  */
-    // this.$element.trigger('init.zf.interchange');
   }
 
   /**
@@ -3577,13 +3624,13 @@ Foundation.IFeelYou = closemeListener;
    */
   Interchange.defaults = {
     rules: null
-  }
+  };
 
   Interchange.SPECIAL_QUERIES = {
     'landscape': 'screen and (orientation: landscape)',
     'portrait': 'screen and (orientation: portrait)',
     'retina': 'only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx)'
-  }
+  };
 
   /**
    * Initializes the Interchange plugin and calls functions to get interchange functioning on load.
@@ -3594,7 +3641,7 @@ Foundation.IFeelYou = closemeListener;
     this._addBreakpoints();
     this._generateRules();
     this._reflow();
-  }
+  };
 
   /**
    * Initializes events for Interchange.
@@ -3603,7 +3650,7 @@ Foundation.IFeelYou = closemeListener;
    */
   Interchange.prototype._events = function() {
     $(window).on('resize.fndtn.interchange', Foundation.util.throttle(this._reflow.bind(this), 50));
-  }
+  };
 
   /**
    * Calls necessary functions to update Interchange upon DOM change
@@ -3625,7 +3672,7 @@ Foundation.IFeelYou = closemeListener;
     if (match) {
       this.replace(match.path);
     }
-  }
+  };
 
   /**
    * Gets the Foundation breakpoints and adds them to the Interchange.SPECIAL_QUERIES object.
@@ -3637,7 +3684,7 @@ Foundation.IFeelYou = closemeListener;
       var query = Foundation.MediaQuery.queries[i];
       Interchange.SPECIAL_QUERIES[query.name] = query.value;
     }
-  }
+  };
 
   /**
    * Checks the Interchange element for the provided media query + content pairings
@@ -3673,7 +3720,7 @@ Foundation.IFeelYou = closemeListener;
     }
 
     this.rules = rulesList;
-  }
+  };
 
   /**
    * Update the `src` property of an image, or change the HTML of a container, to the specified path.
@@ -3705,7 +3752,7 @@ Foundation.IFeelYou = closemeListener;
         _this.currentPath = path;
       });
     }
-  }
+  };
 
   Foundation.plugin(Interchange);
 
@@ -4026,7 +4073,7 @@ Foundation.IFeelYou = closemeListener;
 /**
  * Magellan module.
  * @module foundation.magellan
- * @requires foundation.util.animationFrame
+ // * @requires foundation.util.animationFrame
  */
 !function(Foundation, $) {
   'use strict';
@@ -4041,21 +4088,11 @@ Foundation.IFeelYou = closemeListener;
   function Magellan(element, options) {
     this.$element = element;
     this.options  = $.extend({}, Magellan.defaults, options);
-    this.$window  = $(window);
-    this.name     = 'magellan';
-    this.attr     = 'data-magellan';
-    this.attrArrival  = 'data-magellan-target';
 
     this._init();
-    this._events();
 
     Foundation.registerPlugin(this);
-    // /**
-    //  * Fires when the plugin has been successfuly initialized.
-    //  * @event Magellan#init
-    //  */
-    // this.$element.trigger('init.zf.magellan');
-  };
+  }
 
   /**
    * Default settings for plugin
@@ -4063,7 +4100,7 @@ Foundation.IFeelYou = closemeListener;
   Magellan.defaults = {
     animationDuration: 500,
     animationEasing: 'linear',
-    threshold: null,
+    threshold: 50,
     activeClass: 'active'
   };
 
@@ -4072,82 +4109,114 @@ Foundation.IFeelYou = closemeListener;
    * @private
    */
   Magellan.prototype._init = function() {
-  };
+    var id = this.$element[0].id || Foundation.GetYoDigits(6, 'magellan'),
+        _this = this;
+    this.$targets = $('[data-magellan-target]');
+    this.$links = this.$element.find('a');
+    this.$element.attr({
+      'data-resize': id,
+      'data-scroll': id,
+      'id': id
+    });
+    this.$active = $();
+    this.scrollPos = parseInt(window.pageYOffset, 10);
 
+    this._events();
+  };
+  Magellan.prototype._calcPoints = function(){
+    var _this = this,
+        body = document.body,
+        html = document.documentElement;
+
+    this.points = [];
+    this.winHeight = Math.round(Math.max(window.innerHeight, document.body.clientHeight));
+    this.docHeight = Math.round(Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight));
+
+    this.$targets.each(function(){
+      var $tar = $(this),
+          pt = Math.round($tar.offset().top - _this.options.threshold);
+      $tar.targetPoint = pt;
+      _this.points.push(pt);
+    });
+  };
   /**
    * Initializes events for Magellan.
    * @private
    */
   Magellan.prototype._events = function() {
-    var self = this;
+    var _this = this,
+        $body = $('html, body'),
+        opts = {
+          duration: _this.options.animationDuration,
+          easing:   _this.options.animationEasing
+        };
 
-    this.$window
-      .off('.magellan')
-      .on('resize.fndtn.magellan', Foundation.util.throttle(function () {
-        self._reflow();
-      }.bind(this), 50))
-      .on('scroll.fndtn.magellan', Foundation.util.throttle(function(e) {
+    $(window).one('load', function(){
+      _this._calcPoints();
+      _this.updateActive();
+    });
+
+    this.$element.on({
+      'resizeme.zf.trigger': this._reflow.bind(this),
+      'scrollme.zf.trigger': this.updateActive.bind(this)
+    }).on('click.zf.magellan', 'a[href^="#"]', function(e) {
         e.preventDefault();
-        self.updateActiveClass();
-      }, 100));
+        var arrival   = this.getAttribute('href'),
+            scrollPos = $(arrival).offset().top - _this.options.threshold / 2;
 
-    this.$element
-      .on('click.fndtn.magellan', 'a[href^="#"]', function(e) {
-        e.preventDefault();
-        // include animation settings
-        var arrival   = $(this).attr('href'),
-            navOffset = self.$element.height();
-
-        $('html, body').animate({
-          scrollTop: $(arrival).offset().top - navOffset
-        },
-        {
-          duration: self.options.animationDuration,
-          easing:   self.options.animationEasing
+        // requestAnimationFrame is disabled for this plugin currently
+        // Foundation.Move(_this.options.animationDuration, $body, function(){
+          $body.stop(true).animate({
+            scrollTop: scrollPos
+          }, opts);
         });
-
-        window.location = arrival;
-      })
+      // });
   };
   /**
    * Calls necessary functions to update Magellan upon DOM change
    * @private
    */
-  Magellan.prototype._reflow = function() {
+  Magellan.prototype._reflow = function(){
+    this._calcPoints();
+    this.updateActive();
   };
-  /**
-   * Detects the arrival sections and adds the active class to the magellan navigation bar
-   */
-  Magellan.prototype.updateActiveClass = function() {
-    var windowPosition = this.$window.scrollTop(),
-        arrivals       = $('[' + this.attrArrival + ']'),
-        // for sensitivty to trigger the active class, either use the specified
-        // threshold amount, or use the height of the nav item plus a little wiggle room
-        threshold      = this.options.threshold || this.$element.height() + 50,
-        magellanNav    = this.$element,
-        self           = this;
+  Magellan.prototype.updateActive = function(evt, elem, scrollPos){
+    var winPos = scrollPos || parseInt(window.pageYOffset, 10),
+        curIdx;
 
-    if (windowPosition + this.$window.height() === $(document).height()) {
-      magellanNav.find('a').removeClass(self.options.activeClass);
-      magellanNav.find('a').last().addClass(self.options.activeClass);
-      return;
+    if(winPos + this.winHeight === this.docHeight){ curIdx = this.points.length - 1; }
+    else if(winPos < this.points[0]){ curIdx = 0; }
+    else{
+      var isDown = this.scrollPos < winPos,
+          _this = this,
+          curVisible = this.points.filter(function(p, i){
+            return isDown ? p <= winPos : p - _this.options.threshold <= winPos;//&& winPos >= _this.points[i -1] - _this.options.threshold;
+          });
+      curIdx = curVisible.length ? curVisible.length - 1 : 0;
     }
-    arrivals.each(function() {
-      var arrivalTop = $(this).offset().top - threshold,
-          arrivalEnd = arrivalTop + $(this).height();
 
-      if (windowPosition >= arrivalTop && windowPosition <= arrivalEnd) {
-        magellanNav.find('a').removeClass(self.options.activeClass);
+    this.$active.removeClass(this.options.activeClass);
+    this.$active = this.$links.eq(curIdx).addClass(this.options.activeClass);
 
-        // this feature causes a bit of jumpiness
-        // window.location.hash = $(this).attr('id');
-        // find the corresponding hash/id of the section
-        var activeTarget = magellanNav.find('a[href=#' + $(this).attr('id') +']');
-        activeTarget.addClass(self.options.activeClass);
-      }
-    })
+    var hash = this.$active[0].getAttribute('href');
+    if(window.history.pushState){
+      window.history.pushState(null, null, hash);
+    }else{
+      window.location.hash = hash;
+    }
+
+    this.scrollPos = winPos;
   };
+  Magellan.prototype.destroy = function(){
+    this.$element.off('.zf.trigger .zf.magellan')
+        .find('.' + this.options.activeClass).removeClass(this.options.activeClass);
 
+    var hash = this.$active[0].getAttribute('href');
+
+    window.location.hash.replace(hash, '');
+
+    Foundation.unregisterPlugin(this);
+  };
   Foundation.plugin(Magellan);
 
   // Exports for AMD/Browserify
@@ -4186,11 +4255,6 @@ function OffCanvas(element, options) {
   this._events();
 
   Foundation.registerPlugin(this);
-  // /**
-  //  * Fires when the plugin has been successfully initialized.
-  //  * @event OffCanvas#init
-  //  */
-  // this.$element.trigger('init.zf.offcanvas');
 }
 
 OffCanvas.defaults = {
@@ -4200,9 +4264,15 @@ OffCanvas.defaults = {
    * @example true
    */
   closeOnClick: true,
-
-  position: 'left'
-}
+  transitionTime: 0,
+  position: 'left',
+  forceTop: false,
+  isSticky: false,
+  isRevealed: false,
+  revealOn: null,
+  autoFocus: true,
+  revealClass: 'reveal-for'
+};
 
 /**
  * Initializes the off-canvas wrapper by adding the exit overlay (if needed).
@@ -4221,14 +4291,28 @@ OffCanvas.prototype._init = function() {
     .attr('aria-controls', id);
 
   // Add a close trigger over the body if necessary
-  if (this.options.closeOnClick && !$('.js-off-canvas-exit').length) {
-    var exiter = document.createElement('div');
-    exiter.setAttribute('class', 'js-off-canvas-exit');
-    $('[data-off-canvas-content]').append(exiter);
+  if (this.options.closeOnClick){
+    if($('.js-off-canvas-exit').length){
+      this.$exiter = $('.js-off-canvas-exit');
+    }else{
+      var exiter = document.createElement('div');
+      exiter.setAttribute('class', 'js-off-canvas-exit');
+      $('[data-off-canvas-content]').append(exiter);
 
-    this.$exiter = $(exiter);
+      this.$exiter = $(exiter);
+    }
   }
-}
+
+  this.options.isRevealed = this.options.isRevealed || new RegExp(this.options.revealClass, 'g').test(this.$element[0].className);
+
+  if(this.options.isRevealed){
+    this.options.revealOn = this.options.revealOn || this.$element[0].className.match(/(reveal-for-medium|reveal-for-large)/g)[0].split('-')[2];
+    this._setMQChecker();
+  }
+  if(!this.options.transitionTime){
+    this.options.transitionTime = parseFloat(window.getComputedStyle(document.body).transitionDuration) * 1000;
+  }
+};
 
 /**
  * Adds event handlers to the off-canvas wrapper and the exit overlay.
@@ -4243,14 +4327,45 @@ OffCanvas.prototype._events = function() {
     'keydown.zf.offcanvas': this._handleKeyboard.bind(this)
   });
 
-  $(window).on('close.zf.offcanvas', this.close.bind(this));
-
-  if (this.$exiter) {
-    this.$exiter.on('click.zf.offcanvas', function() {
-      $(window).trigger('close.zf.offcanvas');
-    });
+  if (this.$exiter.length) {
+    var _this = this;
+    this.$exiter.on({'click.zf.offcanvas': this.close.bind(this)});
   }
-}
+};
+OffCanvas.prototype._setMQChecker = function(){
+  var _this = this;
+
+  $(window).on('changed.zf.mediaquery', function(){
+    if(Foundation.MediaQuery.atLeast(_this.options.revealOn)){
+      _this.reveal(true);
+    }else{
+      _this.reveal(false);
+    }
+  }).one('load.zf.offcanvas', function(){
+    if(Foundation.MediaQuery.atLeast(_this.options.revealOn)){
+      _this.reveal(true);
+    }
+  });
+};
+OffCanvas.prototype.reveal = function(isRevealed){
+  var closer = this.$element.find('[data-close]');
+  if(isRevealed){
+    if(!this.options.forceTop){
+      var scrollPos = parseInt(window.pageYOffset);
+      this.$element[0].style.transform = 'translate(0,' + scrollPos + 'px)';
+    }
+    if(this.options.isSticky){ this.stick(); }
+    if(closer.length){ closer.hide(); }
+  }else{
+    if(this.options.isSticky || !this.options.forceTop){
+      this.$element[0].style.transform = '';
+      $(window).off('scroll.zf.offcanvas');
+    }
+    if(closer.length){
+      closer.show();
+    }
+  }
+};
 
 /**
  * Opens the off-canvas menu.
@@ -4258,54 +4373,88 @@ OffCanvas.prototype._events = function() {
  * @fires OffCanvas#opened
  */
 OffCanvas.prototype.open = function(event, trigger) {
-  if (this.$element.hasClass('is-open')) return;
+  if (this.$element.hasClass('is-open')){ return; }
+  var _this = this,
+      $body = $(document.body);
 
-  var _this = this;
-
+  if(!this.options.forceTop){
+    var scrollPos = parseInt(window.pageYOffset);
+    this.$element[0].style.transform = 'translate(0,' + scrollPos + 'px)';
+    if(this.$exiter.length){
+      this.$exiter[0].style.transform = 'translate(0,' + scrollPos + 'px)';
+    }
+  }
   /**
    * Fires when the off-canvas menu opens.
    * @event OffCanvas#opened
    */
-  requestAnimationFrame(function() {
-    $('body').addClass('is-off-canvas-open is-open-'+_this.options.position);
+  Foundation.Move(this.options.transitionTime, this.$element, function(){
+    $body.addClass('is-off-canvas-open is-open-'+ _this.options.position);
 
     _this.$element
       .addClass('is-open')
       .attr('aria-hidden', 'false')
-      .find('a, button').eq(0).focus().end().end()
       .trigger('opened.zf.offcanvas');
-  });
 
-  if (trigger) {
+    if(_this.options.isSticky){
+      _this.stick();
+    }
+  });
+  if(trigger){
     this.$lastTrigger = trigger.attr('aria-expanded', 'true');
   }
-}
+  if(this.options.autoFocus){
+    this.$element.one('finished.zf.animate', function(){
+      _this.$element.find('a, button').eq(0).focus();
+    });
+  }
+};
+OffCanvas.prototype.stick = function(){
+  var elStyle = this.$element[0].style;
 
+  if(this.options.closeOnClick){
+    var exitStyle = this.$exiter[0].style;
+  }
+
+  $(window).on('scroll.zf.offcanvas', function(e){
+    console.log(e);
+    var pageY = window.pageYOffset;
+    elStyle.transform = 'translate(0,' + pageY + 'px)';
+    if(exitStyle !== undefined){ exitStyle.transform = 'translate(0,' + pageY + 'px)'; }
+  });
+  this.$element.trigger('stuck.zf.offcanvas');
+};
 /**
  * Closes the off-canvas menu.
  * @function
  * @fires OffCanvas#closed
  */
 OffCanvas.prototype.close = function() {
-  if (!this.$element.hasClass('is-open')) return;
+  if(!this.$element.hasClass('is-open')){ return; }
 
   var _this = this;
 
-  /**
-   * Fires when the off-canvas menu opens.
-   * @event OffCanvas#closed
-   */
-  requestAnimationFrame(function() {
+   Foundation.Move(this.options.transitionTime, this.$element, function(){
     $('body').removeClass('is-off-canvas-open is-open-'+_this.options.position);
 
-    _this.$element
-      .removeClass('is-open')
-      .attr('aria-hidden', 'true')
-      .trigger('closed.zf.offcanvas');
+    _this.$element.removeClass('is-open');
+    // Foundation._reflow();
   });
+  this.$element.attr('aria-hidden', 'true')
+    /**
+     * Fires when the off-canvas menu opens.
+     * @event OffCanvas#closed
+     */
+      .trigger('closed.zf.offcanvas');
+  if(_this.options.isSticky || !_this.options.forceTop){
+    setTimeout(function(){
+      _this.$element[0].style.transform = '';
+      $(window).off('scroll.zf.offcanvas');
+    }, this.options.transitionTime);
+  }
 
   this.$lastTrigger.attr('aria-expanded', 'false');
-}
+};
 
 /**
  * Toggles the off-canvas menu open or closed.
@@ -4318,7 +4467,7 @@ OffCanvas.prototype.toggle = function(event, trigger) {
   else {
     this.open(event, trigger);
   }
-}
+};
 
 /**
  * Handles keyboard input when detected. When the escape key is pressed, the off-canvas menu closes, and focus is restored to the element that opened the menu.
@@ -4332,11 +4481,11 @@ OffCanvas.prototype._handleKeyboard = function(event) {
   event.preventDefault();
   this.close();
   this.$lastTrigger.focus();
-}
+};
 
 Foundation.plugin(OffCanvas);
 
-}(jQuery, Foundation)
+}(jQuery, Foundation);
 
 /**
  * Orbit module.
@@ -4417,7 +4566,7 @@ Foundation.plugin(OffCanvas);
     if(this.options.autoPlay){
       this.geoSync();
     }
-    if (this.options.accessible) { // allow wrapper to be focusable to enable arrow navigation
+    if(this.options.accessible){ // allow wrapper to be focusable to enable arrow navigation
       this.$wrapper.attr('tabindex', 0);
     }
   };
@@ -4435,12 +4584,13 @@ Foundation.plugin(OffCanvas);
    */
   Orbit.prototype.geoSync = function(){
     var _this = this;
-    this.timer = new Foundation.NanuNanu(
+    this.timer = new Foundation.Timer(
                       this.$element,
-                      {duration: this.options.timerDelay},
+                      {duration: this.options.timerDelay,
+                       infinite: false},
                       function(){
                         _this.changeSlide(true);
-    });
+                      });
     this.timer.start();
   };
   /**
@@ -4498,18 +4648,16 @@ Foundation.plugin(OffCanvas);
     var _this = this;
 
     //***************************************
-    //**currently using jQuery Mobile event**
-    //**see comments below, needs to change**
+    //**Now using custom event - thanks to:**
+    //**      Yohai Ararat of Toronto      **
     //***************************************
     if(this.options.swipe){
       this.$slides.off('swipeleft.zf.orbit swiperight.zf.orbit')
       .on('swipeleft.zf.orbit', function(e){
         e.preventDefault();
-        _this.timer.restart();
         _this.changeSlide(true);
       }).on('swiperight.zf.orbit', function(e){
         e.preventDefault();
-        _this.timer.restart();
         _this.changeSlide(false);
       });
     }
@@ -4533,19 +4681,11 @@ Foundation.plugin(OffCanvas);
 
     if(this.options.navButtons){
       var $controls = this.$element.find('.' + this.options.nextClass + ', .' + this.options.prevClass);
-      if(this.options.accessible){
-        $controls.attr('tabindex', 0);
+      $controls.attr('tabindex', 0)
         //also need to handle enter/return and spacebar key presses
-      }
-      $controls.on('click.zf.orbit touchend.zf.orbit', function(){
-        if($(this).hasClass(_this.options.nextClass)){
-          _this.changeSlide(true);
-          _this.timer.restart();
-        }else{
-          _this.changeSlide(false);
-          _this.timer.restart();
-        }
-      });
+               .on('click.zf.orbit touchend.zf.orbit', function(){
+                 _this.changeSlide($(this).hasClass(_this.options.nextClass));
+               });
     }
 
     if(this.options.bullets){
@@ -4563,11 +4703,9 @@ Foundation.plugin(OffCanvas);
       // handle keyboard event with keyboard util
       Foundation.Keyboard.handleKey(e, _this, {
         next: function() {
-          _this.timer.restart();
           _this.changeSlide(true);
         },
         previous: function() {
-          _this.timer.restart();
           _this.changeSlide(false);
         },
         handled: function() { // if bullet is focused, make sure focus moves
@@ -4625,7 +4763,9 @@ Foundation.plugin(OffCanvas);
         this.options['animOutTo' + dirOut],
         function(){
           $curSlide.removeAttr('aria-live');
-          _this.timer.restart();
+          if(_this.options.autoPlay){
+            _this.timer.restart();
+          }
           //do stuff?
           /**
            * Triggers when the slide has finished animating in.
@@ -4688,13 +4828,13 @@ Foundation.plugin(OffCanvas);
       cssClass: 'accordion-menu',
       plugin: Foundation._plugins['accordion-menu'] || null
     }
-  }
+  };
 
   // [PH] Media queries
   var phMedia = {
     small: '(min-width: 0px)',
     medium: '(min-width: 640px)'
-  }
+  };
 
   /**
    * Creates a new instance of a responsive menu.
@@ -4759,9 +4899,12 @@ Foundation.plugin(OffCanvas);
   ResponsiveMenu.prototype._events = function() {
     var _this = this;
 
-    $(window).on('resize.zf.ResponsiveMenu', function() {
+    $(window).on('changed.zf.mediaquery', function() {
       _this._checkMediaQueries();
     });
+    // $(window).on('resize.zf.ResponsiveMenu', function() {
+    //   _this._checkMediaQueries();
+    // });
   };
 
   /**
@@ -4771,7 +4914,6 @@ Foundation.plugin(OffCanvas);
    */
   ResponsiveMenu.prototype._checkMediaQueries = function() {
     var matchedMq, _this = this;
-
     // Iterate through each rule and find the last matching rule
     $.each(this.rules, function(key) {
       if (Foundation.MediaQuery.atLeast(key)) {
@@ -4796,7 +4938,7 @@ Foundation.plugin(OffCanvas);
     // Create an instance of the new plugin
     if (this.currentPlugin) this.currentPlugin.destroy();
     this.currentPlugin = new this.rules[matchedMq].plugin(this.$element, {});
-  }
+  };
 
   /**
    * Destroys the instance of the current plugin on this element, as well as the window resize handler that switches the plugins out.
@@ -4805,7 +4947,7 @@ Foundation.plugin(OffCanvas);
   ResponsiveMenu.prototype.destroy = function() {
     this.currentPlugin.destroy();
     $(window).off('.zf.ResponsiveMenu');
-  }
+  };
   // ResponsiveMenu.prototype.DropdownMenu = Foundation.DropdownMenu;
   Foundation.plugin(ResponsiveMenu);
 
@@ -4972,7 +5114,8 @@ Foundation.plugin(ResponsiveToggle);
     hOffset: 0,
     fullScreen: false,
     btmOffsetPct: 10,
-    overlay: true
+    overlay: true,
+    resetOnClose: false
   };
 
   /**
@@ -4997,8 +5140,9 @@ Foundation.plugin(ResponsiveToggle);
       this.$element.attr({'aria-labelledby': anchorId});
     }
 
-    this.options.fullScreen = this.$element.hasClass('full');
-    if(this.options.fullScreen){
+    // this.options.fullScreen = this.$element.hasClass('full');
+    if(this.options.fullScreen || this.$element.hasClass('full')){
+      this.options.fullScreen = true;
       this.options.overlay = false;
     }
     if(this.options.overlay){
@@ -5011,10 +5155,6 @@ Foundation.plugin(ResponsiveToggle);
         'data-yeti-box': this.id,
         'data-resize': this.id
     });
-
-
-    this.options.height = this.$element.outerHeight();
-    this.options.width = this.$element.outerWidth();
 
     this._events();
   };
@@ -5075,33 +5215,35 @@ Foundation.plugin(ResponsiveToggle);
    * @private
    */
   Reveal.prototype._setPosition = function(cb){
-    var eleDims = Foundation.GetDimensions(this.$element);
+    var eleDims = Foundation.Box.GetDimensions(this.$element);
     var elePos = this.options.fullScreen ? 'reveal full' : (eleDims.height >= (0.5 * eleDims.windowDims.height)) ? 'reveal' : 'center';
 
     if(elePos === 'reveal full'){
+      console.log('full');
       //set to full height/width
       this.$element
-          .offset(Foundation.GetOffsets(this.$element, null, elePos, this.options.vOffset))
+          .offset(Foundation.Box.GetOffsets(this.$element, null, elePos, this.options.vOffset))
           .css({
             'height': eleDims.windowDims.height,
             'width': eleDims.windowDims.width
           });
-    }else if(!Foundation.MediaQuery.atLeast('medium') || !Foundation.ImNotTouchingYou(this.$element, null, true, false)){
+    }else if(!Foundation.MediaQuery.atLeast('medium') || !Foundation.Box.ImNotTouchingYou(this.$element, null, true, false)){
       //if smaller than medium, resize to 100% width minus any custom L/R margin
       this.$element
           .css({
             'width': eleDims.windowDims.width - (this.options.hOffset * 2)
           })
-          .offset(Foundation.GetOffsets(this.$element, null, 'center', this.options.vOffset, this.options.hOffset));
+          .offset(Foundation.Box.GetOffsets(this.$element, null, 'center', this.options.vOffset, this.options.hOffset));
       //flag a boolean so we can reset the size after the element is closed.
       this.changedSize = true;
     }else{
       this.$element
-          .offset(Foundation.GetOffsets(this.$element, null, elePos, this.options.vOffset))
-          //the max height based on a percentage of vertical offset plus vertical offset
           .css({
-            'max-height': eleDims.windowDims.height - (this.options.vOffset * (this.options.btmOffsetPct / 100 + 1))
-          });
+            'max-height': eleDims.windowDims.height - (this.options.vOffset * (this.options.btmOffsetPct / 100 + 1)),
+            'width': ''
+          })
+          .offset(Foundation.Box.GetOffsets(this.$element, null, elePos, this.options.vOffset));
+          //the max height based on a percentage of vertical offset plus vertical offset
     }
 
     cb();
@@ -5168,7 +5310,7 @@ Foundation.plugin(ResponsiveToggle);
              .attr({'aria-hidden': (this.options.overlay || this.options.fullScreen) ? true : false});
     setTimeout(function(){
       _this._extraHandlers();
-      Foundation.reflow();
+      // Foundation.reflow();
     }, 0);
   };
 
@@ -5183,8 +5325,9 @@ Foundation.plugin(ResponsiveToggle);
       return true;
     });
 
-    if(!this.options.overlay && this.options.closeOnClick){
+    if(!this.options.overlay && this.options.closeOnClick && !this.options.fullScreen){
       $('body').on('click.zf.reveal', function(e){
+        // if()
           _this._close();
       });
     }
@@ -5205,6 +5348,7 @@ Foundation.plugin(ResponsiveToggle);
 
     // lock focus within modal while tabbing
     this.$element.on('keydown.zf.reveal', function(e) {
+      var $target = $(this);
       // handle keyboard event with keyboard util
       Foundation.Keyboard.handleKey(e, _this, {
         tab_forward: function() {
@@ -5220,7 +5364,9 @@ Foundation.plugin(ResponsiveToggle);
           }
         },
         open: function() {
-          this._open();
+          if ($target.is(visibleFocusableElements)) { // dont't trigger if acual element has focus (i.e. inputs, links, ...)
+            this._open();
+          }
         },
         close: function() {
           if (this.options.closeOnEsc) {
@@ -5272,12 +5418,20 @@ Foundation.plugin(ResponsiveToggle);
     //if the modal changed size, reset it
     if(this.changedSize){
       this.$element.css({
-        'height': this.options.height,
-        'width': this.options.width
+        'height': '',
+        'width': ''
       });
     }
 
     $('body').removeClass('is-reveal-open').attr({'aria-hidden': false, 'tabindex': ''});
+
+    /**
+    * Resets the modal content
+    * This prevents a running video to keep going in the background
+    */
+    if(this.options.resetOnClose) {
+      this.$element.html(this.$element.html());
+    }
 
     this.isActive = false;
     this.$element.attr({'aria-hidden': true})
@@ -5314,7 +5468,7 @@ Foundation.plugin(ResponsiveToggle);
      * @event Reveal#destroyed
      */
     // this.$element.trigger('destroyed.zf.reveal');
-  }
+  };
 
   Foundation.plugin(Reveal);
 
@@ -5450,7 +5604,6 @@ Foundation.plugin(ResponsiveToggle);
    */
   Slider.prototype._setHandlePos = function($hndl, location, noInvert, cb){
   //might need to alter that slightly for bars that will have odd number selections.
-    // console.log(str, cb);
     location = parseFloat(location);//on input change events, convert string to number...grumble.
     // prevent slider from running out of bounds
     if(location < this.options.start){ location = this.options.start; }
@@ -5511,7 +5664,7 @@ Foundation.plugin(ResponsiveToggle);
                     _this.$element.trigger('moved.zf.slider', [$hndl]);
                 });
     var moveTime = _this.$element.data('dragging') ? 1000/60 : _this.options.moveTime;
-    var move = new Foundation.Move(moveTime, $hndl, function(){
+    /*var move = new */Foundation.Move(moveTime, $hndl, function(){
       $hndl.css(lOrT, movement + '%');
       if(!_this.options.doubleSided){
         _this.$fill.css(hOrW, pctOfBar * 100 + '%');
@@ -5519,7 +5672,7 @@ Foundation.plugin(ResponsiveToggle);
         _this.$fill.css(css);
       }
     });
-    move.do();
+    // move.do();
   };
   /**
    * Sets the initial attribute for the slider element.
@@ -5827,13 +5980,13 @@ Foundation.plugin(ResponsiveToggle);
 
     this.scrollCount = this.options.checkEvery;
     this.isStuck = false;
-    // console.log(this.options.anchor);
+    // console.log(this.options.anchor, this.options.topAnchor);
     if(this.options.topAnchor !== ''){
       this._parsePoints();
       // console.log(this.points[0]);
     }else{
-    }
       this.$anchor = this.options.anchor ? $(this.options.anchor) : $(document.body);
+    }
 
 
     this._setSizes(function(){
@@ -5849,7 +6002,7 @@ Foundation.plugin(ResponsiveToggle);
     for(var i = 0, len = pts.length; i < len && pts[i]; i++){
       var pt;
       if(typeof pts[i] === 'number'){
-        pt = pts[i]
+        pt = pts[i];
       }else{
         var place = pts[i].split(':'),
             anchor = $('#' + place[0]);
@@ -5863,6 +6016,7 @@ Foundation.plugin(ResponsiveToggle);
     }
       // console.log(breaks);
     this.points = breaks;
+    // console.log(this.points);
     return;
   };
 
@@ -5989,6 +6143,7 @@ Foundation.plugin(ResponsiveToggle);
     css[mrgn] = this.options[mrgn] + 'em';
     css[stickTo] = 0;
     css[notStuckTo] = 'auto';
+    css['left'] = this.$container.offset().left + parseInt(window.getComputedStyle(this.$container[0])["padding-left"], 10);
     this.isStuck = true;
     this.$element.removeClass('is-anchored is-at-' + notStuckTo)
                  .addClass('is-stuck is-at-' + stickTo)
@@ -6023,6 +6178,7 @@ Foundation.plugin(ResponsiveToggle);
       css[stickTo] = 0;
       css[notStuckTo] = anchorPt;
     }
+    css['left'] = '';
     this.isStuck = false;
     this.$element.removeClass('is-stuck is-at-' + stickTo)
                  .addClass('is-anchored is-at-' + (isTop ? 'top' : 'bottom'))
@@ -6041,11 +6197,15 @@ Foundation.plugin(ResponsiveToggle);
    * @param {Function} cb - optional callback function to fire on completion of `_setBreakPoints`.
    */
   Sticky.prototype._setSizes = function(cb){
+    this.canStick = Foundation.MediaQuery.atLeast(this.options.stickyOn);
+    if(!this.canStick){ cb(); }
     var _this = this,
         newElemWidth = this.$container[0].getBoundingClientRect().width,
-        pdng = parseInt(window.getComputedStyle(this.$container[0])['padding-right'], 10);
+        comp = window.getComputedStyle(this.$container[0]),
+        pdng = parseInt(comp['padding-right'], 10);
 
-    if(this.$anchor.length){
+    // console.log(this.$anchor);
+    if(this.$anchor && this.$anchor.length){
       this.anchorHeight = this.$anchor[0].getBoundingClientRect().height;
     }else{
       this._parsePoints();
@@ -6061,7 +6221,10 @@ Foundation.plugin(ResponsiveToggle);
       height: newContainerHeight
     });
     this.elemHeight = newContainerHeight;
-    this.canStick = Foundation.MediaQuery.atLeast(this.options.stickyOn);
+
+  	if (this.isStuck) {
+  		this.$element.css({"left":this.$container.offset().left + parseInt(comp['padding-left'], 10)});
+  	}
 
     this._setBreakPoints(newContainerHeight, function(){
       if(cb){ cb(); }
@@ -6185,7 +6348,7 @@ Foundation.plugin(ResponsiveToggle);
     scrollToContent: false,
     autoFocus: false,
     wrapOnKeys: true,
-    matchHeight: true,
+    matchHeight: false,
     linkClass: 'tabs-title',
     contentClass: 'tabs-content',
     panelClass: 'tabs-panel'
@@ -6351,7 +6514,6 @@ Foundation.plugin(ResponsiveToggle);
      * @event Tabs#change
      */
     this.$element.trigger('change.zf.tabs', [$target]);
-    // console.log(this.$element.find('.tabs-title, .tabs-panel'));
     // Foundation.reflow(this.$element, 'tabs');
   };
   /**
@@ -6439,7 +6601,7 @@ Foundation.plugin(ResponsiveToggle);
 
   Toggler.defaults = {
     animate: false
-  }
+  };
 
   /**
    * Initializes the Toggler plugin by parsing the toggle class from data-toggler, or animation classes from data-animate.
@@ -6447,16 +6609,17 @@ Foundation.plugin(ResponsiveToggle);
    * @private
    */
   Toggler.prototype._init = function() {
+    var input;
     // Parse animation classes if they were set
     if (this.options.animate) {
-      var input = this.options.animate.split(' ');
+      input = this.options.animate.split(' ');
 
       this.animationIn = input[0];
       this.animationOut = input[1] || null;
     }
     // Otherwise, parse toggle class
     else {
-      var input = this.$element.data('toggler');
+      input = this.$element.data('toggler');
 
       // Allow for a . at the beginning of the string
       if (input[0] === '.') {
@@ -6527,7 +6690,7 @@ Foundation.plugin(ResponsiveToggle);
     }
 
     _this._updateARIA();
-  }
+  };
 
   Toggler.prototype._toggleAnimate = function() {
     var _this = this;
@@ -6544,7 +6707,7 @@ Foundation.plugin(ResponsiveToggle);
         _this._updateARIA();
       });
     }
-  }
+  };
 
   Toggler.prototype._updateARIA = function() {
     if (this.$element.is(':hidden')) {
@@ -6553,7 +6716,7 @@ Foundation.plugin(ResponsiveToggle);
     else {
       this.$element.attr('aria-expanded', 'true');
     }
-  }
+  };
 
   /**
    * Destroys the instance of Toggler on the element.
@@ -6734,15 +6897,15 @@ Foundation.plugin(ResponsiveToggle);
    */
   Tooltip.prototype.setPosition = function(){
     var position = this.getPositionClass(this.template),
-        $tipDims = Foundation.GetDimensions(this.template),
-        $anchorDims = Foundation.GetDimensions(this.$element),
+        $tipDims = Foundation.Box.GetDimensions(this.template),
+        $anchorDims = Foundation.Box.GetDimensions(this.$element),
         direction = (position === 'left' ? 'left' : ((position === 'right') ? 'left' : 'top')),
         param = (direction === 'top') ? 'height' : 'width',
         offset = (param === 'height') ? this.options.vOffset : this.options.hOffset,
         _this = this;
 
-    if(($tipDims.width >= $tipDims.windowDims.width) || (!this.counter && !Foundation.ImNotTouchingYou(this.template))){
-      this.template.offset(Foundation.GetOffsets(this.template, this.$element, 'center bottom', this.options.vOffset, this.options.hOffset, true)).css({
+    if(($tipDims.width >= $tipDims.windowDims.width) || (!this.counter && !Foundation.Box.ImNotTouchingYou(this.template))){
+      this.template.offset(Foundation.Box.GetOffsets(this.template, this.$element, 'center bottom', this.options.vOffset, this.options.hOffset, true)).css({
       // this.$element.offset(Foundation.GetOffsets(this.template, this.$element, 'center bottom', this.options.vOffset, this.options.hOffset, true)).css({
         'width': $anchorDims.windowDims.width - (this.options.hOffset * 2),
         'height': 'auto'
@@ -6750,9 +6913,9 @@ Foundation.plugin(ResponsiveToggle);
       return false;
     }
 
-    this.template.offset(Foundation.GetOffsets(this.template, this.$element,'center ' + (position || 'bottom'), this.options.vOffset, this.options.hOffset));
+    this.template.offset(Foundation.Box.GetOffsets(this.template, this.$element,'center ' + (position || 'bottom'), this.options.vOffset, this.options.hOffset));
 
-    while(!Foundation.ImNotTouchingYou(this.template) && this.counter){
+    while(!Foundation.Box.ImNotTouchingYou(this.template) && this.counter){
       this.reposition(position);
       this.setPosition();
     }
@@ -6825,7 +6988,7 @@ Foundation.plugin(ResponsiveToggle);
      * fires when the tooltip is hidden
      * @event Tooltip#hide
      */
-    this.$element.trigger('hide.zf.tooltip')
+    this.$element.trigger('hide.zf.tooltip');
   };
 
   /**
@@ -6902,7 +7065,9 @@ Foundation.plugin(ResponsiveToggle);
       })
 
       .on('resizeme.zf.trigger', function(){
-        _this.setPosition();
+        if(_this.isActive){
+          _this.setPosition();
+        }
       });
   };
   /**
@@ -6935,6 +7100,57 @@ Foundation.plugin(ResponsiveToggle);
 
   Foundation.plugin(Tooltip);
 }(jQuery, window.document, window.Foundation);
+
+!function($, Foundation){
+
+  /******************************************************************
+  /** A very simple timer for animated elements within Foundation. **
+  /** Allows your script to pause and restart later with fn call.  **
+  /**  Feel free to add features, comments, or use case examples.  **
+  /*****************************************************************/
+
+  var Timer = function(elem, options, cb){
+    var _this = this,
+        duration = options.duration,//options is an object for easily adding features later.
+        nameSpace = Object.keys(elem.data())[0] || 'timer',
+        remain = -1,
+        start,
+        timer;
+
+    this.restart = function(){
+      remain = -1;
+      clearTimeout(timer);
+      this.start();
+    };
+
+    this.start = function(){
+      // if(!elem.data('paused')){ return false; }//maybe implement this sanity check if used for other things.
+      clearTimeout(timer);
+      remain = remain <= 0 ? duration : remain;
+      elem.data('paused', false);
+      start = Date.now();
+      timer = setTimeout(function(){
+        if(options.infinite){
+          _this.restart();//rerun the timer.
+        }
+        cb();
+      }, remain);
+      elem.trigger('timerstart.zf.' + nameSpace);
+    };
+
+    this.pause = function(){
+      //if(elem.data('paused')){ return false; }//maybe implement this sanity check if used for other things.
+      clearTimeout(timer);
+      elem.data('paused', true);
+      var end = Date.now();
+      remain = remain - (end - start);
+      elem.trigger('timerpaused.zf.' + nameSpace);
+    };
+  };
+
+  Foundation.Timer = Timer;
+
+}(jQuery, window.Foundation);
 
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
