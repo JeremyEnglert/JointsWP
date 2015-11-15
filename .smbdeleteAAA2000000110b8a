@@ -1,5 +1,0 @@
-.DS_Store
-assets/scss/.sass-cache/*
-node_modules/
-bower_components/
-parts/nav-top-offcanvas.php
