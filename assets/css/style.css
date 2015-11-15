@@ -2880,7 +2880,8 @@ select {
   left: 100%;
   min-width: 200px;
   z-index: 1;
-  background: white; }
+  background: #fefefe;
+  border: 1px solid #cacaca; }
   .dropdown.menu .submenu > li {
     width: 100%; }
   .dropdown.menu .submenu.first-sub {
@@ -3067,6 +3068,8 @@ body {
   transition: transform 0.5s ease;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden; }
+  body.is-off-canvas-open {
+    overflow-y: hidden; }
 
 .js-off-canvas-exit {
   display: none;
@@ -3401,7 +3404,7 @@ body {
   background-color: #fefefe;
   border-radius: 0;
   position: absolute;
-  overflow-y: scroll; }
+  overflow-y: auto; }
   [data-whatinput="mouse"] .reveal {
     outline: 0; }
   @media screen and (min-width: 32em) {
