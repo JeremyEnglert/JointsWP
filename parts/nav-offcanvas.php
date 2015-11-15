@@ -1,7 +1,3 @@
-<?php
-// Adjust the breakpoint of the title-bar by adjusting this variable
-$breakpoint = "medium"; ?>
-
 <div class="top-bar" id="top-bar-menu">
 	<div class="top-bar-left">
 		<ul class="menu">
