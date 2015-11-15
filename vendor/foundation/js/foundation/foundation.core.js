@@ -231,6 +231,12 @@ $.fn.foundation = foundation;
     };
     window.cancelAnimationFrame = clearTimeout;
   }
+  window.performance = (window.performance || {
+    start: Date.now(),
+    now: function(){
+        return Date.now() - this.start;
+    }
+  });
 })();
 
 // Polyfill to get the name of a function in IE9
@@ -239,6 +245,9 @@ function functionName(fn) {
     var funcNameRegex = /function\s([^(]{1,})\(/;
     var results = (funcNameRegex).exec((fn).toString());
     return (results && results.length > 1) ? results[1].trim() : "";
+  }
+  else if (fn.prototype === undefined) {
+    return fn.constructor.name;
   }
   else {
     return fn.prototype.constructor.name;

@@ -18,6 +18,13 @@
     this._init();
 
     Foundation.registerPlugin(this);
+    Foundation.Keyboard.register('Dropdown', {
+      'ENTER': 'open',
+      'SPACE': 'open',
+      'ESCAPE': 'close',
+      'TAB': 'tab_forward',
+      'SHIFT_TAB': 'tab_backward'
+    });
   }
 
   Dropdown.defaults = {
@@ -25,7 +32,8 @@
     hover: false,
     vOffset: 1,
     hOffset: 1,
-    positionClass: ''
+    positionClass: '',
+    trapFocus: false
   };
   /**
    * Initializes the plugin by setting/checking options and attributes, adding helper variables, and saving the anchor.
@@ -40,7 +48,8 @@
       'aria-controls': $id,
       'data-is-focus': false,
       'data-yeti-box': $id,
-      'aria-haspopup': true
+      'aria-haspopup': true,
+      'aria-expanded': false
       // 'data-resize': $id
     });
 
@@ -50,7 +59,8 @@
     this.$element.attr({
       'aria-hidden': 'true',
       'data-yeti-box': $id,
-      'data-resize': $id
+      'data-resize': $id,
+      'aria-labelledby': this.$anchor[0].id || Foundation.GetYoDigits(6, 'dd-anchor')
     });
     this._events();
   };
@@ -110,17 +120,17 @@
    * @private
    */
   Dropdown.prototype.setPosition = function(){
+    if(this.$anchor.attr('aria-expanded') === 'false'){ return false; }
     var position = this.getPositionClass(),
-        $eleDims = Foundation.GetDimensions(this.$element),
-        $anchorDims = Foundation.GetDimensions(this.$anchor),
+        $eleDims = Foundation.Box.GetDimensions(this.$element),
+        $anchorDims = Foundation.Box.GetDimensions(this.$anchor),
         _this = this,
         direction = (position === 'left' ? 'left' : ((position === 'right') ? 'left' : 'top')),
         param = (direction === 'top') ? 'height' : 'width',
         offset = (param === 'height') ? this.options.vOffset : this.options.hOffset;
 
-    // console.log($eleDims.width >= $eleDims.windowDims.width);
-    if(($eleDims.width >= $eleDims.windowDims.width) || (!this.counter && !Foundation.ImNotTouchingYou(this.$element))){
-      this.$element.offset(Foundation.GetOffsets(this.$element, this.$anchor, 'center bottom', this.options.vOffset, this.options.hOffset, true)).css({
+    if(($eleDims.width >= $eleDims.windowDims.width) || (!this.counter && !Foundation.Box.ImNotTouchingYou(this.$element))){
+      this.$element.offset(Foundation.Box.GetOffsets(this.$element, this.$anchor, 'center bottom', this.options.vOffset, this.options.hOffset, true)).css({
         'width': $eleDims.windowDims.width - (this.options.hOffset * 2),
         'height': 'auto',
       });
@@ -128,9 +138,9 @@
       return false;
     }
 
-    this.$element.offset(Foundation.GetOffsets(this.$element, this.$anchor, position, this.options.vOffset, this.options.hOffset));
+    this.$element.offset(Foundation.Box.GetOffsets(this.$element, this.$anchor, position, this.options.vOffset, this.options.hOffset));
 
-    while(!Foundation.ImNotTouchingYou(this.$element) && this.counter){
+    while(!Foundation.Box.ImNotTouchingYou(this.$element) && this.counter){
       this.reposition(position);
       this.setPosition();
     }
@@ -157,6 +167,41 @@
         }, _this.options.hoverDelay);
       });
     }
+    this.$anchor.add(this.$element).on('keydown.zf.dropdown', function(e) {
+
+      var visibleFocusableElements = Foundation.Keyboard.findFocusable(_this.$element);
+
+      Foundation.Keyboard.handleKey(e, _this, {
+        tab_forward: function() {
+          if (this.$element.find(':focus').is(visibleFocusableElements.eq(-1))) { // left modal downwards, setting focus to first element
+            if (this.options.trapFocus) { // if focus shall be trapped
+              visibleFocusableElements.eq(0).focus();
+              e.preventDefault();
+            } else { // if focus is not trapped, close dropdown on focus out
+              this.close();
+            }
+          }
+        },
+        tab_backward: function() {
+          if (this.$element.find(':focus').is(visibleFocusableElements.eq(0)) || this.$element.is(':focus')) { // left modal upwards, setting focus to last element
+            if (this.options.trapFocus) { // if focus shall be trapped
+              visibleFocusableElements.eq(-1).focus();
+              e.preventDefault();
+            } else { // if focus is not trapped, close dropdown on focus out
+              this.close();
+            }
+          }
+        },
+        open: function() {
+          _this.open();
+          _this.$element.attr('tabindex', -1).focus();
+        },
+        close: function() {
+          _this.close();
+          _this.$anchor.focus();
+        }
+      });
+    });
   };
   /**
    * Opens the dropdown pane, and fires a bubbling event to close other dropdowns.
@@ -165,17 +210,21 @@
    * @fires Dropdown#show
    */
   Dropdown.prototype.open = function(){
+    // var _this = this;
     /**
      * Fires to close other open dropdowns
      * @event Dropdown#closeme
      */
     this.$element.trigger('closeme.zf.dropdown', this.$element.attr('id'));
-    var _this = this;
-    this.$element.show();
+    this.$anchor.addClass('hover')
+        .attr({'aria-expanded': true});
+    // this.$element/*.show()*/;
     this.setPosition();
     this.$element.addClass('is-open')
-        .attr('aria-hidden', 'false');
-    this.$anchor.addClass('hover');
+        .attr({'aria-hidden': false});
+
+
+
     /**
      * Fires once the dropdown is visible.
      * @event Dropdown#show
@@ -183,7 +232,7 @@
      this.$element.trigger('show.zf.dropdown', [this.$element]);
     //why does this not work correctly for this plugin?
     // Foundation.reflow(this.$element, 'dropdown');
-    // Foundation._reflow(this.$element.data('dropdown'));
+    Foundation._reflow(this.$element.attr('data-dropdown'));
   };
 
   /**
@@ -196,15 +245,18 @@
       return false;
     }
     this.$element.removeClass('is-open')
-        .attr('aria-hidden', 'true');
-    this.$anchor.removeClass('hover');
+        .attr({'aria-hidden': true});
+
+    this.$anchor.removeClass('hover')
+        .attr('aria-expanded', false);
+
     if(this.classChanged){
       var curPositionClass = this.getPositionClass();
       if(curPositionClass){
         this.$element.removeClass(curPositionClass);
       }
       this.$element.addClass(this.options.positionClass)
-          .hide().css({height: '', width: ''});
+          /*.hide()*/.css({height: '', width: ''});
       this.classChanged = false;
       this.counter = 4;
       this.usedPositions.length = 0;
@@ -232,7 +284,7 @@
     this.$anchor.off('.zf.dropdown');
 
     Foundation.unregisterPlugin(this);
-  }
+  };
 
   Foundation.plugin(Dropdown);
 }(jQuery, window.Foundation);

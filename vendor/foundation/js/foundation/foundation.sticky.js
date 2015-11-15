@@ -59,13 +59,13 @@
 
     this.scrollCount = this.options.checkEvery;
     this.isStuck = false;
-    // console.log(this.options.anchor);
+    // console.log(this.options.anchor, this.options.topAnchor);
     if(this.options.topAnchor !== ''){
       this._parsePoints();
       // console.log(this.points[0]);
     }else{
-    }
       this.$anchor = this.options.anchor ? $(this.options.anchor) : $(document.body);
+    }
 
 
     this._setSizes(function(){
@@ -81,7 +81,7 @@
     for(var i = 0, len = pts.length; i < len && pts[i]; i++){
       var pt;
       if(typeof pts[i] === 'number'){
-        pt = pts[i]
+        pt = pts[i];
       }else{
         var place = pts[i].split(':'),
             anchor = $('#' + place[0]);
@@ -95,6 +95,7 @@
     }
       // console.log(breaks);
     this.points = breaks;
+    // console.log(this.points);
     return;
   };
 
@@ -221,6 +222,7 @@
     css[mrgn] = this.options[mrgn] + 'em';
     css[stickTo] = 0;
     css[notStuckTo] = 'auto';
+    css['left'] = this.$container.offset().left + parseInt(window.getComputedStyle(this.$container[0])["padding-left"], 10);
     this.isStuck = true;
     this.$element.removeClass('is-anchored is-at-' + notStuckTo)
                  .addClass('is-stuck is-at-' + stickTo)
@@ -255,6 +257,7 @@
       css[stickTo] = 0;
       css[notStuckTo] = anchorPt;
     }
+    css['left'] = '';
     this.isStuck = false;
     this.$element.removeClass('is-stuck is-at-' + stickTo)
                  .addClass('is-anchored is-at-' + (isTop ? 'top' : 'bottom'))
@@ -273,11 +276,15 @@
    * @param {Function} cb - optional callback function to fire on completion of `_setBreakPoints`.
    */
   Sticky.prototype._setSizes = function(cb){
+    this.canStick = Foundation.MediaQuery.atLeast(this.options.stickyOn);
+    if(!this.canStick){ cb(); }
     var _this = this,
         newElemWidth = this.$container[0].getBoundingClientRect().width,
-        pdng = parseInt(window.getComputedStyle(this.$container[0])['padding-right'], 10);
+        comp = window.getComputedStyle(this.$container[0]),
+        pdng = parseInt(comp['padding-right'], 10);
 
-    if(this.$anchor.length){
+    // console.log(this.$anchor);
+    if(this.$anchor && this.$anchor.length){
       this.anchorHeight = this.$anchor[0].getBoundingClientRect().height;
     }else{
       this._parsePoints();
@@ -293,7 +300,10 @@
       height: newContainerHeight
     });
     this.elemHeight = newContainerHeight;
-    this.canStick = Foundation.MediaQuery.atLeast(this.options.stickyOn);
+
+  	if (this.isStuck) {
+  		this.$element.css({"left":this.$container.offset().left + parseInt(comp['padding-left'], 10)});
+  	}
 
     this._setBreakPoints(newContainerHeight, function(){
       if(cb){ cb(); }

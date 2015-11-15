@@ -120,7 +120,6 @@
    */
   Slider.prototype._setHandlePos = function($hndl, location, noInvert, cb){
   //might need to alter that slightly for bars that will have odd number selections.
-    // console.log(str, cb);
     location = parseFloat(location);//on input change events, convert string to number...grumble.
     // prevent slider from running out of bounds
     if(location < this.options.start){ location = this.options.start; }
@@ -181,7 +180,7 @@
                     _this.$element.trigger('moved.zf.slider', [$hndl]);
                 });
     var moveTime = _this.$element.data('dragging') ? 1000/60 : _this.options.moveTime;
-    var move = new Foundation.Move(moveTime, $hndl, function(){
+    /*var move = new */Foundation.Move(moveTime, $hndl, function(){
       $hndl.css(lOrT, movement + '%');
       if(!_this.options.doubleSided){
         _this.$fill.css(hOrW, pctOfBar * 100 + '%');
@@ -189,7 +188,7 @@
         _this.$fill.css(css);
       }
     });
-    move.do();
+    // move.do();
   };
   /**
    * Sets the initial attribute for the slider element.

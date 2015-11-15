@@ -18,7 +18,7 @@
     this.$element = element;
     this.options = $.extend({}, DropdownMenu.defaults, this.$element.data(), options);
 
-    Foundation.FeatherNest(this.$element, 'dropdown');
+    Foundation.Nest.Feather(this.$element, 'dropdown');
 
     this._init();
 
@@ -83,12 +83,12 @@
     this.$menuItems.children('a').attr('tabindex', -1);
     if(this.$element.hasClass(this.options.rightClass)){
       this.options.alignment = 'right';
-      this.$submenus.addClass('is-right-arrow');
+      this.$submenus.addClass('is-left-arrow opens-left');
     }else{
-      this.$submenus.addClass('is-left-arrow');
+      this.$submenus.addClass('is-right-arrow opens-right');
     }
     if(!this.vertical){
-      this.$tabs.removeClass('is-right-arrow is-left-arrow').addClass('is-down-arrow');
+      this.$tabs.removeClass('is-right-arrow is-left-arrow opens-left opens-right').addClass('is-down-arrow');
     }
 
     this.$tabs.each(function(){
@@ -291,7 +291,7 @@
     $body.not(_this.$element).on('click.zf.dropdownmenu tap.zf.dropdownmenu touchend.zf.dropdownmenu', function(e){
       _this._hideAll();
       $body.off('click.zf.dropdownmenu tap.zf.dropdownmenu touchend.zf.dropdownmenu');
-    })
+    });
   };
 //show & hide stuff @private
   /**
@@ -312,14 +312,21 @@
 
 
     //break this into own function
-    var clear = Foundation.ImNotTouchingYou($sub, null, true);
+    var clear = Foundation.Box.ImNotTouchingYou($sub, null, true);
     if(!clear){
       if(this.options.alignment === 'left'){
-        $sub.removeClass('is-left-arrow').addClass('is-right-arrow');
+        $elem.removeClass('opens-left').addClass('opens-right');
       }else{
-        $sub.removeClass('is-right-arrow').addClass('is-left-arrow');
+        $elem.removeClass('opens-right').addClass('opens-left');
       }
       this.changed = true;
+
+      // still not clear, small screen, add inner class
+      clear = Foundation.Box.ImNotTouchingYou($sub, null, true);
+      if (!clear) {
+        $elem.removeClass('opens-left opens-right').addClass('opens-inner');
+        this.changed = true;
+      }
     }
     $sub.css('visibility', '');
     /**
@@ -351,7 +358,7 @@
       //   console.log('true');
       //   $elems.blur();
       // }
-      $elems.removeClass('is-active').data('isClick', false)
+      $elems.removeClass('is-active opens-inner').data('isClick', false)
 
             .find('.is-active').removeClass('is-active').data('isClick', false).end()
 
@@ -361,9 +368,9 @@
       if(this.changed){
         //remove position class
         if(this.options.alignment === 'left'){
-          $elems.find('.is-right-arrow').removeClass('is-right-arrow').addClass('is-left-arrow');
+          $elems.find('.opens-right').removeClass('opens-right').addClass('opens-left');
         }else{
-          $elems.find('.is-left-arrow').removeClass('is-left-arrow').addClass('is-right-arrow');
+          $elems.find('.opens-left').removeClass('opens-left').addClass('opens-right');
         }
       }
       /**
@@ -405,8 +412,8 @@
   };
   Foundation.plugin(DropdownMenu);
 
-  function checkClass($elem){
+  var checkClass = function($elem){
     return $elem.hasClass('is-active');
-  }
+  };
 
 }(Foundation, jQuery);

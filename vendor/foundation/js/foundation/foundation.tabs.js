@@ -41,7 +41,7 @@
     scrollToContent: false,
     autoFocus: false,
     wrapOnKeys: true,
-    matchHeight: true,
+    matchHeight: false,
     linkClass: 'tabs-title',
     contentClass: 'tabs-content',
     panelClass: 'tabs-panel'
@@ -207,7 +207,6 @@
      * @event Tabs#change
      */
     this.$element.trigger('change.zf.tabs', [$target]);
-    // console.log(this.$element.find('.tabs-title, .tabs-panel'));
     // Foundation.reflow(this.$element, 'tabs');
   };
   /**
