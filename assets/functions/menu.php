@@ -16,7 +16,7 @@ function joints_top_nav() {
         'theme_location' => 'main-nav',        			// Where it's located in the theme
         'depth' => 5,                                   // Limit the depth of the nav
         'fallback_cb' => false,                         // Fallback function (see below)
-        'walker' => new Foundation_Menu_Walker()
+        'walker' => new Topbar_Menu_Walker()
     ));
 } /* End Top Menu */
 
