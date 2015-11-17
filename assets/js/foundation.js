@@ -50,12 +50,18 @@ var Foundation = {
    * Sets the `[data-pluginName="uniqueIdHere"]`, allowing easy access to any plugin's internal methods.
    * Also fires the initialization event for each plugin, consolidating repeditive code.
    * @param {Object} plugin - an instance of a plugin, usually `this` in context.
+   * @fires Plugin#init
    */
   registerPlugin: function(plugin){
     var pluginName = functionName(plugin.constructor).toLowerCase();
 
     plugin.uuid = this.GetYoDigits(6, pluginName);
-    plugin.$element.attr('data-' + pluginName, plugin.uuid).trigger('init.zf.' + pluginName);
+    plugin.$element.attr('data-' + pluginName, plugin.uuid)
+          /**
+           * Fires when the plugin has initialized.
+           * @event Plugin#init
+           */
+          .trigger('init.zf.' + pluginName);
 
     this._activePlugins[plugin.uuid] = plugin;
 
@@ -66,20 +72,25 @@ var Foundation = {
    * Removes the pointer for an instance of a Plugin from the Foundation._activePlugins obj.
    * Also fires the destroyed event for the plugin, consolidating repeditive code.
    * @param {Object} plugin - an instance of a plugin, usually `this` in context.
+   * @fires Plugin#destroyed
    */
   unregisterPlugin: function(plugin){
     var pluginName = functionName(plugin.constructor).toLowerCase();
 
     delete this._activePlugins[plugin.uuid];
-
-    plugin.$element.trigger('destroyed.zf.' + pluginName);
+    plugin.$element.removeAttr('data-' + pluginName)
+          /**
+           * Fires when the plugin has been destroyed.
+           * @event Plugin#destroyed
+           */
+          .trigger('destroyed.zf.' + pluginName);
 
     return;
   },
 
   /**
    * @function
-   * Causes one or more active plugins to reflow, resetting event listeners, recalculating positions, etc.
+   * Causes one or more active plugins to re-initialize, resetting event listeners, recalculating positions, etc.
    * @param {String} plugins - optional string of an individual plugin key, attained by calling `$(element).data('pluginName')`, or string of a plugin class i.e. `'dropdown'`
    * @default If no argument is passed, reflow all currently active plugins.
    */
@@ -159,10 +170,32 @@ var Foundation = {
       });
     });
   },
-  getFnName: functionName
-}
+  getFnName: functionName,
+  transitionend: (function() {
+    var transitions = {
+      'transition': 'transitionend',
+      'WebkitTransition': 'webkitTransitionEnd',
+      'MozTransition': 'transitionend',
+      'OTransition': 'otransitionend'
+    };
+    var elem = document.createElement('div');
+
+    for (var t in transitions){
+      if (typeof elem.style[t] !== 'undefined'){
+        return transitions[t];
+      }
+    }
+  })()
+};
 
 Foundation.util = {
+  /**
+   * Function for applying a debounce effect to a function call.
+   * @function
+   * @param {Function} func - Function to be called at end of timeout.
+   * @param {Number} delay - Time in ms to delay the call of `func`.
+   * @returns function
+   */
   throttle: function (func, delay) {
     var timer = null;
 
@@ -177,7 +210,7 @@ Foundation.util = {
       }
     };
   }
-}
+};
 
 // TODO: consider not making this a jQuery function
 // TODO: need way to reflow vs. re-initialize
@@ -186,11 +219,15 @@ Foundation.util = {
  * @param {String|Array} method - An action to perform on the current jQuery object.
  */
 var foundation = function(method) {
-  var type = typeof method;
-  var $meta = $('meta.foundation-mq');
+  var type = typeof method,
+      $meta = $('meta.foundation-mq'),
+      $noJS = $('.no-js');
 
   if(!$meta.length){
     $('<meta class="foundation-mq">').appendTo(document.head);
+  }
+  if($noJS.length){
+    $noJS.removeClass('no-js');
   }
 
   if (type === 'undefined') {
@@ -231,6 +268,9 @@ $.fn.foundation = foundation;
     };
     window.cancelAnimationFrame = clearTimeout;
   }
+  /**
+   * Polyfill for performance.now, required by rAF
+   */
   window.performance = (window.performance || {
     start: Date.now(),
     now: function(){
@@ -867,8 +907,8 @@ Foundation.Motion = Motion;
   Foundation.Nest = {
     Feather: function(menu, type){
       menu.attr('role', 'menubar');
-      var items = menu.find('li').attr({'role': 'menuitem', 'tabindex': 0}),
-          type = type || 'zf',
+      type = type || 'zf';
+      var items = menu.find('li').attr({'role': 'menuitem'}),
           subMenuClass = 'is-' + type + '-submenu',
           subItemClass = subMenuClass + '-item';
 
@@ -890,19 +930,26 @@ Foundation.Motion = Motion;
           subMenuClass = 'is-' + type + '-submenu',
           subItemClass = subMenuClass + '-item';
 
-      menu.find('.is-active').removeClass('is-active');
+      // menu.find('.is-active').removeClass('is-active');
+      menu.find('*')
+      // menu.find('.' + subMenuClass + ', .' + subItemClass + ', .is-active, .has-submenu, .is-submenu-item, .submenu, [data-submenu]')
+          .removeClass(subMenuClass + ' ' + subItemClass + ' has-submenu is-submenu-item submenu is-active')
+          .removeAttr('data-submenu').css('display', '');
 
-      items.each(function(){
-        var $item = $(this),
-            $sub = $item.children('ul');
-        if($item.parent('[data-submenu]').length){
-          $item.removeClass('is-submenu-item ' + subItemClass);
-        }
-        if($sub.length){
-          $item.removeClass('has-submenu');
-          $sub.removeClass('submenu ' + subMenuClass).removeAttr('data-submenu');
-        }
-      });
+      // console.log(      menu.find('.' + subMenuClass + ', .' + subItemClass + ', .has-submenu, .is-submenu-item, .submenu, [data-submenu]')
+      //           .removeClass(subMenuClass + ' ' + subItemClass + ' has-submenu is-submenu-item submenu')
+      //           .removeAttr('data-submenu'));
+      // items.each(function(){
+      //   var $item = $(this),
+      //       $sub = $item.children('ul');
+      //   if($item.parent('[data-submenu]').length){
+      //     $item.removeClass('is-submenu-item ' + subItemClass);
+      //   }
+      //   if($sub.length){
+      //     $item.removeClass('has-submenu');
+      //     $sub.removeClass('submenu ' + subMenuClass).removeAttr('data-submenu');
+      //   }
+      // });
     }
   };
 }(jQuery, window.Foundation);
@@ -1827,7 +1874,7 @@ Foundation.IFeelYou = closemeListener;
  * @requires foundation.util.keyboard
  * @requires foundation.util.animationFrame
  */
-!function($) {
+!function($, Foundation) {
   'use strict';
 
   /**
@@ -1855,8 +1902,23 @@ Foundation.IFeelYou = closemeListener;
   }
 
   Accordion.defaults = {
+    /**
+     * Amount of time to animate the opening of an accordion pane.
+     * @option
+     * @example 250
+     */
     slideSpeed: 250,
+    /**
+     * Allow the accordion to have multiple open panes.
+     * @option
+     * @example false
+     */
     multiExpand: false,
+    /**
+     * Allow the accordion to close all panes.
+     * @option
+     * @example false
+     */
     allowAllClosed: false
   };
 
@@ -1933,6 +1995,11 @@ Foundation.IFeelYou = closemeListener;
       }
     });
   };
+  /**
+   * Toggles the selected content pane's open/close state.
+   * @param {jQuery} $target - jQuery object of the pane to toggle.
+   * @function
+   */
   Accordion.prototype.toggle = function($target){
     if($target.parent().hasClass('is-active')){
       if(this.options.allowAllClosed || $target.parent().siblings().hasClass('is-active')){
@@ -1944,8 +2011,10 @@ Foundation.IFeelYou = closemeListener;
   };
   /**
    * Opens the accordion tab defined by `$target`.
-   * @param {jQuery} $target - Accordion tab to open.
+   * @param {jQuery} $target - Accordion pane to open.
+   * @param {Boolean} firstTime - flag to determine if reflow should happen.
    * @fires Accordion#down
+   * @function
    */
   Accordion.prototype.down = function($target, firstTime) {
     var _this = this;
@@ -1984,6 +2053,7 @@ Foundation.IFeelYou = closemeListener;
    * Closes the tab defined by `$target`.
    * @param {jQuery} $target - Accordion tab to close.
    * @fires Accordion#up
+   * @function
    */
   Accordion.prototype.up = function($target) {
     var $aunts = $target.parent().siblings(),
@@ -2016,6 +2086,7 @@ Foundation.IFeelYou = closemeListener;
   /**
    * Destroys an instance of an accordion.
    * @fires Accordion#destroyed
+   * @function
    */
   Accordion.prototype.destroy = function() {
     this.$element.find('[data-tab-content]').slideUp(0).css('display', '');
@@ -2030,7 +2101,7 @@ Foundation.IFeelYou = closemeListener;
   };
 
   Foundation.plugin(Accordion);
-}(jQuery);
+}(jQuery, window.Foundation);
 
 /**
  * AccordionMenu module.
@@ -2077,10 +2148,18 @@ Foundation.IFeelYou = closemeListener;
   }
 
   AccordionMenu.defaults = {
+    /**
+     * Amount of time to animate the opening of a submenu in ms.
+     * @option
+     * @example 250
+     */
     slideSpeed: 250,
-    wrapOnKeys: false,
+    /**
+     * Allow the menu to have multiple open panes.
+     * @option
+     * @example true
+     */
     multiOpen: true
-
   };
 
   /**
@@ -2205,9 +2284,18 @@ Foundation.IFeelYou = closemeListener;
       });
     });//.attr('tabindex', 0);
   };
+  /**
+   * Closes all panes of the menu.
+   * @function
+   */
   AccordionMenu.prototype.hideAll = function(){
     this.$element.find('[data-submenu]').slideUp(this.options.slideSpeed);
   };
+  /**
+   * Toggles the open/close state of a submenu.
+   * @function
+   * @param {jQuery} $target - the submenu to toggle
+   */
   AccordionMenu.prototype.toggle = function($target){
     if (!$target.is(':hidden')) {
       this.up($target);
@@ -2278,6 +2366,7 @@ Foundation.IFeelYou = closemeListener;
      * @event AccordionMenu#destroy
      */
     // this.$element.trigger('destroyed.zf.accordionMenu');
+    Foundation.Nest.Burn(this.$element, 'accordion');
     Foundation.unregisterPlugin(this);
   };
 
@@ -2321,11 +2410,25 @@ Foundation.IFeelYou = closemeListener;
     });
   }
   Drilldown.defaults = {
+    /**
+     * Markup used for JS generated back button. Prepended to submenu lists and deleted on `destroy` method.
+     * @option
+     * @example '<li><a>Back</a></li>'
+     */
     backButton: '<li class="js-drilldown-back" tabindex="0"><a>Back</a></li>',
+    /**
+     * Markup used to wrap drilldown menu. Use a class name for independent styling, or the JS applied class: `is-drilldown`.
+     * @option
+     * @example '<div></div>'
+     */
     wrapper: '<div></div>',
+    /**
+     * Allow the menu to return to root list on body click.
+     * @option
+     * @example false
+     */
     closeOnClick: false,
-    holdOpen: false
-    // transitionendEvt: Foundation.Prefixer('transitionend')
+    // holdOpen: false
   };
   /**
    * Initializes the drilldown by creating jQuery collections of elements
@@ -2340,8 +2443,7 @@ Foundation.IFeelYou = closemeListener;
 
     // console.log(this.$wrapper.outerHeight(), this.$wrapper.css());
     this._prepareMenu();
-    // this.getMaxHeight();
-
+    // this._getMaxDims();
     this._keyboardEvents();
   };
   /**
@@ -2353,9 +2455,9 @@ Foundation.IFeelYou = closemeListener;
    */
   Drilldown.prototype._prepareMenu = function(){
     var _this = this;
-    if(!this.options.holdOpen){
-      this._menuLinkEvents();
-    }
+    // if(!this.options.holdOpen){
+    //   this._menuLinkEvents();
+    // }
     this.$submenuAnchors.each(function(){
       var $sub = $(this);
       $sub.find('a')[0].removeAttribute('href');
@@ -2376,7 +2478,7 @@ Foundation.IFeelYou = closemeListener;
       }
     });
     if(!this.$element.parent().hasClass('is-drilldown')){
-      this.$wrapper = $(this.options.wrapper).addClass('is-drilldown').css(this.getMaxHeight());
+      this.$wrapper = $(this.options.wrapper).addClass('is-drilldown').css(this._getMaxDims());
       this.$element.wrap(this.$wrapper);
     }
 
@@ -2416,6 +2518,10 @@ Foundation.IFeelYou = closemeListener;
       // console.log('back button');
     });
   };
+  /**
+   * Adds keydown event listener to `li`'s in the menu.
+   * @private
+   */
   Drilldown.prototype._keyboardEvents = function() {
     var _this = this;
     this.$menuItems.add(this.$element.find('.js-drilldown-back')).on('keydown.zf.drilldown', function(e){
@@ -2435,14 +2541,14 @@ Foundation.IFeelYou = closemeListener;
         next: function() {
           if ($element.is(_this.$submenuAnchors)) {
             _this._show($element);
-            $element.on('transitionend.zf.drilldown', function(){
+            $element.on(Foundation.transitionend + '.zf.drilldown', function(){
               $element.find('ul li').filter(_this.$menuItems).first().focus();
             });
           }
         },
         previous: function() {
           _this._hide($element.parent('ul'));
-          $element.parent('ul').on('transitionend.zf.drilldown', function(){
+          $element.parent('ul').on(Foundation.transitionend + '.zf.drilldown', function(){
             setTimeout(function() {
               $element.parent('ul').parent('li').focus();
             }, 1);
@@ -2482,9 +2588,8 @@ Foundation.IFeelYou = closemeListener;
    */
   Drilldown.prototype._hideAll = function(){
     this.$element.find('.is-drilldown-sub.is-active').addClass('is-closing')
-        .on('transitionend.zf.drilldown', function(e){
-          // console.log('transitionend');
-          $(this).removeClass('is-active is-closing').off('transitionend.zf.drilldown');
+        .on(Foundation.transitionend + '.zf.drilldown', function(e){
+          $(this).removeClass('is-active is-closing').off(Foundation.transitionend + '.zf.drilldown');
         });
         /**
          * Fires when the menu is fully closed.
@@ -2543,12 +2648,12 @@ Foundation.IFeelYou = closemeListener;
   Drilldown.prototype._hide = function($elem){
     var _this = this;
     $elem.addClass('is-closing')
-      .on('transitionend.zf.drilldown', function(e){
+      .on(Foundation.transitionend + '.zf.drilldown', function(e){
         // console.log('transitionend');
-        $(this).removeClass('is-active is-closing').off('transitionend.zf.drilldown');
+        $(this).removeClass('is-active is-closing').off(Foundation.transitionend + '.zf.drilldown');
       });
     /**
-     * Fires when the menu is fully closed.
+     * Fires when the submenu is has closed.
      * @event Drilldown#hide
      */
     $elem.trigger('hide.zf.drilldown', [$elem]);
@@ -2560,9 +2665,9 @@ Foundation.IFeelYou = closemeListener;
    * @function
    * @private
    */
-  Drilldown.prototype.getMaxHeight = function(){
+  Drilldown.prototype._getMaxDims = function(){
     var max = 0, result = {};
-    this.$submenus.each(function(){
+    this.$submenus.add(this.$element).each(function(){
       var numOfElems = $(this).children('li').length;
       max = numOfElems > max ? numOfElems : max;
     });
@@ -2589,150 +2694,6 @@ Foundation.IFeelYou = closemeListener;
   };
   Foundation.plugin(Drilldown);
 }(jQuery, window.Foundation);
-
-
-// !function(Foundation, $) {
-//   'use strict';
-//
-//   /**
-//    * Creates a new instance of Drilldown.
-//    * @class
-//    * @fires Drilldown#init
-//    * @param {jQuery} element - jQuery object to make into a drilldown menu.
-//    * @param {Object} options - Overrides to the default plugin settings.
-//    */
-//   function Drilldown(element) {
-//     this.$element = element;
-//     this.options = $.extend({}, Drilldown.defaults, this.$element.data());
-//     // this.$container = $();
-//     // this.$currentMenu = this.$element;
-//
-//     this._init();
-//
-//     /**
-//      * Fires when the plugin has been successfuly initialized.
-//      * @event Drilldown#init
-//      */
-//     this.$element.trigger('init.zf.drilldown');
-//   }
-//
-//   Drilldown.defaults = {
-//     /**
-//      * HTML to use for the back button at the top of each sub-menu.
-//      * @option
-//      * @sample '<li class="js-drilldown-back"><a>Back</a></li>'
-//      */
-//     backButton: '<li class="js-drilldown-back"><a>Back</a></li>'
-//   };
-//
-//   Drilldown.prototype = {
-//     /**
-//      * Initializes the Drilldown by creating a container to wrap the Menu in, and initializing all submenus.
-//      * @private
-//      */
-//     _init: function() {
-//       console.log('yo');
-//       this.$container = $('<div class="is-drilldown"></div>');
-//       this.$container.css('width', this.$element.css('width'));
-//       this.$element.wrap(this.$container);
-//       this._prepareMenu(this.$element, true);
-//     },
-//
-//     /**
-//      * Scans a Menu for any sub Menus inside of it. This is a recursive function, so when a sub menu is found, this method will be called on that sub menu.
-//      * @private
-//      * @param {jQuery} $elem - Menu to scan for sub menus.
-//      * @param {Boolean} root - If true, the menu being scanned is at the root level.
-//      */
-//     _prepareMenu: function($elem, root) {
-//       var _this = this;
-//
-//       // Create a trigger to move up the menu. This is not used on the root-level menu, because it doesn't need a back button.
-//       if (!root) {
-//         var $backButton = $(_this.options.backButton);
-//         $backButton.mouseup(function() {
-//           _this.backward();
-//         });
-//         // console.log(_this.options.backButton);
-//         $elem.prepend($backButton);
-//       }
-//
-//       // Look for sub-menus inside the current one
-//       $elem.children('li').each(function() {
-//         var $submenu = $(this).children('[data-submenu]');
-//
-//         // If it exists...
-//         if ($submenu.length) {
-//           $submenu.addClass('is-drilldown-sub');
-//
-//           // Create a trigger to move down the menu
-//           $(this).children('a').mouseup(function() {
-//             _this.forward($submenu);
-//             return false;
-//           });
-//
-//           // We have to go deeper
-//           _this._prepareMenu($submenu, false);
-//         }
-//       });
-//     },
-//
-//     /**
-//      * Moves down the drilldown by activating the menu specified in `$target`.
-//      * @fires Drilldown#forward
-//      * @param {jQuery} $target - Sub menu to activate.
-//      */
-//     forward: function($target) {
-//       var _this = this;
-//
-//       Foundation.requestAnimationFrame(function() {
-//         $target.addClass('is-active');
-//         _this.$currentMenu = $target;
-//
-//         /**
-//          * Fires when the menu is done moving forwards.
-//          * @event Drilldown#forward
-//          */
-//         _this.$element.trigger('forward.zf.drilldown', [_this.$currentMenu]);
-//       });
-//     },
-//
-//     /**
-//      * Moves up the drilldown by deactivating the current menu.
-//      * @fires Drilldown#backward
-//      */
-//     backward: function() {
-//       var _this = this;
-//
-//       Foundation.requestAnimationFrame(function() {
-//         _this.$currentMenu.removeClass('is-active');
-//         _this.$currentMenu = _this.$currentMenu.parents('[data-drilldown], [data-submenu]');
-//
-//         /**
-//          * Fires when the menu is done moving backwards.
-//          * @event Drilldown#backward
-//          */
-//         _this.$element.trigger('backward.zf.drilldown', [_this.$currentMenu]);
-//       });
-//     },
-//
-//     /**
-//      * Destroys an instance of a drilldown. A callback can optionally be run when the process is finished.
-//      * @param {Function} cb - Callback to run when the plugin is done being destroyed.
-//      */
-//     destroy: function(cb) {
-//       this.$element.find('[data-submenu]').removeClass('is-drilldown-sub');
-//       this.$currentMenu.removeClass('is-active');
-//       this.$element.find('.is-drilldown-back').remove();
-//       this.$element.removeData('zf-plugin');
-//       this.$element.unwrap();
-//
-//       if (typeof cb === 'function') cb();
-//     }
-//   };
-//
-//   Foundation.plugin(Drilldown);
-// }(window.Foundation, jQuery);
 
 /**
  * Dropdown module.
@@ -2764,11 +2725,41 @@ Foundation.IFeelYou = closemeListener;
   }
 
   Dropdown.defaults = {
+    /**
+     * Amount of time to delay opening a submenu on hover event.
+     * @option
+     * @example 250
+     */
     hoverDelay: 250,
+    /**
+     * Allow submenus to open on hover events
+     * @option
+     * @example false
+     */
     hover: false,
+    /**
+     * Number of pixels between the dropdown pane and the triggering element on open.
+     * @option
+     * @example 1
+     */
     vOffset: 1,
+    /**
+     * Number of pixels between the dropdown pane and the triggering element on open.
+     * @option
+     * @example 1
+     */
     hOffset: 1,
+    /**
+     * Class applied to adjust open position. JS will test and fill this in.
+     * @option
+     * @example 'top'
+     */
     positionClass: '',
+    /**
+     * Allow the plugin to trap focus to the dropdown pane on open.
+     * @option
+     * @example false
+     */
     trapFocus: false
   };
   /**
@@ -2816,7 +2807,7 @@ Foundation.IFeelYou = closemeListener;
    * @private
    * @param {String} position - position class to remove.
    */
-  Dropdown.prototype.reposition = function(position){
+  Dropdown.prototype._reposition = function(position){
     this.usedPositions.push(position ? position : 'bottom');
     //default, try switching to opposite side
     if(!position && (this.usedPositions.indexOf('top') < 0)){
@@ -2855,7 +2846,7 @@ Foundation.IFeelYou = closemeListener;
    * @function
    * @private
    */
-  Dropdown.prototype.setPosition = function(){
+  Dropdown.prototype._setPosition = function(){
     if(this.$anchor.attr('aria-expanded') === 'false'){ return false; }
     var position = this.getPositionClass(),
         $eleDims = Foundation.Box.GetDimensions(this.$element),
@@ -2877,8 +2868,8 @@ Foundation.IFeelYou = closemeListener;
     this.$element.offset(Foundation.Box.GetOffsets(this.$element, this.$anchor, position, this.options.vOffset, this.options.hOffset));
 
     while(!Foundation.Box.ImNotTouchingYou(this.$element) && this.counter){
-      this.reposition(position);
-      this.setPosition();
+      this._reposition(position);
+      this._setPosition();
     }
   };
   /**
@@ -2892,7 +2883,7 @@ Foundation.IFeelYou = closemeListener;
       'open.zf.trigger': this.open.bind(this),
       'close.zf.trigger': this.close.bind(this),
       'toggle.zf.trigger': this.toggle.bind(this),
-      'resizeme.zf.trigger': this.setPosition.bind(this)
+      'resizeme.zf.trigger': this._setPosition.bind(this)
     });
 
     if(this.options.hover){
@@ -2955,7 +2946,7 @@ Foundation.IFeelYou = closemeListener;
     this.$anchor.addClass('hover')
         .attr({'aria-expanded': true});
     // this.$element/*.show()*/;
-    this.setPosition();
+    this._setPosition();
     this.$element.addClass('is-open')
         .attr({'aria-hidden': false});
 
@@ -2968,7 +2959,7 @@ Foundation.IFeelYou = closemeListener;
      this.$element.trigger('show.zf.dropdown', [this.$element]);
     //why does this not work correctly for this plugin?
     // Foundation.reflow(this.$element, 'dropdown');
-    Foundation._reflow(this.$element.attr('data-dropdown'));
+    // Foundation._reflow(this.$element.attr('data-dropdown'));
   };
 
   /**
@@ -3072,15 +3063,60 @@ Foundation.IFeelYou = closemeListener;
    */
   DropdownMenu.defaults = {
     // toggleOn: 'both',
+    /**
+     * Allow a submenu to open/remain open on parent click event. Allows cursor to move away from menu.
+     * @option
+     * @example true
+     */
     clickOpen: true,
+    /**
+     * Allow clicks on the body to close any open submenus.
+     * @option
+     * @example false
+     */
     closeOnClick: false,
+    /**
+     * Disallows hover events from opening submenus
+     * @option
+     * @example false
+     */
     disableHover: false,
+    /**
+     * Allow a submenu to automatically close on a mouseleave event.
+     * @option
+     * @example true
+     */
     autoclose: true,
+    /**
+     * Amount of time to delay opening a submenu on hover event.
+     * @option
+     * @example 150
+     */
     hoverDelay: 150,
+    /**
+     * Amount of time to delay closing a submenu on a mouseleave event.
+     * @option
+     * @example 500
+     */
     closingTime: 500,
     // wrapOnKeys: true,
+    /**
+     * Position of the menu relative to what direction the submenus should open. Handled by JS.
+     * @option
+     * @example 'left'
+     */
     alignment: 'left',
+    /**
+     * Class applied to vertical oriented menus, Foundation default is `vertical`. Update this if using your own class.
+     * @option
+     * @example 'vertical'
+     */
     verticalClass: 'vertical',
+    /**
+     * Class applied to right-side oriented menus, Foundation default is `align-right`. Update this if using your own class.
+     * @option
+     * @example 'align-right'
+     */
     rightClass: 'align-right'
   };
   /**
@@ -3395,9 +3431,9 @@ Foundation.IFeelYou = closemeListener;
       if(this.changed){
         //remove position class
         if(this.options.alignment === 'left'){
-          $elems.find('.opens-right').removeClass('opens-right').addClass('opens-left');
-        }else{
           $elems.find('.opens-left').removeClass('opens-left').addClass('opens-right');
+        }else{
+          $elems.find('.opens-right').removeClass('opens-right').addClass('opens-left');
         }
       }
       /**
@@ -3432,9 +3468,10 @@ Foundation.IFeelYou = closemeListener;
     this.$element
         .removeData('zf-plugin')
         .find('li')
-        .removeClass('js-dropdown-nohover')
-        .off('.zf.dropdownmenu');
-
+        .removeClass('js-dropdown-nohover is-right-arrow is-left-arrow opens-left opens-inner opens-right')
+        .add('a').off('.zf.dropdownmenu')
+        .end().find('ul').removeClass('first-sub');
+    Foundation.Nest.Burn(this.$element, 'dropdown');
     Foundation.unregisterPlugin(this);
   };
   Foundation.plugin(DropdownMenu);
@@ -3477,7 +3514,17 @@ Foundation.IFeelYou = closemeListener;
    * Default settings for plugin
    */
   Equalizer.defaults = {
+    /**
+     * Enable height equalization when stacked on smaller screens.
+     * @option
+     * @example true
+     */
     equalizeOnStack: true,
+    /**
+     * Amount of time, in ms, to debounce the size checking/equalization. Lower times mean smoother transitions/less performance on mobile.
+     * @option
+     * @example 50
+     */
     throttleInterval: 50
   };
 
@@ -3540,7 +3587,6 @@ Foundation.IFeelYou = closemeListener;
    * @returns {Array} heights An array of heights of children within Equalizer container
    */
   Equalizer.prototype.getHeights = function($eqParent) {
-
     var eqGroupName = $eqParent.data('equalizer'),
         eqGroup     = eqGroupName ? $eqParent.find('[' + this.attr + '-watch="' + eqGroupName + '"]:visible') : $eqParent.find('[' + this.attr + '-watch]:visible'),
         heights;
@@ -3578,6 +3624,13 @@ Foundation.IFeelYou = closemeListener;
      * @event Equalizer#postEqualized
      */
     $eqParent.trigger('postEqualized.zf.Equalizer');
+  };
+  /**
+   * Destroys an instance of Equalizer.
+   * @function
+   */
+  Equalizer.prototype.destroy = function(){
+    //TODO this.
   };
 
   Foundation.plugin(Equalizer);
@@ -3623,6 +3676,10 @@ Foundation.IFeelYou = closemeListener;
    * Default settings for plugin
    */
   Interchange.defaults = {
+    /**
+     * Rules to be applied to Interchange elements. Set with the `data-interchange` array notation.
+     * @option
+     */
     rules: null
   };
 
@@ -3753,7 +3810,13 @@ Foundation.IFeelYou = closemeListener;
       });
     }
   };
-
+  /**
+   * Destroys an instance of interchange.
+   * @function
+   */
+  Interchange.prototype.destroy = function(){
+    //TODO this.
+  }
   Foundation.plugin(Interchange);
 
   // Exports for AMD/Browserify
@@ -3762,310 +3825,6 @@ Foundation.IFeelYou = closemeListener;
   if (typeof define === 'function')
     define(['foundation'], function() {
       return Interchange;
-    });
-
-}(Foundation, jQuery);
-
-/*******************************************
- *                                         *
- * This Ride was created by Marius Olbertz *
- * Please thank Marius on GitHub /owlbertz *
- * or the web http://www.mariusolbertz.de/ *
- *                                         *
- ******************************************/
-
-/**
- * Joyride module.
- * @module foundation.joyride
- * @requires foundation.util.keyboard
- * @requires foundation.Tooltip
- * @requires foundation.Reveal
- */
-!function(Foundation, $) {
-  'use strict';
-
-  /**
-   * Creates a new instance of Joyride.
-   * @class
-   * @fires Joyride#init
-   * @param {Object} element - jQuery object (list) to be used as the structure.
-   * @param {Object} options - object to extend the default configuration.
-   */
-
-  function Joyride(element, options) {
-    this.$element = element;
-    this.options = $.extend({}, Joyride.defaults, this.$element.data(), options || {});
-    this._init();
-
-    /**
-     * Fires when the plugin has been successfuly initialized.
-     * @event Joyride#init
-     */
-    this.$element.trigger('init.zf.joyride');
-  }
-
-  Joyride.defaults = {
-    autostart: false,
-    scrollSpeed: 1000,
-    keyboardAccess: true,
-    closable: true,
-    nextText: 'Next',
-    prevText: 'Previous',
-    closeText: 'Close',
-    showNext: true,
-    showPrev: true,
-    vOffset: 10,
-    hOffset: 12,
-    scrollOffset: 50,
-    position: 'top center',
-    templates : { // HTML templates
-      closeButton: '<a href="#close" class="close" data-joyride-close><span aria-hidden="true">&times</span><span class="show-for-sr"></span></a>',
-      nextButton: '<button class="button" data-joyride-next></button>',
-      prevButton: '<button class="button" data-joyride-prev></button>',
-    }
-  };
-
-  /**
-   * Initializes the joyride by rendering required markup
-   * @private
-   */
-  Joyride.prototype._init = function(){
-    this.id = this.$element.attr('id') || Foundation.GetYoDigits(6, 'joyride');
-    this.current = 0;
-    this.$items = $([]); // initialize empty collection
-    this.structure = this._parseList();
-    this._render(this.structure);
-    this._events();
-
-    if (this.options.autostart) {
-      this.start();
-    }
-  };
-
-  /**
-   * Parses the list of the instance, stored in $element.
-   * @private
-   * @return {Array} structure
-   */
-  Joyride.prototype._parseList = function(){
-    var structure = [];
-    this.$element.find('li').each(function(i) {
-      var item = $.extend({}, {
-        text: $(this).html(),
-        $target: $($(this).data('target')),
-        isModal: !!!$($(this).data('target')).length,
-        closable: Joyride.defaults.closable
-      }, $(this).data());
-      structure.push(item);
-    });
-    return structure;
-  };
-
-  /**
-   * Creates the markup for the items
-   * @private
-   * @param {Array} structure the joyride's structure from _parseList
-   * @return {Object} markup jQuery representation of the generated markup
-   */
-  Joyride.prototype._render = function(structure) {
-    for (var s in structure) {
-      var options = $.extend({}, this.options, structure[s]),// if specifc item has config, this should overwrite global settings
-        $item;
-
-      if (options.$target.length) { // target element exists, create tooltip
-        var tooltip = new Foundation.Tooltip(structure[s].$target, {
-          positionClass: options.position,
-          disableHover: true,
-          clickOpen: false,
-          tooltipClass: 'tooltip joyride',
-          triggerClass: '',
-          hOffset: this.options.hOffset,
-          vOffset: this.options.vOffset
-        });
-        this.structure[s].item = tooltip;
-        $item = tooltip.template;
-
-      } else { // not target, create modal with Reveal
-        var modal = new Foundation.Reveal($('<div class="reveal joyride"/>').appendTo($('body')));
-        this.structure[s].item = modal;
-        $item = modal.$element;
-      }
-      $item.attr({
-        'data-index': s,
-        'data-joyride-for': structure[s].target
-      })
-      .html(structure[s].text);
-      if (options.keyboardAccess) {
-        $item.attr('tabindex', '-1');
-      }
-
-      this.$items = this.$items.add($item);
-
-      // add buttons
-      if (
-        (structure[s].nextText || (options.showNext && s < structure.length -1))
-        || (structure[s].prevText || (options.showPrev && s > 0))
-      ) {
-        var $buttons = $('<div class="joyride-buttons"/>');
-        if (structure[s].prevText || (options.showPrev && s > 0)) {
-          $buttons.append($(this.options.templates.prevButton).text(options.prevText));
-        }
-        if (structure[s].nextText || (options.showNext && s < structure.length -1)) {
-          $buttons.append($(this.options.templates.nextButton).text(options.nextText));
-        }
-        $item.append($buttons);
-      }
-
-      // add close button
-      if (options.closable) {
-        var $close = $(this.options.templates.closeButton);
-        $close.find('.show-for-sr').text(this.options.closeText);
-        $item.prepend($close);
-      }
-    }
-  };
-
-  /**
-   * Shows the item with the given index
-   * @private
-   * @param {Number} index of the item to be displayed
-   */
-  Joyride.prototype._showItem = function(index) {
-    if (this.structure[index].isModal) {
-      this.structure[index].item._open();
-    } else {
-      this.structure[index].item._show();
-    }
-    // scroll target into view if target exists
-    if (this.structure[index].$target.length) {
-      $('html, body').stop().animate({
-        'scrollTop': Math.max(0, this.$items.eq(index).offset().top - this.options.scrollOffset)
-      }, this.options.scrollSpeed);
-    }
-    if (this.options.keyboardAccess) {
-       this.$items.eq(index).focus();
-    }
-    this.current = index;
-  };
-
-  /**
-   * Hides the item with the given index
-   * @private
-   * @param {Number} index of the item to be hidden
-   */
-  Joyride.prototype._hideItem = function(index) {
-    if (this.structure[index].isModal) {
-      this.structure[index].item._close();
-    } else {
-      this.structure[index].item._hide();
-    }
-  };
-  /**
-   * Hides all items
-   * @private
-   */
-  Joyride.prototype._hideAll = function() {
-    for (var s in this.structure) {
-      this._hideItem(s);
-    }
-  };
-
-  /**
-   * Shows the next item in the ride
-   * @private
-   */
-  Joyride.prototype.showNext = function() {
-    this._hideItem(this.current);
-    this._showItem(this.current + 1);
-  };
-
-  /**
-   * Shows the previous item in the ride
-   * @private
-   */
-  Joyride.prototype.showPrev = function() {
-    this._hideItem(this.current);
-    this._showItem(this.current - 1);
-  };
-
-  /**
-   * Starts the ride
-   * @private
-   * @return {Number} index - the index where to start, 0 by default
-   */
-  Joyride.prototype.start = function(index) {
-    var index = index || 0;
-    this._hideAll();
-    this._showItem(index);
-  };
-
-  /**
-   * Adds event handlers for the modal.
-   * @private
-   */
-  Joyride.prototype._events = function(){
-    var _this = this;
-    $('[data-joyride-start="#'+_this.id+'"]').click(function() {
-      console.log('Starting!');
-      _this.start();
-    });
-
-    this.$items.on('click.zf.joyride', '[data-joyride-next]', function(e) {
-      _this.showNext();
-    }).on('click.zf.joyride', '[data-joyride-prev]', function(e) {
-      _this.showPrev();
-    }).on('click.zf.joyride', '[data-joyride-close]', function(e) {
-      e.preventDefault();
-      if (_this.structure[_this.current].closable) {
-        _this._hideItem(_this.current);
-      }
-    }).on('keydown.zf.joyride', function(e) {
-      var $element = $(this);
-      Foundation.handleKey(e, _this, {
-        next: function() {
-          if ($element.data('index') < _this.structure.length - 1) {
-            this.showNext();
-          }
-        },
-        previous: function() {
-          if ($element.data('index') > 0) {
-            this.showPrev();
-          }
-        },
-        close: function() {
-          if (this.structure[this.current].closable) {
-            this._hideItem(this.current);
-          }
-        },
-        handled: function() {
-          e.preventDefault();
-        }
-      });
-    });
-  };
-
-  /**
-   * Destroys an instance of a Joyride.
-   * @fires Joyride#destroyed
-   */
-  Joyride.prototype.destroy = function() {
-    this.$element.hide();
-    this.$items.destroy();
-    /**
-     * Fires when the plugin has been destroyed.
-     * @event Joyride#destroyed
-     */
-    this.$element.trigger('destroyed.zf.joyride');
-  }
-
-  Foundation.plugin(Joyride);
-
-  // Exports for AMD/Browserify
-  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
-    module.exports = Joyride;
-  if (typeof define === 'function')
-    define(['foundation'], function() {
-      return Joyride;
     });
 
 }(Foundation, jQuery);
@@ -4098,9 +3857,29 @@ Foundation.IFeelYou = closemeListener;
    * Default settings for plugin
    */
   Magellan.defaults = {
+    /**
+     * Amount of time, in ms, the animated scrolling should take between locations.
+     * @option
+     * @example 500
+     */
     animationDuration: 500,
+    /**
+     * Animation style to use when scrolling between locations.
+     * @option
+     * @example 'ease-in-out'
+     */
     animationEasing: 'linear',
+    /**
+     * Number of pixels to use as a marker for location changes.
+     * @option
+     * @example 50
+     */
     threshold: 50,
+    /**
+     * Class applied to the active locations link on the magellan container.
+     * @option
+     * @example 'active'
+     */
     activeClass: 'active'
   };
 
@@ -4123,7 +3902,12 @@ Foundation.IFeelYou = closemeListener;
 
     this._events();
   };
-  Magellan.prototype._calcPoints = function(){
+  /**
+   * Calculates an array of pixel values that are the demarcation lines between locations on the page.
+   * Can be invoked if new elements are added or the size of a location changes.
+   * @function
+   */
+  Magellan.prototype.calcPoints = function(){
     var _this = this,
         body = document.body,
         html = document.documentElement;
@@ -4152,13 +3936,13 @@ Foundation.IFeelYou = closemeListener;
         };
 
     $(window).one('load', function(){
-      _this._calcPoints();
-      _this.updateActive();
+      _this.calcPoints();
+      _this._updateActive();
     });
 
     this.$element.on({
-      'resizeme.zf.trigger': this._reflow.bind(this),
-      'scrollme.zf.trigger': this.updateActive.bind(this)
+      'resizeme.zf.trigger': this.reflow.bind(this),
+      'scrollme.zf.trigger': this._updateActive.bind(this)
     }).on('click.zf.magellan', 'a[href^="#"]', function(e) {
         e.preventDefault();
         var arrival   = this.getAttribute('href'),
@@ -4174,14 +3958,20 @@ Foundation.IFeelYou = closemeListener;
   };
   /**
    * Calls necessary functions to update Magellan upon DOM change
-   * @private
+   * @function
    */
-  Magellan.prototype._reflow = function(){
-    this._calcPoints();
-    this.updateActive();
+  Magellan.prototype.reflow = function(){
+    this.calcPoints();
+    this._updateActive();
   };
-  Magellan.prototype.updateActive = function(evt, elem, scrollPos){
-    var winPos = scrollPos || parseInt(window.pageYOffset, 10),
+  /**
+   * Updates the visibility of an active location link, and updates the url hash for the page.
+   * @private
+   * @function
+   * @fires Magellan#update
+   */
+  Magellan.prototype._updateActive = function(/*evt, elem, scrollPos*/){
+    var winPos = /*scrollPos ||*/ parseInt(window.pageYOffset, 10),
         curIdx;
 
     if(winPos + this.winHeight === this.docHeight){ curIdx = this.points.length - 1; }
@@ -4206,7 +3996,16 @@ Foundation.IFeelYou = closemeListener;
     }
 
     this.scrollPos = winPos;
+    /**
+     * Fires when magellan is finished updating the to the new active element.
+     * @event Magellan#update
+     */
+    this.$element.trigger('update.zf.magellan', [this.$active]);
   };
+  /**
+   * Destroys an instance of Magellan and resets the url of the window.
+   * @function
+   */
   Magellan.prototype.destroy = function(){
     this.$element.off('.zf.trigger .zf.magellan')
         .find('.' + this.options.activeClass).removeClass(this.options.activeClass);
@@ -4264,14 +4063,56 @@ OffCanvas.defaults = {
    * @example true
    */
   closeOnClick: true,
+  /**
+   * Amount of time in ms the open and close transition requires. If none selected, pulls from body style.
+   * @option
+   * @example 500
+   */
   transitionTime: 0,
+  /**
+   * Direction the offcanvas opens from. Determines class applied to body.
+   * @option
+   * @example left
+   */
   position: 'left',
+  /**
+   * Force the page to scroll to top on open.
+   * @option
+   * @example false
+   */
   forceTop: false,
+  /**
+   * Allow the offcanvas to be sticky while open. Does nothing if Sass option `$maincontent-prevent-scroll === true`.
+   * Performance in Safari OSX/iOS is not great.
+   * @option
+   * @example false
+   */
   isSticky: false,
+  /**
+   * Allow the offcanvas to remain open for certain breakpoints. Can be used with `isSticky`.
+   * @option
+   * @example false
+   */
   isRevealed: false,
+  /**
+   * Breakpoint at which to reveal. JS will use a RegExp to target standard classes, if changing classnames, pass your class @`revealClass`.
+   * @option
+   * @example reveal-for-large
+   */
   revealOn: null,
+  /**
+   * Force focus to the offcanvas on open. If true, will focus the opening trigger on close.
+   * @option
+   * @example true
+   */
   autoFocus: true,
-  revealClass: 'reveal-for'
+  /**
+   * Class used to force an offcanvas to remain open. Foundation defaults for this are `reveal-for-large` & `reveal-for-medium`.
+   * @option
+   * TODO improve the regex testing for this.
+   * @example reveal-for-large
+   */
+  revealClass: 'reveal-for-'
 };
 
 /**
@@ -4332,6 +4173,10 @@ OffCanvas.prototype._events = function() {
     this.$exiter.on({'click.zf.offcanvas': this.close.bind(this)});
   }
 };
+/**
+ * Applies event listener for elements that will reveal at certain breakpoints.
+ * @private
+ */
 OffCanvas.prototype._setMQChecker = function(){
   var _this = this;
 
@@ -4347,6 +4192,11 @@ OffCanvas.prototype._setMQChecker = function(){
     }
   });
 };
+/**
+ * Handles the revealing/hiding the off-canvas at breakpoints, not the same as open.
+ * @param {Boolean} isRevealed - true if element should be revealed.
+ * @function
+ */
 OffCanvas.prototype.reveal = function(isRevealed){
   var closer = this.$element.find('[data-close]');
   if(isRevealed){
@@ -4354,7 +4204,7 @@ OffCanvas.prototype.reveal = function(isRevealed){
       var scrollPos = parseInt(window.pageYOffset);
       this.$element[0].style.transform = 'translate(0,' + scrollPos + 'px)';
     }
-    if(this.options.isSticky){ this.stick(); }
+    if(this.options.isSticky){ this._stick(); }
     if(closer.length){ closer.hide(); }
   }else{
     if(this.options.isSticky || !this.options.forceTop){
@@ -4370,6 +4220,8 @@ OffCanvas.prototype.reveal = function(isRevealed){
 /**
  * Opens the off-canvas menu.
  * @function
+ * @param {Object} event - Event object passed from listener.
+ * @param {jQuery} trigger - element that triggered the off-canvas to open.
  * @fires OffCanvas#opened
  */
 OffCanvas.prototype.open = function(event, trigger) {
@@ -4397,7 +4249,7 @@ OffCanvas.prototype.open = function(event, trigger) {
       .trigger('opened.zf.offcanvas');
 
     if(_this.options.isSticky){
-      _this.stick();
+      _this._stick();
     }
   });
   if(trigger){
@@ -4409,7 +4261,11 @@ OffCanvas.prototype.open = function(event, trigger) {
     });
   }
 };
-OffCanvas.prototype.stick = function(){
+/**
+ * Allows the offcanvas to appear sticky utilizing translate properties.
+ * @private
+ */
+OffCanvas.prototype._stick = function(){
   var elStyle = this.$element[0].style;
 
   if(this.options.closeOnClick){
@@ -4422,7 +4278,7 @@ OffCanvas.prototype.stick = function(){
     elStyle.transform = 'translate(0,' + pageY + 'px)';
     if(exitStyle !== undefined){ exitStyle.transform = 'translate(0,' + pageY + 'px)'; }
   });
-  this.$element.trigger('stuck.zf.offcanvas');
+  // this.$element.trigger('stuck.zf.offcanvas');
 };
 /**
  * Closes the off-canvas menu.
@@ -4459,6 +4315,8 @@ OffCanvas.prototype.close = function() {
 /**
  * Toggles the off-canvas menu open or closed.
  * @function
+ * @param {Object} event - Event object passed from listener.
+ * @param {jQuery} trigger - element that triggered the off-canvas to open.
  */
 OffCanvas.prototype.toggle = function(event, trigger) {
   if (this.$element.hasClass('is-open')) {
@@ -4481,6 +4339,13 @@ OffCanvas.prototype._handleKeyboard = function(event) {
   event.preventDefault();
   this.close();
   this.$lastTrigger.focus();
+};
+/**
+ * Destroys the offcanvas plugin.
+ * @function
+ */
+OffCanvas.prototype.destroy = function(){
+  //TODO make this...
 };
 
 Foundation.plugin(OffCanvas);
@@ -4948,10 +4813,9 @@ Foundation.plugin(OffCanvas);
     this.currentPlugin.destroy();
     $(window).off('.zf.ResponsiveMenu');
   };
-  // ResponsiveMenu.prototype.DropdownMenu = Foundation.DropdownMenu;
   Foundation.plugin(ResponsiveMenu);
 
-}(Foundation, jQuery)
+}(Foundation, jQuery);
 
 /**
  * ResponsiveToggle module.
@@ -5077,7 +4941,6 @@ Foundation.plugin(ResponsiveToggle);
   /**
    * Creates a new instance of Reveal.
    * @class
-   * @fires Reveal#init
    * @param {jQuery} element - jQuery object to use for the modal.
    * @param {Object} options - optional parameters.
    */
@@ -5095,26 +4958,86 @@ Foundation.plugin(ResponsiveToggle);
       'TAB': 'tab_forward',
       'SHIFT_TAB': 'tab_backward'
     });
-    // /**
-    //  * Fires when the plugin has been successfuly initialized.
-    //  * @event Reveal#init
-    //  */
-    // this.$element.trigger('init.zf.reveal');
   }
 
   Reveal.defaults = {
+    /**
+     * Motion-UI class to use for animated elements. If none used, defaults to simple show/hide.
+     * @option
+     * @example 'slide-in-left'
+     */
     animationIn: '',
+    /**
+     * Motion-UI class to use for animated elements. If none used, defaults to simple show/hide.
+     * @option
+     * @example 'slide-out-right'
+     */
     animationOut: '',
+    /**
+     * Time, in ms, to delay the opening of a modal after a click if no animation used.
+     * @option
+     * @example 10
+     */
     showDelay: 0,
+    /**
+     * Time, in ms, to delay the closing of a modal after a click if no animation used.
+     * @option
+     * @example 10
+     */
     hideDelay: 0,
+    /**
+     * Allows a click on the body/overlay to close the modal.
+     * @option
+     * @example true
+     */
     closeOnClick: true,
+    /**
+     * Allows the modal to close if the user presses the `ESCAPE` key.
+     * @option
+     * @example true
+     */
     closeOnEsc: true,
+    /**
+     * If true, allows multiple modals to be displayed at once.
+     * @option
+     * @example false
+     */
     multipleOpened: false,
+    /**
+     * Distance, in pixels, the modal should push down from the top of the screen.
+     * @option
+     * @example 100
+     */
     vOffset: 100,
+    /**
+     * Distance, in pixels, the modal should push in from the side of the screen.
+     * @option
+     * @example 0
+     */
     hOffset: 0,
+    /**
+     * Allows the modal to be fullscreen, completely blocking out the rest of the view. JS checks for this as well.
+     * @option
+     * @example false
+     */
     fullScreen: false,
+    /**
+     * Percentage of screen height the modal should push up from the bottom of the view.
+     * @option
+     * @example 10
+     */
     btmOffsetPct: 10,
+    /**
+     * Allows the modal to generate an overlay div, which will cover the view when modal opens.
+     * @option
+     * @example true
+     */
     overlay: true,
+    /**
+     * Allows the modal to remove and reinject markup on close. Should be true if using video elements w/o using provider's api.
+     * @option
+     * @example false
+     */
     resetOnClose: false
   };
 
@@ -5184,8 +5107,8 @@ Foundation.plugin(ResponsiveToggle);
     var _this = this;
 
     this.$element.on({
-      'open.zf.trigger': this._open.bind(this),
-      'close.zf.trigger': this._close.bind(this),
+      'open.zf.trigger': this.open.bind(this),
+      'close.zf.trigger': this.close.bind(this),
       'toggle.zf.trigger': this.toggle.bind(this),
       'resizeme.zf.trigger': function(){
         if(_this.$element.is(':visible')){
@@ -5199,14 +5122,14 @@ Foundation.plugin(ResponsiveToggle);
         if(e.which === 13 || e.which === 32){
           e.stopPropagation();
           e.preventDefault();
-          _this._open();
+          _this.open();
         }
       });
     }
 
 
     if(this.options.closeOnClick && this.options.overlay){
-      this.$overlay.off('.zf.reveal').on('click.zf.reveal', this._close.bind(this));
+      this.$overlay.off('.zf.reveal').on('click.zf.reveal', this.close.bind(this));
     }
   };
   /**
@@ -5251,10 +5174,11 @@ Foundation.plugin(ResponsiveToggle);
 
   /**
    * Opens the modal controlled by `this.$anchor`, and closes all others by default.
+   * @function
    * @fires Reveal#closeAll
    * @fires Reveal#open
    */
-  Reveal.prototype._open = function(){
+  Reveal.prototype.open = function(){
     var _this = this;
     this.isActive = true;
     //make element invisible, but remove display: none so we can get size and positioning
@@ -5328,7 +5252,7 @@ Foundation.plugin(ResponsiveToggle);
     if(!this.options.overlay && this.options.closeOnClick && !this.options.fullScreen){
       $('body').on('click.zf.reveal', function(e){
         // if()
-          _this._close();
+          _this.close();
       });
     }
     if(this.options.closeOnEsc){
@@ -5339,7 +5263,7 @@ Foundation.plugin(ResponsiveToggle);
         Foundation.Keyboard.handleKey(e, _this, {
           close: function() {
             if (this.options.closeOnEsc) {
-              this._close();
+              this.close();
             }
           }
         });
@@ -5365,12 +5289,12 @@ Foundation.plugin(ResponsiveToggle);
         },
         open: function() {
           if ($target.is(visibleFocusableElements)) { // dont't trigger if acual element has focus (i.e. inputs, links, ...)
-            this._open();
+            this.open();
           }
         },
         close: function() {
           if (this.options.closeOnEsc) {
-            this._close();
+            this.close();
           }
         }
       });
@@ -5382,10 +5306,11 @@ Foundation.plugin(ResponsiveToggle);
   };
 
   /**
-   * Closes the modal
+   * Closes the modal.
+   * @function
    * @fires Reveal#closed
    */
-  Reveal.prototype._close = function(){
+  Reveal.prototype.close = function(){
     if(!this.isActive || !this.$element.is(':visible')){
       return false;
     }
@@ -5441,33 +5366,30 @@ Foundation.plugin(ResponsiveToggle);
      */
                  .trigger('closed.zf.reveal');
   };
-
+  /**
+   * Toggles the open/closed state of a modal.
+   * @function
+   */
   Reveal.prototype.toggle = function(){
     if(this.isActive){
-      this._close();
+      this.close();
     }else{
-      this._open();
+      this.open();
     }
   };
 
   /**
    * Destroys an instance of a modal.
-   * @fires Reveal#destroyed
+   * @function
    */
   Reveal.prototype.destroy = function() {
     if(this.options.overlay){
-      this.$overlay.hide().off();
+      this.$overlay.hide().off().remove();
     }
     this.$element.hide();
     this.$anchor.off();
 
     Foundation.unregisterPlugin(this);
-
-    /**
-     * Fires when the plugin has been destroyed.
-     * @event Reveal#destroyed
-     */
-    // this.$element.trigger('destroyed.zf.reveal');
   };
 
   Foundation.plugin(Reveal);
@@ -5527,21 +5449,96 @@ Foundation.plugin(ResponsiveToggle);
   }
 
   Slider.defaults = {
+    /**
+     * Minimum value for the slider scale.
+     * @option
+     * @example 0
+     */
     start: 0,
+    /**
+     * Maximum value for the slider scale.
+     * @option
+     * @example 100
+     */
     end: 100,
+    /**
+     * Minimum value change per change event. Not Currently Implemented!
+     * @option
+     */
     step: 1,
+    /**
+     * Value at which the handle/input *(left handle/first input)* should be set to on initialization.
+     * @option
+     * @example 0
+     */
     initialStart: 0,
+    /**
+     * Value at which the right handle/second input should be set to on initialization.
+     * @option
+     * @example 100
+     */
     initialEnd: 100,
+    /**
+     * Allows the input to be located outside the container and visible. Set to by the JS
+     * @option
+     * @example false
+     */
     binding: false,
+    /**
+     * Allows the user to click/tap on the slider bar to select a value.
+     * @option
+     * @example true
+     */
     clickSelect: true,
+    /**
+     * Set to true and use the `vertical` class to change alignment to vertical.
+     * @option
+     * @example false
+     */
     vertical: false,
+    /**
+     * Allows the user to drag the slider handle(s) to select a value.
+     * @option
+     * @example true
+     */
     draggable: true,
+    /**
+     * Disables the slider and prevents event listeners from being applied. Double checked by JS with `disabledClass`.
+     * @option
+     * @example false
+     */
     disabled: false,
+    /**
+     * Allows the use of two handles. Double checked by the JS. Changes some logic handling.
+     * @option
+     * @example false
+     */
     doubleSided: false,
-    steps: 100,
+    /**
+     * Potential future feature.
+     */
+    // steps: 100,
+    /**
+     * Number of decimal places the plugin should go to for floating point precision.
+     * @option
+     * @example 2
+     */
     decimal: 2,
-    dragDelay: 0,
+    /**
+     * Time delay for dragged elements.
+     */
+    // dragDelay: 0,
+    /**
+     * Time, in ms, to animate the movement of a slider handle if user clicks/taps on the bar. Needs to be manually set if updating the transition time in the Sass settings.
+     * @option
+     * @example 200
+     */
     moveTime: 200,//update this if changing the transition time in the sass
+    /**
+     * Class applied to disabled sliders.
+     * @option
+     * @example 'disabled'
+     */
     disabledClass: 'disabled'
   };
   /**
@@ -5552,7 +5549,7 @@ Foundation.plugin(ResponsiveToggle);
   Slider.prototype._init = function(){
     this.inputs = this.$element.find('input');
     this.handles = this.$element.find('[data-slider-handle]');
-    this.options.vertical = this.$element.hasClass('vertical');
+
     this.$handle = this.handles.eq(0);
     this.$input = this.inputs.length ? this.inputs.eq(0) : $('#' + this.$handle.attr('aria-controls'));
     this.$fill = this.$element.find('[data-slider-fill]').css(this.options.vertical ? 'height' : 'width', 0);
@@ -5799,9 +5796,9 @@ Foundation.plugin(ResponsiveToggle);
           $body.on('mousemove.zf.slider', function(e){
             e.preventDefault();
 
-            timer = setTimeout(function(){
+            // timer = setTimeout(function(){
               _this._handleEvent(e, curHandle);
-            }, _this.options.dragDelay);
+            // }, _this.options.dragDelay);
           }).on('mouseup.zf.slider', function(e){
             clearTimeout(timer);
 
@@ -6469,24 +6466,20 @@ Foundation.plugin(ResponsiveToggle);
         },
         previous: function() {
           $prevElement.find('[role="tab"]').focus();
-          _this._handleTabChange($prevElement)
+          _this._handleTabChange($prevElement);
         },
         next: function() {
           $nextElement.find('[role="tab"]').focus();
-          _this._handleTabChange($nextElement)
+          _this._handleTabChange($nextElement);
         }
       });
     });
   };
 
-  function checkClass($elem){
-    return $elem.hasClass('is-active');
-  }
 
   /**
    * Opens the tab `$targetContent` defined by `$target`.
    * @param {jQuery} $target - Tab to open.
-   * @param {jQuery} $targetContent - Content pane to open.
    * @fires Tabs#change
    * @function
    */
@@ -6515,6 +6508,27 @@ Foundation.plugin(ResponsiveToggle);
      */
     this.$element.trigger('change.zf.tabs', [$target]);
     // Foundation.reflow(this.$element, 'tabs');
+  };
+
+  /**
+   * Public method for selecting a content pane to display.
+   * @param {jQuery | String} elem - jQuery object or string of the id of the pane to display.
+   * @function
+   */
+  Tabs.prototype.selectTab = function(elem){
+    var idStr;
+    if(typeof elem === 'object'){
+      idStr = elem[0].id;
+    }else{
+      idStr = elem;
+    }
+
+    if(idStr.indexOf('#') < 0){
+      idStr = '#' + idStr;
+    }
+    var $target = this.$tabTitles.find('[href="' + idStr + '"]').parent('.' + this.options.linkClass);
+
+    this._handleTabChange($target);
   };
   /**
    * Sets the height of each panel to the height of the tallest panel.
@@ -6562,9 +6576,13 @@ Foundation.plugin(ResponsiveToggle);
     //  * @event Tabs#destroyed
     //  */
     // this.$element.trigger('destroyed.zf.tabs');
-  }
+  };
 
   Foundation.plugin(Tabs);
+
+  function checkClass($elem){
+    return $elem.hasClass('is-active');
+  }
 }(jQuery, window.Foundation);
 
 /**
@@ -6780,12 +6798,11 @@ Foundation.plugin(ResponsiveToggle);
     templateClasses: '',
     tooltipClass: 'tooltip',
     triggerClass: 'has-tip',
-    showOn: 'all',
+    showOn: 'small',
     template: '',
     tipText: '',
     touchCloseText: 'Tap to close.',
     clickOpen: true,
-    appendTo: 'body',
     positionClass: '',
     vOffset: 10,
     hOffset: 12
@@ -6799,10 +6816,10 @@ Foundation.plugin(ResponsiveToggle);
     var elemId = this.$element.attr('aria-describedby') || Foundation.GetYoDigits(6, 'tooltip');
 
     this.options.positionClass = this.getPositionClass(this.$element);
-    this.options.tipText = this.$element.attr('title');
+    this.options.tipText = this.options.tipText || this.$element.attr('title');
     this.template = this.options.template ? $(this.options.template) : this.buildTemplate(elemId);
 
-    this.template.appendTo(this.options.appendTo)
+    this.template.appendTo(document.body)
         .text(this.options.tipText)
         .hide();
 
@@ -7084,7 +7101,7 @@ Foundation.plugin(ResponsiveToggle);
   Tooltip.prototype.destroy = function(){
     this.$element.attr('title', this.template.text())
                  .off('.zf.trigger .zf.tootip')
-                 .removeClass('has-tip')
+                //  .removeClass('has-tip')
                  .removeAttr('aria-describedby')
                  .removeAttr('data-yeti-box')
                  .removeAttr('data-toggle')
