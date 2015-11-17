@@ -36,17 +36,17 @@ function joints_page_navi($before = '', $after = '') {
 		echo '<li><a href="'.get_pagenum_link().'" title="'.$first_page_text.'">'.$first_page_text.'</a></li>';
 	}
 	echo '<li>';
-	previous_posts_link('<<');
+	previous_posts_link('Previous');
 	echo '</li>';
 	for($i = $start_page; $i  <= $end_page; $i++) {
 		if($i == $paged) {
-			echo '<li class="current"><a href="'.get_pagenum_link($i).'">'.$i.'</a></li>';
+			echo '<li class="current"> '.$i.' </li>';
 		} else {
 			echo '<li><a href="'.get_pagenum_link($i).'">'.$i.'</a></li>';
 		}
 	}
 	echo '<li>';
-	next_posts_link('>>');
+	next_posts_link('Next');
 	echo '</li>';
 	if ($end_page < $max_page) {
 		$last_page_text = __( "Last", 'jointswp' );
