@@ -8,7 +8,6 @@ all of your Sass files so they can compile into one
 CSS file. 
 
 ******************************************************************/
-@import url("http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -775,26 +774,6 @@ th {
 
 body.is-reveal-open {
   overflow: hidden; }
-
-[data-joyride] {
-  display: none; }
-
-.tooltip.joyride,
-.reveal.joyride {
-  background-color: #0a0a0a;
-  color: #fefefe;
-  font-size: 100%;
-  min-width: 20rem;
-  padding: 0.75rem; }
-  .tooltip.joyride .close,
-  .reveal.joyride .close {
-    float: right; }
-  .tooltip.joyride .joyride-buttons,
-  .reveal.joyride .joyride-buttons {
-    text-align: center; }
-
-[data-joyride] {
-  display: none; }
 
 .foundation-mq {
   font-family: "small=0em&medium=32em&large=64em&xlarge=75em&xxlarge=90em"; }
@@ -2796,6 +2775,7 @@ select {
   top: 0;
   left: 100%;
   z-index: -1;
+  height: 100%;
   width: 100%;
   background: #fefefe;
   transition: -webkit-transform 0.15s linear;
