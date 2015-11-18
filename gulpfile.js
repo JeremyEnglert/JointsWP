@@ -11,7 +11,6 @@ var gulp  = require('gulp'),
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
     bower = require('gulp-bower'),
-    livereload = require('gulp-livereload')
     
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
@@ -29,14 +28,15 @@ gulp.task('styles', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
     .pipe(gulp.dest('./assets/css/'))
-    .pipe(livereload())
 });    
     
 // JSHint, concat, and minify JavaScript
-gulp.task('scripts', function() {
+gulp.task('site-js', function() {
   return gulp.src([	
+	  
            // Grab your custom scripts
   		  './assets/js/scripts/*.js'
+  		  
   ])
     .pipe(plumber())
     .pipe(jshint())
@@ -46,18 +46,35 @@ gulp.task('scripts', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('./assets/js'))
-    .pipe(livereload())
 });    
 
-// JSHint, concat, and minify JavaScript
+// JSHint, concat, and minify Foundation JavaScript
+gulp.task('vendor-js', function() {
+  return gulp.src([	
+  		  
+  		  // Call all required vendor files
+          './vendor/jquery/dist/jquery.js',
+          './vendor/what-input/what-input.js'
+          
+  ])
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(concat('vendor.js'))
+    .pipe(gulp.dest('./assets/js'))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(uglify())
+    .pipe(gulp.dest('./assets/js'))
+});
+
+// JSHint, concat, and minify Foundation JavaScript
 gulp.task('foundation-js', function() {
   return gulp.src([	
   		  
   		  // Foundation core - needed if you want to use any of the components below
           './vendor/foundation/js/foundation/foundation.core.js',
+          './vendor/foundation/js/foundation/foundation.util.*.js',
           
           // Pick the componenets you need in your project
-          './vendor/foundation/js/foundation/foundation.util.*.js',
           './vendor/foundation/js/foundation/*.js',
           './vendor/foundation/js/foundation/motion-ui.js'
   ])
@@ -68,7 +85,6 @@ gulp.task('foundation-js', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('./assets/js'))
-    .pipe(livereload())
 });
 
 // Update Foundation with Bower and save to /vendor
@@ -79,14 +95,11 @@ gulp.task('bower', function() {
 
 // Create a default task 
 gulp.task('default', function() {
-  gulp.start('styles', 'scripts', 'foundation-js');
+  gulp.start('styles', 'site-js', 'vendor-js', 'foundation-js');
 });
 
 // Watch files for changes
 gulp.task('watch', function() {
-	
-  // Live Reload (automatic browser refresh)
-  livereload.listen();
 
   // Watch .scss files
   gulp.watch('./assets/scss/**/*.scss', ['styles']);
