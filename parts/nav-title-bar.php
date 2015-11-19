@@ -10,7 +10,7 @@ $breakpoint = "medium"; ?>
 <div class="top-bar" id="top-bar-menu">
 	<div class="top-bar-left show-for-<?php echo $breakpoint ?>">
 		<ul class="menu">
-			<li class="menu-text">Site Title</li>
+			<li class="menu-text"><?php bloginfo('name'); ?></li>
 		</ul>
 	</div>
 	<div class="top-bar-right">

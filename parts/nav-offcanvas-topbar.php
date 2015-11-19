@@ -4,7 +4,7 @@
 <div class="top-bar" id="top-bar-menu">
 	<div class="top-bar-left float-left">
 		<ul class="menu">
-			<li class="menu-text">Site Title</li>
+			<li class="menu-text"><?php bloginfo('name'); ?></li>
 		</ul>
 	</div>
 	<div class="top-bar-right show-for-medium">
