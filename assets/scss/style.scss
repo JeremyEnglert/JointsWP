@@ -1,18 +1,15 @@
 /******************************************************************
-
+	
 Stylesheet: Main Stylesheet
 
 Here's where the magic happens. Here is where you import
 all of your Sass files so they can compile into one
 CSS file. 
+
 ******************************************************************/
 
-@import url("http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
-
-// IMPORTING STYLES
-
-// Import normalize from Bower
-@import "../../bower_components/foundation/scss/normalize";
+// Import normalize from vendor files
+@import "../../vendor/foundation/scss/vendor/normalize";
 
 // Import mixins
 @import "mixins";
@@ -20,11 +17,50 @@ CSS file.
 // Import local Foundation overrides - Don't link to Bower version as it will be overwritten whenever updated
 @import "settings";
 
-// Import foundation.scss from Bower
-@import "../../bower_components/foundation/scss/foundation";
+// Import foundation.scss from vendor files
+@import "../../vendor/foundation/scss/foundation";
 
-// Make gallery use Foundation block grid
-@import "gallery";
+// Import Motion-UI from vendor files
+@import "../../vendor/motion-ui/src/motion-ui";
+@include motion-ui-transitions;
+
+// Select the components you want to use
+@include foundation-global-styles;
+@include foundation-grid;
+@include foundation-typography;
+@include foundation-button;
+@include foundation-forms;
+@include foundation-visibility-classes;
+@include foundation-float-classes;
+@include foundation-accordion;
+@include foundation-accordion-menu;
+@include foundation-badge;
+@include foundation-breadcrumbs;
+@include foundation-button-group;
+@include foundation-callout;
+@include foundation-close-button;
+@include foundation-drilldown-menu;
+@include foundation-dropdown;
+@include foundation-dropdown-menu;
+@include foundation-flex-video;
+@include foundation-label;
+@include foundation-media-object;
+@include foundation-menu;
+@include foundation-off-canvas;
+@include foundation-orbit;
+@include foundation-pagination;
+@include foundation-progress-bar;
+@include foundation-slider;
+@include foundation-sticky;
+@include foundation-reveal;
+@include foundation-switch;
+@include foundation-table;
+@include foundation-tabs;
+@include foundation-thumbnail;
+@include foundation-title-bar;
+@include foundation-tooltip;
+@include foundation-top-bar;
+
 
 // Import your custom styles
 @import "main";
@@ -34,4 +70,3 @@ CSS file.
 
 // Import your print styles
 @import "print";
-

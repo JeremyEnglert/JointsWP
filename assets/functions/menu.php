@@ -2,8 +2,8 @@
 // Register menus
 register_nav_menus(
 	array(
-		'main-nav' => __( 'The Main Menu', 'jointstheme' ),   // Main nav in header
-		'footer-links' => __( 'Footer Links', 'jointstheme' ) // Secondary nav in footer
+		'main-nav' => __( 'The Main Menu', 'jointswp' ),   // Main nav in header
+		'footer-links' => __( 'Footer Links', 'jointswp' ) // Secondary nav in footer
 	)
 );
 
@@ -11,51 +11,37 @@ register_nav_menus(
 function joints_top_nav() {
 	 wp_nav_menu(array(
         'container' => false,                           // Remove nav container
-        'container_class' => '',                        // Class of container
-        'menu' => 'The Top Menu', 'jointstheme',                                   // Menu name
-        'menu_class' => 'top-bar-menu right',            // Adding custom nav class
-        'theme_location' => 'main-nav',                // Where it's located in the theme
-        'before' => '',                                 // Before each link <a>
-        'after' => '',                                  // After each link </a>
-        'link_before' => '',                            // Before each link text
-        'link_after' => '',                             // After each link text
+        'menu_class' => 'dropdown menu',       // Adding custom nav class
+        'items_wrap' => '<ul id="%1$s" class="%2$s" data-dropdown-menu>%3$s</ul>',
+        'theme_location' => 'main-nav',        			// Where it's located in the theme
         'depth' => 5,                                   // Limit the depth of the nav
         'fallback_cb' => false,                         // Fallback function (see below)
-        'walker' => new Top_Bar_Walker(),
+        'walker' => new Topbar_Menu_Walker()
     ));
 } /* End Top Menu */
 
-function joints_off_canvas() {
-	    wp_nav_menu(array(
-	        'container' => false,                           // Remove nav container
-	        'container_class' => '',                        // Class of container
-	        'menu' => '',                                   // Menu name
-	        'menu_class' => 'off-canvas-list',              // Adding custom nav class
-	        'theme_location' => 'main-nav',        // Where it's located in the theme
-	        'before' => '',                                 // Before each link <a>
-	        'after' => '',                                  // After each link </a>
-	        'link_before' => '',                            // Before each link text
-	        'link_after' => '',                             // After each link text
-	        'depth' => 5,                                   // Limit the depth of the nav
-	        'fallback_cb' => false,                         // Fallback function (see below)
-	        'walker' => new Offcanvas_Walker(),
-	    ));
-	}
+// The Off Canvas Menu
+function joints_off_canvas_nav() {
+	 wp_nav_menu(array(
+        'container' => false,                           // Remove nav container
+        'menu_class' => 'vertical menu',       // Adding custom nav class
+        'items_wrap' => '<ul id="%1$s" class="%2$s" data-accordion-menu>%3$s</ul>',
+        'theme_location' => 'main-nav',        			// Where it's located in the theme
+        'depth' => 5,                                   // Limit the depth of the nav
+        'fallback_cb' => false,                         // Fallback function (see below)
+        'walker' => new Off_Canvas_Menu_Walker()
+    ));
+} /* End Off Canvas Menu */
 
 // The Footer Menu
 function joints_footer_links() {
     wp_nav_menu(array(
-    	'container' => '',                              // Remove nav container
-    	'container_class' => 'footer-links clearfix',   // Class of container (should you choose to use it)
-    	'menu' => __( 'Footer Links', 'jointstheme' ),   // Nav name
-    	'menu_class' => 'sub-nav',      // Adding custom nav class
+    	'container' => 'false',                              // Remove nav container
+    	'menu' => __( 'Footer Links', 'jointswp' ),   	// Nav name
+    	'menu_class' => 'menu',      					// Adding custom nav class
     	'theme_location' => 'footer-links',             // Where it's located in the theme
-    	'before' => '',                                 // Before the menu
-        'after' => '',                                  // After the menu
-        'link_before' => '',                            // Before each link
-        'link_after' => '',                             // After each link
         'depth' => 0,                                   // Limit the depth of the nav
-    	'fallback_cb' => 'joints_footer_links_fallback'  // Fallback function
+    	'fallback_cb' => ''  							// Fallback function
 	));
 } /* End Footer Menu */
 
@@ -76,4 +62,3 @@ function joints_main_nav_fallback() {
 function joints_footer_links_fallback() {
 	/* You can put a default here if you like */
 }
-?>

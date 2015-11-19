@@ -1,0 +1,94 @@
+{
+  "_args": [
+    [
+      "motion-ui@^1.1.0",
+      "/Users/jeremyenglert/Documents/sites/foundation-sites-6"
+    ]
+  ],
+  "_from": "motion-ui@>=1.1.0 <2.0.0",
+  "_id": "motion-ui@1.1.0",
+  "_inCache": true,
+  "_location": "/motion-ui",
+  "_nodeVersion": "0.10.38",
+  "_npmUser": {
+    "email": "geoff@zurb.com",
+    "name": "gakimball"
+  },
+  "_npmVersion": "2.8.4",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "motion-ui",
+    "raw": "motion-ui@^1.1.0",
+    "rawSpec": "^1.1.0",
+    "scope": null,
+    "spec": ">=1.1.0 <2.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://registry.npmjs.org/motion-ui/-/motion-ui-1.1.0.tgz",
+  "_shasum": "deddc5349a1b3b0a6052adf9b95b65189d6065bb",
+  "_shrinkwrap": null,
+  "_spec": "motion-ui@^1.1.0",
+  "_where": "/Users/jeremyenglert/Documents/sites/foundation-sites-6",
+  "author": {
+    "email": "foundation@zurb.com",
+    "name": "ZURB"
+  },
+  "bugs": {
+    "url": "https://github.com/zurb/motion-ui/issues"
+  },
+  "dependencies": {
+    "jquery": "^2.1.4"
+  },
+  "description": "Sass library for creating transitions and animations.",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.0.2",
+    "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "2.1.0-beta",
+    "gulp-scss-lint": "^0.3.6",
+    "gulp-uglify": "^1.4.1",
+    "gulp-umd": "^0.2.0",
+    "handlebars": "^4.0.3",
+    "mocha": "^2.3.3",
+    "rimraf": "^2.4.3",
+    "run-sequence": "^1.1.4",
+    "sass-true": "^2.0.2",
+    "supercollider": "^1.0.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "deddc5349a1b3b0a6052adf9b95b65189d6065bb",
+    "tarball": "http://registry.npmjs.org/motion-ui/-/motion-ui-1.1.0.tgz"
+  },
+  "gitHead": "fa5739de324963a93378a6f0b34594e1c76d5a7a",
+  "homepage": "http://zurb.com/playground/motion-ui",
+  "installable": true,
+  "keywords": [
+    "Sass",
+    "motion"
+  ],
+  "license": "MIT",
+  "main": "dist/motion-ui.js",
+  "maintainers": [
+    {
+      "name": "gakimball",
+      "email": "geoff@zurb.com"
+    }
+  ],
+  "name": "motion-ui",
+  "optionalDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zurb/motion-ui.git"
+  },
+  "scripts": {
+    "start": "gulp",
+    "test": "mocha"
+  },
+  "version": "1.1.0"
+}

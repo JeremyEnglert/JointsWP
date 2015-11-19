@@ -1,0 +1,86 @@
+{
+  "_args": [
+    [
+      "what-input@^1.1.2",
+      "/Users/jeremyenglert/Documents/sites/foundation-sites-6"
+    ]
+  ],
+  "_from": "what-input@>=1.1.2 <2.0.0",
+  "_id": "what-input@1.1.2",
+  "_inCache": true,
+  "_location": "/what-input",
+  "_nodeVersion": "4.1.0",
+  "_npmUser": {
+    "email": "jeremy@ten1seven.com",
+    "name": "ten1seven"
+  },
+  "_npmVersion": "2.14.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "what-input",
+    "raw": "what-input@^1.1.2",
+    "rawSpec": "^1.1.2",
+    "scope": null,
+    "spec": ">=1.1.2 <2.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/what-input/-/what-input-1.1.2.tgz",
+  "_shasum": "1b3241d809e49bb28774a5f27466919d0e76bed4",
+  "_shrinkwrap": null,
+  "_spec": "what-input@^1.1.2",
+  "_where": "/Users/jeremyenglert/Documents/sites/foundation-sites-6",
+  "author": {
+    "email": "jeremy.fields@viget.com",
+    "name": "Jeremy Fields"
+  },
+  "bugs": {
+    "url": "https://github.com/ten1seven/what-input/issues"
+  },
+  "dependencies": {},
+  "description": "A global utility for tracking the current input method (mouse, keyboard or touch).",
+  "devDependencies": {
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-server-livereload": "^1.5.3",
+    "gulp-uglify": "^1.4.1",
+    "require-dir": "^0.3.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "1b3241d809e49bb28774a5f27466919d0e76bed4",
+    "tarball": "http://registry.npmjs.org/what-input/-/what-input-1.1.2.tgz"
+  },
+  "gitHead": "9bca0991c2c3dbcac1d301b4fd1aa613839f3d12",
+  "homepage": "https://github.com/ten1seven/what-input",
+  "installable": true,
+  "keywords": [
+    "a11y",
+    "accessibility",
+    "input",
+    "javascript"
+  ],
+  "license": "MIT",
+  "main": "what-input.js",
+  "maintainers": [
+    {
+      "name": "ten1seven",
+      "email": "jeremy@ten1seven.com"
+    }
+  ],
+  "name": "what-input",
+  "optionalDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ten1seven/what-input.git"
+  },
+  "scripts": {},
+  "version": "1.1.2"
+}

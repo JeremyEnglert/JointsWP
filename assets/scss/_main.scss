@@ -7,30 +7,15 @@ Stylesheet: Main Stylesheet
 /*********************
 GENERAL STYLES
 *********************/
-body {}
 
 /*********************
 LINK STYLES
 *********************/
 a, a:visited {
 
-
-	// Adds highlight on hover
-	&:hover, &:focus {
-
-	}
-
-	// On click
-	&:active {
-
-	}
-
 	// Mobile tap color
 	&:link {
-		/*
-		This highlights links on iPhones/iPads.
-		Similar to the :hover selector for mobile devices.
-		*/
+		//Highlight links on iOS, Similar to :hover for mobile devices.
 		-webkit-tap-highlight-color : rgba( 0, 0, 0, 0.3 );
 	}
 }
@@ -38,8 +23,6 @@ a, a:visited {
 /*********************
 H1, H2, H3, H4, H5 P STYLES
 *********************/
-p {}
-
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
 
 	// Removing text decoration from all headline links
@@ -109,18 +92,14 @@ POSTS & CONTENT STYLES
 	}
 }
 
-.hentry {
-
-	header {}
-
-	footer {}
-
+.single-title,
+.page-title {
+	
 }
 
-.single-title,
-.page-title {}
-
-.single-title {}
+.single-title {
+	
+}
 
 .page-title {
 	
@@ -131,7 +110,9 @@ POSTS & CONTENT STYLES
 	}
 }
 
-.archive-title {}
+.archive-title {
+
+}
 
 // Post meta  
 .byline {
@@ -187,14 +168,13 @@ POSTS & CONTENT STYLES
 		max-width: 100%;
 		margin-bottom: 0;
 		width: 100%;
-		}
+	}
 
 	p.wp-caption-text {
 		font-size: 0.85em;
 		margin: 4px 0 7px;
 		text-align: center;
-		}
-
+	}
 } 
 
 // Add Foundation styling to password protect button
@@ -238,7 +218,6 @@ PAGE NAVI STYLES
 /*********************
 COMMENT STYLES
 *********************/
-
 #comments {
 	.commentlist {
 		margin-left: 0px;
@@ -251,18 +230,7 @@ COMMENT STYLES
 	}
 }
 
-.comment-nav {
-
-	ul {
-
-		li {}
-
-	}
-}
-
-
 .commentlist {
-	
 	li {
 		position: relative;
 		clear: both;
@@ -305,12 +273,10 @@ COMMENT STYLES
 		margin-left: 10px;
 		margin-top: 0;
 		padding-bottom: 0;
-		background: $secondary-color;
 	}
 
 	li.depth-2 {}
 	li.depth-3 {
-		background: darken($secondary-color, 5%);
 	}
 	li.depth-4 {}
 	li.depth-5 {}
@@ -398,7 +364,6 @@ COMMENT STYLES
 
 	// comment reply link  
 	.comment-reply-link {
-		@include button($padding: $button-sml);
 		float: right;
 
 		&:hover,
@@ -413,7 +378,6 @@ COMMENT STYLES
 /*********************
 COMMENT FORM STYLES
 *********************/
-
 .respond-form {
 	margin: 1.5em 10px;
 	padding-bottom: 2.2em;
@@ -494,7 +458,7 @@ COMMENT FORM STYLES
 	margin: 1.5em 10px 0.7335em 0;
 }
 
-// no comments  
+// No comments  
 .nocomments {
 	margin: 0 20px 1.1em;
 }
@@ -502,65 +466,45 @@ COMMENT FORM STYLES
 /*********************
 SIDEBARS & ASIDES
 *********************/
-
 .sidebar {
 }
 
-	#searchsubmit {
-	}
+#searchsubmit {
+}
 
-	.widgettitle {}
+.widgettitle {
+}
 
-	.widget {
-		ul {
-			margin: 0;
+.widget {
+	ul {
+		margin: 0;
 
-			li {
-				list-style: none;
+		li {
+			list-style: none;
 
-				&:first-child {}
+			&:first-child {}
 
-				&:last-child {}
+			&:last-child {}
 
-				a {}
+			a {}
 
-				// deep nesting  
-				ul {}
-
-			}
+			// deep nesting  
+			ul {}
 
 		}
-		@media #{$medium-up} {
-			padding: 0 10px;
-			margin: 2.2em 0;
-  		}
-
 	}
-
-#sidebar-offcanvas {
-	.widgettitle {
-		color: #fff;
-	}	
 }
 /*********************
 FOOTER STYLES
 *********************/
-
 .footer {
 	clear: both;
 	margin-top: 1em;
 }
-
-.footer-links {} 
-
-.copyright {}
 	
 /*********************
 FOUNDATION STYLES
 *********************/
-.clearing-assembled.clearing-blackout a:hover {
-	background: none;
-}
 
 /*********************
 PLUGIN STYLES
