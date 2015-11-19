@@ -10,7 +10,7 @@ var gulp  = require('gulp'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
-    bower = require('gulp-bower'),
+    bower = require('gulp-bower')
     
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
