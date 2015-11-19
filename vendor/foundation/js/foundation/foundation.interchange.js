@@ -2,6 +2,7 @@
  * Interchange module.
  * @module foundation.interchange
  * @requires foundation.util.mediaQuery
+ * @requires foundation.util.timerAndImageLoader
  */
 !function(Foundation, $) {
   'use strict';
@@ -169,7 +170,7 @@
    */
   Interchange.prototype.destroy = function(){
     //TODO this.
-  }
+  };
   Foundation.plugin(Interchange);
 
   // Exports for AMD/Browserify

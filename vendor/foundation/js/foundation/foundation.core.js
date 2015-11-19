@@ -2,7 +2,7 @@
 
 "use strict";
 
-var FOUNDATION_VERSION = '6.0.0-alpha.1';
+var FOUNDATION_VERSION = '6.0.0';
 
 // Global Foundation object
 // This is attached to the window, or used as a module for AMD/Browserify
@@ -132,6 +132,7 @@ var Foundation = {
    * @returns {String} - unique id
    */
   GetYoDigits: function(length, namespace){
+    length = length || 6;
     return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1) + (namespace ? '-' + namespace : '');
   },
   /**
@@ -171,22 +172,32 @@ var Foundation = {
     });
   },
   getFnName: functionName,
-  transitionend: (function() {
+  transitionend: function($elem){
     var transitions = {
       'transition': 'transitionend',
       'WebkitTransition': 'webkitTransitionEnd',
       'MozTransition': 'transitionend',
       'OTransition': 'otransitionend'
     };
-    var elem = document.createElement('div');
+    var elem = document.createElement('div'),
+        end;
 
     for (var t in transitions){
       if (typeof elem.style[t] !== 'undefined'){
-        return transitions[t];
+        end = transitions[t];
       }
     }
-  })()
+    if(end){
+      return end;
+    }else{
+      end = setTimeout(function(){
+        $elem.triggerHandler('transitionend', [$elem]);
+      }, 1);
+      return 'transitionend';
+    }
+  }
 };
+
 
 Foundation.util = {
   /**
@@ -230,15 +241,27 @@ var foundation = function(method) {
     $noJS.removeClass('no-js');
   }
 
-  if (type === 'undefined') {
+  if(type === 'undefined'){//needs to initialize the Foundation object, or an individual plugin.
     Foundation.MediaQuery._init();
     Foundation.reflow(this);
-  } else if (type === 'object') {
-    Foundation.reflow(this);
-  } else if (type === 'string' || type === 'array') {
-    Foundation.reflow(this, method);
-  }
+  }else if(type === 'string'){//an individual method to invoke on a plugin or group of plugins
+    var args = Array.prototype.slice.call(arguments, 1);//collect all the arguments, if necessary
+    var plugClass = this.data('zfPlugin');//determine the class of plugin
 
+    if(plugClass !== undefined && plugClass[method] !== undefined){//make sure both the class and method exist
+      if(this.length === 1){//if there's only one, call it directly.
+          plugClass[method].apply(plugClass, args);
+      }else{
+        this.each(function(i, el){//otherwise loop through the jQuery collection and invoke the method on each
+          plugClass[method].apply($(el).data('zfPlugin'), args);
+        });
+      }
+    }else{//error for no class or no method
+      throw new ReferenceError("We're sorry, '" + method + "' is not an available method for " + (plugClass ? functionName(plugClass) : 'this element') + '.');
+    }
+  }else{//error for invalid argument type
+    throw new TypeError("We're sorry, '" + type + "' is not a valid parameter. You must use a string representing the method you wish to invoke.");
+  }
   return this;
 };
 
@@ -247,8 +270,8 @@ $.fn.foundation = foundation;
 
 // Polyfill for requestAnimationFrame
 (function() {
-  if (!Date.now)
-    Date.now = function() { return new Date().getTime(); };
+  if (!Date.now || !window.Date.now)
+    window.Date.now = Date.now = function() { return new Date().getTime(); };
 
   var vendors = ['webkit', 'moz'];
   for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
@@ -271,14 +294,40 @@ $.fn.foundation = foundation;
   /**
    * Polyfill for performance.now, required by rAF
    */
-  window.performance = (window.performance || {
-    start: Date.now(),
-    now: function(){
-        return Date.now() - this.start;
-    }
-  });
+  if(!window.performance || !window.performance.now){
+    window.performance = {
+      start: Date.now(),
+      now: function(){ return Date.now() - this.start; }
+    };
+  }
 })();
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function(oThis) {
+    if (typeof this !== 'function') {
+      // closest thing possible to the ECMAScript 5
+      // internal IsCallable function
+      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+    }
 
+    var aArgs   = Array.prototype.slice.call(arguments, 1),
+        fToBind = this,
+        fNOP    = function() {},
+        fBound  = function() {
+          return fToBind.apply(this instanceof fNOP
+                 ? this
+                 : oThis,
+                 aArgs.concat(Array.prototype.slice.call(arguments)));
+        };
+
+    if (this.prototype) {
+      // native functions don't have a prototype
+      fNOP.prototype = this.prototype;
+    }
+    fBound.prototype = new fNOP();
+
+    return fBound;
+  };
+}
 // Polyfill to get the name of a function in IE9
 function functionName(fn) {
   if (Function.prototype.name === undefined) {

@@ -2,7 +2,8 @@
  * AccordionMenu module.
  * @module foundation.accordionMenu
  * @requires foundation.util.keyboard
- * @requires foundation.util.animationFrame
+ * @requires foundation.util.motion
+ * @requires foundation.util.nest
  */
 !function($) {
   'use strict';
@@ -22,12 +23,6 @@
 
     this._init();
 
-
-    /**
-     * Fires when the plugin has been successfuly initialized.
-     * @event AccordionMenu#init
-     */
-    // this.$element.trigger('init.zf.accordionMenu');
     Foundation.registerPlugin(this);
     Foundation.Keyboard.register('AccordionMenu', {
       'ENTER': 'toggle',
@@ -206,7 +201,7 @@
    */
   AccordionMenu.prototype.down = function($target) {
     var _this = this;
-
+    console.log($target);
     if(!this.options.multiOpen){
       this.up(this.$element.find('.is-active').not($target.parentsUntil(this.$element)));
     }
@@ -234,8 +229,9 @@
     Foundation.Move(this.options.slideSpeed, $target, function(){
       $target.slideUp(_this.options.slideSpeed);
     });
-    $target.find('[data-submenu]').slideUp(0).attr('aria-hidden', true)
-           .attr('aria-hidden', true).parent('.has-submenu')
+    $target.attr('aria-hidden', true)
+           .find('[data-submenu]').slideUp(0).attr('aria-hidden', true).end()
+           .parent('.has-submenu')
            .attr({'aria-expanded': false, 'aria-selected': false});
     // $target.slideUp(this.options.slideSpeed, function() {
     //   $target.find('[data-submenu]').slideUp(0).attr('aria-hidden', true);
@@ -256,11 +252,6 @@
     this.$element.find('[data-submenu]').slideDown(0).css('display', '');
     this.$element.find('a').off('click.zf.accordionMenu');
 
-    /**
-     * Fires when the plugin has been destroyed.
-     * @event AccordionMenu#destroy
-     */
-    // this.$element.trigger('destroyed.zf.accordionMenu');
     Foundation.Nest.Burn(this.$element, 'accordion');
     Foundation.unregisterPlugin(this);
   };

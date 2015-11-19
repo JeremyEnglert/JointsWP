@@ -2,7 +2,8 @@
  * Drilldown module.
  * @module foundation.drilldown
  * @requires foundation.util.keyboard
- * @requires foundation.util.animationFrame
+ * @requires foundation.util.motion
+ * @requires foundation.util.nest
  */
 !function($, Foundation){
   'use strict';
@@ -66,7 +67,7 @@
     this.$menuItems = this.$element.find('li').not('.js-drilldown-back').attr('role', 'menuitem');
     // this.$submenus;
 
-    // console.log(this.$wrapper.outerHeight(), this.$wrapper.css());
+
     this._prepareMenu();
     // this._getMaxDims();
     this._keyboardEvents();
@@ -117,11 +118,10 @@
   Drilldown.prototype._events = function($elem){
     var _this = this;
 
-    $elem/*.off('mouseup.zf.drilldown tap.zf.drilldown touchend.zf.drilldown')*/
-    .on('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown', function(e){
-      // console.log('mouse event', $elem);
+    $elem.off('click.zf.drilldown')
+    .on('click.zf.drilldown', function(e){
+      e.stopImmediatePropagation();
       e.preventDefault();
-      e.stopPropagation();
 
       if(e.target !== e.currentTarget.firstElementChild){
         return false;
@@ -130,17 +130,12 @@
 
       if(_this.options.closeOnClick){
         var $body = $('body').not(_this.$wrapper);
-        $body.off('.zf.drilldown').on('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown', function(e){
-          // console.log('body mouseup');
+        $body.off('.zf.drilldown').on('click.zf.drilldown', function(e){
           e.preventDefault();
           _this._hideAll();
           $body.off('.zf.drilldown');
         });
       }
-    });
-    $elem.find('.js-drilldown-back').eq(0).on('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown', function(e){
-      //do stuff
-      // console.log('back button');
     });
   };
   /**
@@ -166,14 +161,14 @@
         next: function() {
           if ($element.is(_this.$submenuAnchors)) {
             _this._show($element);
-            $element.on(Foundation.transitionend + '.zf.drilldown', function(){
+            $element.on(Foundation.transitionend($element), function(){
               $element.find('ul li').filter(_this.$menuItems).first().focus();
             });
           }
         },
         previous: function() {
           _this._hide($element.parent('ul'));
-          $element.parent('ul').on(Foundation.transitionend + '.zf.drilldown', function(){
+          $element.parent('ul').on(Foundation.transitionend($element), function(){
             setTimeout(function() {
               $element.parent('ul').parent('li').focus();
             }, 1);
@@ -212,10 +207,10 @@
    * @fires Drilldown#closed
    */
   Drilldown.prototype._hideAll = function(){
-    this.$element.find('.is-drilldown-sub.is-active').addClass('is-closing')
-        .on(Foundation.transitionend + '.zf.drilldown', function(e){
-          $(this).removeClass('is-active is-closing').off(Foundation.transitionend + '.zf.drilldown');
-        });
+    var $elem = this.$element.find('.is-drilldown-sub.is-active').addClass('is-closing');
+    $elem.one(Foundation.transitionend($elem), function(e){
+      $elem.removeClass('is-active is-closing');
+    });
         /**
          * Fires when the menu is fully closed.
          * @event Drilldown#closed
@@ -230,9 +225,10 @@
    */
   Drilldown.prototype._back = function($elem){
     var _this = this;
-    $elem.off('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown');
+    $elem.off('click.zf.drilldown');
     $elem.children('.js-drilldown-back')
-      .on('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown', function(e){
+      .on('click.zf.drilldown', function(e){
+        e.stopImmediatePropagation();
         // console.log('mouseup on back');
         _this._hide($elem);
       });
@@ -245,8 +241,8 @@
   Drilldown.prototype._menuLinkEvents = function(){
     var _this = this;
     this.$menuItems.not('.has-submenu')
-        .off('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown')
-        .on('mousedown.zf.drilldown tap.zf.drilldown touchend.zf.drilldown', function(e){
+        .off('click.zf.drilldown')
+        .on('click.zf.drilldown', function(e){
           // e.stopImmediatePropagation();
           setTimeout(function(){
             _this._hideAll();
@@ -273,10 +269,9 @@
   Drilldown.prototype._hide = function($elem){
     var _this = this;
     $elem.addClass('is-closing')
-      .on(Foundation.transitionend + '.zf.drilldown', function(e){
-        // console.log('transitionend');
-        $(this).removeClass('is-active is-closing').off(Foundation.transitionend + '.zf.drilldown');
-      });
+         .one(Foundation.transitionend($elem), function(){
+           $elem.removeClass('is-active is-closing');
+         });
     /**
      * Fires when the submenu is has closed.
      * @event Drilldown#hide

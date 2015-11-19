@@ -5,7 +5,7 @@
             <?php foreach( $posts as $post ) : setup_postdata($post); ?>
 
         <!--Item: -->
-		<div class="large-4 medium-4 columns panel" data-equalizer-watch>
+		<div class="large-4 medium-4 columns" data-equalizer-watch>
         
 			<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article">
 			
