@@ -1,0 +1,28 @@
+{
+  "name": "foundation-sites",
+  "version": "6.0.0",
+  "main": [
+    "scss/foundation.scss",
+    "js/foundation.js"
+  ],
+  "ignore": [
+    "config",
+    "docs",
+    "lib",
+    "spec"
+  ],
+  "dependencies": {
+    "jquery": ">= 2.1.0",
+    "what-input": "~1.1.2"
+  },
+  "homepage": "https://github.com/zurb/foundation-sites",
+  "_release": "6.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v6.0.0",
+    "commit": "1e08494bb2118c9786ffc33c28158311cd542bcb"
+  },
+  "_source": "git://github.com/zurb/foundation-sites.git",
+  "_target": "~6.0.0",
+  "_originalSource": "foundation-sites"
+}

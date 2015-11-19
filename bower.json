@@ -3,6 +3,6 @@
   "private": true,
   "ignore":  [],
   "dependencies": {
-    "foundation": "~5.5.1"
+    "foundation-sites": "~6.0.0"
   }
 }
