@@ -35,18 +35,21 @@
 	</head>
 	
 	<!-- Uncomment this line if using the Off-Canvas Menu --> 
-	<?php /get_template_part( 'parts/content', 'offcanvas' ); ?>
-	
+		
 	<body <?php body_class(); ?>>
 
 		<div class="off-canvas-wrapper">
 			
 			<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
-
-				<header class="header" role="banner">
-						
-					 <!-- This navs will be applied to the topbar, above all content 
-						  To see additional nav styles, visit the /parts directory -->
-					 <?php get_template_part( 'parts/nav', 'offcanvas-topbar' ); ?>
-	 	
-				</header> <!-- end .header -->
+				
+				<?php get_template_part( 'parts/content', 'offcanvas' ); ?>
+				
+				<div class="off-canvas-content" data-off-canvas-content>
+					
+					<header class="header" role="banner">
+							
+						 <!-- This navs will be applied to the topbar, above all content 
+							  To see additional nav styles, visit the /parts directory -->
+						 <?php get_template_part( 'parts/nav', 'offcanvas-topbar' ); ?>
+		 	
+					</header> <!-- end .header -->
