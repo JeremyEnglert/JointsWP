@@ -123,7 +123,7 @@ gulp.task('watch', function() {
   gulp.watch('./assets/scss/**/*.scss', ['styles']);
 
   // Watch site-js files
-  gulp.watch('./assets/js/scripts/*.js', ['scripts']);
+  gulp.watch('./assets/js/scripts/*.js', ['site-js']);
   
   // Watch foundation-js files
   gulp.watch('./vendor/foundation-sites/js/*.js', ['foundation-js']);
