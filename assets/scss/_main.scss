@@ -177,6 +177,12 @@ POSTS & CONTENT STYLES
 	}
 } 
 
+// loop-archive-grid (when odd number of posts, the last panel needs a left float)
+.category-grid .panel:nth-child(2n+1) {
+	clear: both;
+	float: left;
+}
+
 // Add Foundation styling to password protect button
 .post-password-form input[type="submit"] {
 	@include button;
