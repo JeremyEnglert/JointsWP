@@ -11,7 +11,7 @@
 					<h1> <a href="<?php echo home_url(); ?>" rel="nofollow"><?php bloginfo('name'); ?></a></h1>
 				</li>
 				<li class="toggle-topbar menu-icon">
-					<a href="#"><span>Menu</span></a>
+					<a href="#"><span><?php _e( 'Menu', 'jointswp' ); ?></span></a>
 				</li>
 			</ul>		
 			<section class="top-bar-section">

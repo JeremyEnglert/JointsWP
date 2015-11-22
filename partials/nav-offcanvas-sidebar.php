@@ -11,7 +11,7 @@
 					<h1> <a href="<?php echo home_url(); ?>" rel="nofollow"><?php bloginfo('name'); ?></a></h1>
 				</li>
 				<li class="toggle-topbar menu-icon">
-					<a href="#"><span>Menu</span></a>
+					<a href="#"><span><?php _e( 'Menu', 'jointswp' ); ?></span></a>
 				</li>
 			</ul>		
 			<section class="top-bar-section">
@@ -39,14 +39,14 @@
 						
 <aside class="left-off-canvas-menu show-for-small-only">
 	<ul class="off-canvas-list">
-		<li><label>Navigation</label></li>
+		<li><label><?php _e( 'Navigation', 'jointswp' ); ?></label></li>
 			<?php joints_main_nav(); ?>    
 	</ul>
 </aside>
 
 <aside class="right-off-canvas-menu show-for-small-only">
 	<ul class="off-canvas-list">
-		<li><label>Sidebar</label></li>
+		<li><label><?php _e( 'Sidebar', 'jointswp' ); ?></label></li>
 			<?php get_sidebar('offcanvas'); ?>   
 	</ul>
 </aside>
