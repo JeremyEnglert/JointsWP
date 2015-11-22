@@ -32,7 +32,7 @@ function joints_rss_dashboard_widget() {
 		$limit = $feed->get_item_quantity(5);                      // specify number of items
 		$items = $feed->get_items(0, $limit);                      // create an array of items
 	}
-	if ($limit == 0) echo '<div>The RSS Feed is either empty or unavailable.</div>';   // fallback message
+	if ($limit == 0) echo '<div>' . __( 'The RSS Feed is either empty or unavailable.', 'jointswp' ) . '</div>';   // fallback message
 	else foreach ($items as $item) { ?>
 
 	<h4 style="margin-bottom: 0;">
