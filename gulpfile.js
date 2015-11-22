@@ -57,8 +57,6 @@ gulp.task('vendor-js', function() {
           './vendor/what-input/what-input.js'
           
   ])
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('vendor.js'))
     .pipe(gulp.dest('./assets/js'))
     .pipe(rename({suffix: '.min'}))
@@ -95,8 +93,6 @@ gulp.task('foundation-js', function() {
           './vendor/foundation-sites/js/foundation.toggler.js',
           './vendor/foundation-sites/js/foundation.tooltip.js',
   ])
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('foundation.js'))
     .pipe(gulp.dest('./assets/js'))
     .pipe(rename({suffix: '.min'}))
