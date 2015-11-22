@@ -70,7 +70,8 @@
   }
 
   // Column row
-  .#{$column}.#{$row} {
+  // The double .row class is needed to bump up the specificity
+  .#{$column}.#{$row}.#{$row} {
     float: none;
   }
 
@@ -102,7 +103,7 @@
       }
 
       // Block grid
-      @for $i from 1 through 6 {
+      @for $i from 1 through $block-grid-max {
         .#{$size}-up-#{$i} {
           @include grid-layout($i);
         }

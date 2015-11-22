@@ -190,12 +190,21 @@
     });
 
     if(this.options.hover){
-      clearTimeout(_this.timeout);
-      this.$anchor.on('mouseenter.zf.dropdown mouseleave.zf.dropdown', function(){
-        _this.timeOut = setTimeout(function(){
-          _this.toggle();
-        }, _this.options.hoverDelay);
-      });
+      this.$anchor.off('mouseenter.zf.dropdown mouseleave.zf.dropdown')
+          .on('mouseenter.zf.dropdown', function(){
+            console.log('hover');
+            clearTimeout(_this.timeout);
+            _this.timeOut = setTimeout(function(){
+              _this.open();
+              _this.$anchor.data('hover', true);
+            }, _this.options.hoverDelay);
+          }).on('mouseleave.zf.dropdown', function(){
+            clearTimeout(_this.timeout);
+            _this.timeOut = setTimeout(function(){
+              _this.close();
+              _this.$anchor.data('hover', false);
+            }, _this.options.hoverDelay);
+          });
     }
     this.$anchor.add(this.$element).on('keydown.zf.dropdown', function(e) {
 
@@ -300,6 +309,7 @@
    */
   Dropdown.prototype.toggle = function(){
     if(this.$element.hasClass('is-open')){
+      if(this.$anchor.data('hover')) return;
       this.close();
     }else{
       this.open();
@@ -316,5 +326,5 @@
     Foundation.unregisterPlugin(this);
   };
 
-  Foundation.plugin(Dropdown);
+  Foundation.plugin(Dropdown, 'Dropdown');
 }(jQuery, window.Foundation);

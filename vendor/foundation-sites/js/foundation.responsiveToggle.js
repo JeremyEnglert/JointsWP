@@ -16,7 +16,7 @@
  */
 function ResponsiveToggle(element, options) {
   this.$element = $(element);
-  this.options = $.extend({}, ResponsiveToggle.defaults, options);
+  this.options = $.extend({}, ResponsiveToggle.defaults, this.$element.data(), options);
 
   this._init();
   this._events();
@@ -101,6 +101,6 @@ ResponsiveToggle.prototype.toggleMenu = function() {
 ResponsiveToggle.prototype.destroy = function(){
   //TODO this...
 };
-Foundation.plugin(ResponsiveToggle);
+Foundation.plugin(ResponsiveToggle, 'ResponsiveToggle');
 
 }(jQuery, Foundation);
