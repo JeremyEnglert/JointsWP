@@ -52,8 +52,8 @@ MENUS & NAVIGATION
 // registering wp3+ menus
 register_nav_menus(
 	array(
-		'main-nav' => __( 'The Main Menu' ),   // main nav in header
-		'footer-links' => __( 'Footer Links' ) // secondary nav in footer
+		'main-nav' => __( 'The Main Menu', 'jointswp' ),   // main nav in header
+		'footer-links' => __( 'Footer Links', 'jointswp' ) // secondary nav in footer
 	)
 );
 
@@ -63,7 +63,7 @@ function joints_main_nav() {
     wp_nav_menu(array(
     	'container' => false,                           // remove nav container
     	'container_class' => '',           // class of container (should you choose to use it)
-    	'menu' => __( 'The Main Menu', 'jointstheme' ),  // nav name
+    	'menu' => __( 'The Main Menu', 'jointswp' ),  // nav name
     	'menu_class' => '',         // adding custom nav class
     	'theme_location' => 'main-nav',                 // where it's located in the theme
     	'before' => '',                                 // before the menu
@@ -80,7 +80,7 @@ function joints_footer_links() {
     wp_nav_menu(array(
     	'container' => '',                              // remove nav container
     	'container_class' => 'footer-links clearfix',   // class of container (should you choose to use it)
-    	'menu' => __( 'Footer Links', 'jointstheme' ),   // nav name
+    	'menu' => __( 'Footer Links', 'jointswp' ),   // nav name
     	'menu_class' => 'sub-nav',      // adding custom nav class
     	'theme_location' => 'footer-links',             // where it's located in the theme
     	'before' => '',                                 // before the menu
@@ -118,8 +118,8 @@ SIDEBARS
 function joints_register_sidebars() {
 	register_sidebar(array(
 		'id' => 'sidebar1',
-		'name' => __('Sidebar 1', 'jointstheme'),
-		'description' => __('The first (primary) sidebar.', 'jointstheme'),
+		'name' => __('Sidebar 1', 'jointswp' ),
+		'description' => __('The first (primary) sidebar.', 'jointswp' ),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',
@@ -128,8 +128,8 @@ function joints_register_sidebars() {
 
 	register_sidebar(array(
 		'id' => 'offcanvas',
-		'name' => __('Offcanvas', 'jointstheme'),
-		'description' => __('The offcanvas sidebar.', 'jointstheme'),
+		'name' => __('Offcanvas', 'jointswp' ),
+		'description' => __('The offcanvas sidebar.', 'jointswp' ),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',
@@ -146,8 +146,8 @@ function joints_register_sidebars() {
 
 	register_sidebar(array(
 		'id' => 'sidebar2',
-		'name' => __('Sidebar 2', 'jointstheme'),
-		'description' => __('The second (secondary) sidebar.', 'jointstheme'),
+		'name' => __('Sidebar 2', 'jointswp' ),
+		'description' => __('The second (secondary) sidebar.', 'jointswp' ),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',
@@ -183,13 +183,21 @@ function joints_comments($comment, $args, $depth) {
 					// create variable
 					$bgauthemail = get_comment_author_email();
 				?>
-				<?php printf(__('<cite class="fn">%s</cite>', 'jointstheme'), get_comment_author_link()) ?> on
-				<time datetime="<?php echo comment_time('Y-m-j'); ?>"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ) ?>"><?php comment_time(__(' F jS, Y - g:ia', 'jointstheme')); ?> </a></time>
-				<?php edit_comment_link(__('(Edit)', 'jointstheme'),'  ','') ?>
+				
+				<?php
+				/**
+				 * The block below is not entirely internationalised and still has to be done.
+				 * It's a bit complicated and I don't have to to dive into that now.
+				 */
+				?>
+				
+				<?php printf(__('<cite class="fn">%s</cite>', 'jointswp' ), get_comment_author_link()) ?> on
+				<time datetime="<?php echo comment_time('Y-m-j'); ?>"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ) ?>"><?php comment_time(__(' F jS, Y - g:ia', 'jointswp' )); ?> </a></time>
+				<?php edit_comment_link(__('(Edit)', 'jointswp' ),'  ','') ?>
 			</header>
 			<?php if ($comment->comment_approved == '0') : ?>
 				<div class="alert alert-info">
-					<p><?php _e('Your comment is awaiting moderation.', 'jointstheme') ?></p>
+					<p><?php _e( 'Your comment is awaiting moderation.', 'jointswp' ) ?></p>
 				</div>
 			<?php endif; ?>
 			<section class="comment_content clearfix">
