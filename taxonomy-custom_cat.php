@@ -21,7 +21,7 @@ taxonomy-shoes.php
 			
 				    <div id="main" class="large-8 medium-8 columns first clearfix" role="main">
 				
-					    <h1 class="archive-title h2"><span><?php _e("Posts Categorized:", "jointstheme"); ?></span> <?php single_cat_title(); ?></h1>
+					    <h1 class="archive-title h2"><span><?php _e( 'Posts Categorized:', 'jointswp' ); ?></span> <?php single_cat_title(); ?></h1>
 
 					    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
@@ -35,7 +35,7 @@ taxonomy-shoes.php
 						    </header> <!-- end article header -->
 					
 						    <section class="entry-content">
-							    <?php the_excerpt('<span class="read-more">' . __('Read More &raquo;', 'jointstheme') . '</span>'); ?>
+							    <?php the_excerpt('<span class="read-more">' . __( 'Read More &raquo;', 'jointswp') . '</span>'); ?>
 					
 						    </section> <!-- end article section -->
 						
@@ -52,8 +52,8 @@ taxonomy-shoes.php
 					        <?php } else { ?>
 					            <nav class="wp-prev-next">
 					                <ul class="clearfix">
-					        	        <li class="prev-link"><?php next_posts_link(__('&laquo; Older Entries', "jointstheme")) ?></li>
-					        	        <li class="next-link"><?php previous_posts_link(__('Newer Entries &raquo;', "jointstheme")) ?></li>
+					        	        <li class="prev-link"><?php next_posts_link( __( '&laquo; Older Entries', 'jointswp' )) ?></li>
+					        	        <li class="next-link"><?php previous_posts_link( __( 'Newer Entries &raquo;', 'jointswp' )) ?></li>
 					                </ul>
 					            </nav>
 					        <?php } ?>

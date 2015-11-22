@@ -216,7 +216,7 @@ function joints_related_posts() {
 	           	<li class="related_post"><a class="entry-unrelated" href="<?php the_permalink() ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></li>
 	        <?php endforeach; }
 	    else { ?>
-            <?php echo '<li class="no_related_post">' . __( 'No Related Posts Yet!', 'jointstheme' ) . '</li>'; ?>
+            <?php echo '<li class="no_related_post">' . __( 'No Related Posts Yet!', 'jointswp' ) . '</li>'; ?>
 		<?php }
 	}
 	wp_reset_query();
@@ -260,7 +260,7 @@ function joints_page_navi($before = '', $after = '') {
 	}
 	echo $before.'<nav class="page-navigation"><ul class="pagination">'."";
 	if ($start_page >= 2 && $pages_to_show < $max_page) {
-		$first_page_text = __( "First", 'jointstheme' );
+		$first_page_text = __( 'First', 'jointswp' );
 		echo '<li><a href="'.get_pagenum_link().'" title="'.$first_page_text.'">'.$first_page_text.'</a></li>';
 	}
 	echo '<li>';
@@ -277,7 +277,7 @@ function joints_page_navi($before = '', $after = '') {
 	next_posts_link('>>');
 	echo '</li>';
 	if ($end_page < $max_page) {
-		$last_page_text = __( "Last", 'jointstheme' );
+		$last_page_text = __( 'Last', 'jointswp' );
 		echo '<li><a href="'.get_pagenum_link($max_page).'" title="'.$last_page_text.'">'.$last_page_text.'</a></li>';
 	}
 	echo '</ul></nav>'.$after."";
@@ -329,9 +329,9 @@ add_filter( 'nav_menu_css_class', 'required_active_nav_class', 10, 2 );
 // Search Form
 function joints_wpsearch($form) {
 	$form = '<form role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
-	<label class="screen-reader-text" for="s">' . __('Search for:', 'jointstheme') . '</label>
-	<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="'.esc_attr__('Search the Site...','jointstheme').'" />
-	<input type="submit" id="searchsubmit" class="button" value="'. esc_attr__('Search') .'" />
+	<label class="screen-reader-text" for="s">' . __('Search for:', 'jointswp' ) . '</label>
+	<input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="'.esc_attr__( 'Search the Site...', 'jointswp' ).'" />
+	<input type="submit" id="searchsubmit" class="button" value="'. esc_attr__( 'Search', 'jointswp' ) .'" />
 	</form>';
 	return $form;
 } // don't remove this bracket!
@@ -349,7 +349,7 @@ function joints_filter_ptags_on_images($content){
 function joints_excerpt_more($more) {
 	global $post;
 	// edit here if you like
-return '...  <a class="excerpt-read-more" href="'. get_permalink($post->ID) . '" title="'. __('Read', 'jointstheme') . get_the_title($post->ID).'">'. __('Read more &raquo;', 'jointstheme') .'</a>';
+return '...  <a class="excerpt-read-more" href="'. get_permalink($post->ID) . '" title="'. __( 'Read', 'jointswp' ) . get_the_title($post->ID).'">'. __( 'Read more &raquo;', 'jointswp' ) .'</a>';
 }
 
 /*
@@ -364,7 +364,7 @@ function joints_get_the_author_posts_link() {
 	$link = sprintf(
 		'<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
 		get_author_posts_url( $authordata->ID, $authordata->user_nicename ),
-		esc_attr( sprintf( __( 'Posts by %s' ), get_the_author() ) ), // No further l10n needed, core will take care of this one
+		esc_attr( sprintf( __( 'Posts by %s', 'jointswp' ), get_the_author() ) ), // No further l10n needed, core will take care of this one
 		get_the_author()
 	);
 	return $link;
