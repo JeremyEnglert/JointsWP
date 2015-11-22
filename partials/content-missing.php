@@ -6,6 +6,6 @@
     <p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'jointswp' ); ?></p>
   </section>
   <footer class="article-footer">
-      <p><?php _e( 'This is the error message in the partials/missing-content.php template.', 'jointstheme' ); ?></p>
+      <p><?php _e( 'This is the error message in the partials/missing-content.php template.', 'jointswp' ); ?></p>
   </footer>
 </article>
