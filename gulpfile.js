@@ -49,22 +49,6 @@ gulp.task('site-js', function() {
 });    
 
 // JSHint, concat, and minify Foundation JavaScript
-gulp.task('vendor-js', function() {
-  return gulp.src([	
-  		  
-  		  // Call all required vendor files
-          './vendor/jquery/dist/jquery.js',
-          './vendor/what-input/what-input.js'
-          
-  ])
-    .pipe(concat('vendor.js'))
-    .pipe(gulp.dest('./assets/js'))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
-    .pipe(gulp.dest('./assets/js'))
-});
-
-// JSHint, concat, and minify Foundation JavaScript
 gulp.task('foundation-js', function() {
   return gulp.src([	
   		  
