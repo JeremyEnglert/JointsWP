@@ -8,3 +8,10 @@ and Foundation play nice together.
 jQuery(document).ready(function() {
     jQuery('.accordion p:empty, .orbit p:empty').remove();
 });
+
+/**
+ * For parts/loop-archive-grid.php
+ * When the total number of posts is not dividable by 3, the last post float to the right.
+ * This can be fixed by adding the end class to the last item, which then floats the last item to the left instead.
+ */
+jQuery( '.category-grid .columns.panel' ).last().addClass( 'end' );
