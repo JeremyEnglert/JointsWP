@@ -3,11 +3,11 @@
 	<?php if ( is_search() ) : ?>
 		
 		<header class="article-header">
-			<h1><?php _e("Sorry, No Results.", "jointswp");?></h1>
+			<h1><?php _e( 'Sorry, No Results.', 'jointswp' );?></h1>
 		</header>
 		
 		<section class="entry-content">
-			<p><?php _e("Try your search again.", "jointswp");?></p>
+			<p><?php _e( 'Try your search again.', 'jointswp' );?></p>
 		</section>
 		
 		<section class="search">
@@ -15,17 +15,17 @@
 		</section> <!-- end search section -->
 		
 		<footer class="article-footer">
-			<p><?php _e("This is the error message in the parts/missing-content.php template.", "jointstheme"); ?></p>
+			<p><?php _e( 'This is the error message in the parts/missing-content.php template.', 'jointswp' ); ?></p>
 		</footer>
 		
 	<?php else: ?>
 	
 		<header class="article-header">
-			<h1><?php _e("Oops, Post Not Found!", "jointstheme"); ?></h1>
+			<h1><?php _e( 'Oops, Post Not Found!', 'jointswp' ); ?></h1>
 		</header>
 		
 		<section class="entry-content">
-			<p><?php _e("Uh Oh. Something is missing. Try double checking things.", "jointstheme"); ?></p>
+			<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'jointswp' ); ?></p>
 		</section>
 		
 		<section class="search">
@@ -33,7 +33,7 @@
 		</section> <!-- end search section -->
 		
 		<footer class="article-footer">
-		  <p><?php _e("This is the error message in the parts/missing-content.php template.", "jointstheme"); ?></p>
+		  <p><?php _e( 'This is the error message in the parts/missing-content.php template.', 'jointswp' ); ?></p>
 		</footer>
 			
 	<?php endif; ?>
