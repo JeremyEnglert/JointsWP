@@ -92,7 +92,7 @@ gulp.task('bower', function() {
 
 // Create a default task 
 gulp.task('default', function() {
-  gulp.start('styles', 'site-js', 'vendor-js', 'foundation-js');
+  gulp.start('styles', 'site-js', 'foundation-js');
 });
 
 // Watch files for changes
