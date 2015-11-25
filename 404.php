@@ -9,11 +9,11 @@
 				<article id="content-not-found">
 				
 					<header class="article-header">
-						<h1><?php _e("Epic 404 - Article Not Found", "jointswp"); ?></h1>
+						<h1><?php _e( 'Epic 404 - Article Not Found', 'jointswp' ); ?></h1>
 					</header> <!-- end article header -->
 			
 					<section class="entry-content">
-						<p><?php _e("The article you were looking for was not found, but maybe try looking again!", "jointswp"); ?></p>
+						<p><?php _e( 'The article you were looking for was not found, but maybe try looking again!', 'jointswp' ); ?></p>
 					</section> <!-- end article section -->
 
 					<section class="search">

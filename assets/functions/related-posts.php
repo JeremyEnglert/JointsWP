@@ -14,7 +14,7 @@ function joints_related_posts() {
 		);
 		$related_posts = get_posts( $args );
 		if($related_posts) {
-		echo '<h4>Related Posts</h4>';
+		echo __( '<h4>Related Posts</h4>', 'jointswp' );
 		echo '<ul id="joints-related-posts">';
 			foreach ( $related_posts as $post ) : setup_postdata( $post ); ?>
 				<li class="related_post">
