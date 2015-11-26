@@ -1,6 +1,6 @@
 <?php if( 0 === ( $wp_query->current_post  )  % 4 ): ?>
 
-    <div class="row" data-equalizer> <!--Begin Row:--> 
+    <div class="row archive-grid" data-equalizer> <!--Begin Row:--> 
 
 <?php endif; ?> 
 
