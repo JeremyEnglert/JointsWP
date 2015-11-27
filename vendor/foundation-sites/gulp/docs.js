@@ -1,7 +1,7 @@
 var gulp = require('gulp');
+var cacheBust = require('gulp-cache-bust');
 var cached = require('gulp-cached');
 var supercollider = require('supercollider');
-var filter = require('gulp-filter');
 var buildSearch = require('../lib/buildSearch');
 var panini = require('panini');
 
@@ -9,25 +9,23 @@ supercollider
   .config({
     template: 'docs/layout/component.html',
     marked: require('../lib/marked'),
-    handlebars: require('../lib/handlebars')
+    handlebars: require('../lib/handlebars'),
+    keepFm: true
   })
   .adapter('sass')
   .adapter('js');
 
 // Assembles the layout, pages, and partials in the docs folder
 gulp.task('docs', function() {
-  var mdFilter = filter(['*.md']);
-
   return gulp.src('docs/pages/**/*')
     .pipe(cached('docs'))
-    .pipe(mdFilter)
-      .pipe(supercollider.init())
-    .pipe(mdFilter.restore())
+    .pipe(supercollider.init())
     .pipe(panini({
       root: 'docs/pages/',
       layouts: 'docs/layout/',
       partials: 'docs/partials/'
     }))
+    .pipe(cacheBust())
     .pipe(gulp.dest('_build'));
 });
 
