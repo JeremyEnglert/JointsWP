@@ -10,6 +10,7 @@ Starting its humble life as a fork of the popular theme Bones, JointsWP is now t
 JointsWP comes pre-baked with all of the great features that are found in the Foundation framework – simply put, if it works in Foundation, it will work in JointsWP. The theme also includes:
 
 - Foundation Navigation Options
+- Motion-UI
 - Grid archive templates
 - Translation Support
 - Bower and Gulp Support
