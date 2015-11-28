@@ -2,12 +2,6 @@
 function site_scripts() {
   global $wp_styles; // Call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
 
-	// Removes WP version of jQuery
-	wp_deregister_script('jquery');
-	
-	// Load jQuery files in header - load in header to avoid issues with plugins
-	wp_enqueue_script( 'jquery', get_template_directory_uri() . '/vendor/jquery/dist/jquery.min.js', array(), '', false );
-    
     // Load What-Input files in footer
     wp_enqueue_script( 'what-input', get_template_directory_uri() . '/vendor/what-input/what-input.min.js', array(), '', true );
     
