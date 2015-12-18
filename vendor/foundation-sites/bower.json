@@ -1,6 +1,6 @@
 {
   "name": "foundation-sites",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "main": [
     "scss/foundation.scss",
     "dist/foundation.js"
@@ -17,7 +17,13 @@
     "meteor-README.md",
     "package.js",
     "package.json",
-    "sache.json"
+    "sache.json",
+    ".editorconfig",
+    ".npm",
+    ".gitignore",
+    ".npmignore",
+    ".versions",
+    "scss/settings"
   ],
   "dependencies": {
     "jquery": "~2.1.0",

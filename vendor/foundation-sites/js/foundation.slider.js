@@ -222,7 +222,7 @@
         lOrT = vert ? 'top' : 'left',
         halfOfHandle = $hndl[0].getBoundingClientRect()[hOrW] / 2,
         elemDim = this.$element[0].getBoundingClientRect()[hOrW],
-        pctOfBar = percent(location, this.options.end).toFixed(this.options.decimal),
+        pctOfBar = percent(location, this.options.end).toFixed(2),
         pxToMove = (elemDim - halfOfHandle) * pctOfBar,
         movement = (percent(pxToMove, elemDim) * 100).toFixed(this.options.decimal),
         location = location > 0 ? parseFloat(location.toFixed(this.options.decimal)) : 0,
@@ -241,7 +241,8 @@
         css['min-' + hOrW] = dim;
         if(cb && typeof cb === 'function'){ cb(); }
       }else{
-        location = (location < 100 ? location : 100) - (parseFloat(this.$handle[0].style.left) || this.options.end - location);
+        var handleLeft = parseFloat(this.$handle[0].style.left);
+        location = (location < 100 ? location : 100) - (!isNaN(handleLeft) ? handleLeft : this.options.end - location);
         css['min-' + hOrW] = location + '%';
       }
     }

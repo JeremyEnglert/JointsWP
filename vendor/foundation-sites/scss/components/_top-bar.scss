@@ -12,11 +12,11 @@ $topbar-padding: 0.5rem !default;
 
 /// Background color for the top bar. This color also cascades to menus within the top bar.
 /// @type Color
-$topbar-background: #eee !default;
+$topbar-background: $light-gray !default;
 
 /// Color for links inside a top bar menu.
 /// @type Color
-$topbar-link-color: #fff !default;
+$topbar-link-color: $primary-color !default;
 
 /// Width of `<input>` elements inside the top bar.
 /// @type Number
@@ -27,18 +27,33 @@ $topbar-input-width: 200px !default;
   @include clearfix;
   padding: $topbar-padding;
 
-  &, ul {
+  &,
+  ul {
     background-color: $topbar-background;
+  }
 
-    & li > a {
-      color: $topbar-link-color;
-    }
-
+  a {
+    color: $topbar-link-color;
   }
 
   input {
     width: $topbar-input-width;
     margin-#{$global-right}: 1rem;
+  }
+
+  input.button {
+    width:auto;
+  }
+}
+
+/// makes sections stacked
+@mixin top-bar-stacked() {
+  // Sub-sections
+  .top-bar-right {
+    width: 100%;
+  }
+  .top-bar-left {
+    width: 100%;
   }
 }
 
@@ -47,16 +62,24 @@ $topbar-input-width: 200px !default;
   .top-bar {
     @include top-bar-container;
   }
+  // generate classes for stacking on each screen size (defined in $breakpoint-classes)
+  @each $size in $breakpoint-classes {
+    .stacked-for-#{$size} {
+      @include breakpoint($size down) {
+        @include top-bar-stacked;
+      }
+    }
+  }
+  // stack on small screens as default
+  @include breakpoint(small down) {
+    @include top-bar-stacked;
+  }
 
   // Sub-sections
-  // Stack on small screens
-  @include breakpoint(medium) {
-    .top-bar-left {
-      float: left;
-    }
-
-    .top-bar-right {
-      float: right
-    }
+  .top-bar-left {
+    float: left;
+  }
+  .top-bar-right {
+    float: right;
   }
 }

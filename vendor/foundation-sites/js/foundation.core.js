@@ -1,8 +1,7 @@
 !function($) {
-
 "use strict";
 
-var FOUNDATION_VERSION = '6.0.5';
+var FOUNDATION_VERSION = '6.0.6';
 
 // Global Foundation object
 // This is attached to the window, or used as a module for AMD/Browserify
@@ -56,12 +55,15 @@ var Foundation = {
     var pluginName = functionName(plugin.constructor).toLowerCase();
 
     plugin.uuid = this.GetYoDigits(6, pluginName);
-    plugin.$element.attr('data-' + pluginName, plugin.uuid)
+
+    if(!plugin.$element.attr('data-' + pluginName)){
+      plugin.$element.attr('data-' + pluginName, plugin.uuid);
+    }
           /**
            * Fires when the plugin has initialized.
            * @event Plugin#init
            */
-          .trigger('init.zf.' + pluginName);
+    plugin.$element.trigger('init.zf.' + pluginName);
 
     this._activePlugins[plugin.uuid] = plugin;
 
@@ -141,6 +143,7 @@ var Foundation = {
    * @param {String|Array} plugins - A list of plugins to initialize. Leave this out to initialize everything.
    */
   reflow: function(elem, plugins) {
+
     // If plugins is undefined, just grab everything
     if (typeof plugins === 'undefined') {
       plugins = Object.keys(this._plugins);
@@ -158,14 +161,14 @@ var Foundation = {
       var plugin = _this._plugins[name];
 
       // Localize the search to all elements inside elem, as well as elem itself, unless elem === document
-      var $elem = $(elem).find('[data-'+name+']').addBack('*');
+      var $elem = $(elem).find('[data-'+name+']').addBack('[data-'+name+']');
 
       // For each plugin found, initialize it
       $elem.each(function() {
         var $el = $(this),
             opts = {};
         // Don't double-dip on plugins
-        if ($el.attr('zf-plugin')) {
+        if ($el.data('zf-plugin')) {
           console.warn("Tried to initialize "+name+" on an element that already has a Foundation plugin.");
           return;
         }
@@ -176,7 +179,13 @@ var Foundation = {
             if(opt[0]) opts[opt[0]] = parseValue(opt[1]);
           });
         }
-        $el.data('zf-plugin', new plugin($(this), opts));
+        try{
+          $el.data('zf-plugin', new plugin($(this), opts));
+        }catch(er){
+          console.error(er);
+        }finally{
+          return;
+        }
       });
     });
   },
