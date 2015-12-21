@@ -185,28 +185,28 @@ POSTS & CONTENT STYLES
 /*********************
 IMAGE GALLERY STYLES
 *********************/
-	.gallery {
-		@include grid-row();
-		@for $i from 1 through $block-grid-max {
-			&.gallery-columns-#{$i} {
-				@include grid-layout($i, dl);
-			}
+.gallery {
+	@include grid-row();
+	@for $i from 1 through $block-grid-max {
+		&.gallery-columns-#{$i} {
+			@include grid-layout($i, dl);
 		}
-		margin-right: $grid-column-gutter/-2;
-		margin-left: $grid-column-gutter/-2;
+	}
+	margin-right: $grid-column-gutter/-2;
+	margin-left: $grid-column-gutter/-2;
 
-		dl {
-			@include grid-column;
+	dl {
+		@include grid-column;
 
-			a {}
+		a {}
 
-			img {}
+		img {}
 
-		}
+	}
 
-		dt {}
+	dt {}
 
-		dd {}
+	dd {}
 
 }
 
