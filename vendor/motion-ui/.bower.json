@@ -33,6 +33,6 @@
     "commit": "380fbca4b0dbced0669020fd653ca0d17b945193"
   },
   "_source": "git://github.com/zurb/motion-ui.git",
-  "_target": "~1.1.0",
+  "_target": ">=1.1.0",
   "_originalSource": "motion-ui"
 }
