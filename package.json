@@ -7,7 +7,7 @@
     "url": "https://github.com/JeremyEnglert/JointsWP.git"
   },
   "author": "Jeremy Englert",
-  "license": "",
+  "license": "GPL-2.0 AND MIT",
   "homepage": "https://github.com/JeremyEnglert/JointsWP",
   "devDependencies": {
     "gulp": "^3.9.0",
