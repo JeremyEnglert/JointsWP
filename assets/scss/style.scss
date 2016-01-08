@@ -8,10 +8,7 @@ CSS file.
 
 ******************************************************************/
 
-// Import normalize from vendor files
-@import "../../vendor/foundation-sites/scss/vendor/normalize";
-
-// Import mixins
+// Import custom mixins
 @import "mixins";
 
 // Import local Foundation overrides - Don't link to Bower version as it will be overwritten whenever updated
