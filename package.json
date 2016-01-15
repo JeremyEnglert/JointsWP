@@ -10,6 +10,7 @@
   "license": "GPL-2.0 AND MIT",
   "homepage": "https://github.com/JeremyEnglert/JointsWP",
   "devDependencies": {
+    "browser-sync": "^2.11.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-bower": "0.0.10",

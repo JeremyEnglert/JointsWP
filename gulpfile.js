@@ -10,7 +10,19 @@ var gulp  = require('gulp'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
-    bower = require('gulp-bower')
+    bower = require('gulp-bower'),
+    browserSync = require('browser-sync').create();
+    
+// Run BrowserSync and watch for file changes
+gulp.task('browser-sync', ['styles'], function() {
+	
+    browserSync.init({
+        proxy: "localhost/blank-wp/"
+    });
+    
+    gulp.watch('./assets/scss/**/*.scss', ['styles']);
+    
+});
     
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
@@ -28,6 +40,7 @@ gulp.task('styles', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
     .pipe(gulp.dest('./assets/css/'))
+    .pipe(browserSync.stream());
 });    
     
 // JSHint, concat, and minify JavaScript
