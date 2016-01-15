@@ -14,10 +14,11 @@ var gulp  = require('gulp'),
     browserSync = require('browser-sync').create();
     
 // Run BrowserSync and watch for file changes
-gulp.task('browser-sync', ['styles'], function() {
+gulp.task('browser-sync', function() {
 	
     browserSync.init({
-        proxy: "localhost/blank-wp/"
+	    files: ["./assets/css/*.css"],
+        proxy: "localhost:8888/jointswp-github/"
     });
     
     gulp.watch('./assets/scss/**/*.scss', ['styles']);
@@ -36,11 +37,11 @@ gulp.task('styles', function() {
             browsers: ['last 2 versions'],
             cascade: false
         }))
-    .pipe(gulp.dest('./assets/css/'))     
+    .pipe(gulp.dest('./assets/css/'))
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
     .pipe(gulp.dest('./assets/css/'))
-    .pipe(browserSync.stream());
+    .pipe(browserSync.stream({match: '**/*.css'}));
 });    
     
 // JSHint, concat, and minify JavaScript
