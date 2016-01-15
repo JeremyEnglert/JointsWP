@@ -12,19 +12,25 @@ var gulp  = require('gulp'),
     plumber = require('gulp-plumber'),
     bower = require('gulp-bower'),
     browserSync = require('browser-sync').create();
-    
-// Run BrowserSync and watch for file changes
+
+// Browser-Sync watch files and inject changes
 gulp.task('browser-sync', function() {
-	
-    browserSync.init({
-	    files: ["./assets/css/*.css"],
-        proxy: "localhost:8888/jointswp-github/"
+    // Watch files
+    var files = [
+    	'./assets/css/*.css', 
+    	'./assets/js/*.js',
+    ];
+
+    browserSync.init(files, {
+	    // URL of your local site
+	    proxy: "localhost/blank-wp/",
     });
     
     gulp.watch('./assets/scss/**/*.scss', ['styles']);
-    
+    gulp.watch('./assets/js/scripts/*.js', ['site-js']).on('change', browserSync.reload);
+
 });
-    
+
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
   return gulp.src('./assets/scss/**/*.scss')
@@ -41,7 +47,7 @@ gulp.task('styles', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
     .pipe(gulp.dest('./assets/css/'))
-    .pipe(browserSync.stream({match: '**/*.css'}));
+    .pipe(browserSync.reload({stream:true}));
 });    
     
 // JSHint, concat, and minify JavaScript
