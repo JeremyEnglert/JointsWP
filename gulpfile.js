@@ -13,24 +13,6 @@ var gulp  = require('gulp'),
     bower = require('gulp-bower'),
     browserSync = require('browser-sync').create();
 
-// Browser-Sync watch files and inject changes
-gulp.task('browser-sync', function() {
-    // Watch files
-    var files = [
-    	'./assets/css/*.css', 
-    	'./assets/js/*.js',
-    ];
-
-    browserSync.init(files, {
-	    // URL of your local site
-	    proxy: "localhost/blank-wp/",
-    });
-    
-    gulp.watch('./assets/scss/**/*.scss', ['styles']);
-    gulp.watch('./assets/js/scripts/*.js', ['site-js']).on('change', browserSync.reload);
-
-});
-
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
   return gulp.src('./assets/scss/**/*.scss')
@@ -47,7 +29,6 @@ gulp.task('styles', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
     .pipe(gulp.dest('./assets/css/'))
-    .pipe(browserSync.reload({stream:true}));
 });    
     
 // JSHint, concat, and minify JavaScript
@@ -110,12 +91,7 @@ gulp.task('bower', function() {
     .pipe(gulp.dest('vendor/'))
 });    
 
-// Create a default task 
-gulp.task('default', function() {
-  gulp.start('styles', 'site-js', 'foundation-js');
-});
-
-// Watch files for changes
+// Watch files for changes (without Browser-Sync)
 gulp.task('watch', function() {
 
   // Watch .scss files
@@ -127,4 +103,29 @@ gulp.task('watch', function() {
   // Watch foundation-js files
   gulp.watch('./vendor/foundation-sites/js/*.js', ['foundation-js']);
 
+});
+
+// Browser-Sync watch files and inject changes
+gulp.task('browser-sync', function() {
+    // Watch files
+    var files = [
+    	'./assets/css/*.css', 
+    	'./assets/js/*.js',
+    	'**/*.php',
+    	'assets/images/**/*.{png,jpg,gif}',
+    ];
+
+    browserSync.init(files, {
+	    // URL of local site
+	    proxy: "http://localhost:8888/jointswp-github/",
+    });
+    
+    gulp.watch('./assets/scss/**/*.scss', ['styles']);
+    gulp.watch('./assets/js/scripts/*.js', ['site-js']).on('change', browserSync.reload);
+
+});
+
+// Create a default task 
+gulp.task('default', function() {
+  gulp.start('styles', 'site-js', 'foundation-js');
 });
