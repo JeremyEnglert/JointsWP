@@ -36,7 +36,7 @@ function joints_page_navi($before = '', $after = '') {
 		echo '<li><a href="'.get_pagenum_link().'" title="'.$first_page_text.'">'.$first_page_text.'</a></li>';
 	}
 	echo '<li>';
-	previous_posts_link( 'Previous', 'jointswp' );
+	previous_posts_link( __('Previous', 'jointswp') );
 	echo '</li>';
 	for($i = $start_page; $i  <= $end_page; $i++) {
 		if($i == $paged) {
@@ -46,7 +46,7 @@ function joints_page_navi($before = '', $after = '') {
 		}
 	}
 	echo '<li>';
-	next_posts_link( 'Next', 'jointswp' );
+	next_posts_link( __('Next', 'jointswp'), 0 );
 	echo '</li>';
 	if ($end_page < $max_page) {
 		$last_page_text = __( 'Last', 'jointswp' );
