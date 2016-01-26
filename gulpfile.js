@@ -83,13 +83,7 @@ gulp.task('foundation-js', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('./assets/js'))
-});
-
-// Update Foundation with Bower and save to /vendor
-gulp.task('bower', function() {
-  return bower({ cmd: 'update'})
-    .pipe(gulp.dest('vendor/'))
-});    
+}); 
 
 // Watch files for changes (without Browser-Sync)
 gulp.task('watch', function() {
@@ -117,13 +111,19 @@ gulp.task('browser-sync', function() {
 
     browserSync.init(files, {
 	    // URL of local site
-	    proxy: "http://localhost:8888/jointswp-github/",
+	    proxy: "http://localhost:8888/",
     });
     
     gulp.watch('./assets/scss/**/*.scss', ['styles']);
     gulp.watch('./assets/js/scripts/*.js', ['site-js']).on('change', browserSync.reload);
 
 });
+
+// Update Foundation with Bower and save to /vendor
+gulp.task('bower', function() {
+  return bower({ cmd: 'update'})
+    .pipe(gulp.dest('vendor/'))
+});   
 
 // Create a default task 
 gulp.task('default', function() {
