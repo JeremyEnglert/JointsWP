@@ -21,14 +21,17 @@ gulp.task('styles', function() {
             gutil.log(gutil.colors.red(error.message));
             this.emit('end');
     }))
+    .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
         }))
+    .pipe(sourcemaps.write('../maps'))    
     .pipe(gulp.dest('./assets/css/'))
     .pipe(rename({suffix: '.min'}))
     .pipe(cssnano())
+    .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest('./assets/css/'))
 });    
     
