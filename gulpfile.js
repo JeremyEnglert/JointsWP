@@ -1,34 +1,52 @@
-// Grab our gulp packages
+/*!
+ * gulp
+ *$ npm install gulp-ruby-sass gulp-util gulp-cssnano gulp-autoprefixer gulp-sourcemaps gulp-jshint jshint-stylish gulp-uglify gulp-concat gulp-rename gulp-livereload gulp-plumber merge-stream gulp-clone gulp-clip-empty-files --save-dev
+*/
+
 var gulp  = require('gulp'),
     gutil = require('gulp-util'),
     sass = require('gulp-sass'),
+    cssnano = require('gulp-cssnano'),
     autoprefixer = require('gulp-autoprefixer'),
-    minifycss = require('gulp-minify-css'),
+    sourcemaps = require('gulp-sourcemaps'),
     jshint = require('gulp-jshint'),
     stylish = require('jshint-stylish'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
-    bower = require('gulp-bower')
-    
-// Compile Sass, Autoprefix and minify
+    bower = require('gulp-bower'),
+    merge = require('merge-stream'),
+    clone = require('gulp-clone'),
+    browserSync = require('browser-sync').create(),
+    clip = require('gulp-clip-empty-files');
+
 gulp.task('styles', function() {
-  return gulp.src('./assets/scss/**/*.scss')
-    .pipe(plumber(function(error) {
+    var source = gulp.src('./assets/scss/**/*.scss')
+        .pipe(plumber(function(error) {
             gutil.log(gutil.colors.red(error.message));
             this.emit('end');
-    }))
-    .pipe(sass())
-    .pipe(autoprefixer({
+        }))
+        .pipe(sass())
+        .pipe(sourcemaps.init()) // Start Sourcemaps
+        .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
-        }))
-    .pipe(gulp.dest('./assets/css/'))     
-    .pipe(rename({suffix: '.min'}))
-    .pipe(minifycss())
-    .pipe(gulp.dest('./assets/css/'))
-});    
+        }));
+
+    var pipe1 = source.pipe(clone())
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest('./assets/css/')); // Create sourcemap
+
+    var pipe2 = source.pipe(clone())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(cssnano())
+        .pipe(sourcemaps.write('../maps')) // Create minified sourcemap
+        .pipe(clip())
+        .pipe(gulp.dest('./assets/css/'));
+
+    return merge(pipe1, pipe2);
+});
     
 // JSHint, concat, and minify JavaScript
 gulp.task('site-js', function() {
@@ -82,20 +100,9 @@ gulp.task('foundation-js', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('./assets/js'))
-});
+}); 
 
-// Update Foundation with Bower and save to /vendor
-gulp.task('bower', function() {
-  return bower({ cmd: 'update'})
-    .pipe(gulp.dest('vendor/'))
-});    
-
-// Create a default task 
-gulp.task('default', function() {
-  gulp.start('styles', 'site-js', 'foundation-js');
-});
-
-// Watch files for changes
+// Watch files for changes (without Browser-Sync)
 gulp.task('watch', function() {
 
   // Watch .scss files
@@ -107,4 +114,35 @@ gulp.task('watch', function() {
   // Watch foundation-js files
   gulp.watch('./vendor/foundation-sites/js/*.js', ['foundation-js']);
 
+});
+
+// Browser-Sync watch files and inject changes
+gulp.task('browser-sync', function() {
+    // Watch files
+    var files = [
+    	'./assets/css/*.css', 
+    	'./assets/js/*.js',
+    	'**/*.php',
+    	'assets/images/**/*.{png,jpg,gif}',
+    ];
+
+    browserSync.init(files, {
+	    // URL of local site
+	    proxy: "http://localhost:8888/",
+    });
+    
+    gulp.watch('./assets/scss/**/*.scss', ['styles']);
+    gulp.watch('./assets/js/scripts/*.js', ['site-js']).on('change', browserSync.reload);
+
+});
+
+// Update Foundation with Bower and save to /vendor
+gulp.task('bower', function() {
+  return bower({ cmd: 'update'})
+    .pipe(gulp.dest('vendor/'))
+});   
+
+// Create a default task 
+gulp.task('default', function() {
+  gulp.start('styles', 'site-js', 'foundation-js');
 });
