@@ -1,9 +1,13 @@
-// Grab our gulp packages
+/*!
+ * gulp
+ *$ npm install gulp-ruby-sass gulp-util gulp-cssnano gulp-autoprefixer gulp-sourcemaps gulp-jshint jshint-stylish gulp-uglify gulp-concat gulp-rename gulp-livereload gulp-plumber merge-stream gulp-clone gulp-clip-empty-files --save-dev
+*/
+
 var gulp  = require('gulp'),
     gutil = require('gulp-util'),
     sass = require('gulp-sass'),
-    autoprefixer = require('gulp-autoprefixer'),
     cssnano = require('gulp-cssnano'),
+    autoprefixer = require('gulp-autoprefixer'),
     sourcemaps = require('gulp-sourcemaps'),
     jshint = require('gulp-jshint'),
     stylish = require('jshint-stylish'),
@@ -12,28 +16,37 @@ var gulp  = require('gulp'),
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
     bower = require('gulp-bower'),
-    browserSync = require('browser-sync').create();
+    merge = require('merge-stream'),
+    clone = require('gulp-clone'),
+    browserSync = require('browser-sync').create(),
+    clip = require('gulp-clip-empty-files');
 
-// Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
-  return gulp.src('./assets/scss/**/*.scss')
-    .pipe(plumber(function(error) {
+    var source = gulp.src('./assets/scss/**/*.scss')
+        .pipe(plumber(function(error) {
             gutil.log(gutil.colors.red(error.message));
             this.emit('end');
-    }))
-    .pipe(sourcemaps.init())
-    .pipe(sass())
-    .pipe(autoprefixer({
+        }))
+        .pipe(sass())
+        .pipe(sourcemaps.init()) // Start Sourcemaps
+        .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
-        }))
-    .pipe(sourcemaps.write('../maps'))    
-    .pipe(gulp.dest('./assets/css/'))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(cssnano())
-    .pipe(sourcemaps.write('../maps'))
-    .pipe(gulp.dest('./assets/css/'))
-});    
+        }));
+
+    var pipe1 = source.pipe(clone())
+        .pipe(sourcemaps.write('../maps'))
+        .pipe(gulp.dest('./assets/css/')); // Create sourcemap
+
+    var pipe2 = source.pipe(clone())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(cssnano())
+        .pipe(sourcemaps.write('../maps')) // Create minified sourcemap
+        .pipe(clip())
+        .pipe(gulp.dest('./assets/css/'));
+
+    return merge(pipe1, pipe2);
+});
     
 // JSHint, concat, and minify JavaScript
 gulp.task('site-js', function() {
