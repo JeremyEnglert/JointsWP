@@ -1,9 +1,10 @@
 // Grab our gulp packages
+
 var gulp  = require('gulp'),
     gutil = require('gulp-util'),
     sass = require('gulp-sass'),
-    autoprefixer = require('gulp-autoprefixer'),
     cssnano = require('gulp-cssnano'),
+    autoprefixer = require('gulp-autoprefixer'),
     sourcemaps = require('gulp-sourcemaps'),
     jshint = require('gulp-jshint'),
     stylish = require('jshint-stylish'),
@@ -12,31 +13,40 @@ var gulp  = require('gulp'),
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
     bower = require('gulp-bower'),
+    merge = require('merge-stream'),
+    clone = require('gulp-clone'),
     browserSync = require('browser-sync').create();
 
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
-  return gulp.src('./assets/scss/**/*.scss')
-    .pipe(plumber(function(error) {
+    var source = gulp.src('./assets/scss/**/*.scss')
+        .pipe(plumber(function(error) {
             gutil.log(gutil.colors.red(error.message));
             this.emit('end');
-    }))
-    .pipe(sourcemaps.init())
-    .pipe(sass())
-    .pipe(autoprefixer({
+        }))
+        .pipe(sass())
+        .pipe(sourcemaps.init()) // Start Sourcemaps
+        .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
-        }))
-    .pipe(gulp.dest('./assets/css/'))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(cssnano())
-    .pipe(sourcemaps.write('.')) // Creates sourcemap for minified CSS file
-    .pipe(gulp.dest('./assets/css/'))
-});    
+        }));
+
+    var stylesPipe1 = source.pipe(clone())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('./assets/css/')); // Create non-minified sourcemap
+
+    var stylesPipe2 = source.pipe(clone())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(cssnano())
+        .pipe(sourcemaps.write('.')) // Create minified sourcemap
+        .pipe(gulp.dest('./assets/css/'));
+
+    return merge(stylesPipe1, stylesPipe2);
+});  
     
 // JSHint, concat, and minify JavaScript
 gulp.task('site-js', function() {
-  return gulp.src([	
+  var source = gulp.src([	
 	  
            // Grab your custom scripts
   		  './assets/js/scripts/*.js'
@@ -47,16 +57,23 @@ gulp.task('site-js', function() {
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('scripts.js'))
-    .pipe(gulp.dest('./assets/js'))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('./assets/js'))
+    
+    var jsPipe1 = source.pipe(clone()) // Create non-minified sourcemap
+	    .pipe(sourcemaps.write('.'))
+	    .pipe(gulp.dest('./assets/js'))
+    
+    var jsPipe2 = source.pipe(clone()) // Create minified sourcemap
+	    .pipe(rename({suffix: '.min'}))
+	    .pipe(uglify())
+	    .pipe(sourcemaps.write('.'))
+	    .pipe(gulp.dest('./assets/js'))
+    
+    return merge(jsPipe1, jsPipe2);
 });    
 
 // JSHint, concat, and minify Foundation JavaScript
 gulp.task('foundation-js', function() {
-  return gulp.src([	
+  var source = gulp.src([	
   		  
   		  // Foundation core - needed if you want to use any of the components below
           './vendor/foundation-sites/js/foundation.core.js',
@@ -83,11 +100,20 @@ gulp.task('foundation-js', function() {
           './vendor/foundation-sites/js/foundation.toggler.js',
           './vendor/foundation-sites/js/foundation.tooltip.js',
   ])
+    .pipe(sourcemaps.init())
     .pipe(concat('foundation.js'))
-    .pipe(gulp.dest('./assets/js'))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
-    .pipe(gulp.dest('./assets/js'))
+    
+    var jsFoundationPipe1 = source.pipe(clone()) // Create non-minified sourcemap
+   		.pipe(sourcemaps.write('.'))
+	    .pipe(gulp.dest('./assets/js'))
+	    
+	var jsFoundationPipe2 = source.pipe(clone()) // Create non-minified sourcemap    
+	    .pipe(rename({suffix: '.min'}))
+	    .pipe(uglify())
+	    .pipe(sourcemaps.write('.'))
+	    .pipe(gulp.dest('./assets/js'))
+	    
+	return merge(jsFoundationPipe1, jsFoundationPipe2);
 }); 
 
 // Watch files for changes (without Browser-Sync)
@@ -116,7 +142,7 @@ gulp.task('browser-sync', function() {
 
     browserSync.init(files, {
 	    // URL of local site
-	    proxy: "http://localhost:8888/",
+	    proxy: "http://localhost/jointswp-github/",
     });
     
     gulp.watch('./assets/scss/**/*.scss', ['styles']);
