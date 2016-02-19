@@ -7691,3 +7691,5 @@ Foundation.plugin(ResponsiveToggle, 'ResponsiveToggle');
 
   Foundation.plugin(Tooltip, 'Tooltip');
 }(jQuery, window.document, window.Foundation);
+
+//# sourceMappingURL=foundation.js.map
