@@ -14,6 +14,7 @@
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-bower": "0.0.10",
+    "gulp-clone": "^1.0.0",
     "gulp-concat": "^2.5.2",
     "gulp-cssnano": "^2.1.0",
     "gulp-jshint": "^1.11.0",
@@ -23,6 +24,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.5",
-    "jshint-stylish": "^2.0.0"
+    "jshint-stylish": "^2.0.0",
+    "merge-stream": "^1.0.0"
   }
 }

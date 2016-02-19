@@ -27,11 +27,10 @@ gulp.task('styles', function() {
             browsers: ['last 2 versions'],
             cascade: false
         }))
-    .pipe(sourcemaps.write('../maps'))    
     .pipe(gulp.dest('./assets/css/'))
     .pipe(rename({suffix: '.min'}))
     .pipe(cssnano())
-    .pipe(sourcemaps.write('../maps'))
+    .pipe(sourcemaps.write('.')) // Creates sourcemap for minified CSS file
     .pipe(gulp.dest('./assets/css/'))
 });    
     
@@ -44,12 +43,14 @@ gulp.task('site-js', function() {
   		  
   ])
     .pipe(plumber())
+    .pipe(sourcemaps.init())
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('scripts.js'))
     .pipe(gulp.dest('./assets/js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('./assets/js'))
 });    
 
