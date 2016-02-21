@@ -75,8 +75,11 @@ return '<a class="excerpt-read-more" href="'. get_permalink($post->ID) . '" titl
 
 //  Stop WordPress from using the sticky class (which conflicts with Foundation), and style WordPress sticky posts using the .wp-sticky class instead
 function remove_sticky_class($classes) {
-	$classes = array_diff($classes, array("sticky"));
-	$classes[] = 'wp-sticky';
+	if(in_array('sticky', $classes)) {
+		$classes = array_diff($classes, array("sticky"));
+		$classes[] = 'wp-sticky';
+	}
+	
 	return $classes;
 }
 add_filter('post_class','remove_sticky_class');
