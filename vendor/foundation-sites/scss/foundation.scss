@@ -1,6 +1,6 @@
 /**
  * Foundation for Sites by ZURB
- * Version 6.1.1
+ * Version 6.2.0-rc.1
  * foundation.zurb.com
  * Licensed under MIT Open Source
  */
@@ -28,10 +28,12 @@
 @import 'components/drilldown';
 @import 'components/dropdown-menu';
 @import 'components/dropdown';
+@import 'components/flex';
 @import 'components/flex-video';
 @import 'components/label';
 @import 'components/media-object';
 @import 'components/menu';
+@import 'components/menu-icon';
 @import 'components/off-canvas';
 @import 'components/orbit';
 @import 'components/pagination';
@@ -48,16 +50,19 @@
 @import 'components/tooltip';
 
 @mixin foundation-everything($flex: false) {
+  $global-flexbox: $flex !global;
+
   @include foundation-global-styles;
   @if not $flex {
     @include foundation-grid;
   }
   @else {
+    @include foundation-flex-classes;
     @include foundation-flex-grid;
   }
   @include foundation-typography;
-  @include foundation-button;
   @include foundation-forms;
+  @include foundation-button;
   @include foundation-visibility-classes;
   @include foundation-float-classes;
   @include foundation-accordion;
@@ -74,6 +79,7 @@
   @include foundation-label;
   @include foundation-media-object;
   @include foundation-menu;
+  @include foundation-menu-icon;
   @include foundation-off-canvas;
   @include foundation-orbit;
   @include foundation-pagination;
