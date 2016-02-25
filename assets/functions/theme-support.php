@@ -37,6 +37,11 @@ function joints_theme_support() {
 			'audio',             // audio
 			'chat'               // chat transcript
 		)
-	); */	
+	); */
+	
+	// Set the maximum allowed width for any content in the theme, like oEmbeds and images added to posts.
+	if ( ! isset( $content_width ) ) {
+		$content_width = 1200; // Default Foundation width
+	}		
 	
 } /* end theme support */
