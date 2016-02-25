@@ -25,10 +25,11 @@ CSS file.
 // Select the components you want to use
 @include foundation-global-styles;
 @include foundation-grid;
+//@include foundation-flex-classes;
 //@include foundation-flex-grid;
 @include foundation-typography;
-@include foundation-button;
 @include foundation-forms;
+@include foundation-button;
 @include foundation-visibility-classes;
 @include foundation-float-classes;
 @include foundation-accordion;
@@ -45,6 +46,7 @@ CSS file.
 @include foundation-label;
 @include foundation-media-object;
 @include foundation-menu;
+@include foundation-menu-icon;
 @include foundation-off-canvas;
 @include foundation-orbit;
 @include foundation-pagination;
@@ -59,6 +61,7 @@ CSS file.
 @include foundation-title-bar;
 @include foundation-tooltip;
 @include foundation-top-bar;
+
 
 // Import your custom styles
 @import "main";
