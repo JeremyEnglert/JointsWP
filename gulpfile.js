@@ -99,7 +99,7 @@ gulp.task('bower', function() {
 });  
 
 // Browser-Sync watch files and inject changes
-gulp.task('browser-sync', function() {
+gulp.task('browsersync', function() {
     // Watch files
     var files = [
     	'./assets/css/*.css', 
@@ -109,7 +109,7 @@ gulp.task('browser-sync', function() {
     ];
 
     browserSync.init(files, {
-	    // URL of local site
+	    // URL of your local site
 	    proxy: "http://localhost/",
     });
     
