@@ -82,7 +82,7 @@ gulp.task('foundation-js', function() {
     .pipe(concat('foundation.js'))
     .pipe(gulp.dest('./assets/js'))
     .pipe(rename({suffix: '.min'}))
-    //.pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest('./assets/js'))
 });
 
