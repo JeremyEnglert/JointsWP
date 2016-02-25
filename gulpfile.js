@@ -118,7 +118,7 @@ gulp.task('browser-sync', function() {
 
     browserSync.init(files, {
 	    // URL of local site
-	    proxy: "http://localhost/jointswp-github/",
+	    proxy: "http://localhost/",
     });
     
     gulp.watch('./assets/scss/**/*.scss', ['styles']);
