@@ -68,6 +68,9 @@ class Drilldown {
     this.$submenuAnchors.each(function(){
       var $sub = $(this);
       var $link = $sub.find('a:first');
+      if(_this.options.parentLink){
+        $link.clone().prependTo($sub.children('[data-submenu]')).wrap('<li class="is-submenu-parent-item is-submenu-item is-drilldown-submenu-item" role="menu-item"></li>');
+      }
       $link.data('savedHref', $link.attr('href')).removeAttr('href');
       $sub.children('[data-submenu]')
           .attr({
@@ -260,6 +263,7 @@ class Drilldown {
     $elem.addClass('is-closing')
          .one(Foundation.transitionend($elem), function(){
            $elem.removeClass('is-active is-closing');
+           $elem.blur();
          });
     /**
      * Fires when the submenu is has closed.
@@ -281,8 +285,8 @@ class Drilldown {
       max = numOfElems > max ? numOfElems : max;
     });
 
-    result.height = `${max * this.$menuItems[0].getBoundingClientRect().height}px`;
-    result.width = `${this.$element[0].getBoundingClientRect().width}px`;
+    result['min-height'] = `${max * this.$menuItems[0].getBoundingClientRect().height}px`;
+    result['max-width'] = `${this.$element[0].getBoundingClientRect().width}px`;
 
     return result;
   }
@@ -295,7 +299,7 @@ class Drilldown {
     this._hideAll();
     Foundation.Nest.Burn(this.$element, 'drilldown');
     this.$element.unwrap()
-                 .find('.js-drilldown-back').remove()
+                 .find('.js-drilldown-back, .is-submenu-parent-item').remove()
                  .end().find('.is-active, .is-closing, .is-drilldown-submenu').removeClass('is-active is-closing is-drilldown-submenu')
                  .end().find('[data-submenu]').removeAttr('aria-hidden tabindex role')
                  .off('.zf.drilldown').end().off('zf.drilldown');
@@ -322,6 +326,12 @@ Drilldown.defaults = {
    * @example '<\div class="is-drilldown"><\/div>'
    */
   wrapper: '<div></div>',
+  /**
+   * Adds the parent link to the submenu.
+   * @option
+   * @example false
+   */
+  parentLink: false,
   /**
    * Allow the menu to return to root list on body click.
    * @option
