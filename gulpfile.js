@@ -50,7 +50,7 @@ gulp.task('site-js', function() {
     .pipe(gulp.dest('./assets/js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
-    .pipe(sourcemaps.write('.')) // Create sourcemap for minified JS
+    .pipe(sourcemaps.write('.')) // Creates sourcemap for minified JS
     .pipe(gulp.dest('./assets/js'))
 });    
 
@@ -88,23 +88,15 @@ gulp.task('foundation-js', function() {
     .pipe(gulp.dest('./assets/js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
-    .pipe(sourcemaps.write('.')) // Create sourcemap for minified Foundation JS
+    .pipe(sourcemaps.write('.')) // Creates sourcemap for minified Foundation JS
     .pipe(gulp.dest('./assets/js'))
 }); 
 
-// Watch files for changes (without Browser-Sync)
-gulp.task('watch', function() {
-
-  // Watch .scss files
-  gulp.watch('./assets/scss/**/*.scss', ['styles']);
-
-  // Watch site-js files
-  gulp.watch('./assets/js/scripts/*.js', ['site-js']);
-  
-  // Watch foundation-js files
-  gulp.watch('./vendor/foundation-sites/js/*.js', ['foundation-js']);
-
-});
+// Update Foundation with Bower and save to /vendor
+gulp.task('bower', function() {
+  return bower({ cmd: 'update'})
+    .pipe(gulp.dest('vendor/'))
+});  
 
 // Browser-Sync watch files and inject changes
 gulp.task('browser-sync', function() {
@@ -126,13 +118,21 @@ gulp.task('browser-sync', function() {
 
 });
 
-// Update Foundation with Bower and save to /vendor
-gulp.task('bower', function() {
-  return bower({ cmd: 'update'})
-    .pipe(gulp.dest('vendor/'))
-});   
+// Watch files for changes (without Browser-Sync)
+gulp.task('watch', function() {
 
-// Create a default task 
+  // Watch .scss files
+  gulp.watch('./assets/scss/**/*.scss', ['styles']);
+
+  // Watch site-js files
+  gulp.watch('./assets/js/scripts/*.js', ['site-js']);
+  
+  // Watch foundation-js files
+  gulp.watch('./vendor/foundation-sites/js/*.js', ['foundation-js']);
+
+}); 
+
+// Run styles, site-js and foundation-js
 gulp.task('default', function() {
   gulp.start('styles', 'site-js', 'foundation-js');
 });
