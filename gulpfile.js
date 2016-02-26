@@ -12,6 +12,7 @@ var gulp  = require('gulp'),
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
     bower = require('gulp-bower'),
+    babel = require('gulp-babel')
     browserSync = require('browser-sync').create();
 
 // Compile Sass, Autoprefix and minify
@@ -83,6 +84,9 @@ gulp.task('foundation-js', function() {
           './vendor/foundation-sites/js/foundation.toggler.js',
           './vendor/foundation-sites/js/foundation.tooltip.js',
   ])
+	.pipe(babel({
+		presets: ['es2015']
+	}))
     .pipe(sourcemaps.init())
     .pipe(concat('foundation.js'))
     .pipe(gulp.dest('./assets/js'))
