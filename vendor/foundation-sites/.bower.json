@@ -27,5 +27,15 @@
   "dependencies": {
     "jquery": "~2.2.0",
     "what-input": "~1.1.2"
-  }
+  },
+  "homepage": "https://github.com/zurb/foundation-sites",
+  "_release": "6.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v6.2.0",
+    "commit": "d79008091c6f32ffd9bd6ea60d266c4a76771886"
+  },
+  "_source": "git://github.com/zurb/foundation-sites.git",
+  "_target": ">=6.1",
+  "_originalSource": "foundation-sites"
 }
