@@ -8792,10 +8792,4 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   // Window exports
   Foundation.plugin(Tooltip, 'Tooltip');
-<<<<<<< HEAD
 }(jQuery);
-=======
-}(jQuery, window.document, window.Foundation);
-
-//# sourceMappingURL=foundation.js.map
->>>>>>> master
