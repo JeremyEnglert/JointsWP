@@ -10,7 +10,6 @@ require_once(get_template_directory().'/assets/functions/enqueue-scripts.php');
 
 // Register custom menus and menu walkers
 require_once(get_template_directory().'/assets/functions/menu.php'); 
-require_once(get_template_directory().'/assets/functions/menu-walkers.php'); 
 
 // Register sidebars/widget areas
 require_once(get_template_directory().'/assets/functions/sidebar.php'); 
