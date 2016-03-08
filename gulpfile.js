@@ -110,7 +110,7 @@ gulp.task('browsersync', function() {
     	'./assets/css/*.css', 
     	'./assets/js/*.js',
     	'**/*.php',
-    	'assets/images/**/*.{png,jpg,gif}',
+    	'assets/images/**/*.{png,jpg,gif,svg,webp}',
     ];
 
     browserSync.init(files, {
