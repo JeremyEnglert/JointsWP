@@ -7,18 +7,19 @@ function joints_start() {
 
     // launching operation cleanup
     add_action('init', 'joints_head_cleanup');
+    
     // remove pesky injected css for recent comments widget
     add_filter( 'wp_head', 'joints_remove_wp_widget_recent_comments_style', 1 );
+    
     // clean up comment styles in the head
     add_action('wp_head', 'joints_remove_recent_comments_style', 1);
+    
     // clean up gallery output in wp
     add_filter('gallery_style', 'joints_gallery_style');
-
-    // launching this stuff after theme setup
-    joints_theme_support();
-
+    
     // adding sidebars to Wordpress
     add_action( 'widgets_init', 'joints_register_sidebars' );
+    
     // cleaning up excerpt
     add_filter('excerpt_more', 'joints_excerpt_more');
 
