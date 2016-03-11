@@ -40,9 +40,7 @@ function joints_theme_support() {
 	); 
 	
 	// Set the maximum allowed width for any content in the theme, like oEmbeds and images added to posts.
-	if ( ! isset( $content_width ) ) {
-		$content_width = 1200; // Default Foundation width
-	}		
+	$GLOBALS['content_width'] = apply_filters( 'joints_theme_support', 1200 );	
 	
 } /* end theme support */
 
