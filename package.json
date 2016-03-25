@@ -1,6 +1,6 @@
 {
   "name": "JointsWP-sass",
-  "version": "4.0.0",
+  "version": "4.5.0",
   "description": "A WordPress starter theme using Foundation 6",
   "repository": {
     "type": "git",
@@ -26,5 +26,13 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.5",
     "jshint-stylish": "^2.0.0"
+  },
+  "scripts": {
+    "styles": "gulp styles",
+    "site-js": "gulp site-js",
+    "foundation-js": "gulp foundation-js",
+    "bower": "gulp bower",
+    "browsersync": "gulp browsersync",
+    "watch": "gulp watch"
   }
 }
