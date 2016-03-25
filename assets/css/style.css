@@ -4393,6 +4393,12 @@ FOOTER STYLES
 FOUNDATION STYLES
 *********************/
 /*********************
+VISUAL EDITOR STYLES
+*********************/
+body#tinymce {
+  margin: 20px; }
+
+/*********************
 PLUGIN STYLES
 *********************/
 .gform_body ul {

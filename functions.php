@@ -23,11 +23,11 @@ require_once(get_template_directory().'/assets/functions/page-navi.php');
 // Adds support for multiple languages
 require_once(get_template_directory().'/assets/translation/translation.php'); 
 
+// Adds site styles to the WordPress editor
+// require_once(get_template_directory().'/assets/functions/editor-styles.php'); 
+
 // Remove 4.2 Emoji Support
 // require_once(get_template_directory().'/assets/functions/disable-emoji.php'); 
-
-// Adds site styles to the WordPress editor
-//require_once(get_template_directory().'/assets/functions/editor-styles.php'); 
 
 // Related post function - no need to rely on plugins
 // require_once(get_template_directory().'/assets/functions/related-posts.php'); 

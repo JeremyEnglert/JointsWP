@@ -507,6 +507,14 @@ FOUNDATION STYLES
 *********************/
 
 /*********************
+VISUAL EDITOR STYLES
+*********************/
+// Makes content look better in visual editor
+body#tinymce {
+   	margin: 20px;
+}
+
+/*********************
 PLUGIN STYLES
 *********************/
 // Makes Gravity Forms play nice with Foundation Form styles
