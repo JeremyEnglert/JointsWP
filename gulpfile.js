@@ -13,7 +13,15 @@ var gulp  = require('gulp'),
     plumber = require('gulp-plumber'),
     bower = require('gulp-bower'),
     babel = require('gulp-babel'),
+    argv = require('yargs').argv,
     browserSync = require('browser-sync').create();
+    
+// Playing with Yargs syntax    
+if (argv.production) {
+	console.log("Shit worked");
+} else {
+	console.log("Shit didn't work")
+}
 
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
@@ -115,7 +123,7 @@ gulp.task('browsersync', function() {
 
     browserSync.init(files, {
 	    // Replace with URL of your local site
-	    proxy: "http://localhost/",
+	    proxy: "http://localhost/jointswp-github",
     });
     
     gulp.watch('./assets/scss/**/*.scss', ['styles']);
