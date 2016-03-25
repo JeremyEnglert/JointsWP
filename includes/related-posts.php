@@ -2,6 +2,7 @@
 // Related Posts Function, matches posts by tags - call using joints_related_posts(); )
 function joints_related_posts() {
 	global $post;
+	$tag_arr = '';
 	$tags = wp_get_post_tags( $post->ID );
 	if($tags) {
 		foreach( $tags as $tag ) {
