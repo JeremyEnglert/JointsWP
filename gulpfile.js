@@ -14,14 +14,11 @@ var gulp  = require('gulp'),
     bower = require('gulp-bower'),
     babel = require('gulp-babel'),
     argv = require('yargs').argv,
+    gulpif = require('gulp-if'),
     browserSync = require('browser-sync').create();
-    
-// Playing with Yargs syntax    
-if (argv.production) {
-	console.log("Shit worked");
-} else {
-	console.log("Shit didn't work")
-}
+
+// Check for --production flag
+const PRODUCTION = !!(argv.production);
 
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
@@ -36,10 +33,8 @@ gulp.task('styles', function() {
             browsers: ['last 2 versions'],
             cascade: false
         }))
-        .pipe(gulp.dest('./assets/css/'))
-        .pipe(rename({suffix: '.min'}))
-        .pipe(cssnano())
-        .pipe(sourcemaps.write('.')) // Creates sourcemaps for minified styles
+        .pipe(gulpif(PRODUCTION, cssnano()))
+        .pipe(gulpif(!PRODUCTION, sourcemaps.write('.'))) // Creates sourcemaps for minified styles
         .pipe(gulp.dest('./assets/css/'))
 });
     
@@ -146,6 +141,5 @@ gulp.task('watch', function() {
 }); 
 
 // Run styles, site-js and foundation-js
-gulp.task('default', function() {
-  gulp.start('styles', 'site-js', 'foundation-js');
-});
+gulp.task('default', 
+  gulp.parallel('styles', 'site-js', 'foundation-js'));
