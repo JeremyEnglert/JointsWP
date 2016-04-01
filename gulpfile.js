@@ -27,14 +27,14 @@ gulp.task('styles', function() {
             gutil.log(gutil.colors.red(error.message));
             this.emit('end');
         }))
-        .pipe(sourcemaps.init()) // Start Sourcemaps
+        .pipe(sourcemaps.init())
         .pipe(sass())
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
         }))
         .pipe(gulpif(PRODUCTION, cssnano()))
-        .pipe(gulpif(!PRODUCTION, sourcemaps.write('.'))) // Creates sourcemaps for minified styles
+        .pipe(gulpif(!PRODUCTION, sourcemaps.write('.')))
         .pipe(gulp.dest('./assets/css/'))
 });
     
@@ -141,5 +141,4 @@ gulp.task('watch', function() {
 }); 
 
 // Run styles, site-js and foundation-js
-gulp.task('default', 
-  gulp.parallel('styles', 'site-js', 'foundation-js'));
+gulp.task('default', gulp.parallel('styles', 'site-js', 'foundation-js'));
