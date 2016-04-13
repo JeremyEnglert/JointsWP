@@ -47,7 +47,16 @@ function joints_theme_support() {
 	); 
 	
 	// Set the maximum allowed width for any content in the theme, like oEmbeds and images added to posts.
-	$GLOBALS['content_width'] = apply_filters( 'joints_theme_support', 1200 );	
+	$GLOBALS['content_width'] = apply_filters( 'joints_theme_support', 1200 );
+	
+	if ( ! function_exists( 'joints_the_custom_logo' ) ) :
+	
+	function joints_the_custom_logo() {
+		if ( function_exists( 'the_custom_logo' ) ) {
+			the_custom_logo();
+		}
+	}
+	endif;
 	
 } /* end theme support */
 
