@@ -3,9 +3,11 @@
 
 <div class="top-bar" id="top-bar-menu">
 	<div class="top-bar-left float-left">
-		<ul class="menu">
-			<li><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></li>
-		</ul>
+		<?php if ( joints_the_custom_logo() ) { // Display custom logo if set in customizr. If nothing is set, display site title.
+				joints_the_custom_logo();
+			} else { ?>
+				<li><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></li>
+		<?php }; ?>
 	</div>
 	<div class="top-bar-right show-for-medium">
 		<?php joints_top_nav(); ?>	
