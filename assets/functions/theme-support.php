@@ -8,7 +8,14 @@ function joints_theme_support() {
 	
 	// Default thumbnail size
 	set_post_thumbnail_size(125, 125, true);
-
+	
+	// Custom Logo Support since 4.5
+	add_theme_support( 'custom-logo', array(
+		'height'      => 240,
+		'width'       => 240,
+		'flex-height' => true,
+	) );
+	
 	// Add RSS Support
 	add_theme_support( 'automatic-feed-links' );
 	
