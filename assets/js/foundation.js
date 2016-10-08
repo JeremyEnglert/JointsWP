@@ -1,4 +1,4 @@
-'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};!function($){"use strict";var FOUNDATION_VERSION='6.2.1'; // Global Foundation object
+'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};!function($){"use strict";var FOUNDATION_VERSION='6.2.2'; // Global Foundation object
 // This is attached to the window, or used as a module for AMD/Browserify
 var Foundation={version:FOUNDATION_VERSION, /**
    * Stores initialized plugins.
@@ -18,7 +18,7 @@ this._plugins[attrName]=this[className]=_plugin;}, /**
    * @function
    * Populates the _uuids array with pointers to each individual plugin instance.
    * Adds the `zfPlugin` data-attribute to programmatically created plugins to allow use of $(selector).foundation(method) calls.
-   * Also fires the initialization event for each plugin, consolidating repeditive code.
+   * Also fires the initialization event for each plugin, consolidating repetitive code.
    * @param {Object} plugin - an instance of a plugin, usually `this` in context.
    * @param {String} name - the name of the plugin, passed as a camelCased string.
    * @fires Plugin#init
@@ -29,7 +29,7 @@ this._plugins[attrName]=this[className]=_plugin;}, /**
    * @function
    * Removes the plugins uuid from the _uuids array.
    * Removes the zfPlugin data attribute, as well as the data-plugin-name attribute.
-   * Also fires the destroyed event for the plugin, consolidating repeditive code.
+   * Also fires the destroyed event for the plugin, consolidating repetitive code.
    * @param {Object} plugin - an instance of a plugin, usually `this` in context.
    * @fires Plugin#destroyed
    */unregisterPlugin:function unregisterPlugin(plugin){var pluginName=hyphenate(functionName(plugin.$element.data('zfPlugin').constructor));this._uuids.splice(this._uuids.indexOf(plugin.uuid),1);plugin.$element.removeAttr('data-'+pluginName).removeData('zfPlugin') /**
@@ -98,7 +98,7 @@ function hyphenate(str){return str.replace(/([a-z])([A-Z])/g,'$1-$2').toLowerCas
  * @param {Boolean} tbOnly - set to true to check top and bottom values only.
  * @default if no parent object passed, detects collisions with `window`.
  * @returns {Boolean} - true if collision free, false if a collision in any direction.
- */function ImNotTouchingYou(element,parent,lrOnly,tbOnly){var eleDims=GetDimensions(element),top,bottom,left,right;if(parent){var parDims=GetDimensions(parent);bottom=eleDims.offset.top+eleDims.height<=parDims.height+parDims.offset.top;top=eleDims.offset.top>=parDims.offset.top;left=eleDims.offset.left>=parDims.offset.left;right=eleDims.offset.left+eleDims.width<=parDims.width;}else {bottom=eleDims.offset.top+eleDims.height<=eleDims.windowDims.height+eleDims.windowDims.offset.top;top=eleDims.offset.top>=eleDims.windowDims.offset.top;left=eleDims.offset.left>=eleDims.windowDims.offset.left;right=eleDims.offset.left+eleDims.width<=eleDims.windowDims.width;}var allDirs=[bottom,top,left,right];if(lrOnly){return left===right===true;}if(tbOnly){return top===bottom===true;}return allDirs.indexOf(false)===-1;}; /**
+ */function ImNotTouchingYou(element,parent,lrOnly,tbOnly){var eleDims=GetDimensions(element),top,bottom,left,right;if(parent){var parDims=GetDimensions(parent);bottom=eleDims.offset.top+eleDims.height<=parDims.height+parDims.offset.top;top=eleDims.offset.top>=parDims.offset.top;left=eleDims.offset.left>=parDims.offset.left;right=eleDims.offset.left+eleDims.width<=parDims.width+parDims.offset.left;}else {bottom=eleDims.offset.top+eleDims.height<=eleDims.windowDims.height+eleDims.windowDims.offset.top;top=eleDims.offset.top>=eleDims.windowDims.offset.top;left=eleDims.offset.left>=eleDims.windowDims.offset.left;right=eleDims.offset.left+eleDims.width<=eleDims.windowDims.width;}var allDirs=[bottom,top,left,right];if(lrOnly){return left===right===true;}if(tbOnly){return top===bottom===true;}return allDirs.indexOf(false)===-1;}; /**
  * Uses native methods to return an object of dimension values.
  * @function
  * @param {jQuery || HTML} element - jQuery object or DOM element for which to get the dimensions. Can be any element other that document or window.
@@ -136,9 +136,9 @@ function hyphenate(str){return str.replace(/([a-z])([A-Z])/g,'$1-$2').toLowerCas
 cmds=commandList; // use plain list
 }else { // merge ltr and rtl: if document is rtl, rtl overwrites ltr and vice versa
 if(Foundation.rtl())cmds=$.extend({},commandList.ltr,commandList.rtl);else cmds=$.extend({},commandList.rtl,commandList.ltr);}command=cmds[keyCode];fn=functions[command];if(fn&&typeof fn==='function'){ // execute function  if exists
-fn.apply();if(functions.handled||typeof functions.handled==='function'){ // execute function when event was handled
-functions.handled.apply();}}else {if(functions.unhandled||typeof functions.unhandled==='function'){ // execute function when event was not handled
-functions.unhandled.apply();}}}, /**
+var returnValue=fn.apply();if(functions.handled||typeof functions.handled==='function'){ // execute function when event was handled
+functions.handled(returnValue);}}else {if(functions.unhandled||typeof functions.unhandled==='function'){ // execute function when event was not handled
+functions.unhandled();}}}, /**
    * Finds all focusable elements within the given `$element`
    * @param {jQuery} $element - jQuery object to search within
    * @return {jQuery} $focusable - all focusable elements within `$element`
@@ -156,7 +156,7 @@ var defaultQueries={'default':'only screen',landscape:'only screen and (orientat
    * Initializes the media query helper, by extracting the breakpoint list from the CSS and activating the breakpoint watcher.
    * @function
    * @private
-   */_init:function _init(){var self=this;var extractedStyles=$('.foundation-mq').css('font-family');var namedQueries;namedQueries=parseStyleToObject(extractedStyles);for(var key in namedQueries){self.queries.push({name:key,value:'only screen and (min-width: '+namedQueries[key]+')'});}this.current=this._getCurrentSize();this._watcher();}, /**
+   */_init:function _init(){var self=this;var extractedStyles=$('.foundation-mq').css('font-family');var namedQueries;namedQueries=parseStyleToObject(extractedStyles);for(var key in namedQueries){if(namedQueries.hasOwnProperty(key)){self.queries.push({name:key,value:'only screen and (min-width: '+namedQueries[key]+')'});}}this.current=this._getCurrentSize();this._watcher();}, /**
    * Checks if the screen is at least as wide as a breakpoint.
    * @function
    * @param {String} size - Name of the breakpoint to check.
@@ -166,7 +166,7 @@ var defaultQueries={'default':'only screen',landscape:'only screen and (orientat
    * @function
    * @param {String} size - Name of the breakpoint to get.
    * @returns {String|null} - The media query of the breakpoint, or `null` if the breakpoint doesn't exist.
-   */get:function get(size){for(var i in this.queries){var query=this.queries[i];if(size===query.name)return query.value;}return null;}, /**
+   */get:function get(size){for(var i in this.queries){if(this.queries.hasOwnProperty(i)){var query=this.queries[i];if(size===query.name)return query.value;}}return null;}, /**
    * Gets the current breakpoint name by testing every breakpoint and returning the last one to match (the biggest one).
    * @function
    * @private
@@ -175,9 +175,9 @@ var defaultQueries={'default':'only screen',landscape:'only screen and (orientat
    * Activates the breakpoint watcher, which fires an event on the window whenever the breakpoint changes.
    * @function
    * @private
-   */_watcher:function _watcher(){var _this=this;$(window).on('resize.zf.mediaquery',function(){var newSize=_this._getCurrentSize();if(newSize!==_this.current){ // Broadcast the media query change on the window
-$(window).trigger('changed.zf.mediaquery',[newSize,_this.current]); // Change the current media query
-_this.current=newSize;}});}};Foundation.MediaQuery=MediaQuery; // matchMedia() polyfill - Test a CSS media type/query in JS.
+   */_watcher:function _watcher(){var _this=this;$(window).on('resize.zf.mediaquery',function(){var newSize=_this._getCurrentSize(),currentSize=_this.current;if(newSize!==currentSize){ // Change the current media query
+_this.current=newSize; // Broadcast the media query change on the window
+$(window).trigger('changed.zf.mediaquery',[newSize,currentSize]);}});}};Foundation.MediaQuery=MediaQuery; // matchMedia() polyfill - Test a CSS media type/query in JS.
 // Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas, David Knight. Dual MIT/BSD license
 window.matchMedia||(window.matchMedia=function(){'use strict'; // For browsers that support matchMedium api such as IE 9 and webkit
 var styleMedia=window.styleMedia||window.media; // For those that don't support matchMedium
@@ -244,7 +244,7 @@ if(dir){e.preventDefault();onTouchEnd.call(this);$(this).trigger('swipe',dir).tr
  * Method for adding psuedo drag events to elements *
  ***************************************************/!function($){$.fn.addTouch=function(){this.each(function(i,el){$(el).bind('touchstart touchmove touchend touchcancel',function(){ //we pass the original event object because the jQuery event
 //object is normalized to w3c specs and does not provide the TouchList
-handleTouch(event);});});var handleTouch=function handleTouch(event){var touches=event.changedTouches,first=touches[0],eventTypes={touchstart:'mousedown',touchmove:'mousemove',touchend:'mouseup'},type=eventTypes[event.type],simulatedEvent;if('MouseEvent' in window&&typeof window.MouseEvent==='function'){simulatedEvent=window.MouseEvent(type,{'bubbles':true,'cancelable':true,'screenX':first.screenX,'screenY':first.screenY,'clientX':first.clientX,'clientY':first.clientY});}else {simulatedEvent=document.createEvent('MouseEvent');simulatedEvent.initMouseEvent(type,true,true,window,1,first.screenX,first.screenY,first.clientX,first.clientY,false,false,false,false,0 /*left*/,null);}first.target.dispatchEvent(simulatedEvent);};};}(jQuery); //**********************************
+handleTouch(event);});});var handleTouch=function handleTouch(event){var touches=event.changedTouches,first=touches[0],eventTypes={touchstart:'mousedown',touchmove:'mousemove',touchend:'mouseup'},type=eventTypes[event.type],simulatedEvent;if('MouseEvent' in window&&typeof window.MouseEvent==='function'){simulatedEvent=new window.MouseEvent(type,{'bubbles':true,'cancelable':true,'screenX':first.screenX,'screenY':first.screenY,'clientX':first.clientX,'clientY':first.clientY});}else {simulatedEvent=document.createEvent('MouseEvent');simulatedEvent.initMouseEvent(type,true,true,window,1,first.screenX,first.screenY,first.clientX,first.clientY,false,false,false,false,0 /*left*/,null);}first.target.dispatchEvent(simulatedEvent);};};}(jQuery); //**********************************
 //**From the jQuery Mobile Library**
 //**need to recreate functionality**
 //**and try to improve if possible**
@@ -554,7 +554,7 @@ Foundation.IHearYou=checkListeners; // Foundation.ISeeYou = scrollListener;
    */function Abide(element){var options=arguments.length<=1||arguments[1]===undefined?{}:arguments[1];_classCallCheck(this,Abide);this.$element=element;this.options=$.extend({},Abide.defaults,this.$element.data(),options);this._init();Foundation.registerPlugin(this,'Abide');} /**
    * Initializes the Abide plugin and calls functions to get Abide functioning on load.
    * @private
-   */_createClass(Abide,[{key:'_init',value:function _init(){this.$inputs=this.$element.find('input, textarea, select').not('[data-abide-ignore]');this._events();} /**
+   */_createClass(Abide,[{key:'_init',value:function _init(){this.$inputs=this.$element.find('input, textarea, select');this._events();} /**
    * Initializes events for Abide.
    * @private
    */},{key:'_events',value:function _events(){var _this2=this;this.$element.off('.abide').on('reset.zf.abide',function(){_this2.resetForm();}).on('submit.zf.abide',function(){return _this2.validateForm();});if(this.options.validateOn==='fieldChange'){this.$inputs.off('change.zf.abide').on('change.zf.abide',function(e){_this2.validateInput($(e.target));});}if(this.options.liveValidate){this.$inputs.off('input.zf.abide').on('input.zf.abide',function(e){_this2.validateInput($(e.target));});}} /**
@@ -564,7 +564,7 @@ Foundation.IHearYou=checkListeners; // Foundation.ISeeYou = scrollListener;
    * Checks whether or not a form element has the required attribute and if it's checked or not
    * @param {Object} element - jQuery object to check for required attribute
    * @returns {Boolean} Boolean value depends on whether or not attribute is checked or empty
-   */},{key:'requiredCheck',value:function requiredCheck($el){if(!$el.attr('required'))return true;var isGood=true;switch($el[0].type){case 'select':case 'select-one':case 'select-multiple':var opt=$el.find('option:selected');if(!opt.length||!opt.val())isGood=false;break;default:if(!$el.val()||!$el.val().length)isGood=false;}return isGood;} /**
+   */},{key:'requiredCheck',value:function requiredCheck($el){if(!$el.attr('required'))return true;var isGood=true;switch($el[0].type){case 'checkbox':isGood=$el[0].checked;break;case 'select':case 'select-one':case 'select-multiple':var opt=$el.find('option:selected');if(!opt.length||!opt.val())isGood=false;break;default:if(!$el.val()||!$el.val().length)isGood=false;}return isGood;} /**
    * Based on $el, get the first element with selector in this order:
    * 1. The element's direct sibling('s).
    * 3. The element's parent's children.
@@ -604,7 +604,8 @@ if($el[0].type=='radio'){return this.removeRadioErrorClasses($el.attr('name'));}
    * @fires Abide#valid
    * @param {Object} element - jQuery object to validate, should be an HTML input
    * @returns {Boolean} goodToGo - If the input is valid or not.
-   */},{key:'validateInput',value:function validateInput($el){var clearRequire=this.requiredCheck($el),validated=false,customValidator=true,validator=$el.attr('data-validator'),equalTo=true;switch($el[0].type){case 'radio':validated=this.validateRadio($el.attr('name'));break;case 'checkbox':validated=clearRequire;break;case 'select':case 'select-one':case 'select-multiple':validated=clearRequire;break;default:validated=this.validateText($el);}if(validator){customValidator=this.matchValidation($el,validator,$el.attr('required'));}if($el.attr('data-equalto')){equalTo=this.options.validators.equalTo($el);}var goodToGo=[clearRequire,validated,customValidator,equalTo].indexOf(false)===-1;var message=(goodToGo?'valid':'invalid')+'.zf.abide';this[goodToGo?'removeErrorClasses':'addErrorClasses']($el); /**
+   */},{key:'validateInput',value:function validateInput($el){var clearRequire=this.requiredCheck($el),validated=false,customValidator=true,validator=$el.attr('data-validator'),equalTo=true; // don't validate ignored inputs or hidden inputs
+if($el.is('[data-abide-ignore]')||$el.is('[type="hidden"]')){return true;}switch($el[0].type){case 'radio':validated=this.validateRadio($el.attr('name'));break;case 'checkbox':validated=clearRequire;break;case 'select':case 'select-one':case 'select-multiple':validated=clearRequire;break;default:validated=this.validateText($el);}if(validator){customValidator=this.matchValidation($el,validator,$el.attr('required'));}if($el.attr('data-equalto')){equalTo=this.options.validators.equalTo($el);}var goodToGo=[clearRequire,validated,customValidator,equalTo].indexOf(false)===-1;var message=(goodToGo?'valid':'invalid')+'.zf.abide';this[goodToGo?'removeErrorClasses':'addErrorClasses']($el); /**
      * Fires when the input is done checking for validation. Event trigger is either `valid.zf.abide` or `invalid.zf.abide`
      * Trigger includes the DOM element of the input.
      * @event Abide#valid
@@ -634,9 +635,9 @@ else if(!$el.prop('required')){valid=true;}return valid;} /**
    * @returns {Boolean} Boolean value depends on whether or not at least one radio input has been selected (if it's required)
    */},{key:'validateRadio',value:function validateRadio(groupName){ // If at least one radio in the group has the `required` attribute, the group is considered required
 // Per W3C spec, all radio buttons in a group should have `required`, but we're being nice
-var $group=this.$element.find(':radio[name="'+groupName+'"]');var valid=false; // .attr() returns undefined if no elements in $group have the attribute "required"
-if($group.attr('required')===undefined){valid=true;} // For the group to be valid, at least one radio needs to be checked
-$group.each(function(i,e){if($(e).prop('checked')){valid=true;}});return valid;} /**
+var $group=this.$element.find(':radio[name="'+groupName+'"]');var valid=false,required=false; // For the group to be required, at least one radio needs to be required
+$group.each(function(i,e){if($(e).attr('required')){required=true;}});if(!required)valid=true;if(!valid){ // For the group to be valid, at least one radio needs to be checked
+$group.each(function(i,e){if($(e).prop('checked')){valid=true;}});};return valid;} /**
    * Determines if a selected input passes a custom validation function. Multiple validations can be used, if passed to the element with `data-validator="foo bar baz"` in a space separated listed.
    * @param {Object} $el - jQuery input element.
    * @param {String} validators - a string of function names matching functions in the Abide.options.validators object.
@@ -645,7 +646,7 @@ $group.each(function(i,e){if($(e).prop('checked')){valid=true;}});return valid;}
    */},{key:'matchValidation',value:function matchValidation($el,validators,required){var _this4=this;required=required?true:false;var clear=validators.split(' ').map(function(v){return _this4.options.validators[v]($el,required,$el.parent());});return clear.indexOf(false)===-1;} /**
    * Resets form inputs and styles
    * @fires Abide#formreset
-   */},{key:'resetForm',value:function resetForm(){var $form=this.$element,opts=this.options;$('.'+opts.labelErrorClass,$form).not('small').removeClass(opts.labelErrorClass);$('.'+opts.inputErrorClass,$form).not('small').removeClass(opts.inputErrorClass);$(opts.formErrorSelector+'.'+opts.formErrorClass).removeClass(opts.formErrorClass);$form.find('[data-abide-error]').css('display','none');$(':input',$form).not(':button, :submit, :reset, :hidden, [data-abide-ignore]').val('').removeAttr('data-invalid'); /**
+   */},{key:'resetForm',value:function resetForm(){var $form=this.$element,opts=this.options;$('.'+opts.labelErrorClass,$form).not('small').removeClass(opts.labelErrorClass);$('.'+opts.inputErrorClass,$form).not('small').removeClass(opts.inputErrorClass);$(opts.formErrorSelector+'.'+opts.formErrorClass).removeClass(opts.formErrorClass);$form.find('[data-abide-error]').css('display','none');$(':input',$form).not(':button, :submit, :reset, :hidden, :radio, :checkbox, [data-abide-ignore]').val('').removeAttr('data-invalid');$(':input:radio',$form).not('[data-abide-ignore]').prop('checked',false).removeAttr('data-invalid');$(':input:checkbox',$form).not('[data-abide-ignore]').prop('checked',false).removeAttr('data-invalid'); /**
      * Fires when the form has been reset.
      * @event Abide#formreset
      */$form.trigger('formreset.zf.abide',[$form]);} /**
@@ -740,7 +741,7 @@ $target.attr('aria-hidden',true).parent().removeClass('is-active');$('#'+$target
    * Destroys an instance of an accordion.
    * @fires Accordion#destroyed
    * @function
-   */},{key:'destroy',value:function destroy(){this.$element.find('[data-tab-content]').slideUp(0).css('display','');this.$element.find('a').off('.zf.accordion');Foundation.unregisterPlugin(this);}}]);return Accordion;}();Accordion.defaults={ /**
+   */},{key:'destroy',value:function destroy(){this.$element.find('[data-tab-content]').stop(true).slideUp(0).css('display','');this.$element.find('a').off('.zf.accordion');Foundation.unregisterPlugin(this);}}]);return Accordion;}();Accordion.defaults={ /**
    * Amount of time to animate the opening of an accordion pane.
    * @option
    * @example 250
@@ -779,7 +780,7 @@ $prevElement=$element.parents('li').first().find('a').first();}else if($prevElem
 $prevElement=$prevElement.find('li:last-child').find('a').first();}if($(this).is(':last-child')){ // is last element of sub menu
 $nextElement=$element.parents('li').first().next('li').find('a').first();}return;}});Foundation.Keyboard.handleKey(e,'AccordionMenu',{open:function open(){if($target.is(':hidden')){_this.down($target);$target.find('li').first().find('a').first().focus();}},close:function close(){if($target.length&&!$target.is(':hidden')){ // close active sub of this item
 _this.up($target);}else if($element.parent('[data-submenu]').length){ // close currently open sub
-_this.up($element.parent('[data-submenu]'));$element.parents('li').first().find('a').first().focus();}},up:function up(){$prevElement.attr('tabindex',-1).focus();e.preventDefault();},down:function down(){$nextElement.attr('tabindex',-1).focus();e.preventDefault();},toggle:function toggle(){if($element.children('[data-submenu]').length){_this.toggle($element.children('[data-submenu]'));}},closeAll:function closeAll(){_this.hideAll();},handled:function handled(){e.stopImmediatePropagation();}});}); //.attr('tabindex', 0);
+_this.up($element.parent('[data-submenu]'));$element.parents('li').first().find('a').first().focus();}},up:function up(){$prevElement.attr('tabindex',-1).focus();return true;},down:function down(){$nextElement.attr('tabindex',-1).focus();return true;},toggle:function toggle(){if($element.children('[data-submenu]').length){_this.toggle($element.children('[data-submenu]'));}},closeAll:function closeAll(){_this.hideAll();},handled:function handled(preventDefault){if(preventDefault){e.preventDefault();}e.stopImmediatePropagation();}});}); //.attr('tabindex', 0);
 } /**
    * Closes all panes of the menu.
    * @function
@@ -791,17 +792,21 @@ _this.up($element.parent('[data-submenu]'));$element.parents('li').first().find(
    * Opens the sub-menu defined by `$target`.
    * @param {jQuery} $target - Sub-menu to open.
    * @fires AccordionMenu#down
-   */},{key:'down',value:function down($target){var _this=this;if(!this.options.multiOpen){this.up(this.$element.find('.is-active').not($target.parentsUntil(this.$element).add($target)));}$target.addClass('is-active').attr({'aria-hidden':false}).parent('.is-accordion-submenu-parent').attr({'aria-expanded':true});Foundation.Move(this.options.slideSpeed,$target,function(){$target.slideDown(_this.options.slideSpeed,function(){ /**
+   */},{key:'down',value:function down($target){var _this=this;if(!this.options.multiOpen){this.up(this.$element.find('.is-active').not($target.parentsUntil(this.$element).add($target)));}$target.addClass('is-active').attr({'aria-hidden':false}).parent('.is-accordion-submenu-parent').attr({'aria-expanded':true}); //Foundation.Move(this.options.slideSpeed, $target, function() {
+$target.slideDown(_this.options.slideSpeed,function(){ /**
            * Fires when the menu is done opening.
            * @event AccordionMenu#down
-           */_this.$element.trigger('down.zf.accordionMenu',[$target]);});});} /**
+           */_this.$element.trigger('down.zf.accordionMenu',[$target]);}); //});
+} /**
    * Closes the sub-menu defined by `$target`. All sub-menus inside the target will be closed as well.
    * @param {jQuery} $target - Sub-menu to close.
    * @fires AccordionMenu#up
-   */},{key:'up',value:function up($target){var _this=this;Foundation.Move(this.options.slideSpeed,$target,function(){$target.slideUp(_this.options.slideSpeed,function(){ /**
+   */},{key:'up',value:function up($target){var _this=this; //Foundation.Move(this.options.slideSpeed, $target, function(){
+$target.slideUp(_this.options.slideSpeed,function(){ /**
          * Fires when the menu is done collapsing up.
          * @event AccordionMenu#up
-         */_this.$element.trigger('up.zf.accordionMenu',[$target]);});});var $menus=$target.find('[data-submenu]').slideUp(0).addBack().attr('aria-hidden',true);$menus.parent('.is-accordion-submenu-parent').attr('aria-expanded',false);} /**
+         */_this.$element.trigger('up.zf.accordionMenu',[$target]);}); //});
+var $menus=$target.find('[data-submenu]').slideUp(0).addBack().attr('aria-hidden',true);$menus.parent('.is-accordion-submenu-parent').attr('aria-expanded',false);} /**
    * Destroys an instance of accordion menu.
    * @fires AccordionMenu#destroyed
    */},{key:'destroy',value:function destroy(){this.$element.find('[data-submenu]').slideDown(0).css('display','');this.$element.find('a').off('click.zf.accordionMenu');Foundation.Nest.Burn(this.$element,'accordion');Foundation.unregisterPlugin(this);}}]);return AccordionMenu;}();AccordionMenu.defaults={ /**
@@ -837,7 +842,7 @@ Foundation.plugin(AccordionMenu,'AccordionMenu');}(jQuery);
    */},{key:'_prepareMenu',value:function _prepareMenu(){var _this=this; // if(!this.options.holdOpen){
 //   this._menuLinkEvents();
 // }
-this.$submenuAnchors.each(function(){var $sub=$(this);var $link=$sub.find('a:first');if(_this.options.parentLink){$link.clone().prependTo($sub.children('[data-submenu]')).wrap('<li class="is-submenu-parent-item is-submenu-item is-drilldown-submenu-item" role="menu-item"></li>');}$link.data('savedHref',$link.attr('href')).removeAttr('href');$sub.children('[data-submenu]').attr({'aria-hidden':true,'tabindex':0,'role':'menu'});_this._events($sub);});this.$submenus.each(function(){var $menu=$(this),$back=$menu.find('.js-drilldown-back');if(!$back.length){$menu.prepend(_this.options.backButton);}_this._back($menu);});if(!this.$element.parent().hasClass('is-drilldown')){this.$wrapper=$(this.options.wrapper).addClass('is-drilldown').css(this._getMaxDims());this.$element.wrap(this.$wrapper);}} /**
+this.$submenuAnchors.each(function(){var $link=$(this);var $sub=$link.parent();if(_this.options.parentLink){$link.clone().prependTo($sub.children('[data-submenu]')).wrap('<li class="is-submenu-parent-item is-submenu-item is-drilldown-submenu-item" role="menu-item"></li>');}$link.data('savedHref',$link.attr('href')).removeAttr('href');$link.children('[data-submenu]').attr({'aria-hidden':true,'tabindex':0,'role':'menu'});_this._events($link);});this.$submenus.each(function(){var $menu=$(this),$back=$menu.find('.js-drilldown-back');if(!$back.length){$menu.prepend(_this.options.backButton);}_this._back($menu);});if(!this.$element.parent().hasClass('is-drilldown')){this.$wrapper=$(this.options.wrapper).addClass('is-drilldown');this.$wrapper=this.$element.wrap(this.$wrapper).parent().css(this._getMaxDims());}} /**
    * Adds event handlers to elements in the menu.
    * @function
    * @private
@@ -845,12 +850,12 @@ this.$submenuAnchors.each(function(){var $sub=$(this);var $link=$sub.find('a:fir
    */},{key:'_events',value:function _events($elem){var _this=this;$elem.off('click.zf.drilldown').on('click.zf.drilldown',function(e){if($(e.target).parentsUntil('ul','li').hasClass('is-drilldown-submenu-parent')){e.stopImmediatePropagation();e.preventDefault();} // if(e.target !== e.currentTarget.firstElementChild){
 //   return false;
 // }
-_this._show($elem.parent('li'));if(_this.options.closeOnClick){var $body=$('body').not(_this.$wrapper);$body.off('.zf.drilldown').on('click.zf.drilldown',function(e){e.preventDefault();_this._hideAll();$body.off('.zf.drilldown');});}});} /**
+_this._show($elem.parent('li'));if(_this.options.closeOnClick){var $body=$('body');$body.off('.zf.drilldown').on('click.zf.drilldown',function(e){if(e.target===_this.$element[0]||$.contains(_this.$element[0],e.target)){return;}e.preventDefault();_this._hideAll();$body.off('.zf.drilldown');});}});} /**
    * Adds keydown event listener to `li`'s in the menu.
    * @private
-   */},{key:'_keyboardEvents',value:function _keyboardEvents(){var _this=this;this.$menuItems.add(this.$element.find('.js-drilldown-back > a')).on('keydown.zf.drilldown',function(e){var $element=$(this),$elements=$element.parent('li').parent('ul').children('li').children('a'),$prevElement,$nextElement;$elements.each(function(i){if($(this).is($element)){$prevElement=$elements.eq(Math.max(0,i-1));$nextElement=$elements.eq(Math.min(i+1,$elements.length-1));return;}});Foundation.Keyboard.handleKey(e,'Drilldown',{next:function next(){if($element.is(_this.$submenuAnchors)){_this._show($element.parent('li'));$element.parent('li').one(Foundation.transitionend($element),function(){$element.parent('li').find('ul li a').filter(_this.$menuItems).first().focus();});e.preventDefault();}},previous:function previous(){_this._hide($element.parent('li').parent('ul'));$element.parent('li').parent('ul').one(Foundation.transitionend($element),function(){setTimeout(function(){$element.parent('li').parent('ul').parent('li').children('a').first().focus();},1);});e.preventDefault();},up:function up(){$prevElement.focus();e.preventDefault();},down:function down(){$nextElement.focus();e.preventDefault();},close:function close(){_this._back(); //_this.$menuItems.first().focus(); // focus to first element
+   */},{key:'_keyboardEvents',value:function _keyboardEvents(){var _this=this;this.$menuItems.add(this.$element.find('.js-drilldown-back > a')).on('keydown.zf.drilldown',function(e){var $element=$(this),$elements=$element.parent('li').parent('ul').children('li').children('a'),$prevElement,$nextElement;$elements.each(function(i){if($(this).is($element)){$prevElement=$elements.eq(Math.max(0,i-1));$nextElement=$elements.eq(Math.min(i+1,$elements.length-1));return;}});Foundation.Keyboard.handleKey(e,'Drilldown',{next:function next(){if($element.is(_this.$submenuAnchors)){_this._show($element.parent('li'));$element.parent('li').one(Foundation.transitionend($element),function(){$element.parent('li').find('ul li a').filter(_this.$menuItems).first().focus();});return true;}},previous:function previous(){_this._hide($element.parent('li').parent('ul'));$element.parent('li').parent('ul').one(Foundation.transitionend($element),function(){setTimeout(function(){$element.parent('li').parent('ul').parent('li').children('a').first().focus();},1);});return true;},up:function up(){$prevElement.focus();return true;},down:function down(){$nextElement.focus();return true;},close:function close(){_this._back(); //_this.$menuItems.first().focus(); // focus to first element
 },open:function open(){if(!$element.is(_this.$menuItems)){ // not menu item means back button
-_this._hide($element.parent('li').parent('ul'));$element.parent('li').parent('ul').one(Foundation.transitionend($element),function(){setTimeout(function(){$element.parent('li').parent('ul').parent('li').children('a').first().focus();},1);});e.preventDefault();}else if($element.is(_this.$submenuAnchors)){_this._show($element.parent('li'));$element.parent('li').one(Foundation.transitionend($element),function(){$element.parent('li').find('ul li a').filter(_this.$menuItems).first().focus();});e.preventDefault();}},handled:function handled(){e.stopImmediatePropagation();}});}); // end keyboardAccess
+_this._hide($element.parent('li').parent('ul'));$element.parent('li').parent('ul').one(Foundation.transitionend($element),function(){setTimeout(function(){$element.parent('li').parent('ul').parent('li').children('a').first().focus();},1);});}else if($element.is(_this.$submenuAnchors)){_this._show($element.parent('li'));$element.parent('li').one(Foundation.transitionend($element),function(){$element.parent('li').find('ul li a').filter(_this.$menuItems).first().focus();});}return true;},handled:function handled(preventDefault){if(preventDefault){e.preventDefault();}e.stopImmediatePropagation();}});}); // end keyboardAccess
 } /**
    * Closes all open elements, and returns to root menu.
    * @function
@@ -874,13 +879,16 @@ setTimeout(function(){_this._hideAll();},0);});} /**
    * @function
    * @fires Drilldown#open
    * @param {jQuery} $elem - the current element with a submenu to open, i.e. the `li` tag.
-   */},{key:'_show',value:function _show($elem){$elem.children('[data-submenu]').addClass('is-active');this.$element.trigger('open.zf.drilldown',[$elem]);}},{key:'_hide', /**
+   */},{key:'_show',value:function _show($elem){$elem.children('[data-submenu]').addClass('is-active'); /**
+     * Fires when the submenu has opened.
+     * @event Drilldown#open
+     */this.$element.trigger('open.zf.drilldown',[$elem]);}},{key:'_hide', /**
    * Hides a submenu
    * @function
    * @fires Drilldown#hide
    * @param {jQuery} $elem - the current sub-menu to hide, i.e. the `ul` tag.
    */value:function _hide($elem){var _this=this;$elem.addClass('is-closing').one(Foundation.transitionend($elem),function(){$elem.removeClass('is-active is-closing');$elem.blur();}); /**
-     * Fires when the submenu is has closed.
+     * Fires when the submenu has closed.
      * @event Drilldown#hide
      */$elem.trigger('hide.zf.drilldown',[$elem]);} /**
    * Iterates through the nested menus to calculate the min-height, and max-width for the menu.
@@ -890,7 +898,7 @@ setTimeout(function(){_this._hideAll();},0);});} /**
    */},{key:'_getMaxDims',value:function _getMaxDims(){var max=0,result={};this.$submenus.add(this.$element).each(function(){var numOfElems=$(this).children('li').length;max=numOfElems>max?numOfElems:max;});result['min-height']=max*this.$menuItems[0].getBoundingClientRect().height+'px';result['max-width']=this.$element[0].getBoundingClientRect().width+'px';return result;} /**
    * Destroys the Drilldown Menu
    * @function
-   */},{key:'destroy',value:function destroy(){this._hideAll();Foundation.Nest.Burn(this.$element,'drilldown');this.$element.unwrap().find('.js-drilldown-back, .is-submenu-parent-item').remove().end().find('.is-active, .is-closing, .is-drilldown-submenu').removeClass('is-active is-closing is-drilldown-submenu').end().find('[data-submenu]').removeAttr('aria-hidden tabindex role').off('.zf.drilldown').end().off('zf.drilldown');this.$element.find('a').each(function(){var $link=$(this);if($link.data('savedHref')){$link.attr('href',$link.data('savedHref')).removeData('savedHref');}else {return;}});Foundation.unregisterPlugin(this);}}]);return Drilldown;}();Drilldown.defaults={ /**
+   */},{key:'destroy',value:function destroy(){this._hideAll();Foundation.Nest.Burn(this.$element,'drilldown');this.$element.unwrap().find('.js-drilldown-back, .is-submenu-parent-item').remove().end().find('.is-active, .is-closing, .is-drilldown-submenu').removeClass('is-active is-closing is-drilldown-submenu').end().find('[data-submenu]').removeAttr('aria-hidden tabindex role');this.$submenuAnchors.each(function(){$(this).off('.zf.drilldown');});this.$element.find('a').each(function(){var $link=$(this);if($link.data('savedHref')){$link.attr('href',$link.data('savedHref')).removeData('savedHref');}else {return;}});Foundation.unregisterPlugin(this);}}]);return Drilldown;}();Drilldown.defaults={ /**
    * Markup used for JS generated back button. Prepended to submenu lists and deleted on `destroy` method, 'js-drilldown-back' class required. Remove the backslash (`\`) if copy and pasting.
    * @option
    * @example '<\li><\a>Back<\/a><\/li>'
@@ -929,7 +937,7 @@ Foundation.plugin(Drilldown,'Drilldown');}(jQuery);
    * Helper function to determine current orientation of dropdown pane.
    * @function
    * @returns {String} position - string value of a position class.
-   */},{key:'getPositionClass',value:function getPositionClass(){var verticalPosition=this.$element[0].className.match(/(top|left|right|bottom)/g);verticalPosition=verticalPosition?verticalPosition[0]:'';var horizontalPosition=/float-(.+)\s/.exec(this.$anchor[0].className);horizontalPosition=horizontalPosition?horizontalPosition[1]:'';var position=horizontalPosition?horizontalPosition+' '+verticalPosition:verticalPosition;return position;} /**
+   */},{key:'getPositionClass',value:function getPositionClass(){var verticalPosition=this.$element[0].className.match(/(top|left|right|bottom)/g);verticalPosition=verticalPosition?verticalPosition[0]:'';var horizontalPosition=/float-(\S+)\s/.exec(this.$anchor[0].className);horizontalPosition=horizontalPosition?horizontalPosition[1]:'';var position=horizontalPosition?horizontalPosition+' '+verticalPosition:verticalPosition;return position;} /**
    * Adjusts the dropdown panes orientation by adding/removing positioning classes.
    * @function
    * @private
@@ -1037,10 +1045,11 @@ Foundation.plugin(Dropdown,'Dropdown');}(jQuery);
    * Adds event listeners to elements within the menu
    * @private
    * @function
-   */value:function _events(){var _this=this,hasTouch='ontouchstart' in window||typeof window.ontouchstart!=='undefined',parClass='is-dropdown-submenu-parent';if(this.options.clickOpen||hasTouch){this.$menuItems.on('click.zf.dropdownmenu touchstart.zf.dropdownmenu',function(e){var $elem=$(e.target).parentsUntil('ul','.'+parClass),hasSub=$elem.hasClass(parClass),hasClicked=$elem.attr('data-is-click')==='true',$sub=$elem.children('.is-dropdown-submenu');if(hasSub){if(hasClicked){if(!_this.options.closeOnClick||!_this.options.clickOpen&&!hasTouch||_this.options.forceFollow&&hasTouch){return;}else {e.stopImmediatePropagation();e.preventDefault();_this._hide($elem);}}else {e.preventDefault();e.stopImmediatePropagation();_this._show($elem.children('.is-dropdown-submenu'));$elem.add($elem.parentsUntil(_this.$element,'.'+parClass)).attr('data-is-click',true);}}else {return;}});}if(!this.options.disableHover){this.$menuItems.on('mouseenter.zf.dropdownmenu',function(e){e.stopImmediatePropagation();var $elem=$(this),hasSub=$elem.hasClass(parClass);if(hasSub){clearTimeout(_this.delay);_this.delay=setTimeout(function(){_this._show($elem.children('.is-dropdown-submenu'));},_this.options.hoverDelay);}}).on('mouseleave.zf.dropdownmenu',function(e){var $elem=$(this),hasSub=$elem.hasClass(parClass);if(hasSub&&_this.options.autoclose){if($elem.attr('data-is-click')==='true'&&_this.options.clickOpen){return false;}clearTimeout(_this.delay);_this.delay=setTimeout(function(){_this._hide($elem);},_this.options.closingTime);}});}this.$menuItems.on('keydown.zf.dropdownmenu',function(e){var $element=$(e.target).parentsUntil('ul','[role="menuitem"]'),isTab=_this.$tabs.index($element)>-1,$elements=isTab?_this.$tabs:$element.siblings('li').add($element),$prevElement,$nextElement;$elements.each(function(i){if($(this).is($element)){$prevElement=$elements.eq(i-1);$nextElement=$elements.eq(i+1);return;}});var nextSibling=function nextSibling(){if(!$element.is(':last-child'))$nextElement.children('a:first').focus();},prevSibling=function prevSibling(){$prevElement.children('a:first').focus();},openSub=function openSub(){var $sub=$element.children('ul.is-dropdown-submenu');if($sub.length){_this._show($sub);$element.find('li > a:first').focus();}else {return;}},closeSub=function closeSub(){ //if ($element.is(':first-child')) {
-var close=$element.parent('ul').parent('li');close.children('a:first').focus();_this._hide(close); //}
+   */value:function _events(){var _this=this,hasTouch='ontouchstart' in window||typeof window.ontouchstart!=='undefined',parClass='is-dropdown-submenu-parent'; // used for onClick and in the keyboard handlers
+var handleClickFn=function handleClickFn(e){var $elem=$(e.target).parentsUntil('ul','.'+parClass),hasSub=$elem.hasClass(parClass),hasClicked=$elem.attr('data-is-click')==='true',$sub=$elem.children('.is-dropdown-submenu');if(hasSub){if(hasClicked){if(!_this.options.closeOnClick||!_this.options.clickOpen&&!hasTouch||_this.options.forceFollow&&hasTouch){return;}else {e.stopImmediatePropagation();e.preventDefault();_this._hide($elem);}}else {e.preventDefault();e.stopImmediatePropagation();_this._show($elem.children('.is-dropdown-submenu'));$elem.add($elem.parentsUntil(_this.$element,'.'+parClass)).attr('data-is-click',true);}}else {return;}};if(this.options.clickOpen||hasTouch){this.$menuItems.on('click.zf.dropdownmenu touchstart.zf.dropdownmenu',handleClickFn);}if(!this.options.disableHover){this.$menuItems.on('mouseenter.zf.dropdownmenu',function(e){var $elem=$(this),hasSub=$elem.hasClass(parClass);if(hasSub){clearTimeout(_this.delay);_this.delay=setTimeout(function(){_this._show($elem.children('.is-dropdown-submenu'));},_this.options.hoverDelay);}}).on('mouseleave.zf.dropdownmenu',function(e){var $elem=$(this),hasSub=$elem.hasClass(parClass);if(hasSub&&_this.options.autoclose){if($elem.attr('data-is-click')==='true'&&_this.options.clickOpen){return false;}clearTimeout(_this.delay);_this.delay=setTimeout(function(){_this._hide($elem);},_this.options.closingTime);}});}this.$menuItems.on('keydown.zf.dropdownmenu',function(e){var $element=$(e.target).parentsUntil('ul','[role="menuitem"]'),isTab=_this.$tabs.index($element)>-1,$elements=isTab?_this.$tabs:$element.siblings('li').add($element),$prevElement,$nextElement;$elements.each(function(i){if($(this).is($element)){$prevElement=$elements.eq(i-1);$nextElement=$elements.eq(i+1);return;}});var nextSibling=function nextSibling(){if(!$element.is(':last-child')){$nextElement.children('a:first').focus();e.preventDefault();}},prevSibling=function prevSibling(){$prevElement.children('a:first').focus();e.preventDefault();},openSub=function openSub(){var $sub=$element.children('ul.is-dropdown-submenu');if($sub.length){_this._show($sub);$element.find('li > a:first').focus();e.preventDefault();}else {return;}},closeSub=function closeSub(){ //if ($element.is(':first-child')) {
+var close=$element.parent('ul').parent('li');close.children('a:first').focus();_this._hide(close);e.preventDefault(); //}
 };var functions={open:openSub,close:function close(){_this._hide(_this.$element);_this.$menuItems.find('a:first').focus(); // focus to first element
-},handled:function handled(){e.preventDefault();e.stopImmediatePropagation();}};if(isTab){if(_this.vertical){ // vertical menu
+e.preventDefault();},handled:function handled(){e.stopImmediatePropagation();}};if(isTab){if(_this.$element.hasClass(_this.options.verticalClass)){ // vertical menu
 if(_this.options.alignment==='left'){ // left aligned
 $.extend(functions,{down:nextSibling,up:prevSibling,next:openSub,previous:closeSub});}else { // right aligned
 $.extend(functions,{down:nextSibling,up:prevSibling,next:closeSub,previous:openSub});}}else { // horizontal menu
@@ -1128,13 +1137,19 @@ Foundation.plugin(DropdownMenu,'DropdownMenu');}(jQuery);
    */function Equalizer(element,options){_classCallCheck(this,Equalizer);this.$element=element;this.options=$.extend({},Equalizer.defaults,this.$element.data(),options);this._init();Foundation.registerPlugin(this,'Equalizer');} /**
    * Initializes the Equalizer plugin and calls functions to get equalizer functioning on load.
    * @private
-   */_createClass(Equalizer,[{key:'_init',value:function _init(){var eqId=this.$element.attr('data-equalizer')||'';var $watched=this.$element.find('[data-equalizer-watch="'+eqId+'"]');this.$watched=$watched.length?$watched:this.$element.find('[data-equalizer-watch]');this.$element.attr('data-resize',eqId||Foundation.GetYoDigits(6,'eq'));this.hasNested=this.$element.find('[data-equalizer]').length>0;this.isNested=this.$element.parentsUntil(document.body,'[data-equalizer]').length>0;this.isOn=false;var imgs=this.$element.find('img');var tooSmall;if(this.options.equalizeOn){tooSmall=this._checkMQ();$(window).on('changed.zf.mediaquery',this._checkMQ.bind(this));}else {this._events();}if(tooSmall!==undefined&&tooSmall===false||tooSmall===undefined){if(imgs.length){Foundation.onImagesLoaded(imgs,this._reflow.bind(this));}else {this._reflow();}}} /**
+   */_createClass(Equalizer,[{key:'_init',value:function _init(){var eqId=this.$element.attr('data-equalizer')||'';var $watched=this.$element.find('[data-equalizer-watch="'+eqId+'"]');this.$watched=$watched.length?$watched:this.$element.find('[data-equalizer-watch]');this.$element.attr('data-resize',eqId||Foundation.GetYoDigits(6,'eq'));this.hasNested=this.$element.find('[data-equalizer]').length>0;this.isNested=this.$element.parentsUntil(document.body,'[data-equalizer]').length>0;this.isOn=false;this._bindHandler={onResizeMeBound:this._onResizeMe.bind(this),onPostEqualizedBound:this._onPostEqualized.bind(this)};var imgs=this.$element.find('img');var tooSmall;if(this.options.equalizeOn){tooSmall=this._checkMQ();$(window).on('changed.zf.mediaquery',this._checkMQ.bind(this));}else {this._events();}if(tooSmall!==undefined&&tooSmall===false||tooSmall===undefined){if(imgs.length){Foundation.onImagesLoaded(imgs,this._reflow.bind(this));}else {this._reflow();}}} /**
    * Removes event listeners if the breakpoint is too small.
    * @private
-   */},{key:'_pauseEvents',value:function _pauseEvents(){this.isOn=false;this.$element.off('.zf.equalizer resizeme.zf.trigger');} /**
+   */},{key:'_pauseEvents',value:function _pauseEvents(){this.isOn=false;this.$element.off({'.zf.equalizer':this._bindHandler.onPostEqualizedBound,'resizeme.zf.trigger':this._bindHandler.onResizeMeBound});} /**
+   * function to handle $elements resizeme.zf.trigger, with bound this on _bindHandler.onResizeMeBound
+   * @private
+   */},{key:'_onResizeMe',value:function _onResizeMe(e){this._reflow();} /**
+   * function to handle $elements postequalized.zf.equalizer, with bound this on _bindHandler.onPostEqualizedBound
+   * @private
+   */},{key:'_onPostEqualized',value:function _onPostEqualized(e){if(e.target!==this.$element[0]){this._reflow();}} /**
    * Initializes events for Equalizer.
    * @private
-   */},{key:'_events',value:function _events(){var _this=this;this._pauseEvents();if(this.hasNested){this.$element.on('postequalized.zf.equalizer',function(e){if(e.target!==_this.$element[0]){_this._reflow();}});}else {this.$element.on('resizeme.zf.trigger',this._reflow.bind(this));}this.isOn=true;} /**
+   */},{key:'_events',value:function _events(){var _this=this;this._pauseEvents();if(this.hasNested){this.$element.on('postequalized.zf.equalizer',this._bindHandler.onPostEqualizedBound);}else {this.$element.on('resizeme.zf.trigger',this._bindHandler.onResizeMeBound);}this.isOn=true;} /**
    * Checks the current breakpoint to the minimum required size.
    * @private
    */},{key:'_checkMQ',value:function _checkMQ(){var tooSmall=!Foundation.MediaQuery.atLeast(this.options.equalizeOn);if(tooSmall){if(this.isOn){this._pauseEvents();this.$watched.css('height','auto');}}else {if(!this.isOn){this._events();}}return tooSmall;} /**
@@ -1146,7 +1161,7 @@ Foundation.plugin(DropdownMenu,'DropdownMenu');}(jQuery);
    */},{key:'_reflow',value:function _reflow(){if(!this.options.equalizeOnStack){if(this._isStacked()){this.$watched.css('height','auto');return false;}}if(this.options.equalizeByRow){this.getHeightsByRow(this.applyHeightByRow.bind(this));}else {this.getHeights(this.applyHeight.bind(this));}} /**
    * Manually determines if the first 2 elements are *NOT* stacked.
    * @private
-   */},{key:'_isStacked',value:function _isStacked(){return this.$watched[0].offsetTop!==this.$watched[1].offsetTop;} /**
+   */},{key:'_isStacked',value:function _isStacked(){return this.$watched[0].getBoundingClientRect().top!==this.$watched[1].getBoundingClientRect().top;} /**
    * Finds the outer heights of children contained within an Equalizer parent and returns them in an array
    * @param {Function} cb - A non-optional callback to return the heights array to.
    * @returns {Array} heights - An array of heights of children within Equalizer container
@@ -1227,17 +1242,17 @@ Foundation.plugin(Equalizer,'Equalizer');}(jQuery);
    * @function
    * @private
    */},{key:'_reflow',value:function _reflow(){var match; // Iterate through each rule, but only save the last match
-for(var i in this.rules){var rule=this.rules[i];if(window.matchMedia(rule.query).matches){match=rule;}}if(match){this.replace(match.path);}} /**
+for(var i in this.rules){if(this.rules.hasOwnProperty(i)){var rule=this.rules[i];if(window.matchMedia(rule.query).matches){match=rule;}}}if(match){this.replace(match.path);}} /**
    * Gets the Foundation breakpoints and adds them to the Interchange.SPECIAL_QUERIES object.
    * @function
    * @private
-   */},{key:'_addBreakpoints',value:function _addBreakpoints(){for(var i in Foundation.MediaQuery.queries){var query=Foundation.MediaQuery.queries[i];Interchange.SPECIAL_QUERIES[query.name]=query.value;}} /**
+   */},{key:'_addBreakpoints',value:function _addBreakpoints(){for(var i in Foundation.MediaQuery.queries){if(Foundation.MediaQuery.queries.hasOwnProperty(i)){var query=Foundation.MediaQuery.queries[i];Interchange.SPECIAL_QUERIES[query.name]=query.value;}}} /**
    * Checks the Interchange element for the provided media query + content pairings
    * @function
    * @private
    * @param {Object} element - jQuery object that is an Interchange instance
    * @returns {Array} scenarios - Array of objects that have 'mq' and 'path' keys with corresponding keys
-   */},{key:'_generateRules',value:function _generateRules(element){var rulesList=[];var rules;if(this.options.rules){rules=this.options.rules;}else {rules=this.$element.data('interchange').match(/\[.*?\]/g);}for(var i in rules){var rule=rules[i].slice(1,-1).split(', ');var path=rule.slice(0,-1).join('');var query=rule[rule.length-1];if(Interchange.SPECIAL_QUERIES[query]){query=Interchange.SPECIAL_QUERIES[query];}rulesList.push({path:path,query:query});}this.rules=rulesList;} /**
+   */},{key:'_generateRules',value:function _generateRules(element){var rulesList=[];var rules;if(this.options.rules){rules=this.options.rules;}else {rules=this.$element.data('interchange').match(/\[.*?\]/g);}for(var i in rules){if(rules.hasOwnProperty(i)){var rule=rules[i].slice(1,-1).split(', ');var path=rule.slice(0,-1).join('');var query=rule[rule.length-1];if(Interchange.SPECIAL_QUERIES[query]){query=Interchange.SPECIAL_QUERIES[query];}rulesList.push({path:path,query:query});}}this.rules=rulesList;} /**
    * Update the `src` property of an image, or change the HTML of a container, to the specified path.
    * @function
    * @param {String} path - Path to the image or HTML partial.
@@ -1291,8 +1306,7 @@ Foundation.plugin(Interchange,'Interchange');}(jQuery);
    * @private
    * @function
    * @fires Magellan#update
-   */},{key:'_updateActive',value:function _updateActive() /*evt, elem, scrollPos*/{var winPos= /*scrollPos ||*/parseInt(window.pageYOffset,10),curIdx;if(winPos+this.winHeight===this.docHeight){curIdx=this.points.length-1;}else if(winPos<this.points[0]){curIdx=0;}else {var isDown=this.scrollPos<winPos,_this=this,curVisible=this.points.filter(function(p,i){return isDown?p<=winPos:p-_this.options.threshold<=winPos; //&& winPos >= _this.points[i -1] - _this.options.threshold;
-});curIdx=curVisible.length?curVisible.length-1:0;}this.$active.removeClass(this.options.activeClass);this.$active=this.$links.eq(curIdx).addClass(this.options.activeClass);if(this.options.deepLinking){var hash=this.$active[0].getAttribute('href');if(window.history.pushState){window.history.pushState(null,null,hash);}else {window.location.hash=hash;}}this.scrollPos=winPos; /**
+   */},{key:'_updateActive',value:function _updateActive() /*evt, elem, scrollPos*/{var winPos= /*scrollPos ||*/parseInt(window.pageYOffset,10),curIdx;if(winPos+this.winHeight===this.docHeight){curIdx=this.points.length-1;}else if(winPos<this.points[0]){curIdx=0;}else {var isDown=this.scrollPos<winPos,_this=this,curVisible=this.points.filter(function(p,i){return isDown?p-_this.options.barOffset<=winPos:p-_this.options.barOffset-_this.options.threshold<=winPos;});curIdx=curVisible.length?curVisible.length-1:0;}this.$active.removeClass(this.options.activeClass);this.$active=this.$links.eq(curIdx).addClass(this.options.activeClass);if(this.options.deepLinking){var hash=this.$active[0].getAttribute('href');if(window.history.pushState){window.history.pushState(null,null,hash);}else {window.location.hash=hash;}}this.scrollPos=winPos; /**
      * Fires when magellan is finished updating to the new active element.
      * @event Magellan#update
      */this.$element.trigger('update.zf.magellan',[this.$active]);} /**
@@ -1338,12 +1352,12 @@ Foundation.plugin(Magellan,'Magellan');}(jQuery);
    * @fires OffCanvas#init
    * @param {Object} element - jQuery object to initialize.
    * @param {Object} options - Overrides to the default plugin settings.
-   */function OffCanvas(element,options){_classCallCheck(this,OffCanvas);this.$element=element;this.options=$.extend({},OffCanvas.defaults,this.$element.data(),options);this.$lastTrigger=$();this._init();this._events();Foundation.registerPlugin(this,'OffCanvas');} /**
+   */function OffCanvas(element,options){_classCallCheck(this,OffCanvas);this.$element=element;this.options=$.extend({},OffCanvas.defaults,this.$element.data(),options);this.$lastTrigger=$();this.$triggers=$();this._init();this._events();Foundation.registerPlugin(this,'OffCanvas');} /**
    * Initializes the off-canvas wrapper by adding the exit overlay (if needed).
    * @function
    * @private
    */_createClass(OffCanvas,[{key:'_init',value:function _init(){var id=this.$element.attr('id');this.$element.attr('aria-hidden','true'); // Find triggers that affect this element and add aria-expanded to them
-$(document).find('[data-open="'+id+'"], [data-close="'+id+'"], [data-toggle="'+id+'"]').attr('aria-expanded','false').attr('aria-controls',id); // Add a close trigger over the body if necessary
+this.$triggers=$(document).find('[data-open="'+id+'"], [data-close="'+id+'"], [data-toggle="'+id+'"]').attr('aria-expanded','false').attr('aria-controls',id); // Add a close trigger over the body if necessary
 if(this.options.closeOnClick){if($('.js-off-canvas-exit').length){this.$exiter=$('.js-off-canvas-exit');}else {var exiter=document.createElement('div');exiter.setAttribute('class','js-off-canvas-exit');$('[data-off-canvas-content]').append(exiter);this.$exiter=$(exiter);}}this.options.isRevealed=this.options.isRevealed||new RegExp(this.options.revealClass,'g').test(this.$element[0].className);if(this.options.isRevealed){this.options.revealOn=this.options.revealOn||this.$element[0].className.match(/(reveal-for-medium|reveal-for-large)/g)[0].split('-')[2];this._setMQChecker();}if(!this.options.transitionTime){this.options.transitionTime=parseFloat(window.getComputedStyle($('[data-off-canvas-wrapper]')[0]).transitionDuration)*1000;}} /**
    * Adds event handlers to the off-canvas wrapper and the exit overlay.
    * @function
@@ -1384,7 +1398,7 @@ this.$element.on({'open.zf.trigger':this.open.bind(this),'toggle.zf.trigger':thi
      */Foundation.Move(this.options.transitionTime,this.$element,function(){$('[data-off-canvas-wrapper]').addClass('is-off-canvas-open is-open-'+_this.options.position);_this.$element.addClass('is-open'); // if (_this.options.isSticky) {
 //   _this._stick();
 // }
-});this.$element.attr('aria-hidden','false').trigger('opened.zf.offcanvas');if(this.options.closeOnClick){this.$exiter.addClass('is-visible');}if(trigger){this.$lastTrigger=trigger.attr('aria-expanded','true');}if(this.options.autoFocus){this.$element.one(Foundation.transitionend(this.$element),function(){_this.$element.find('a, button').eq(0).focus();});}if(this.options.trapFocus){$('[data-off-canvas-content]').attr('tabindex','-1');this._trapFocus();}} /**
+});this.$triggers.attr('aria-expanded','true');this.$element.attr('aria-hidden','false').trigger('opened.zf.offcanvas');if(this.options.closeOnClick){this.$exiter.addClass('is-visible');}if(trigger){this.$lastTrigger=trigger;}if(this.options.autoFocus){this.$element.one(Foundation.transitionend(this.$element),function(){_this.$element.find('a, button').eq(0).focus();});}if(this.options.trapFocus){$('[data-off-canvas-content]').attr('tabindex','-1');this._trapFocus();}} /**
    * Traps focus within the offcanvas on open.
    * @private
    */},{key:'_trapFocus',value:function _trapFocus(){var focusable=Foundation.Keyboard.findFocusable(this.$element),first=focusable.eq(0),last=focusable.eq(-1);focusable.off('.zf.offcanvas').on('keydown.zf.offcanvas',function(e){if(e.which===9||e.keycode===9){if(e.target===last[0]&&!e.shiftKey){e.preventDefault();first.focus();}if(e.target===first[0]&&e.shiftKey){e.preventDefault();last.focus();}}});} /**
@@ -1422,7 +1436,7 @@ this.$element.attr('aria-hidden','true') /**
 //     $(window).off('scroll.zf.offcanvas');
 //   }, this.options.transitionTime);
 // }
-if(this.options.closeOnClick){this.$exiter.removeClass('is-visible');}this.$lastTrigger.attr('aria-expanded','false');if(this.options.trapFocus){$('[data-off-canvas-content]').removeAttr('tabindex');}} /**
+if(this.options.closeOnClick){this.$exiter.removeClass('is-visible');}this.$triggers.attr('aria-expanded','false');if(this.options.trapFocus){$('[data-off-canvas-content]').removeAttr('tabindex');}} /**
    * Toggles the off-canvas menu open or closed.
    * @function
    * @param {Object} event - Event object passed from listener.
@@ -1690,7 +1704,7 @@ Foundation.plugin(ResponsiveMenu,'ResponsiveMenu');}(jQuery);
    * Adds necessary event handlers for the tab bar to work.
    * @function
    * @private
-   */},{key:'_events',value:function _events(){var _this=this;$(window).on('changed.zf.mediaquery',this._update.bind(this));this.$toggler.on('click.zf.responsiveToggle',this.toggleMenu.bind(this));} /**
+   */},{key:'_events',value:function _events(){var _this=this;this._updateMqHandler=this._update.bind(this);$(window).on('changed.zf.mediaquery',this._updateMqHandler);this.$toggler.on('click.zf.responsiveToggle',this.toggleMenu.bind(this));} /**
    * Checks the current media query to determine if the tab bar should be visible or hidden.
    * @function
    * @private
@@ -1703,8 +1717,7 @@ else {this.$element.hide();this.$targetMenu.show();}} /**
    */},{key:'toggleMenu',value:function toggleMenu(){if(!Foundation.MediaQuery.atLeast(this.options.hideFor)){this.$targetMenu.toggle(0); /**
        * Fires when the element attached to the tab bar toggles.
        * @event ResponsiveToggle#toggled
-       */this.$element.trigger('toggled.zf.responsiveToggle');}}},{key:'destroy',value:function destroy(){ //TODO this...
-}}]);return ResponsiveToggle;}();ResponsiveToggle.defaults={ /**
+       */this.$element.trigger('toggled.zf.responsiveToggle');}}},{key:'destroy',value:function destroy(){this.$element.off('.zf.responsiveToggle');this.$toggler.off('.zf.responsiveToggle');$(window).off('changed.zf.mediaquery',this._updateMqHandler);Foundation.unregisterPlugin(this);}}]);return ResponsiveToggle;}();ResponsiveToggle.defaults={ /**
    * The breakpoint after which the menu is always shown, and the tab bar is hidden.
    * @option
    * @example 'medium'
@@ -1726,10 +1739,10 @@ Foundation.plugin(ResponsiveToggle,'ResponsiveToggle');}(jQuery);
    */function Reveal(element,options){_classCallCheck(this,Reveal);this.$element=element;this.options=$.extend({},Reveal.defaults,this.$element.data(),options);this._init();Foundation.registerPlugin(this,'Reveal');Foundation.Keyboard.register('Reveal',{'ENTER':'open','SPACE':'open','ESCAPE':'close','TAB':'tab_forward','SHIFT_TAB':'tab_backward'});} /**
    * Initializes the modal by adding the overlay and close buttons, (if selected).
    * @private
-   */_createClass(Reveal,[{key:'_init',value:function _init(){this.id=this.$element.attr('id');this.isActive=false;this.cached={mq:Foundation.MediaQuery.current};this.isiOS=iPhoneSniff();if(this.isiOS){this.$element.addClass('is-ios');}this.$anchor=$('[data-open="'+this.id+'"]').length?$('[data-open="'+this.id+'"]'):$('[data-toggle="'+this.id+'"]');if(this.$anchor.length){var anchorId=this.$anchor[0].id||Foundation.GetYoDigits(6,'reveal');this.$anchor.attr({'aria-controls':this.id,'id':anchorId,'aria-haspopup':true,'tabindex':0});this.$element.attr({'aria-labelledby':anchorId});}if(this.options.fullScreen||this.$element.hasClass('full')){this.options.fullScreen=true;this.options.overlay=false;}if(this.options.overlay&&!this.$overlay){this.$overlay=this._makeOverlay(this.id);}this.$element.attr({'role':'dialog','aria-hidden':true,'data-yeti-box':this.id,'data-resize':this.id});if(this.$overlay){this.$element.detach().appendTo(this.$overlay);}else {this.$element.detach().appendTo($('body'));this.$element.addClass('without-overlay');}this._events();if(this.options.deepLink&&window.location.hash==='#'+this.id){$(window).one('load.zf.reveal',this.open.bind(this));}} /**
+   */_createClass(Reveal,[{key:'_init',value:function _init(){this.id=this.$element.attr('id');this.isActive=false;this.cached={mq:Foundation.MediaQuery.current};this.isMobile=mobileSniff();this.$anchor=$('[data-open="'+this.id+'"]').length?$('[data-open="'+this.id+'"]'):$('[data-toggle="'+this.id+'"]');this.$anchor.attr({'aria-controls':this.id,'aria-haspopup':true,'tabindex':0});if(this.options.fullScreen||this.$element.hasClass('full')){this.options.fullScreen=true;this.options.overlay=false;}if(this.options.overlay&&!this.$overlay){this.$overlay=this._makeOverlay(this.id);}this.$element.attr({'role':'dialog','aria-hidden':true,'data-yeti-box':this.id,'data-resize':this.id});if(this.$overlay){this.$element.detach().appendTo(this.$overlay);}else {this.$element.detach().appendTo($('body'));this.$element.addClass('without-overlay');}this._events();if(this.options.deepLink&&window.location.hash==='#'+this.id){$(window).one('load.zf.reveal',this.open.bind(this));}} /**
    * Creates an overlay div to display behind the modal.
    * @private
-   */},{key:'_makeOverlay',value:function _makeOverlay(id){var $overlay=$('<div></div>').addClass('reveal-overlay').attr({'tabindex':-1,'aria-hidden':true}).appendTo('body');return $overlay;} /**
+   */},{key:'_makeOverlay',value:function _makeOverlay(id){var $overlay=$('<div></div>').addClass('reveal-overlay').appendTo('body');return $overlay;} /**
    * Updates position of modal
    * TODO:  Figure out if we actually need to cache these values or if it doesn't matter
    * @private
@@ -1738,7 +1751,8 @@ Foundation.plugin(ResponsiveToggle,'ResponsiveToggle');}(jQuery);
 if(!this.$overlay||this.options.hOffset!=='auto'){this.$element.css({left:left+'px'});this.$element.css({margin:'0px'});}} /**
    * Adds event handlers for the modal.
    * @private
-   */},{key:'_events',value:function _events(){var _this=this;this.$element.on({'open.zf.trigger':this.open.bind(this),'close.zf.trigger':this.close.bind(this),'toggle.zf.trigger':this.toggle.bind(this),'resizeme.zf.trigger':function resizemeZfTrigger(){_this._updatePosition();}});if(this.$anchor.length){this.$anchor.on('keydown.zf.reveal',function(e){if(e.which===13||e.which===32){e.stopPropagation();e.preventDefault();_this.open();}});}if(this.options.closeOnClick&&this.options.overlay){this.$overlay.off('.zf.reveal').on('click.zf.reveal',function(e){if(e.target===_this.$element[0]||$.contains(_this.$element[0],e.target)){return;}_this.close();});}if(this.options.deepLink){$(window).on('popstate.zf.reveal:'+this.id,this._handleState.bind(this));}} /**
+   */},{key:'_events',value:function _events(){var _this2=this;var _this=this;this.$element.on({'open.zf.trigger':this.open.bind(this),'close.zf.trigger':function closeZfTrigger(event,$element){if(event.target===_this.$element[0]||$(event.target).parents('[data-closable]')[0]===$element){ // only close reveal when it's explicitly called
+return _this2.close.apply(_this2);}},'toggle.zf.trigger':this.toggle.bind(this),'resizeme.zf.trigger':function resizemeZfTrigger(){_this._updatePosition();}});if(this.$anchor.length){this.$anchor.on('keydown.zf.reveal',function(e){if(e.which===13||e.which===32){e.stopPropagation();e.preventDefault();_this.open();}});}if(this.options.closeOnClick&&this.options.overlay){this.$overlay.off('.zf.reveal').on('click.zf.reveal',function(e){if(e.target===_this.$element[0]||$.contains(_this.$element[0],e.target)){return;}_this.close();});}if(this.options.deepLink){$(window).on('popstate.zf.reveal:'+this.id,this._handleState.bind(this));}} /**
    * Handles modal methods on back/forward button clicks or any other event that triggers popstate.
    * @private
    */},{key:'_handleState',value:function _handleState(e){if(window.location.hash==='#'+this.id&&!this.isActive){this.open();}else {this.close();}} /**
@@ -1746,36 +1760,36 @@ if(!this.$overlay||this.options.hOffset!=='auto'){this.$element.css({left:left+'
    * @function
    * @fires Reveal#closeme
    * @fires Reveal#open
-   */},{key:'open',value:function open(){var _this2=this;if(this.options.deepLink){var hash='#'+this.id;if(window.history.pushState){window.history.pushState(null,null,hash);}else {window.location.hash=hash;}}this.isActive=true; // Make elements invisible, but remove display: none so we can get size and positioning
-this.$element.css({'visibility':'hidden'}).show().scrollTop(0);if(this.options.overlay){this.$overlay.css({'visibility':'hidden'}).show();}this._updatePosition();this.$element.hide().css({'visibility':''});if(this.$overlay){this.$overlay.css({'visibility':''}).hide();}if(!this.options.multipleOpened){ /**
+   */},{key:'open',value:function open(){var _this3=this;if(this.options.deepLink){var hash='#'+this.id;if(window.history.pushState){window.history.pushState(null,null,hash);}else {window.location.hash=hash;}}this.isActive=true; // Make elements invisible, but remove display: none so we can get size and positioning
+this.$element.css({'visibility':'hidden'}).show().scrollTop(0);if(this.options.overlay){this.$overlay.css({'visibility':'hidden'}).show();}this._updatePosition();this.$element.hide().css({'visibility':''});if(this.$overlay){this.$overlay.css({'visibility':''}).hide();if(this.$element.hasClass('fast')){this.$overlay.addClass('fast');}else if(this.$element.hasClass('slow')){this.$overlay.addClass('slow');}}if(!this.options.multipleOpened){ /**
        * Fires immediately before the modal opens.
        * Closes any other modals that are currently open
        * @event Reveal#closeme
        */this.$element.trigger('closeme.zf.reveal',this.id);} // Motion UI method of reveal
-if(this.options.animationIn){if(this.options.overlay){Foundation.Motion.animateIn(this.$overlay,'fade-in');}Foundation.Motion.animateIn(this.$element,this.options.animationIn,function(){_this2.focusableElements=Foundation.Keyboard.findFocusable(_this2.$element);});} // jQuery method of reveal
+if(this.options.animationIn){var _this;(function(){var afterAnimationFocus=function afterAnimationFocus(){_this.$element.attr({'aria-hidden':false,'tabindex':-1}).focus();console.log('focus');};_this=_this3;if(_this3.options.overlay){Foundation.Motion.animateIn(_this3.$overlay,'fade-in');}Foundation.Motion.animateIn(_this3.$element,_this3.options.animationIn,function(){_this3.focusableElements=Foundation.Keyboard.findFocusable(_this3.$element);afterAnimationFocus();});})();} // jQuery method of reveal
 else {if(this.options.overlay){this.$overlay.show(0);}this.$element.show(this.options.showDelay);} // handle accessibility
 this.$element.attr({'aria-hidden':false,'tabindex':-1}).focus(); /**
      * Fires when the modal has successfully opened.
      * @event Reveal#open
-     */this.$element.trigger('open.zf.reveal');if(this.isiOS){var scrollPos=window.pageYOffset;$('html, body').addClass('is-reveal-open').scrollTop(scrollPos);}else {$('body').addClass('is-reveal-open');}$('body').addClass('is-reveal-open').attr('aria-hidden',this.options.overlay||this.options.fullScreen?true:false);setTimeout(function(){_this2._extraHandlers();},0);} /**
+     */this.$element.trigger('open.zf.reveal');if(this.isMobile){this.originalScrollPos=window.pageYOffset;$('html, body').addClass('is-reveal-open');}else {$('body').addClass('is-reveal-open');}setTimeout(function(){_this3._extraHandlers();},0);} /**
    * Adds extra event handlers for the body and window if necessary.
    * @private
    */},{key:'_extraHandlers',value:function _extraHandlers(){var _this=this;this.focusableElements=Foundation.Keyboard.findFocusable(this.$element);if(!this.options.overlay&&this.options.closeOnClick&&!this.options.fullScreen){$('body').on('click.zf.reveal',function(e){if(e.target===_this.$element[0]||$.contains(_this.$element[0],e.target)){return;}_this.close();});}if(this.options.closeOnEsc){$(window).on('keydown.zf.reveal',function(e){Foundation.Keyboard.handleKey(e,'Reveal',{close:function close(){if(_this.options.closeOnEsc){_this.close();_this.$anchor.focus();}}});});} // lock focus within modal while tabbing
 this.$element.on('keydown.zf.reveal',function(e){var $target=$(this); // handle keyboard event with keyboard util
 Foundation.Keyboard.handleKey(e,'Reveal',{tab_forward:function tab_forward(){if(_this.$element.find(':focus').is(_this.focusableElements.eq(-1))){ // left modal downwards, setting focus to first element
-_this.focusableElements.eq(0).focus();e.preventDefault();}if(_this.focusableElements.length===0){ // no focusable elements inside the modal at all, prevent tabbing in general
-e.preventDefault();}},tab_backward:function tab_backward(){if(_this.$element.find(':focus').is(_this.focusableElements.eq(0))||_this.$element.is(':focus')){ // left modal upwards, setting focus to last element
-_this.focusableElements.eq(-1).focus();e.preventDefault();}if(_this.focusableElements.length===0){ // no focusable elements inside the modal at all, prevent tabbing in general
-e.preventDefault();}},open:function open(){if(_this.$element.find(':focus').is(_this.$element.find('[data-close]'))){setTimeout(function(){ // set focus back to anchor if close button has been activated
+_this.focusableElements.eq(0).focus();return true;}if(_this.focusableElements.length===0){ // no focusable elements inside the modal at all, prevent tabbing in general
+return true;}},tab_backward:function tab_backward(){if(_this.$element.find(':focus').is(_this.focusableElements.eq(0))||_this.$element.is(':focus')){ // left modal upwards, setting focus to last element
+_this.focusableElements.eq(-1).focus();return true;}if(_this.focusableElements.length===0){ // no focusable elements inside the modal at all, prevent tabbing in general
+return true;}},open:function open(){if(_this.$element.find(':focus').is(_this.$element.find('[data-close]'))){setTimeout(function(){ // set focus back to anchor if close button has been activated
 _this.$anchor.focus();},1);}else if($target.is(_this.focusableElements)){ // dont't trigger if acual element has focus (i.e. inputs, links, ...)
-_this.open();}},close:function close(){if(_this.options.closeOnEsc){_this.close();_this.$anchor.focus();}}});});} /**
+_this.open();}},close:function close(){if(_this.options.closeOnEsc){_this.close();_this.$anchor.focus();}},handled:function handled(preventDefault){if(preventDefault){e.preventDefault();}}});});} /**
    * Closes the modal.
    * @function
    * @fires Reveal#closed
    */},{key:'close',value:function close(){if(!this.isActive||!this.$element.is(':visible')){return false;}var _this=this; // Motion UI method of hiding
 if(this.options.animationOut){if(this.options.overlay){Foundation.Motion.animateOut(this.$overlay,'fade-out',finishUp);}else {finishUp();}Foundation.Motion.animateOut(this.$element,this.options.animationOut);} // jQuery method of hiding
 else {if(this.options.overlay){this.$overlay.hide(0,finishUp);}else {finishUp();}this.$element.hide(this.options.hideDelay);} // Conditionals to remove extra event listeners added on open
-if(this.options.closeOnEsc){$(window).off('keydown.zf.reveal');}if(!this.options.overlay&&this.options.closeOnClick){$('body').off('click.zf.reveal');}this.$element.off('keydown.zf.reveal');function finishUp(){if(_this.isiOS){$('html, body').removeClass('is-reveal-open');}else {$('body').removeClass('is-reveal-open');}$('body').attr({'aria-hidden':false,'tabindex':''});_this.$element.attr('aria-hidden',true); /**
+if(this.options.closeOnEsc){$(window).off('keydown.zf.reveal');}if(!this.options.overlay&&this.options.closeOnClick){$('body').off('click.zf.reveal');}this.$element.off('keydown.zf.reveal');function finishUp(){if(_this.isMobile){$('html, body').removeClass('is-reveal-open');if(_this.originalScrollPos){$('body').scrollTop(_this.originalScrollPos);_this.originalScrollPos=null;}}else {$('body').removeClass('is-reveal-open');}_this.$element.attr('aria-hidden',true); /**
       * Fires when the modal is done closing.
       * @event Reveal#closed
       */_this.$element.trigger('closed.zf.reveal');} /**
@@ -1845,7 +1859,7 @@ this.$overlay.hide().off().remove();}this.$element.hide().off();this.$anchor.off
    * @option
    * @example false
    */deepLink:false}; // Window exports
-Foundation.plugin(Reveal,'Reveal');function iPhoneSniff(){return (/iP(ad|hone|od).*OS/.test(window.navigator.userAgent));}}(jQuery);
+Foundation.plugin(Reveal,'Reveal');function iPhoneSniff(){return (/iP(ad|hone|od).*OS/.test(window.navigator.userAgent));}function androidSniff(){return (/Android/.test(window.navigator.userAgent));}function mobileSniff(){return iPhoneSniff()||androidSniff();}}(jQuery);
 'use strict';var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||false;descriptor.configurable=true;if("value" in descriptor)descriptor.writable=true;Object.defineProperty(target,descriptor.key,descriptor);}}return function(Constructor,protoProps,staticProps){if(protoProps)defineProperties(Constructor.prototype,protoProps);if(staticProps)defineProperties(Constructor,staticProps);return Constructor;};}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor)){throw new TypeError("Cannot call a class as a function");}}!function($){ /**
  * Slider module.
  * @module foundation.slider
@@ -1872,7 +1886,8 @@ this._setInitAttr(1);this._events(this.$handle2);}if(!isDbl){this._setHandlePos(
    * @param {Function} cb - callback function to fire on completion.
    * @fires Slider#moved
    * @fires Slider#changed
-   */},{key:'_setHandlePos',value:function _setHandlePos($hndl,location,noInvert,cb){ //might need to alter that slightly for bars that will have odd number selections.
+   */},{key:'_setHandlePos',value:function _setHandlePos($hndl,location,noInvert,cb){ // don't move if the slider has been disabled since its initialization
+if(this.$element.hasClass(this.options.disabledClass)){return;} //might need to alter that slightly for bars that will have odd number selections.
 location=parseFloat(location); //on input change events, convert string to number...grumble.
 // prevent slider from running out of bounds, if value exceeds the limits set through options, override the value to min/max
 if(location<this.options.start){location=this.options.start;}else if(location>this.options.end){location=this.options.end;}var isDbl=this.options.doubleSided;if(isDbl){ //this block is to prevent 2 handles from crossing eachother. Could/should be improved.
@@ -1928,8 +1943,9 @@ _this.$fill.css(css);}}); /**
    * @param {Number} val - floating point number for the new value of the slider.
    * TODO clean this up, there's a lot of repeated code between this and the _setHandlePos fn.
    */},{key:'_handleEvent',value:function _handleEvent(e,$handle,val){var value,hasVal;if(!val){ //click or drag events
-e.preventDefault();var _this=this,vertical=this.options.vertical,param=vertical?'height':'width',direction=vertical?'top':'left',pageXY=vertical?e.pageY:e.pageX,halfOfHandle=this.$handle[0].getBoundingClientRect()[param]/2,barDim=this.$element[0].getBoundingClientRect()[param],barOffset=this.$element.offset()[direction]-pageXY, //if the cursor position is less than or greater than the elements bounding coordinates, set coordinates within those bounds
-barXY=barOffset>0?-halfOfHandle:barOffset-halfOfHandle<-barDim?barDim:Math.abs(barOffset),offsetPct=percent(barXY,barDim);value=(this.options.end-this.options.start)*offsetPct+this.options.start; // turn everything around for RTL, yay math!
+e.preventDefault();var _this=this,vertical=this.options.vertical,param=vertical?'height':'width',direction=vertical?'top':'left',eventOffset=vertical?e.pageY:e.pageX,halfOfHandle=this.$handle[0].getBoundingClientRect()[param]/2,barDim=this.$element[0].getBoundingClientRect()[param],windowScroll=vertical?$(window).scrollTop():$(window).scrollLeft();var elemOffset=this.$element.offset()[direction]; // touch events emulated by the touch util give position relative to screen, add window.scroll to event coordinates...
+// best way to guess this is simulated is if clientY == pageY
+if(e.clientY===e.pageY){eventOffset=eventOffset+windowScroll;}var eventFromBar=eventOffset-elemOffset;var barXY;if(eventFromBar<0){barXY=0;}else if(eventFromBar>barDim){barXY=barDim;}else {barXY=eventFromBar;}offsetPct=percent(barXY,barDim);value=(this.options.end-this.options.start)*offsetPct+this.options.start; // turn everything around for RTL, yay math!
 if(Foundation.rtl()&&!this.options.vertical){value=this.options.end-value;}value=_this._adjustValue(null,value); //boolean flag for the setHandlePos fn, specifically for vertical sliders
 hasVal=false;if(!$handle){ //figure out which handle it is, pass it to the next function.
 var firstHndlPos=absPosition(this.$handle,direction,barXY,param),secndHndlPos=absPosition(this.$handle2,direction,barXY,param);$handle=firstHndlPos<=secndHndlPos?this.$handle:this.$handle2;}}else { //change event on input
@@ -1944,8 +1960,9 @@ value=this._adjustValue(null,val);hasVal=true;}this._setHandlePos($handle,value,
    * @function
    * @private
    * @param {jQuery} $handle - the current handle to apply listeners to.
-   */},{key:'_events',value:function _events($handle){if(this.options.disabled){return false;}var _this=this,curHandle,timer;this.inputs.off('change.zf.slider').on('change.zf.slider',function(e){var idx=_this.inputs.index($(this));_this._handleEvent(e,_this.handles.eq(idx),$(this).val());});if(this.options.clickSelect){this.$element.off('click.zf.slider').on('click.zf.slider',function(e){if(_this.$element.data('dragging')){return false;}if(!$(e.target).is('[data-slider-handle]')){if(_this.options.doubleSided){_this._handleEvent(e);}else {_this._handleEvent(e,_this.$handle);}}});}if(this.options.draggable){this.handles.addTouch();var $body=$('body');$handle.off('mousedown.zf.slider').on('mousedown.zf.slider',function(e){$handle.addClass('is-dragging');_this.$fill.addClass('is-dragging'); //
-_this.$element.data('dragging',true);curHandle=$(e.currentTarget);$body.on('mousemove.zf.slider',function(e){e.preventDefault();_this._handleEvent(e,curHandle);}).on('mouseup.zf.slider',function(e){_this._handleEvent(e,curHandle);$handle.removeClass('is-dragging');_this.$fill.removeClass('is-dragging');_this.$element.data('dragging',false);$body.off('mousemove.zf.slider mouseup.zf.slider');});});}$handle.off('keydown.zf.slider').on('keydown.zf.slider',function(e){var _$handle=$(this),idx=_this.options.doubleSided?_this.handles.index(_$handle):0,oldValue=parseFloat(_this.inputs.eq(idx).val()),newValue; // handle keyboard event with keyboard util
+   */},{key:'_events',value:function _events($handle){var _this=this,curHandle,timer;this.inputs.off('change.zf.slider').on('change.zf.slider',function(e){var idx=_this.inputs.index($(this));_this._handleEvent(e,_this.handles.eq(idx),$(this).val());});if(this.options.clickSelect){this.$element.off('click.zf.slider').on('click.zf.slider',function(e){if(_this.$element.data('dragging')){return false;}if(!$(e.target).is('[data-slider-handle]')){if(_this.options.doubleSided){_this._handleEvent(e);}else {_this._handleEvent(e,_this.$handle);}}});}if(this.options.draggable){this.handles.addTouch();var $body=$('body');$handle.off('mousedown.zf.slider').on('mousedown.zf.slider',function(e){$handle.addClass('is-dragging');_this.$fill.addClass('is-dragging'); //
+_this.$element.data('dragging',true);curHandle=$(e.currentTarget);$body.on('mousemove.zf.slider',function(e){e.preventDefault();_this._handleEvent(e,curHandle);}).on('mouseup.zf.slider',function(e){_this._handleEvent(e,curHandle);$handle.removeClass('is-dragging');_this.$fill.removeClass('is-dragging');_this.$element.data('dragging',false);$body.off('mousemove.zf.slider mouseup.zf.slider');});}) // prevent events triggered by touch
+.on('selectstart.zf.slider touchmove.zf.slider',function(e){e.preventDefault();});}$handle.off('keydown.zf.slider').on('keydown.zf.slider',function(e){var _$handle=$(this),idx=_this.options.doubleSided?_this.handles.index(_$handle):0,oldValue=parseFloat(_this.inputs.eq(idx).val()),newValue; // handle keyboard event with keyboard util
 Foundation.Keyboard.handleKey(e,'Slider',{decrease:function decrease(){newValue=oldValue-_this.options.step;},increase:function increase(){newValue=oldValue+_this.options.step;},decrease_fast:function decrease_fast(){newValue=oldValue-_this.options.step*10;},increase_fast:function increase_fast(){newValue=oldValue+_this.options.step*10;},handled:function handled(){ // only set handle pos when event was handled specially
 e.preventDefault();_this._setHandlePos(_$handle,newValue,true);}}); /*if (newValue) { // if pressed key has special function, update value
         e.preventDefault();
@@ -2020,7 +2037,7 @@ e.preventDefault();_this._setHandlePos(_$handle,newValue,true);}}); /*if (newVal
    * @option
    * @example false
    */invertVertical:false, /**
-   * Milliseconds before the `changed.zf-slider` event is triggered after value change. 
+   * Milliseconds before the `changed.zf-slider` event is triggered after value change.
    * @option
    * @example 500
    */changedDelay:500};function percent(frac,num){return frac/num;}function absPosition($handle,dir,clickPos,param){return Math.abs($handle.position()[dir]+$handle[param]()/2-clickPos);} // Window exports
@@ -2065,7 +2082,7 @@ Foundation.plugin(Slider,'Slider');}(jQuery); //*********this is in case we go t
    * If using multiple elements as anchors, calculates the top and bottom pixel values the sticky thing should stick and unstick on.
    * @function
    * @private
-   */},{key:'_parsePoints',value:function _parsePoints(){var top=this.options.topAnchor,btm=this.options.btmAnchor,pts=[top,btm],breaks={};if(top&&btm){for(var i=0,len=pts.length;i<len&&pts[i];i++){var pt;if(typeof pts[i]==='number'){pt=pts[i];}else {var place=pts[i].split(':'),anchor=$('#'+place[0]);pt=anchor.offset().top;if(place[1]&&place[1].toLowerCase()==='bottom'){pt+=anchor[0].getBoundingClientRect().height;}}breaks[i]=pt;}}else {breaks={0:1,1:document.documentElement.scrollHeight};}this.points=breaks;return;} /**
+   */},{key:'_parsePoints',value:function _parsePoints(){var top=this.options.topAnchor==""?1:this.options.topAnchor,btm=this.options.btmAnchor==""?document.documentElement.scrollHeight:this.options.btmAnchor,pts=[top,btm],breaks={};for(var i=0,len=pts.length;i<len&&pts[i];i++){var pt;if(typeof pts[i]==='number'){pt=pts[i];}else {var place=pts[i].split(':'),anchor=$('#'+place[0]);pt=anchor.offset().top;if(place[1]&&place[1].toLowerCase()==='bottom'){pt+=anchor[0].getBoundingClientRect().height;}}breaks[i]=pt;}this.points=breaks;return;} /**
    * Adds event handlers for the scrolling element.
    * @private
    * @param {String} id - psuedo-random id for unique scroll event listener.
@@ -2088,18 +2105,18 @@ Foundation.plugin(Slider,'Slider');}(jQuery); //*********this is in case we go t
    * @fires Sticky#stuckto
    * @function
    * @private
-   */},{key:'_setSticky',value:function _setSticky(){var stickTo=this.options.stickTo,mrgn=stickTo==='top'?'marginTop':'marginBottom',notStuckTo=stickTo==='top'?'bottom':'top',css={};css[mrgn]=this.options[mrgn]+'em';css[stickTo]=0;css[notStuckTo]='auto';css['left']=this.$container.offset().left+parseInt(window.getComputedStyle(this.$container[0])["padding-left"],10);this.isStuck=true;this.$element.removeClass('is-anchored is-at-'+notStuckTo).addClass('is-stuck is-at-'+stickTo).css(css) /**
+   */},{key:'_setSticky',value:function _setSticky(){var _this=this,stickTo=this.options.stickTo,mrgn=stickTo==='top'?'marginTop':'marginBottom',notStuckTo=stickTo==='top'?'bottom':'top',css={};css[mrgn]=this.options[mrgn]+'em';css[stickTo]=0;css[notStuckTo]='auto';css['left']=this.$container.offset().left+parseInt(window.getComputedStyle(this.$container[0])["padding-left"],10);this.isStuck=true;this.$element.removeClass('is-anchored is-at-'+notStuckTo).addClass('is-stuck is-at-'+stickTo).css(css) /**
                   * Fires when the $element has become `position: fixed;`
                   * Namespaced to `top` or `bottom`, e.g. `sticky.zf.stuckto:top`
                   * @event Sticky#stuckto
-                  */.trigger('sticky.zf.stuckto:'+stickTo);} /**
+                  */.trigger('sticky.zf.stuckto:'+stickTo);this.$element.on("transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd",function(){_this._setSizes();});} /**
    * Causes the $element to become unstuck.
    * Removes `position: fixed;`, and helper classes.
    * Adds other helper classes.
    * @param {Boolean} isTop - tells the function if the $element should anchor to the top or bottom of its $anchor element.
    * @fires Sticky#unstuckfrom
    * @private
-   */},{key:'_removeSticky',value:function _removeSticky(isTop){var stickTo=this.options.stickTo,stickToTop=stickTo==='top',css={},anchorPt=(this.points?this.points[1]-this.points[0]:this.anchorHeight)-this.elemHeight,mrgn=stickToTop?'marginTop':'marginBottom',notStuckTo=stickToTop?'bottom':'top',topOrBottom=isTop?'top':'bottom';css[mrgn]=0;if(isTop&&!stickToTop||stickToTop&&!isTop){css[stickTo]=anchorPt;css[notStuckTo]=0;}else {css[stickTo]=0;css[notStuckTo]=anchorPt;}css['left']='';this.isStuck=false;this.$element.removeClass('is-stuck is-at-'+stickTo).addClass('is-anchored is-at-'+topOrBottom).css(css) /**
+   */},{key:'_removeSticky',value:function _removeSticky(isTop){var stickTo=this.options.stickTo,stickToTop=stickTo==='top',css={},anchorPt=(this.points?this.points[1]-this.points[0]:this.anchorHeight)-this.elemHeight,mrgn=stickToTop?'marginTop':'marginBottom',notStuckTo=stickToTop?'bottom':'top',topOrBottom=isTop?'top':'bottom';css[mrgn]=0;css['bottom']='auto';if(isTop){css['top']=0;}else {css['top']=anchorPt;}css['left']='';this.isStuck=false;this.$element.removeClass('is-stuck is-at-'+stickTo).addClass('is-anchored is-at-'+topOrBottom).css(css) /**
                   * Fires when the $element has become anchored.
                   * Namespaced to `top` or `bottom`, e.g. `sticky.zf.unstuckfrom:bottom`
                   * @event Sticky#unstuckfrom
@@ -2108,7 +2125,7 @@ Foundation.plugin(Slider,'Slider');}(jQuery); //*********this is in case we go t
    * Calls `_setBreakPoints`.
    * @param {Function} cb - optional callback function to fire on completion of `_setBreakPoints`.
    * @private
-   */},{key:'_setSizes',value:function _setSizes(cb){this.canStick=Foundation.MediaQuery.atLeast(this.options.stickyOn);if(!this.canStick){cb();}var _this=this,newElemWidth=this.$container[0].getBoundingClientRect().width,comp=window.getComputedStyle(this.$container[0]),pdng=parseInt(comp['padding-right'],10);if(this.$anchor&&this.$anchor.length){this.anchorHeight=this.$anchor[0].getBoundingClientRect().height;}else {this._parsePoints();}this.$element.css({'max-width':newElemWidth-pdng+'px'});var newContainerHeight=this.$element[0].getBoundingClientRect().height||this.containerHeight;this.containerHeight=newContainerHeight;this.$container.css({height:newContainerHeight});this.elemHeight=newContainerHeight;if(this.isStuck){this.$element.css({"left":this.$container.offset().left+parseInt(comp['padding-left'],10)});}this._setBreakPoints(newContainerHeight,function(){if(cb){cb();}});} /**
+   */},{key:'_setSizes',value:function _setSizes(cb){this.canStick=Foundation.MediaQuery.atLeast(this.options.stickyOn);if(!this.canStick){cb();}var _this=this,newElemWidth=this.$container[0].getBoundingClientRect().width,comp=window.getComputedStyle(this.$container[0]),pdng=parseInt(comp['padding-right'],10);if(this.$anchor&&this.$anchor.length){this.anchorHeight=this.$anchor[0].getBoundingClientRect().height;}else {this._parsePoints();}this.$element.css({'max-width':newElemWidth-pdng+'px'});var newContainerHeight=this.$element[0].getBoundingClientRect().height||this.containerHeight;if(this.$element.css("display")=="none"){newContainerHeight=0;}this.containerHeight=newContainerHeight;this.$container.css({height:newContainerHeight});this.elemHeight=newContainerHeight;if(this.isStuck){this.$element.css({"left":this.$container.offset().left+parseInt(comp['padding-left'],10)});}this._setBreakPoints(newContainerHeight,function(){if(cb){cb();}});} /**
    * Sets the upper and lower breakpoints for the element to become sticky/unsticky.
    * @param {Number} elemHeight - px value for sticky.$element height, calculated by `_setSizes`.
    * @param {Function} cb - optional callback function to be called on completion.
@@ -2121,7 +2138,7 @@ winHeight=window.innerHeight;if(this.options.stickTo==='top'){topPoint-=mTop;bot
    * Resets the element to the top position first.
    * Removes event listeners, JS-added css properties and classes, and unwraps the $element if the JS added the $container.
    * @function
-   */},{key:'destroy',value:function destroy(){this._removeSticky(true);this.$element.removeClass(this.options.stickyClass+' is-anchored is-at-top').css({height:'',top:'',bottom:'','max-width':''}).off('resizeme.zf.trigger');this.$anchor.off('change.zf.sticky');$(window).off(this.scrollListener);if(this.wasWrapped){this.$element.unwrap();}else {this.$container.removeClass(this.options.containerClass).css({height:''});}Foundation.unregisterPlugin(this);}}]);return Sticky;}();Sticky.defaults={ /**
+   */},{key:'destroy',value:function destroy(){this._removeSticky(true);this.$element.removeClass(this.options.stickyClass+' is-anchored is-at-top').css({height:'',top:'',bottom:'','max-width':''}).off('resizeme.zf.trigger');if(this.$anchor&&this.$anchor.length){this.$anchor.off('change.zf.sticky');}$(window).off(this.scrollListener);if(this.wasWrapped){this.$element.unwrap();}else {this.$container.removeClass(this.options.containerClass).css({height:''});}Foundation.unregisterPlugin(this);}}]);return Sticky;}();Sticky.defaults={ /**
    * Customizable container template. Add your own classes for styling and sizing.
    * @option
    * @example '&lt;div data-sticky-container class="small-6 columns"&gt;&lt;/div&gt;'
@@ -2189,14 +2206,14 @@ Foundation.plugin(Sticky,'Sticky');}(jQuery);
    */_createClass(Tabs,[{key:'_init',value:function _init(){var _this=this;this.$tabTitles=this.$element.find('.'+this.options.linkClass);this.$tabContent=$('[data-tabs-content="'+this.$element[0].id+'"]');this.$tabTitles.each(function(){var $elem=$(this),$link=$elem.find('a'),isActive=$elem.hasClass('is-active'),hash=$link[0].hash.slice(1),linkId=$link[0].id?$link[0].id:hash+'-label',$tabContent=$('#'+hash);$elem.attr({'role':'presentation'});$link.attr({'role':'tab','aria-controls':hash,'aria-selected':isActive,'id':linkId});$tabContent.attr({'role':'tabpanel','aria-hidden':!isActive,'aria-labelledby':linkId});if(isActive&&_this.options.autoFocus){$link.focus();}});if(this.options.matchHeight){var $images=this.$tabContent.find('img');if($images.length){Foundation.onImagesLoaded($images,this._setHeight.bind(this));}else {this._setHeight();}}this._events();} /**
    * Adds event handlers for items within the tabs.
    * @private
-   */},{key:'_events',value:function _events(){this._addKeyHandler();this._addClickHandler();if(this.options.matchHeight){$(window).on('changed.zf.mediaquery',this._setHeight.bind(this));}} /**
+   */},{key:'_events',value:function _events(){this._addKeyHandler();this._addClickHandler();this._setHeightMqHandler=null;if(this.options.matchHeight){this._setHeightMqHandler=this._setHeight.bind(this);$(window).on('changed.zf.mediaquery',this._setHeightMqHandler);}} /**
    * Adds click handlers for items within the tabs.
    * @private
    */},{key:'_addClickHandler',value:function _addClickHandler(){var _this=this;this.$element.off('click.zf.tabs').on('click.zf.tabs','.'+this.options.linkClass,function(e){e.preventDefault();e.stopPropagation();if($(this).hasClass('is-active')){return;}_this._handleTabChange($(this));});} /**
    * Adds keyboard event handlers for items within the tabs.
    * @private
-   */},{key:'_addKeyHandler',value:function _addKeyHandler(){var _this=this;var $firstTab=_this.$element.find('li:first-of-type');var $lastTab=_this.$element.find('li:last-of-type');this.$tabTitles.off('keydown.zf.tabs').on('keydown.zf.tabs',function(e){if(e.which===9)return;e.stopPropagation();e.preventDefault();var $element=$(this),$elements=$element.parent('ul').children('li'),$prevElement,$nextElement;$elements.each(function(i){if($(this).is($element)){if(_this.options.wrapOnKeys){$prevElement=i===0?$elements.last():$elements.eq(i-1);$nextElement=i===$elements.length-1?$elements.first():$elements.eq(i+1);}else {$prevElement=$elements.eq(Math.max(0,i-1));$nextElement=$elements.eq(Math.min(i+1,$elements.length-1));}return;}}); // handle keyboard event with keyboard util
-Foundation.Keyboard.handleKey(e,'Tabs',{open:function open(){$element.find('[role="tab"]').focus();_this._handleTabChange($element);},previous:function previous(){$prevElement.find('[role="tab"]').focus();_this._handleTabChange($prevElement);},next:function next(){$nextElement.find('[role="tab"]').focus();_this._handleTabChange($nextElement);}});});} /**
+   */},{key:'_addKeyHandler',value:function _addKeyHandler(){var _this=this;var $firstTab=_this.$element.find('li:first-of-type');var $lastTab=_this.$element.find('li:last-of-type');this.$tabTitles.off('keydown.zf.tabs').on('keydown.zf.tabs',function(e){if(e.which===9)return;var $element=$(this),$elements=$element.parent('ul').children('li'),$prevElement,$nextElement;$elements.each(function(i){if($(this).is($element)){if(_this.options.wrapOnKeys){$prevElement=i===0?$elements.last():$elements.eq(i-1);$nextElement=i===$elements.length-1?$elements.first():$elements.eq(i+1);}else {$prevElement=$elements.eq(Math.max(0,i-1));$nextElement=$elements.eq(Math.min(i+1,$elements.length-1));}return;}}); // handle keyboard event with keyboard util
+Foundation.Keyboard.handleKey(e,'Tabs',{open:function open(){$element.find('[role="tab"]').focus();_this._handleTabChange($element);},previous:function previous(){$prevElement.find('[role="tab"]').focus();_this._handleTabChange($prevElement);},next:function next(){$nextElement.find('[role="tab"]').focus();_this._handleTabChange($nextElement);},handled:function handled(){e.stopPropagation();e.preventDefault();}});});} /**
    * Opens the tab `$targetContent` defined by `$target`.
    * @param {jQuery} $target - Tab to open.
    * @fires Tabs#change
@@ -2217,7 +2234,7 @@ Foundation.Keyboard.handleKey(e,'Tabs',{open:function open(){$element.find('[rol
    */value:function _setHeight(){var max=0;this.$tabContent.find('.'+this.options.panelClass).css('height','').each(function(){var panel=$(this),isActive=panel.hasClass('is-active');if(!isActive){panel.css({'visibility':'hidden','display':'block'});}var temp=this.getBoundingClientRect().height;if(!isActive){panel.css({'visibility':'','display':''});}max=temp>max?temp:max;}).css('height',max+'px');} /**
    * Destroys an instance of an tabs.
    * @fires Tabs#destroyed
-   */},{key:'destroy',value:function destroy(){this.$element.find('.'+this.options.linkClass).off('.zf.tabs').hide().end().find('.'+this.options.panelClass).hide();if(this.options.matchHeight){$(window).off('changed.zf.mediaquery');}Foundation.unregisterPlugin(this);}}]);return Tabs;}();Tabs.defaults={ /**
+   */},{key:'destroy',value:function destroy(){this.$element.find('.'+this.options.linkClass).off('.zf.tabs').hide().end().find('.'+this.options.panelClass).hide();if(this.options.matchHeight){if(this._setHeightMqHandler!=null){$(window).off('changed.zf.mediaquery',this._setHeightMqHandler);}}Foundation.unregisterPlugin(this);}}]);return Tabs;}();Tabs.defaults={ /**
    * Allows the window to scroll to content of active pane on load if set to true.
    * @option
    * @example false
@@ -2297,7 +2314,7 @@ Foundation.plugin(Toggler,'Toggler');}(jQuery);
    */function Tooltip(element,options){_classCallCheck(this,Tooltip);this.$element=element;this.options=$.extend({},Tooltip.defaults,this.$element.data(),options);this.isActive=false;this.isClick=false;this._init();Foundation.registerPlugin(this,'Tooltip');} /**
    * Initializes the tooltip by setting the creating the tip element, adding it's text, setting private variables and setting attributes on the anchor.
    * @private
-   */_createClass(Tooltip,[{key:'_init',value:function _init(){var elemId=this.$element.attr('aria-describedby')||Foundation.GetYoDigits(6,'tooltip');this.options.positionClass=this._getPositionClass(this.$element);this.options.tipText=this.options.tipText||this.$element.attr('title');this.template=this.options.template?$(this.options.template):this._buildTemplate(elemId);this.template.appendTo(document.body).text(this.options.tipText).hide();this.$element.attr({'title':'','aria-describedby':elemId,'data-yeti-box':elemId,'data-toggle':elemId,'data-resize':elemId}).addClass(this.triggerClass); //helper variables to track movement on collisions
+   */_createClass(Tooltip,[{key:'_init',value:function _init(){var elemId=this.$element.attr('aria-describedby')||Foundation.GetYoDigits(6,'tooltip');this.options.positionClass=this.options.positionClass||this._getPositionClass(this.$element);this.options.tipText=this.options.tipText||this.$element.attr('title');this.template=this.options.template?$(this.options.template):this._buildTemplate(elemId);this.template.appendTo(document.body).text(this.options.tipText).hide();this.$element.attr({'title':'','aria-describedby':elemId,'data-yeti-box':elemId,'data-toggle':elemId,'data-resize':elemId}).addClass(this.triggerClass); //helper variables to track movement on collisions
 this.usedPositions=[];this.counter=4;this.classChanged=false;this._events();} /**
    * Grabs the current positioning class, if present, and returns the value or an empty string.
    * @private
@@ -2343,12 +2360,13 @@ var _this=this;this.template.stop().attr({'aria-hidden':true,'data-is-active':fa
    * adds event listeners for the tooltip and its anchor
    * TODO combine some of the listeners like focus and mouseenter, etc.
    * @private
-   */},{key:'_events',value:function _events(){var _this=this;var $template=this.template;var isFocus=false;if(!this.options.disableHover){this.$element.on('mouseenter.zf.tooltip',function(e){if(!_this.isActive){_this.timeout=setTimeout(function(){_this.show();},_this.options.hoverDelay);}}).on('mouseleave.zf.tooltip',function(e){clearTimeout(_this.timeout);if(!isFocus||!_this.isClick&&_this.options.clickOpen){_this.hide();}});}if(this.options.clickOpen){this.$element.on('mousedown.zf.tooltip',function(e){e.stopImmediatePropagation();if(_this.isClick){_this.hide(); // _this.isClick = false;
-}else {_this.isClick=true;if((_this.options.disableHover||!_this.$element.attr('tabindex'))&&!_this.isActive){_this.show();}}});}if(!this.options.disableForTouch){this.$element.on('tap.zf.tooltip touchend.zf.tooltip',function(e){_this.isActive?_this.hide():_this.show();});}this.$element.on({ // 'toggle.zf.trigger': this.toggle.bind(this),
+   */},{key:'_events',value:function _events(){var _this=this;var $template=this.template;var isFocus=false;if(!this.options.disableHover){this.$element.on('mouseenter.zf.tooltip',function(e){if(!_this.isActive){_this.timeout=setTimeout(function(){_this.show();},_this.options.hoverDelay);}}).on('mouseleave.zf.tooltip',function(e){clearTimeout(_this.timeout);if(!isFocus||_this.isClick&&!_this.options.clickOpen){_this.hide();}});}if(this.options.clickOpen){this.$element.on('mousedown.zf.tooltip',function(e){e.stopImmediatePropagation();if(_this.isClick){ //_this.hide();
+// _this.isClick = false;
+}else {_this.isClick=true;if((_this.options.disableHover||!_this.$element.attr('tabindex'))&&!_this.isActive){_this.show();}}});}else {this.$element.on('mousedown.zf.tooltip',function(e){e.stopImmediatePropagation();_this.isClick=true;});}if(!this.options.disableForTouch){this.$element.on('tap.zf.tooltip touchend.zf.tooltip',function(e){_this.isActive?_this.hide():_this.show();});}this.$element.on({ // 'toggle.zf.trigger': this.toggle.bind(this),
 // 'close.zf.trigger': this.hide.bind(this)
-'close.zf.trigger':this.hide.bind(this)});this.$element.on('focus.zf.tooltip',function(e){isFocus=true; // console.log(_this.isClick);
-if(_this.isClick){return false;}else { // $(window)
-_this.show();}}).on('focusout.zf.tooltip',function(e){isFocus=false;_this.isClick=false;_this.hide();}).on('resizeme.zf.trigger',function(){if(_this.isActive){_this._setPosition();}});} /**
+'close.zf.trigger':this.hide.bind(this)});this.$element.on('focus.zf.tooltip',function(e){isFocus=true;if(_this.isClick){ // If we're not showing open on clicks, we need to pretend a click-launched focus isn't
+// a real focus, otherwise on hover and come back we get bad behavior
+if(!_this.options.clickOpen){isFocus=false;}return false;}else {_this.show();}}).on('focusout.zf.tooltip',function(e){isFocus=false;_this.isClick=false;_this.hide();}).on('resizeme.zf.trigger',function(){if(_this.isActive){_this._setPosition();}});} /**
    * adds a toggle method, in addition to the static show() & hide() functions
    * @function
    */},{key:'toggle',value:function toggle(){if(this.isActive){this.hide();}else {this.show();}} /**

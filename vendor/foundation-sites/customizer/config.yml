@@ -109,6 +109,9 @@ media_object:
 menu:
   sass: menu
 
+menu_icon:
+  sass: menu-icon
+
 off_canvas:
   sass: off-canvas
   js: offcanvas
@@ -153,6 +156,7 @@ slider:
     - motion
     - triggers
     - mediaQuery
+    - keyboard
 
 sticky:
   sass: sticky
@@ -169,6 +173,7 @@ reveal:
     - motion
     - triggers
     - mediaQuery
+    - keyboard
 
 switch:
   sass: switch
