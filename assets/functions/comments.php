@@ -8,7 +8,7 @@ function joints_comments($comment, $args, $depth) {
 			    <?php echo get_avatar( $comment, 75 ); ?>
 			  </div>
 			<div class="media-object-section">
-				<article id="comment-<?php comment_ID(); ?>" class="clearfix large-12 columns">
+				<article id="comment-<?php comment_ID(); ?>">
 					<header class="comment-author">
 						<?php
 							// create variable
