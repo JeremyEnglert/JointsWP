@@ -1,6 +1,7 @@
 {
   "name": "foundation-sites",
-  "version": "6.2.3",
+  "version": "6.2.4",
+  "license": "MIT",
   "main": [
     "scss/foundation.scss",
     "dist/foundation.js"
@@ -30,11 +31,11 @@
     "what-input": "~2.0.0"
   },
   "homepage": "https://github.com/zurb/foundation-sites",
-  "_release": "6.2.3",
+  "_release": "6.2.4",
   "_resolution": {
     "type": "version",
-    "tag": "v6.2.3",
-    "commit": "3e4478b793bac38d2e7d7d5772a97f2ba44237c1"
+    "tag": "v6.2.4",
+    "commit": "ab172838d6de406204956015c9fd393c5a526e0e"
   },
   "_source": "https://github.com/zurb/foundation-sites.git",
   "_target": ">=6.1",
