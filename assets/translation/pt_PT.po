@@ -2,375 +2,350 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp theme bones\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-02 22:11+0100\n"
+"POT-Creation-Date: 2016-10-26 23:23+0100\n"
 "PO-Revision-Date: \n"
+"Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
 "Language-Team: fulgor <frag.fulgor@gmail.com>\n"
-"Language-Team: fulgor <frag.fulgor@gmail.com>\n"
+"Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: __;_e;_n\n"
-"X-Poedit-Basepath: /home/fulgor/GIT/bones\n"
-"Last-Translator: Homem Árvore <alexandre@homem-arvore.com>\n"
-"X-Generator: Poedit 1.5.4\n"
-"X-Poedit-SearchPath-0: /home/fulgor/GIT/bones\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Generator: Poedit 1.8.11\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: comments.php:12
-msgid "This post is password protected. Enter the password to view comments."
-msgstr ""
-"Este artigo está protegido por uma password. Insira uma password para ver os "
-"comentários."
-
-#: comments.php:23
-msgid "Response"
-msgstr "Resposta"
-
-#: comments.php:24
-msgid "Responses"
-msgstr "Respostas"
-
-#: comments.php:25
-msgid "One"
-msgstr "Um"
-
-#: comments.php:26
-msgid "No"
-msgstr "Não"
-
-#: comments.php:32
-msgid "to"
-msgstr "para"
-
-#: comments.php:59
-msgid "Comments are closed."
-msgstr "Comentários estão fechados"
-
-#: comments.php:70
-msgid "Leave a Reply"
-msgstr "Deixar uma Resposta"
-
-#: comments.php:70
-#, php-format
-msgid "Leave a Reply to %s"
-msgstr "Deixar uma Resposta a %s"
-
-#: comments.php:78
-msgid "You must be"
-msgstr "Tem de ser"
-
-#: comments.php:78
-msgid "logged in"
-msgstr "sessão iniciada"
-
-#: comments.php:78
-msgid "to post a comment"
-msgstr "para inserir um comentário"
-
-#: comments.php:86
-msgid "Logged in as"
-msgstr "Identificado como"
-
-#: comments.php:86
-msgid "Log out of this account"
-msgstr "Sair desta conta"
-
-#: comments.php:86
-msgid "Log out"
-msgstr "Sair"
-
-#: comments.php:93
-msgid "Name"
-msgstr "Nome"
-
-#: comments.php:93 comments.php:98
-msgid "(required)"
-msgstr "(obrigatório)"
-
-#: comments.php:94
-msgid "Your Name"
-msgstr "O Seu Nome"
-
-#: comments.php:98
-msgid "Email"
-msgstr "Email"
-
-#: comments.php:99
-msgid "Your Email"
-msgstr "O seu Email"
-
-#: comments.php:100
-msgid "will not be published"
-msgstr "não será publicado"
-
-#: comments.php:104
-msgid "Website"
-msgstr "Website"
-
-#: comments.php:105
-msgid "Your Website"
-msgstr "o Seu Website"
-
-#: comments.php:112
-msgid "Your Comment Here..."
-msgstr "Os seus comentário Aqui…"
-
-#: comments.php:115
-msgid "Submit Comment"
-msgstr "Enviar Comentário"
-
-#: comments.php:120
-msgid "You can use these tags"
-msgstr "Pode usar estas marcas"
-
-#: header.php:23
-#, php-format
-msgid "Page %s"
-msgstr "Página %s"
-
-#: taxonomy-custom_cat.php:22 archive.php:9
-msgid "Posts Categorized:"
-msgstr "Artigos Categorizados:"
-
-#: taxonomy-custom_cat.php:32 embed-post_meta.php:1 single-custom_type.php:30
-msgid "Posted"
-msgstr "Públicado"
-
-#: taxonomy-custom_cat.php:32 embed-post_meta.php:1 single-custom_type.php:30
-msgid "by"
-msgstr "por"
-
-#: taxonomy-custom_cat.php:32 embed-post_meta.php:1 single-custom_type.php:30
-msgid "filed under"
-msgstr "arquivado em"
-
-#: taxonomy-custom_cat.php:41
-msgid "Read more"
-msgstr "Ler mais"
-
-#: functions.php:103
-msgid "(Edit)"
-msgstr "(Editar)"
-
-#: functions.php:107
-msgid "Your comment is awaiting moderation."
-msgstr "O seu comentário aguarda moderação."
-
-#: functions.php:124
-msgid "Search for:"
-msgstr "Procurar por:"
-
-#: functions.php:125
-msgid "Search the Site..."
-msgstr "Procurar o Site..."
-
-#: 404.php:11
+#: 404.php:12
 msgid "Epic 404 - Article Not Found"
-msgstr "404 Épico – Artigo não Encontrado"
+msgstr "404 épico – Artigo não encontrado"
 
-#: 404.php:17
+#: 404.php:16
 msgid ""
 "The article you were looking for was not found, but maybe try looking again!"
 msgstr ""
-"O artigo que estava à procura não foi encontrado, talvez queira tentar outra "
-"vez!"
+"Não foi possível encontrar o conteúdo que procurou, talvez queira tentar "
+"outra vez!"
 
-#: search.php:7
-msgid "Search Results for:"
-msgstr "Resultados da Pesquisa para: "
+#: assets/functions/admin.php:35
+msgid "The RSS Feed is either empty or unavailable."
+msgstr "O feed RSS está vazio ou indisponível."
 
-#: search.php:23
-msgid "Read more on"
-msgstr "Ler mais em"
+#: assets/functions/admin.php:39
+msgid "j F Y @ g:i a"
+msgstr "j \\d\\e F, Y - G:i"
 
-#: archive.php:13
-msgid "Posts Tagged:"
-msgstr "Artigos Etiquetados:"
+#: assets/functions/admin.php:51
+msgid "Custom RSS Feed (Customize in admin.php)"
+msgstr "Feed RSS personalizado (Personalizar em admin.php)"
 
-#: archive.php:17 author.php:8
-msgid "Posts By:"
-msgstr "Artigos Por:"
+#: assets/functions/admin.php:65
+msgid ""
+"<span id=\"footer-thankyou\">Developed by <a href=\"#\" target=\"_blank"
+"\">Your Site Name</a></span>."
+msgstr ""
+"<span id=\"footer-thankyou\">Desenvolvido por <a href=\"#\" target=\"_blank"
+"\">O nome do seu site</a></span>."
 
-#: archive.php:21
-msgid "Daily Archives:"
-msgstr "Arquivos Diários:"
+#: assets/functions/cleanup.php:74
+msgid "Read"
+msgstr "Ler"
 
-#: archive.php:25
-msgid "Monthly Archives:"
-msgstr "Arquivos Mensais:"
+#: assets/functions/cleanup.php:74
+msgid "... Read more &raquo;"
+msgstr "... Ler mais &raquo;"
 
-#: archive.php:29
-msgid "Yearly Archives:"
-msgstr "Arquivos Anuais:"
+#: assets/functions/cleanup.php:96
+#, php-format
+msgid "Posts by %s"
+msgstr "Conteúdos de %s"
 
-#: single-custom_type.php:43
-msgid "Custom Tags"
-msgstr "Etiquetas Personalizadas"
+#: assets/functions/comments.php:17
+#, php-format
+msgid "%s"
+msgstr "%s"
 
-#: embed-tags.php:3
-msgid "Tag"
-msgstr "Etiqueta"
+#: assets/functions/comments.php:18
+msgid " F jS, Y - g:ia"
+msgstr "j \\d\\e F, Y - G:i"
 
-#: embed-tags.php:3
-msgid "Tags"
-msgstr "Etiquetas"
+#: assets/functions/comments.php:19
+msgid "(Edit)"
+msgstr "(Editar)"
 
-#: image.php:20
-msgid "Read the rest of this entry"
-msgstr "Ler o resto desta entrada"
+#: assets/functions/comments.php:23
+msgid "Your comment is awaiting moderation."
+msgstr "O seu comentário aguarda moderação."
 
-#: image.php:38
-msgid "Sorry, no attachments matched your criteria."
-msgstr "Desculpe, não existem anexos que correspondam a esse critério."
-
-#: embed-prev_next.php:3
-msgid "&laquo; Older Entries"
-msgstr "&laquo; Entradas mais Antigas"
-
-#: embed-prev_next.php:4
-msgid "Newer Entries &raquo;"
-msgstr "Entradas mais Recentes &raquo;"
-
-#: footer.php:9
-msgid "is powered by"
-msgstr "funciona graças a"
-
-#: embed-not_found.php:3
-msgid "Not Found"
-msgstr "Não Encontrado"
-
-#: embed-not_found.php:6
-msgid "Sorry, but the requested resource was not found on this site."
-msgstr "Desculpa, mas o recurso pedido não se encontra disponível neste site."
-
-#: sidebar.php:15
-msgid "Please activate some Widgets."
-msgstr "Por favor active alguns Widgets."
-
-#: library/bones.php:52
-msgid "Read more &raquo;"
-msgstr "Ler mais &raquo;"
-
-#: library/custom-post-type.php:24
+#: assets/functions/custom-post-type.php:22
 msgid "Custom Types"
-msgstr "Tipos Personalizados"
+msgstr "Tipos personalizados"
 
-#: library/custom-post-type.php:25
+#: assets/functions/custom-post-type.php:23
 msgid "Custom Post"
-msgstr "Post Personalizado"
+msgstr "Conteúdo personalizado"
 
-#: library/custom-post-type.php:26
+#: assets/functions/custom-post-type.php:24
+msgid "All Custom Posts"
+msgstr "Todos os conteúdos personalizados"
+
+#: assets/functions/custom-post-type.php:25
 msgid "Add New"
-msgstr "Adicionar Novo"
+msgstr "Adicionar novo"
 
-#: library/custom-post-type.php:27
+#: assets/functions/custom-post-type.php:26
 msgid "Add New Custom Type"
-msgstr "Adicionar Novo Tipo Personalizado"
+msgstr "Adicionar novo tipo personalizado"
 
-#: library/custom-post-type.php:28
+#: assets/functions/custom-post-type.php:27
 msgid "Edit"
 msgstr "Editar"
 
-#: library/custom-post-type.php:29
+#: assets/functions/custom-post-type.php:28
 msgid "Edit Post Types"
-msgstr "Editar Tipos de Artigos"
+msgstr "Editar tipos de conteúdo"
 
-#: library/custom-post-type.php:30
+#: assets/functions/custom-post-type.php:29
 msgid "New Post Type"
-msgstr "Novo Tipo de Artigo"
+msgstr "Novo tipo de conteúdo"
 
-#: library/custom-post-type.php:31
+#: assets/functions/custom-post-type.php:30
 msgid "View Post Type"
-msgstr "Ver Tipo de Artigo"
+msgstr "Ver tipo de conteúdo"
 
-#: library/custom-post-type.php:32
+#: assets/functions/custom-post-type.php:31
 msgid "Search Post Type"
-msgstr "Procurar Tipo de Artigo"
+msgstr "Procurar tipo de conteúdo"
 
-#: library/custom-post-type.php:33
+#: assets/functions/custom-post-type.php:32
 msgid "Nothing found in the Database."
-msgstr "Nada encontrado na Base de Dados"
+msgstr "Nada encontrado na base de dados"
 
-#: library/custom-post-type.php:34
+#: assets/functions/custom-post-type.php:33
 msgid "Nothing found in Trash"
-msgstr "Nada encontrado no Lixo"
+msgstr "Nada encontrado no lixo"
 
-#: library/custom-post-type.php:37
+#: assets/functions/custom-post-type.php:36
 msgid "This is the example custom post type"
-msgstr "Este é o exemplo do tipo de artigo personalizado"
+msgstr "Este é o exemplo de tipo de contúdo personalizado"
 
-#: library/custom-post-type.php:73
+#: assets/functions/custom-post-type.php:73
 msgid "Custom Categories"
-msgstr "Categoria Personalizadas"
+msgstr "Categorias personalizadas"
 
-#: library/custom-post-type.php:74
+#: assets/functions/custom-post-type.php:74
 msgid "Custom Category"
-msgstr "Categoria Personalizada"
+msgstr "Categoria personalizada"
 
-#: library/custom-post-type.php:75
+#: assets/functions/custom-post-type.php:75
 msgid "Search Custom Categories"
-msgstr "Procurar Categorias Personalizadas"
+msgstr "Procurar categorias personalizadas"
 
-#: library/custom-post-type.php:76
+#: assets/functions/custom-post-type.php:76
 msgid "All Custom Categories"
-msgstr "Todas as Categorias Personalizadas"
+msgstr "Todas as categorias personalizadas"
 
-#: library/custom-post-type.php:77
+#: assets/functions/custom-post-type.php:77
 msgid "Parent Custom Category"
-msgstr "Categoria Personalizada Mãe"
+msgstr "Categoria personalizada superior"
 
-#: library/custom-post-type.php:78
+#: assets/functions/custom-post-type.php:78
 msgid "Parent Custom Category:"
-msgstr "Categoria Personalizada Mãe:"
+msgstr "Categoria personalizada superior:"
 
-#: library/custom-post-type.php:79
+#: assets/functions/custom-post-type.php:79
 msgid "Edit Custom Category"
-msgstr "Editar Categoria Personalizada"
+msgstr "Editar categoria personalizada"
 
-#: library/custom-post-type.php:80
+#: assets/functions/custom-post-type.php:80
 msgid "Update Custom Category"
-msgstr "Actualizar Categoria Personalizada"
+msgstr "Actualizar categoria personalizada"
 
-#: library/custom-post-type.php:81
+#: assets/functions/custom-post-type.php:81
 msgid "Add New Custom Category"
-msgstr "Adicionar Nova Categoria Personalizada"
+msgstr "Adicionar nova categoria personalizada"
 
-#: library/custom-post-type.php:82
+#: assets/functions/custom-post-type.php:82
 msgid "New Custom Category Name"
-msgstr "Novo Nome de Categoria Personalizada"
+msgstr "Nome da nova categoria personalizada"
 
-#: library/custom-post-type.php:95
+#: assets/functions/custom-post-type.php:96
+msgid "Custom Tags"
+msgstr "Etiquetas personalizadas"
+
+#: assets/functions/custom-post-type.php:97
 msgid "Custom Tag"
-msgstr "Etiqueta Personalizada"
+msgstr "Etiqueta personalizada"
 
-#: library/custom-post-type.php:96
+#: assets/functions/custom-post-type.php:98
 msgid "Search Custom Tags"
-msgstr "Procurar Etiquetas Personalizadas"
+msgstr "Procurar etiquetas personalizadas"
 
-#: library/custom-post-type.php:97
+#: assets/functions/custom-post-type.php:99
 msgid "All Custom Tags"
-msgstr "Todas as Etiquetas Personalizadas"
+msgstr "Todas as etiquetas personalizadas"
 
-#: library/custom-post-type.php:98
+#: assets/functions/custom-post-type.php:100
 msgid "Parent Custom Tag"
-msgstr "Etiqueta Personalizada Mãe"
+msgstr "Etiqueita personalizada superior"
 
-#: library/custom-post-type.php:99
+#: assets/functions/custom-post-type.php:101
 msgid "Parent Custom Tag:"
-msgstr "Etiqueta Personalizada Mãe:"
+msgstr "Etiqueita personalizada superior:"
 
-#: library/custom-post-type.php:100
+#: assets/functions/custom-post-type.php:102
 msgid "Edit Custom Tag"
-msgstr "Editar "
+msgstr "Editar etiqueta personalizada"
 
-#: library/custom-post-type.php:101
+#: assets/functions/custom-post-type.php:103
 msgid "Update Custom Tag"
-msgstr "Actualizar Etiqueta Personalizada"
+msgstr "Actualizar etiqueta personalizada"
 
-#: library/custom-post-type.php:102
+#: assets/functions/custom-post-type.php:104
 msgid "Add New Custom Tag"
-msgstr "Adicionar Nova Etiqueta Personalizada"
+msgstr "Adicionar nova etiqueta personalizada"
 
-#: library/custom-post-type.php:103
+#: assets/functions/custom-post-type.php:105
 msgid "New Custom Tag Name"
-msgstr "Novo Nome para Etiqueta Personalizada"
+msgstr "Nome da nova etiqueta personalizada"
+
+#: assets/functions/menu.php:5
+msgid "The Main Menu"
+msgstr "O menu principal"
+
+#: assets/functions/menu.php:6 assets/functions/menu.php:55
+msgid "Footer Links"
+msgstr "Ligações do rodapé"
+
+#: assets/functions/page-navi.php:35
+msgid "First"
+msgstr "Primeira"
+
+#: assets/functions/page-navi.php:39
+msgid "Previous"
+msgstr "Anterior"
+
+#: assets/functions/page-navi.php:49
+msgid "Next"
+msgstr "Seguinte"
+
+#: assets/functions/page-navi.php:52
+msgid "Last"
+msgstr "Última"
+
+#: assets/functions/related-posts.php:18
+msgid "<h4>Related Posts</h4>"
+msgstr "<h4>Conteúdos relacionados</h4>"
+
+#: assets/functions/sidebar.php:6
+msgid "Sidebar 1"
+msgstr "Barra lateral 1"
+
+#: assets/functions/sidebar.php:7
+msgid "The first (primary) sidebar."
+msgstr "A primeira barra lateral (principal)."
+
+#: assets/functions/sidebar.php:16
+msgid "Offcanvas"
+msgstr "Offcanvas"
+
+#: assets/functions/sidebar.php:17
+msgid "The offcanvas sidebar."
+msgstr "A barra lateral offcanvas."
+
+#: comments.php:15
+#, php-format
+msgctxt "comments title"
+msgid "One comment on &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s comments on &ldquo;%2$s&rdquo;"
+msgstr[0] "Um comentário em &ldquo;%2$s&rdquo;"
+msgstr[1] "%1$s comentários em &ldquo;%2$s&rdquo;"
+
+#: comments.php:24 comments.php:40
+msgid "Comment navigation"
+msgstr "Navegação de comentários"
+
+#: comments.php:27 comments.php:43
+msgid "Older Comments"
+msgstr "Comentários mais antigos"
+
+#: comments.php:28 comments.php:44
+msgid "Newer Comments"
+msgstr "Comentários mais recentes"
+
+#: comments.php:56
+msgid "Comments are closed."
+msgstr "Os comentários estãos fechados."
+
+#: parts/content-missing.php:6
+msgid "Sorry, No Results."
+msgstr "Desculpe, nenhum resultado."
+
+#: parts/content-missing.php:10
+msgid "Try your search again."
+msgstr "Tente pesquisar novamente."
+
+#: parts/content-missing.php:18 parts/content-missing.php:36
+msgid "This is the error message in the parts/content-missing.php template."
+msgstr "Esta é a mensagem de erro no modelo parts/content-missing.php."
+
+#: parts/content-missing.php:24
+msgid "Oops, Post Not Found!"
+msgstr "Ups! Conteúdo não encontrado!"
+
+#: parts/content-missing.php:28
+msgid "Uh Oh. Something is missing. Try double checking things."
+msgstr "Ups. Falta algo. Verifique de novo."
+
+#: parts/loop-archive-grid.php:26 parts/loop-archive.php:9
+msgid "Read more..."
+msgstr "Ler mais..."
+
+#: parts/loop-archive.php:13 parts/loop-single.php:15
+msgid "Tags:"
+msgstr "Etiquetas:"
+
+#: parts/loop-single.php:14
+msgid "Pages:"
+msgstr "Páginas:"
+
+#: parts/nav-offcanvas-topbar.php:16 parts/nav-offcanvas.php:10
+#: parts/nav-title-bar.php:7
+msgid "Menu"
+msgstr "Menu"
+
+#: search.php:9
+msgid "Search Results for:"
+msgstr "Resultados de pesquisa por:"
+
+#: searchform.php:3
+msgctxt "label"
+msgid "Search for:"
+msgstr "Procurar por:"
+
+#: searchform.php:4
+msgctxt "jointswp"
+msgid "Search..."
+msgstr "Procurar…"
+
+#: searchform.php:4
+msgctxt "jointswp"
+msgid "Search for:"
+msgstr "Procurar por:"
+
+#: searchform.php:6
+msgctxt "jointswp"
+msgid "Search"
+msgstr "Procurar"
+
+#: sidebar.php:12
+msgid "Please activate some Widgets."
+msgstr "Por favor active alguns widgets."
+
+#: taxonomy-custom_cat.php:25
+msgid "Posts Categorized:"
+msgstr "Conteúdos categorizados:"
