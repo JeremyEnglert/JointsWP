@@ -85,6 +85,9 @@ dropdown_menu:
 
 equalizer:
   js: equalizer
+  js_utils:
+    - mediaQuery
+    - timerAndImageLoader
 
 flex_video:
   sass: flex-video
@@ -108,6 +111,9 @@ media_object:
 
 menu:
   sass: menu
+
+menu_icon:
+  sass: menu-icon
 
 off_canvas:
   sass: off-canvas
@@ -153,6 +159,7 @@ slider:
     - motion
     - triggers
     - mediaQuery
+    - keyboard
 
 sticky:
   sass: sticky
@@ -169,6 +176,7 @@ reveal:
     - motion
     - triggers
     - mediaQuery
+    - keyboard
 
 switch:
   sass: switch

@@ -51,7 +51,7 @@ $titlebar-icon-spacing: 0.25rem !default;
 
     .menu-icon {
       margin-#{$global-left}: $titlebar-icon-spacing;
-      margin-#{$global-right}: $titlebar-padding;
+      margin-#{$global-right}: $titlebar-icon-spacing;
     }
   }
 
@@ -81,9 +81,5 @@ $titlebar-icon-spacing: 0.25rem !default;
     font-weight: $titlebar-text-font-weight;
     vertical-align: middle;
     display: inline-block;
-  }
-
-  .menu-icon.dark {
-    @include hamburger;
   }
 }
