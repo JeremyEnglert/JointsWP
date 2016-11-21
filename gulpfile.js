@@ -1,4 +1,4 @@
-// GULP PACKA
+// GULP PACKAGES
 var gulp  = require('gulp'),
     gutil = require('gulp-util'),
     sass = require('gulp-sass'),
@@ -9,7 +9,6 @@ var gulp  = require('gulp'),
     stylish = require('jshint-stylish'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
-    rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
     babel = require('gulp-babel'),
     argv = require('yargs').argv,
