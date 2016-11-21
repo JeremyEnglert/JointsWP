@@ -22,7 +22,6 @@
     "gulp-if": "^2.0.2",
     "gulp-jshint": "^1.11.0",
     "gulp-plumber": "^1.0.1",
-    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.0.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.2.0",
@@ -31,12 +30,10 @@
     "yargs": "^4.3.2"
   },
   "scripts": {
+	"scripts": "gulp scripts",
     "styles": "gulp styles",
-    "site-js": "gulp site-js",
-    "foundation-js": "gulp foundation-js",
-    "bower": "gulp bower",
-    "browsersync": "gulp browsersync",
     "watch": "gulp watch",
+    "browsersync": "gulp browsersync",
     "update-foundation": "npm install foundation-sites"
   }
 }
