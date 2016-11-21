@@ -15,12 +15,7 @@ CSS file.
 @import "settings";
 
 // Import foundation.scss from vendor files
-@import "../../vendor/foundation-sites/scss/foundation";
-
-// Import Motion-UI from vendor files
-@import "../../vendor/motion-ui/src/motion-ui";
-@include motion-ui-transitions;
-@include motion-ui-animations;
+@import "../../node_modules/foundation-sites/scss/foundation";
 
 // Select the components you want to use
 @include foundation-global-styles;
@@ -61,7 +56,6 @@ CSS file.
 @include foundation-title-bar;
 @include foundation-tooltip;
 @include foundation-top-bar;
-
 
 // Import your custom styles
 @import "main";
