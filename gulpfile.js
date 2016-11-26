@@ -44,8 +44,8 @@ const BUILD = {
 		'build/js/**/*.js',
     ],
    
-    // Scss files will be concantonated, minified if ran with --production
-    styles: 'build/scss/**/*.scss',
+	// Scss files will be concantonated, minified if ran with --production
+	styles: 'build/scss/**/*.scss',
 		
 	// Images placed here will be optimized
 	images: 'build/images/**/*'
@@ -73,9 +73,9 @@ gulp.task('scripts', function() {
 		    gutil.log(gutil.colors.red(error.message));
 		    this.emit('end');
 		}))
-			.pipe(plugin.babel({
+		.pipe(plugin.babel({
 			presets: ['es2015'],
-		    compact: true
+			compact: true
 		}))
 		.pipe(plugin.sourcemaps.init())
 		.pipe(plugin.jshint())
@@ -88,20 +88,20 @@ gulp.task('scripts', function() {
 
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
-    return gulp.src(BUILD.styles)
-        .pipe(plugin.plumber(function(error) {
-            gutil.log(gutil.colors.red(error.message));
-            this.emit('end');
-        }))
-        .pipe(plugin.sourcemaps.init())
-        .pipe(plugin.sass())
-        .pipe(plugin.autoprefixer({
-            browsers: ['last 2 versions'],
-            cascade: false
-        }))
-        .pipe(plugin.if(PRODUCTION, plugin.cssnano()))
-        .pipe(plugin.sourcemaps.write('.'))
-        .pipe(gulp.dest(ASSETS.styles))
+	return gulp.src(BUILD.styles)
+		.pipe(plugin.plumber(function(error) {
+		    gutil.log(gutil.colors.red(error.message));
+		    this.emit('end');
+		}))
+		.pipe(plugin.sourcemaps.init())
+		.pipe(plugin.sass())
+		.pipe(plugin.autoprefixer({
+		    browsers: ['last 2 versions'],
+		    cascade: false
+		}))
+		.pipe(plugin.if(PRODUCTION, plugin.cssnano()))
+		.pipe(plugin.sourcemaps.write('.'))
+		.pipe(gulp.dest(ASSETS.styles))
 }); 
 
 // Optimize images, move into assets directory
