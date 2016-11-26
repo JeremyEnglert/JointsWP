@@ -20,7 +20,10 @@
     "gulp-concat": "^2.5.2",
     "gulp-cssnano": "^2.1.1",
     "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^3.1.1",
     "gulp-jshint": "^1.11.0",
+    "gulp-load-plugins": "^1.4.0",
+    "gulp-newer": "^1.3.0",
     "gulp-plumber": "^1.0.1",
     "gulp-sass": "^2.0.1",
     "gulp-sourcemaps": "^1.6.0",
@@ -30,7 +33,7 @@
     "yargs": "^4.3.2"
   },
   "scripts": {
-	"scripts": "gulp scripts",
+    "scripts": "gulp scripts",
     "styles": "gulp styles",
     "watch": "gulp watch",
     "browsersync": "gulp browsersync",
