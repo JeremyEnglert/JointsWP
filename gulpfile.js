@@ -13,35 +13,35 @@ var gulp  = require('gulp'),
 const BUILD = {
 	scripts: [
 		// Lets grab what-input first
-      'node_modules/what-input/what-input.min.js',
+		'node_modules/what-input/what-input.min.js',
 		  
-	   // Foundation core - needed if you want to use any of the components below
-      'node_modules/foundation-sites/js/foundation.core.js',
-      'node_modules/foundation-sites/js/foundation.util.*.js',
-      
-      // Pick the components you need in your project
-      'node_modules/foundation-sites/js/foundation.abide.js',
-      'node_modules/foundation-sites/js/foundation.accordion.js',
-      'node_modules/foundation-sites/js/foundation.accordionMenu.js',
-      'node_modules/foundation-sites/js/foundation.drilldown.js',
-      'node_modules/foundation-sites/js/foundation.dropdown.js',
-      'node_modules/foundation-sites/js/foundation.dropdownMenu.js',
-      'node_modules/foundation-sites/js/foundation.equalizer.js',
-      'node_modules/foundation-sites/js/foundation.interchange.js',
-      'node_modules/foundation-sites/js/foundation.magellan.js',
-      'node_modules/foundation-sites/js/foundation.offcanvas.js',
-      'node_modules/foundation-sites/js/foundation.orbit.js',
-      'node_modules/foundation-sites/js/foundation.responsiveMenu.js',
-      'node_modules/foundation-sites/js/foundation.responsiveToggle.js',
-      'node_modules/foundation-sites/js/foundation.reveal.js',
-      'node_modules/foundation-sites/js/foundation.slider.js',
-      'node_modules/foundation-sites/js/foundation.sticky.js',
-      'node_modules/foundation-sites/js/foundation.tabs.js',
-      'node_modules/foundation-sites/js/foundation.toggler.js',
-      'node_modules/foundation-sites/js/foundation.tooltip.js',
-      
-      // Place custom JS here, files will be concantonated, minified if ran with --production
-	  'build/js/**/*.js',
+		// Foundation core - needed if you want to use any of the components below
+		'node_modules/foundation-sites/js/foundation.core.js',
+		'node_modules/foundation-sites/js/foundation.util.*.js',
+		
+		// Pick the components you need in your project
+		'node_modules/foundation-sites/js/foundation.abide.js',
+		'node_modules/foundation-sites/js/foundation.accordion.js',
+		'node_modules/foundation-sites/js/foundation.accordionMenu.js',
+		'node_modules/foundation-sites/js/foundation.drilldown.js',
+		'node_modules/foundation-sites/js/foundation.dropdown.js',
+		'node_modules/foundation-sites/js/foundation.dropdownMenu.js',
+		'node_modules/foundation-sites/js/foundation.equalizer.js',
+		'node_modules/foundation-sites/js/foundation.interchange.js',
+		'node_modules/foundation-sites/js/foundation.magellan.js',
+		'node_modules/foundation-sites/js/foundation.offcanvas.js',
+		'node_modules/foundation-sites/js/foundation.orbit.js',
+		'node_modules/foundation-sites/js/foundation.responsiveMenu.js',
+		'node_modules/foundation-sites/js/foundation.responsiveToggle.js',
+		'node_modules/foundation-sites/js/foundation.reveal.js',
+		'node_modules/foundation-sites/js/foundation.slider.js',
+		'node_modules/foundation-sites/js/foundation.sticky.js',
+		'node_modules/foundation-sites/js/foundation.tabs.js',
+		'node_modules/foundation-sites/js/foundation.toggler.js',
+		'node_modules/foundation-sites/js/foundation.tooltip.js',
+		
+		// Place custom JS here, files will be concantonated, minified if ran with --production
+		'build/js/**/*.js',
     ],
    
     // Scss files will be concantonated, minified if ran with --production
