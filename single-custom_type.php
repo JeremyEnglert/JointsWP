@@ -1,16 +1,13 @@
 <?php
-/*
-This is the custom post type post template.
-If you edit the post type name, you've got
-to change the name of this template to
-reflect that name change.
-
-i.e. if your custom post type is called
-register_post_type( 'bookmarks',
-then your single template should be
-single-bookmarks.php
-
-*/
+/**
+ * This is the custom post type single template. If you edit the custom post type name,
+ * you have to change the name of this template to reflect that change.
+ *
+ * For example, if your custom post type is called "register_post_type( 'bookmarks')",
+ * then your template name should be single-bookmarks.php
+ *
+ * For more info: http://codex.wordpress.org/Post_Type_Templates
+ */
 ?>
 
 <?php get_header(); ?>

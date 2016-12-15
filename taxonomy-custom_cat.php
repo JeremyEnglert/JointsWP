@@ -1,16 +1,13 @@
 <?php
-/*
-This is the custom post type taxonomy template.
-If you edit the custom taxonomy name, you've got
-to change the name of this template to
-reflect that name change.
-
-i.e. if your custom taxonomy is called
-register_taxonomy( 'shoes',
-then your single template should be
-taxonomy-shoes.php
-
-*/
+/**
+ * This is the custom post type taxonomy template. If you edit the custom post type name,
+ * you have to change the name of this template to reflect that change.
+ *
+ * For example, if your custom taxonomy is called "register_taxonomy( 'bookmarks')",
+ * then your template name should be taxonomy-bookmarks.php
+ *
+ * For more info: http://codex.wordpress.org/Post_Type_Templates
+ */
 ?>
 
 <?php get_header(); ?>

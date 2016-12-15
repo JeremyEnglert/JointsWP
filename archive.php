@@ -1,3 +1,10 @@
+<?php
+/**
+ * Displays archive pages if a speicifc template is not set. 
+ *
+ * For more info: https://developer.wordpress.org/themes/basics/template-hierarchy/
+ */
+
 <?php get_header(); ?>
 			
 	<div id="content">
