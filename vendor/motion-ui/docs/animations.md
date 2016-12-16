@@ -107,6 +107,10 @@ document.querySelector('.animation-wrapper').classList.add('is-animating');
 $('.animation-wrapper').addClass('is-animating');
 ```
 
+## Use with WOW.js
+
+Motion UI can be paired with WOW.js to animate elements in as the page scrolls. [Learn more about WOW.js integration.](wow.md);
+
 
 ## Mixins
 
@@ -222,5 +226,5 @@ Creates a scaling transition. A scale of `1` means the element is the same size.
 **Parameters:**
 
 - `from` (Number) - Size to start at. (**Default:** 1.5)
-- `from` (Number) - Size to end at. (**Default:** 1)
+- `to` (Number) - Size to end at. (**Default:** 1)
 

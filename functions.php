@@ -23,6 +23,7 @@ require_once(get_template_directory().'/assets/functions/page-navi.php');
 // Adds support for multiple languages
 require_once(get_template_directory().'/assets/translation/translation.php'); 
 
+
 // Remove 4.2 Emoji Support
 // require_once(get_template_directory().'/assets/functions/disable-emoji.php'); 
 
