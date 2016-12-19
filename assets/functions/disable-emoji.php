@@ -13,6 +13,9 @@ function disable_wp_emoji() {
 
   // filter to remove TinyMCE emojis
   add_filter( 'tiny_mce_plugins', 'disable_emoji_tinymce' );
+  
+  // filter that removes DNS prefetch s.w.org (used for emojis, since WP 4.7)
+  add_filter( 'emoji_svg_url', '__return_false' );
 }
 add_action( 'init', 'disable_wp_emoji' );
 
