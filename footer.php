@@ -8,28 +8,26 @@
  */			
  ?>
 					
-					<footer class="footer" role="contentinfo">
-						
-						<div id="inner-footer" class="row">
-							
-							<div class="large-12 medium-12 columns">
-								<nav role="navigation">
-		    						<?php joints_footer_links(); ?>
-		    					</nav>
-		    				</div>
-							
-							<div class="large-12 medium-12 columns">
-								<p class="source-org copyright">&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>.</p>
-							</div>
-						
-						</div> <!-- end #inner-footer -->
+				<footer class="footer" role="contentinfo">
 					
-					</footer> <!-- end .footer -->
+					<div id="inner-footer" class="row">
+						
+						<div class="large-12 medium-12 columns">
+							<nav role="navigation">
+	    						<?php joints_footer_links(); ?>
+	    					</nav>
+	    				</div>
+						
+						<div class="large-12 medium-12 columns">
+							<p class="source-org copyright">&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>.</p>
+						</div>
+					
+					</div> <!-- end #inner-footer -->
 				
-				</div>  <!-- end .main-content -->
+				</footer> <!-- end .footer -->
 			
-			</div> <!-- end .off-canvas-wrapper-inner -->
-		
+			</div>  <!-- end .main-content -->
+					
 		</div> <!-- end .off-canvas-wrapper -->
 		
 		<?php wp_footer(); ?>

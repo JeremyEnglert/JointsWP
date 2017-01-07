@@ -13,7 +13,7 @@ var gulp  = require('gulp'),
 const BUILD = {
 	scripts: [
 		// Lets grab what-input first
-		'node_modules/what-input/dist/what-input.min.js',
+		//'node_modules/what-input/dist/what-input.js',
 		  
 		// Foundation core - needed if you want to use any of the components below
 		'node_modules/foundation-sites/js/foundation.core.js',

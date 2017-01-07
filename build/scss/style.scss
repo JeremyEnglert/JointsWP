@@ -17,31 +17,35 @@ CSS file.
 // Import foundation.scss from vendor files
 @import "../../node_modules/foundation-sites/scss/foundation";
 
+// Import Motion-UI from vendor files
+@import "../../node_modules/motion-ui/src/motion-ui";
+@include motion-ui-transitions;
+@include motion-ui-animations;
+
 // Select the components you want to use
 @include foundation-global-styles;
 @include foundation-grid;
-//@include foundation-flex-classes;
-//@include foundation-flex-grid;
+// @include foundation-flex-grid;
+// @include foundation-flex-classes;
 @include foundation-typography;
 @include foundation-forms;
 @include foundation-button;
-@include foundation-visibility-classes;
-@include foundation-float-classes;
 @include foundation-accordion;
 @include foundation-accordion-menu;
 @include foundation-badge;
 @include foundation-breadcrumbs;
 @include foundation-button-group;
 @include foundation-callout;
+@include foundation-card;
 @include foundation-close-button;
+@include foundation-menu;
+@include foundation-menu-icon;
 @include foundation-drilldown-menu;
 @include foundation-dropdown;
 @include foundation-dropdown-menu;
-@include foundation-flex-video;
+@include foundation-responsive-embed;
 @include foundation-label;
 @include foundation-media-object;
-@include foundation-menu;
-@include foundation-menu-icon;
 @include foundation-off-canvas;
 @include foundation-orbit;
 @include foundation-pagination;
@@ -56,6 +60,8 @@ CSS file.
 @include foundation-title-bar;
 @include foundation-tooltip;
 @include foundation-top-bar;
+@include foundation-visibility-classes;
+@include foundation-float-classes;
 
 // Import your custom styles
 @import "main";
