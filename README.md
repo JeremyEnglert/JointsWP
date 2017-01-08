@@ -1,30 +1,21 @@
 Find out more here: www.jointswp.com  
 Demo: www.jointswp.com/demo
 
-Currently using Foundation 6.2.4
+Currently using Foundation 6.3
 
-### What is JointsWP?
-JointsWP is a blank WordPress theme built with Foundation 6, giving you all the power and flexibility you need to build complex, mobile friendly websites without having to start from scratch.
+This is the development branch of JointsWP 5. This is not meant for production at this time. Be sure to check out the rest of the README for install instructions.
 
-Starting its humble life as a fork of the popular theme Bones, JointsWP is now the foundation of thousands of websites across the globe.
+### JointsWP Requirements
+JointsWP requires [Node.js](https://nodejs.org) v4.x.x or v6.9.x. This doesn't mean you need to understand Node (or even Gulp) - it's just the steps we need to take to make sure all of our development tools are installed. 
 
-### What comes with JointsWP?
-JointsWP comes pre-baked with all of the great features that are found in the Foundation framework – simply put, if it works in Foundation, it will work in JointsWP. The theme also includes:
+### Getting Started 
+#### Download JointsWP and install dependencies with npm 
+```bash
+$ cd my-wordpress-folder/wp-content/themes/
+$ git clone https://github.com/jeremyenglert/JointsWP.git
+$ cd JointsWP
+$ npm install
+```
+At this point, JointsWP should be installed and fully running on your local machine. 
 
-- Foundation Navigation Options
-- Motion-UI
-- Grid archive templates
-- Translation Support
-- Bower and Gulp Support
-- And much, much more!
-
-### What tools do I need to use JointsWP?
-You can use whatever you want – seriously. While the Sass version comes with Bower and Gulp support out of the box, you aren’t required to use those by any means. You can use CodeKit, Grunt, Compass or nothing at all. It’s completely up to you how you decide to build you theme – JointsWP won’t get in the way of your workflow.
-
-### Getting Started With Gulp
-- Install [node.js](https://nodejs.org).
-- Using the command line, navigate to your theme directory
-- Run npm install
-- Run gulp to confirm everything is working
-
-[Read more about how Gulp is used with JointsWP.](http://jointswp.com/docs/gulp/)
+### While Working on Your Theme
