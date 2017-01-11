@@ -37,6 +37,17 @@ $ npm run build
 $ npm run production
 ```
 
-### Compile Specific Assets
-`$ npm run styles` - to compile all Scss files
-`$ npm run scripts` - to compile all JS files
+### Compile Specific Assets - DO WE REALLY WANT/NEED THESE? OR SHOULD WE ENCOURAGE RUN BUILD FOR EVERYTHING?
+`$ npm run styles` - to compile all Scss files in the `assets/scss` directory
+
+`$ npm run scripts` - to compile all JS files in the `assets/scripts` directory
+
+`$ npm run images` - to compile all image files in the `assets/images` directory
+
+## File Structure
+You will want to put all of your custom styles, scripts and images in the `/build/` directory. Files in the `build` directory are compiled/minified/optimized and then saved to the `/assets/` folder. 
+
+### Build Styles
+### Build Scripts
+### Generated Assets
+
