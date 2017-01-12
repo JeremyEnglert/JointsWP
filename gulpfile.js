@@ -107,6 +107,7 @@ gulp.task('styles', function() {
 // Optimize images, move into assets directory
 gulp.task('images', function() {
 	return gulp.src(BUILD.images)
+		.pipe(plugin.newer(ASSETS.images))
 		.pipe(plugin.imagemin())
 		.pipe(gulp.dest(ASSETS.images))
 });

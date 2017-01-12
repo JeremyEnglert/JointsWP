@@ -34,8 +34,11 @@
     "yargs": "^4.3.2"
   },
   "scripts": {
+    "build": "gulp",
+    "production": "gulp --production",
     "scripts": "gulp scripts",
     "styles": "gulp styles",
+    "images": "gulp images",
     "watch": "gulp watch",
     "browsersync": "gulp browsersync",
     "update-foundation": "npm install foundation-sites"
