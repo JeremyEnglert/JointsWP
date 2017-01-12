@@ -20,14 +20,16 @@ At this point, JointsWP should be installed and fully running on your local mach
 ```bash
 $ npm run watch
 ```
-This command will watch for changes in the `/build/` directory and compile to the `/assets/` directory.
+* Watches for changes in the `/build/scss` directory. When a change is made the SCSS files are compiled, concatenated with Foundation files and saved to the `/assets/css` directory.
+* Watches for changes in the `/build/js` directory. When a change is made the JS files are compiled, concatenated with Foundation JS files and saved to the `/assets/js` directory.
+* Watches for changes in the `/build/images` directory. When a change is made the image files are optimized and saved to the `/assets/images` directory.
 
 ### Watching for Changes with Browsersync
 ```bash
 $ npm run browsersync
 ```
 
-### Compile All Theme Assets
+### Manually Compile All Theme Assets
 ```bash
 $ npm run build
 ```
@@ -49,5 +51,6 @@ You will want to put all of your custom styles, scripts and images in the `/buil
 
 ### Build Styles
 ### Build Scripts
+### Foundation Files
 ### Generated Assets
 
