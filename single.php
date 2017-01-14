@@ -1,4 +1,9 @@
-<?php get_header(); ?>
+<?php 
+/**
+ * The template for displaying all single posts and attachments
+ */
+
+get_header(); ?>
 			
 <div id="content">
 

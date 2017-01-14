@@ -1,3 +1,9 @@
+<?php
+/**
+ * The template for displaying search form
+ */
+ ?>
+
 <form role="search" method="get" class="search-form" action="<?php echo home_url( '/' ); ?>">
 	<label>
 		<span class="screen-reader-text"><?php echo _x( 'Search for:', 'label', 'jointswp' ) ?></span>

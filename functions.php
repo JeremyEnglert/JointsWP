@@ -1,4 +1,9 @@
 <?php
+/** 
+ * For more info: https://developer.wordpress.org/themes/basics/theme-functions/
+ *
+ */			
+	
 // Theme support options
 require_once(get_template_directory().'/includes/theme-support.php'); 
 

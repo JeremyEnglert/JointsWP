@@ -1,4 +1,11 @@
-<?php get_header(); ?>
+<?php 
+/**
+ * The template for displaying search results pages
+ *
+ * For more info: https://developer.wordpress.org/themes/basics/template-hierarchy/#search-result
+ */
+ 	
+get_header(); ?>
 			
 	<div id="content">
 

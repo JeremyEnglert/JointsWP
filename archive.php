@@ -5,7 +5,7 @@
  * For more info: https://developer.wordpress.org/themes/basics/template-hierarchy/
  */
 
-<?php get_header(); ?>
+get_header(); ?>
 			
 	<div id="content">
 	

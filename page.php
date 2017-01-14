@@ -1,4 +1,11 @@
-<?php get_header(); ?>
+<?php 
+/**
+ * The template for displaying all pages
+ *
+ * This is the template that displays all pages by default.
+ */
+
+get_header(); ?>
 	
 	<div id="content">
 	

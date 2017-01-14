@@ -4,12 +4,10 @@
  *
  * For more info: https://developer.wordpress.org/themes/template-files-section/partial-and-miscellaneous-template-files/comments/
  */ 
-?>
 
-<?php
-	if ( post_password_required() ) {
-		return;
-	}
+if ( post_password_required() ) {
+	return;
+}
 ?>
 
 <div id="comments" class="comments-area">

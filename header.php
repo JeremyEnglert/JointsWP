@@ -1,3 +1,12 @@
+<?php
+/**
+ * The template for displaying the header
+ *
+ * This is the template that displays all of the <head> section
+ *
+ */
+?>
+
 <!doctype html>
 
   <html class="no-js"  <?php language_attributes(); ?>>
