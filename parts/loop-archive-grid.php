@@ -1,4 +1,10 @@
-<?php 
+<?php
+/**
+ * The template part for displaying a grid of posts
+ *
+ * For more info: http://jointswp.com/docs/grid-archive/
+ */
+
 // Adjust the amount of rows in the grid
 $grid_columns = 4; ?>
 

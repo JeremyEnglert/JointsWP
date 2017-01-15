@@ -2,9 +2,8 @@
 /*
 Template Name: Full Width (No Sidebar)
 */
-?>
 
-<?php get_header(); ?>
+get_header(); ?>
 			
 	<div id="content">
 	
