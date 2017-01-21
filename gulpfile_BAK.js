@@ -3,7 +3,6 @@
 var gulp  = require('gulp'),
     gutil = require('gulp-util'),
     argv = require('yargs').argv,
-    del = require('del'),
     browserSync = require('browser-sync').create(),
     plugin = require('gulp-load-plugins')();
     
@@ -11,7 +10,7 @@ var gulp  = require('gulp'),
 // GULP VARIABLES   
 // Modify these variables to match your project needs   
 // Select Foundation components, remove components project will not use
-const SOURCE = {
+const BUILD = {
 	scripts: [
 		// Lets grab what-input first
 		//'node_modules/what-input/dist/what-input.js',
@@ -42,20 +41,20 @@ const SOURCE = {
 		'node_modules/foundation-sites/js/foundation.tooltip.js',
 		
 		// Place custom JS here, files will be concantonated, minified if ran with --production
-		'source/js/**/*.js',
+		'build/js/**/*.js',
     ],
    
 	// Scss files will be concantonated, minified if ran with --production
-	styles: 'source/scss/**/*.scss',
+	styles: 'build/scss/**/*.scss',
 		
 	// Images placed here will be optimized
-	images: 'source/images/**/*'
+	images: 'build/images/**/*'
 };
 
 const ASSETS = {
 	styles: 'assets/css/',
 	scripts: 'assets/js/',
-	images: 'assets/images/',
+	images: 'assets/images/'
 };
 
 // Set local URL if using Browser-Sync
@@ -64,10 +63,12 @@ const LOCAL_URL = '';
 // Check for --production flag
 const PRODUCTION = !!(argv.production);
 
-// GULP FUNCTIONS
-// JSHint, concat, and minify JavaScript 
-function buildScripts() {
-	return gulp.src(SOURCE.scripts)
+// GULP TASKS
+// See package.json for more info on running these tasks
+
+// JSHint, concat, and minify JavaScript
+gulp.task('scripts', function() {
+	return gulp.src(BUILD.scripts)
 		.pipe(plugin.plumber(function(error) {
 		    gutil.log(gutil.colors.red(error.message));
 		    this.emit('end');
@@ -83,16 +84,11 @@ function buildScripts() {
 		.pipe(plugin.if(PRODUCTION, plugin.uglify()))
 		.pipe(plugin.if(!PRODUCTION, plugin.sourcemaps.write('.'))) // Creates sourcemap for minified JS
 		.pipe(gulp.dest(ASSETS.scripts))
-} 
-
-// Empty assets/js directory
-function cleanScripts() {
-	return del(ASSETS.scripts);
-}
+});   
 
 // Compile Sass, Autoprefix and minify
-function buildStyles() {
-	return gulp.src(SOURCE.styles)
+gulp.task('styles', function() {
+	return gulp.src(BUILD.styles)
 		.pipe(plugin.plumber(function(error) {
 		    gutil.log(gutil.colors.red(error.message));
 		    this.emit('end');
@@ -106,41 +102,24 @@ function buildStyles() {
 		.pipe(plugin.if(PRODUCTION, plugin.cssnano()))
 		.pipe(plugin.if(!PRODUCTION, plugin.sourcemaps.write('.')))
 		.pipe(gulp.dest(ASSETS.styles))
-}
-
-// Empty assets/css directory
-function cleanStyles() {
-	return del(ASSETS.styles);
-}
+}); 
 
 // Optimize images, move into assets directory
-function buildImages() {
-	return gulp.src(SOURCE.images)
+gulp.task('images', function() {
+	return gulp.src(BUILD.images)
 		.pipe(plugin.newer(ASSETS.images))
 		.pipe(plugin.imagemin())
 		.pipe(gulp.dest(ASSETS.images))
-}
-
-// GULP TASKS
-// See package.json for more info on running these tasks
-
-// Clean assets/js then build JS files
-gulp.task('scripts', gulp.series(cleanScripts, buildScripts));
-
-// Clean assets/css, then build CSS files
-gulp.task('styles', gulp.series(cleanStyles, buildStyles));
-
-// Optimize images
-gulp.task('images', gulp.parallel(buildImages));
+});
 
 // Browser-Sync watch files and inject changes
 gulp.task('browsersync', function() {
     
     // Watch these files
     var files = [
-    	SOURCE.styles, 
-    	SOURCE.scripts,
-    	SOURCE.images,
+    	BUILD.styles, 
+    	BUILD.scripts,
+    	BUILD.images,
     	'**/*.php',
     ];
 
@@ -148,9 +127,9 @@ gulp.task('browsersync', function() {
 	    proxy: LOCAL_URL,
     });
     
-    gulp.watch(SOURCE.styles, gulp.parallel('styles'));
-    gulp.watch(SOURCE.scripts, gulp.parallel('scripts')).on('change', browserSync.reload);
-    gulp.watch(SOURCE.images, gulp.parallel('images'));
+    gulp.watch(BUILD.styles, gulp.parallel('styles'));
+    gulp.watch(BUILD.scripts, gulp.parallel('scripts')).on('change', browserSync.reload);
+    gulp.watch(BUILD.images, gulp.parallel('images'));
 
 });
 
@@ -158,13 +137,13 @@ gulp.task('browsersync', function() {
 gulp.task('watch', function() {
 
 	// Watch .scss files
-	gulp.watch(SOURCE.styles, gulp.parallel('styles'));
+	gulp.watch(BUILD.styles, gulp.parallel('styles'));
 	
 	// Watch scripts files
-	gulp.watch(SOURCE.scripts, gulp.parallel('scripts'));
+	gulp.watch(BUILD.scripts, gulp.parallel('scripts'));
 	
 	// Watch images files
-	gulp.watch(SOURCE.images, gulp.parallel('images'));
+	gulp.watch(BUILD.images, gulp.parallel('images'));
   
 }); 
 

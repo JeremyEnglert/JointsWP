@@ -21,9 +21,9 @@ At this point, JointsWP should be installed and fully running on your local mach
 ```bash
 $ npm run watch
 ```
-* Watches for changes in the `/build/scss` directory. When a change is made the SCSS files are compiled, concatenated with Foundation files and saved to the `/assets/css` directory. Sourcemaps will be created.
-* Watches for changes in the `/build/js` directory. When a change is made the JS files are compiled, concatenated with Foundation JS files and saved to the `/assets/js` directory. Sourcemaps will be created.
-* Watches for changes in the `/build/images` directory. When a change is made the image files are optimized and saved to the `/assets/images` directory.
+* Watches for changes in the `/source/scss` directory. When a change is made the SCSS files are compiled, concatenated with Foundation files and saved to the `/assets/css` directory. Sourcemaps will be created.
+* Watches for changes in the `/source/js` directory. When a change is made the JS files are compiled, concatenated with Foundation JS files and saved to the `/assets/js` directory. Sourcemaps will be created.
+* Watches for changes in the `/source/images` directory. When a change is made the image files are optimized and saved to the `/assets/images` directory.
 
 ### Watching for Changes with Browsersync
 ```bash
@@ -35,34 +35,34 @@ This will watch the same files as `npm run watch`, but utilizes browsersync for 
 ```bash
 $ npm run build
 ```
-Compiles all files in `/build/` directory without sourcemaps. Sourcemaps will be created for SCSS and JS files. 
+Compiles all files in `/source/` directory without sourcemaps. Sourcemaps will be created for SCSS and JS files. 
 
 ### Compile and Minify All Theme Assets for Production
 ```bash
 $ npm run production
 ```
-Compiles and minifies all files in `/build/` directory and saves to the `/assets/` directory. Sourcemaps will not be created. Prior to running, this task will clear the `/assets/` directory to ensure any old sourcemaps are removed.
+Compiles and minifies all files in `/source/` directory and saves to the `/assets/` directory. Sourcemaps will not be created. 
 
-### Compile Specific Assets - DO WE REALLY WANT/NEED THESE? OR SHOULD WE ENCOURAGE RUN BUILD FOR EVERYTHING?
+### Compile Specific Assets
 * `$ npm run styles` - to compile all SCSS files in the `assets/scss` directory
 * `$ npm run scripts` - to compile all JS files in the `assets/scripts` directory
 * `$ npm run images` - to compile all image files in the `assets/images` directory
 
 ## File Structure - "Where to Put Stuff"
-You will want to put all of your custom styles, scripts and images in the `/build/` directory. Files in the `/build/` directory are compiled/minified/optimized and then saved to the `/assets/` folder. 
+You will want to put all of your custom styles, scripts and images in the `/source/` directory. Files in the `/source/` directory are compiled/minified/optimized and then saved to the `/assets/` folder. 
 
 ### Custom Styles
 * `style.css` - this file is never actually loaded, however, this is where you set your theme name and is required by WordPress
-* `/build/scss/style.scss` - import all of your styles here. If you create an additional SCSS file, be sure to import it here.
-* `/build/scss/_main.scss` - place all of your custom styles here.
-* `/build/scss/_settings.scss` - adjust Foundation style settings here.
-* `/build/scss/login.scss` - THIS SHOULD PROBABLY JUST BE IMPORTED INTO THE MAIN STYLESHEET
+* `/source/scss/style.scss` - import all of your styles here. If you create an additional SCSS file, be sure to import it here.
+* `/source/scss/_main.scss` - place all of your custom styles here.
+* `/source/scss/_settings.scss` - adjust Foundation style settings here.
+* `/source/scss/login.scss` - THIS SHOULD PROBABLY JUST BE IMPORTED INTO THE MAIN STYLESHEET
 
 ### Custom Scripts
-* `/build/js/` - place your custom scripts here. Each .JS file will be compiled and concatenated when the build process is ran.
+* `/source/js/` - place your custom scripts here. Each .JS file will be compiled and concatenated when the build process is ran.
 
 ### Images
-* `/build/images/` - place your theme images here. Each imagee will be optimized when the build process is ran.
+* `/source/images/` - place your theme images here. Each image will be optimized when the build process is ran.
 
 ### Generated Assets
 * `/assets/css/styles.css` - 
