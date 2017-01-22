@@ -12,7 +12,6 @@ $ cd my-wordpress-folder/wp-content/themes/
 $ git clone https://github.com/jeremyenglert/JointsWP.git
 $ cd JointsWP
 $ npm install
-$ npm run build
 ```
 At this point, JointsWP should be installed and fully running on your local machine. If you prefer to install the theme manually, that will work as well - just be sure to run `npm install` after manually moving the files into the `/themes/` directory.
 

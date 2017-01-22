@@ -35,6 +35,7 @@
     "yargs": "^4.3.2"
   },
   "scripts": {
+	"postinstall": "gulp",
     "build": "gulp",
     "production": "gulp --production",
     "scripts": "gulp scripts",
