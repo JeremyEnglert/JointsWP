@@ -13,8 +13,9 @@ var gulp  = require('gulp'),
 // Select Foundation components, remove components project will not use
 const SOURCE = {
 	scripts: [
+		
 		// Lets grab what-input first
-		//'node_modules/what-input/dist/what-input.js',
+	    'node_modules/what-input/dist/what-input.js',
 		  
 		// Foundation core - needed if you want to use any of the components below
 		'node_modules/foundation-sites/js/foundation.core.js',
@@ -43,6 +44,8 @@ const SOURCE = {
 		
 		// Place custom JS here, files will be concantonated, minified if ran with --production
 		'source/js/**/*.js',
+		
+		
     ],
    
 	// Scss files will be concantonated, minified if ran with --production
@@ -56,6 +59,7 @@ const ASSETS = {
 	styles: 'assets/css/',
 	scripts: 'assets/js/',
 	images: 'assets/images/',
+	all: 'assets/'
 };
 
 // Set local URL if using Browser-Sync
@@ -85,11 +89,6 @@ function buildScripts() {
 		.pipe(gulp.dest(ASSETS.scripts))
 } 
 
-// Empty assets/js directory
-function cleanScripts() {
-	return del(ASSETS.scripts);
-}
-
 // Compile Sass, Autoprefix and minify
 function buildStyles() {
 	return gulp.src(SOURCE.styles)
@@ -108,11 +107,6 @@ function buildStyles() {
 		.pipe(gulp.dest(ASSETS.styles))
 }
 
-// Empty assets/css directory
-function cleanStyles() {
-	return del(ASSETS.styles);
-}
-
 // Optimize images, move into assets directory
 function buildImages() {
 	return gulp.src(SOURCE.images)
@@ -121,17 +115,25 @@ function buildImages() {
 		.pipe(gulp.dest(ASSETS.images))
 }
 
+// Empty assets directory
+function cleanAll() {
+	return del(ASSETS.all);
+}
+
 // GULP TASKS
 // See package.json for more info on running these tasks
 
+// Clean assets folder
+gulp.task('clean', gulp.series(cleanAll));
+
 // Clean assets/js then build JS files
-gulp.task('scripts', gulp.series(cleanScripts, buildScripts));
+gulp.task('scripts', gulp.series(buildScripts));
 
 // Clean assets/css, then build CSS files
-gulp.task('styles', gulp.series(cleanStyles, buildStyles));
+gulp.task('styles', gulp.series(buildStyles));
 
 // Optimize images
-gulp.task('images', gulp.parallel(buildImages));
+gulp.task('images', gulp.series(buildImages));
 
 // Browser-Sync watch files and inject changes
 gulp.task('browsersync', function() {
@@ -169,4 +171,4 @@ gulp.task('watch', function() {
 }); 
 
 // Run styles, scripts and foundation-js
-gulp.task('default', gulp.parallel('styles', 'scripts', 'images'));
+gulp.task('default', gulp.series(cleanAll, gulp.parallel('styles', 'scripts', 'images')));
