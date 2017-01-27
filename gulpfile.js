@@ -5,6 +5,7 @@ var gulp  = require('gulp'),
     argv = require('yargs').argv,
     del = require('del'),
     browserSync = require('browser-sync').create(),
+    filter = require('gulp-filter'),
     plugin = require('gulp-load-plugins')();
     
  
@@ -13,10 +14,9 @@ var gulp  = require('gulp'),
 // Select Foundation components, remove components project will not use
 const SOURCE = {
 	scripts: [
-		
 		// Lets grab what-input first
 	    'node_modules/what-input/dist/what-input.js',
-		  
+
 		// Foundation core - needed if you want to use any of the components below
 		'node_modules/foundation-sites/js/foundation.core.js',
 		'node_modules/foundation-sites/js/foundation.util.*.js',
@@ -41,11 +41,9 @@ const SOURCE = {
 		'node_modules/foundation-sites/js/foundation.tabs.js',
 		'node_modules/foundation-sites/js/foundation.toggler.js',
 		'node_modules/foundation-sites/js/foundation.tooltip.js',
-		
+
 		// Place custom JS here, files will be concantonated, minified if ran with --production
-		'source/js/**/*.js',
-		
-		
+		'source/js/**/*.js',	
     ],
    
 	// Scss files will be concantonated, minified if ran with --production
@@ -71,18 +69,23 @@ const PRODUCTION = !!(argv.production);
 // GULP FUNCTIONS
 // JSHint, concat, and minify JavaScript 
 function buildScripts() {
+	const CUSTOMFILTER = filter('source/js/**/*.js', {restore: true});
+	
 	return gulp.src(SOURCE.scripts)
 		.pipe(plugin.plumber(function(error) {
 		    gutil.log(gutil.colors.red(error.message));
 		    this.emit('end');
 		}))
+		.pipe(plugin.sourcemaps.init())
 		.pipe(plugin.babel({
 			presets: ['es2015'],
-			compact: true
+			compact: true,
+			ignore: ['what-input.js']
 		}))
-		.pipe(plugin.sourcemaps.init())
-		.pipe(plugin.jshint())
-		.pipe(plugin.jshint.reporter('jshint-stylish'))
+		.pipe(CUSTOMFILTER)
+			.pipe(plugin.jshint())
+			.pipe(plugin.jshint.reporter('jshint-stylish'))
+			.pipe(CUSTOMFILTER.restore)
 		.pipe(plugin.concat('scripts.js'))
 		.pipe(plugin.if(PRODUCTION, plugin.uglify()))
 		.pipe(plugin.if(!PRODUCTION, plugin.sourcemaps.write('.'))) // Creates sourcemap for minified JS
