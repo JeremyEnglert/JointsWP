@@ -43,9 +43,9 @@ $ npm run production
 Compiles and minifies all files in `/source/` directory and saves to the `/assets/` directory. Sourcemaps will not be created. 
 
 ### Compile Specific Assets
-* `$ npm run styles` - to compile all SCSS files in the `assets/scss` directory
-* `$ npm run scripts` - to compile all JS files in the `assets/scripts` directory
-* `$ npm run images` - to compile all image files in the `assets/images` directory
+* `$ npm run styles` - to compile all SCSS files in the `assets/scss` directory.
+* `$ npm run scripts` - to compile all JS files in the `assets/scripts` directory.
+* `$ npm run images` - to compile all image files in the `assets/images` directory.
 
 ## File Structure - "Where to Put Stuff"
 You will want to put all of your custom styles, scripts and images in the `/source/` directory. Files in the `/source/` directory are compiled/minified/optimized and then saved to the `/assets/` folder. 
@@ -55,15 +55,9 @@ You will want to put all of your custom styles, scripts and images in the `/sour
 * `/source/scss/style.scss` - import all of your styles here. If you create an additional SCSS file, be sure to import it here.
 * `/source/scss/_main.scss` - place all of your custom styles here.
 * `/source/scss/_settings.scss` - adjust Foundation style settings here.
-* `/source/scss/login.scss` - THIS SHOULD PROBABLY JUST BE IMPORTED INTO THE MAIN STYLESHEET
-
+* `/source/scss/login.scss` - place custom login styles here. This will generate it's own stylesheet.
 ### Custom Scripts
 * `/source/js/` - place your custom scripts here. Each .JS file will be compiled and concatenated when the build process is ran.
 
 ### Images
 * `/source/images/` - place your theme images here. Each image will be optimized when the build process is ran.
-
-### Generated Assets
-* `/assets/css/styles.css` - 
-* `/assets/js/scripts.js` - 
-* `/assets/images/` - 
