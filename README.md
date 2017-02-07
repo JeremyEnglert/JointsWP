@@ -9,7 +9,7 @@ JointsWP requires [Node.js](https://nodejs.org) v4.x.x or v6.9.x. This doesn't m
 ### Download JointsWP and install dependencies with npm 
 ```bash
 $ cd my-wordpress-folder/wp-content/themes/
-$ git clone https://github.com/jeremyenglert/JointsWP.git
+$ git clone -b 5.0 --single-branch https://github.com/JeremyEnglert/JointsWP.git
 $ cd JointsWP
 $ npm install
 ```
