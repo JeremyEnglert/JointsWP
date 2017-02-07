@@ -72,10 +72,7 @@ function buildScripts() {
 	const CUSTOMFILTER = filter('source/js/**/*.js', {restore: true});
 	
 	return gulp.src(SOURCE.scripts)
-		.pipe(plugin.plumber(function(error) {
-		    gutil.log(gutil.colors.red(error.message));
-		    this.emit('end');
-		}))
+		.pipe(plugin.plumber())
 		.pipe(plugin.sourcemaps.init())
 		.pipe(plugin.babel({
 			presets: ['es2015'],
@@ -95,10 +92,7 @@ function buildScripts() {
 // Compile Sass, Autoprefix and minify
 function buildStyles() {
 	return gulp.src(SOURCE.styles)
-		.pipe(plugin.plumber(function(error) {
-		    gutil.log(gutil.colors.red(error.message));
-		    this.emit('end');
-		}))
+		.pipe(plugin.plumber())
 		.pipe(plugin.sourcemaps.init())
 		.pipe(plugin.sass())
 		.pipe(plugin.autoprefixer({
@@ -127,16 +121,16 @@ function cleanAll() {
 // See package.json for more info on running these tasks
 
 // Clean assets folder
-gulp.task('clean', gulp.series(cleanAll));
+gulp.task('clean', gulp.parallel(cleanAll));
 
 // Clean assets/js then build JS files
-gulp.task('scripts', gulp.series(buildScripts));
+gulp.task('scripts', gulp.parallel(buildScripts));
 
 // Clean assets/css, then build CSS files
-gulp.task('styles', gulp.series(buildStyles));
+gulp.task('styles', gulp.parallel(buildStyles));
 
 // Optimize images
-gulp.task('images', gulp.series(buildImages));
+gulp.task('images', gulp.parallel(buildImages));
 
 // Browser-Sync watch files and inject changes
 gulp.task('browsersync', function() {
