@@ -11,6 +11,10 @@ var gulp  = require('gulp'),
  
 // GULP VARIABLES   
 // Modify these variables to match your project needs   
+
+// Set local URL if using Browser-Sync
+const LOCAL_URL = '';
+
 // Select Foundation components, remove components project will not use
 const SOURCE = {
 	scripts: [
@@ -59,9 +63,6 @@ const ASSETS = {
 	images: 'assets/images/',
 	all: 'assets/'
 };
-
-// Set local URL if using Browser-Sync
-const LOCAL_URL = '';
 
 // Check for --production flag
 const PRODUCTION = !!(argv.production);
