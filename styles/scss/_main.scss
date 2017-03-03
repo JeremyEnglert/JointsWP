@@ -185,21 +185,53 @@ POSTS & CONTENT STYLES
 /*********************
 IMAGE GALLERY STYLES
 *********************/
-	.gallery {
-
-		dl {
-
-			a {}
-
-			img {}
-
-		}
-
-		dt {}
-
-		dd {}
-
-} 
+.gallery {
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-right: -15px;
+	margin-left: -15px; 
+}
+.gallery::before, .gallery::after {
+	content: ' ';
+	display: table; 
+}
+.gallery::after {
+	clear: both; 
+}
+.gallery.gallery-columns-1 > dl {
+	@include grid-column;
+}
+.gallery.gallery-columns-2 > dl {
+	@include grid-column(1 of 2);
+}
+.gallery.gallery-columns-3 > dl {
+	@include grid-column(1 of 3);
+}
+.gallery.gallery-columns-4 > dl {
+	@include grid-column(1 of 4);
+}
+.gallery.gallery-columns-5 > dl {
+	@include grid-column(1 of 5);
+}
+.gallery.gallery-columns-6 > dl {
+	@include grid-column(1 of 6);
+}
+.gallery.gallery-columns-7 > dl {
+	@include grid-column(1 of 7);
+}
+.gallery.gallery-columns-8 > dl {
+	@include grid-column(1 of 8);
+}
+.gallery dl {
+	width: 100%;
+	float: left;
+	padding-left: 0.9375rem;
+	padding-right: 0.9375rem; 
+}
+.gallery dl:last-child:not(:first-child) {
+  float: right; 
+ }
 
 // Gallery caption styles
 .gallery-caption {}
@@ -478,20 +510,6 @@ SIDEBARS & ASIDES
 .widget {
 	ul {
 		margin: 0;
-
-		li {
-			list-style: none;
-
-			&:first-child {}
-
-			&:last-child {}
-
-			a {}
-
-			// deep nesting  
-			ul {}
-
-		}
 	}
 }
 /*********************

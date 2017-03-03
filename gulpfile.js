@@ -47,20 +47,20 @@ const SOURCE = {
 		'node_modules/foundation-sites/js/foundation.tooltip.js',
 
 		// Place custom JS here, files will be concantonated, minified if ran with --production
-		'source/js/**/*.js',	
+		'scripts/js/**/*.js',	
     ],
    
 	// Scss files will be concantonated, minified if ran with --production
-	styles: 'source/scss/**/*.scss',
+	styles: 'styles/scss/**/*.scss',
 		
 	// Images placed here will be optimized
-	images: 'source/images/**/*'
+	images: 'images/**/*'
 };
 
 const ASSETS = {
-	styles: 'assets/css/',
-	scripts: 'assets/js/',
-	images: 'assets/images/',
+	styles: 'styles/',
+	scripts: 'scripts/',
+	images: 'images/',
 	all: 'assets/'
 };
 
@@ -70,7 +70,7 @@ const PRODUCTION = !!(argv.production);
 // GULP FUNCTIONS
 // JSHint, concat, and minify JavaScript 
 function buildScripts() {
-	const CUSTOMFILTER = filter('source/js/**/*.js', {restore: true});
+	const CUSTOMFILTER = filter('scripts/js/**/*.js', {restore: true});
 	
 	return gulp.src(SOURCE.scripts)
 		.pipe(plugin.plumber())
