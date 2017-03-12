@@ -12,7 +12,7 @@ function joints_top_nav() {
 	 wp_nav_menu(array(
         'container' => false,                           // Remove nav container
         'menu_class' => 'vertical medium-horizontal menu',       // Adding custom nav class
-        'items_wrap' => '<ul id="%1$s" class="%2$s" data-responsive-menu="accordion medium-dropdown">%3$s</ul>',
+        'items_wrap' => '<ul id="%1$s" class="%2$s" data-responsive-menu="accordion medium-dropdown" data-close-on-click-inside="false">%3$s</ul>',
         'theme_location' => 'main-nav',        			// Where it's located in the theme
         'depth' => 5,                                   // Limit the depth of the nav
         'fallback_cb' => false,                         // Fallback function (see below)
