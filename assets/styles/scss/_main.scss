@@ -499,6 +499,9 @@ COMMENT FORM STYLES
 SIDEBARS & ASIDES
 *********************/
 .sidebar {
+	li{
+		list-style: none;
+	}
 }
 
 #searchsubmit {
