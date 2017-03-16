@@ -2,8 +2,6 @@
 // Most packages are lazy loaded
 var gulp  = require('gulp'),
     gutil = require('gulp-util'),
-    argv = require('yargs').argv,
-    del = require('del'),
     browserSync = require('browser-sync').create(),
     filter = require('gulp-filter'),
     plugin = require('gulp-load-plugins')();
@@ -51,29 +49,29 @@ const SOURCE = {
     ],
    
 	// Scss files will be concantonated, minified if ran with --production
-	styles: 'styles/scss/**/*.scss',
+	styles: 'assets/styles/scss/**/*.scss',
 		
 	// Images placed here will be optimized
-	images: 'images/**/*'
+	images: 'assets/images/**/*'
 };
 
 const ASSETS = {
-	styles: 'styles/',
-	scripts: 'scripts/',
-	images: 'images/',
+	styles: 'assets/styles/',
+	scripts: 'assets/scripts/',
+	images: 'assets/images/',
 	all: 'assets/'
 };
-
-// Check for --production flag
-const PRODUCTION = !!(argv.production);
 
 // GULP FUNCTIONS
 // JSHint, concat, and minify JavaScript 
 function buildScripts() {
-	const CUSTOMFILTER = filter('scripts/js/**/*.js', {restore: true});
+	const CUSTOMFILTER = filter('assets/scripts/js/**/*.js', {restore: true});
 	
 	return gulp.src(SOURCE.scripts)
-		.pipe(plugin.plumber())
+		.pipe(plugin.plumber(function(error) {
+            gutil.log(gutil.colors.red(error.message));
+            this.emit('end');
+        }))
 		.pipe(plugin.sourcemaps.init())
 		.pipe(plugin.babel({
 			presets: ['es2015'],
@@ -85,23 +83,26 @@ function buildScripts() {
 			.pipe(plugin.jshint.reporter('jshint-stylish'))
 			.pipe(CUSTOMFILTER.restore)
 		.pipe(plugin.concat('scripts.js'))
-		.pipe(plugin.if(PRODUCTION, plugin.uglify()))
-		.pipe(plugin.if(!PRODUCTION, plugin.sourcemaps.write('.'))) // Creates sourcemap for minified JS
+		.pipe(plugin.uglify())
+		.pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
 		.pipe(gulp.dest(ASSETS.scripts))
 } 
 
 // Compile Sass, Autoprefix and minify
 function buildStyles() {
 	return gulp.src(SOURCE.styles)
-		.pipe(plugin.plumber())
+		.pipe(plugin.plumber(function(error) {
+            gutil.log(gutil.colors.red(error.message));
+            this.emit('end');
+        }))
 		.pipe(plugin.sourcemaps.init())
 		.pipe(plugin.sass())
 		.pipe(plugin.autoprefixer({
 		    browsers: ['last 2 versions'],
 		    cascade: false
 		}))
-		.pipe(plugin.if(PRODUCTION, plugin.cssnano()))
-		.pipe(plugin.if(!PRODUCTION, plugin.sourcemaps.write('.')))
+		.pipe(plugin.cssnano())
+		.pipe(plugin.sourcemaps.write('.'))
 		.pipe(gulp.dest(ASSETS.styles))
 }
 
@@ -113,21 +114,12 @@ function buildImages() {
 		.pipe(gulp.dest(ASSETS.images))
 }
 
-// Empty assets directory
-function cleanAll() {
-	return del(ASSETS.all);
-}
-
 // GULP TASKS
 // See package.json for more info on running these tasks
-
-// Clean assets folder
-gulp.task('clean', gulp.parallel(cleanAll));
-
-// Clean assets/js then build JS files
+// Build JS files
 gulp.task('scripts', gulp.parallel(buildScripts));
 
-// Clean assets/css, then build CSS files
+// Build CSS files
 gulp.task('styles', gulp.parallel(buildStyles));
 
 // Optimize images
@@ -169,4 +161,4 @@ gulp.task('watch', function() {
 }); 
 
 // Run styles, scripts and foundation-js
-gulp.task('default', gulp.series(cleanAll, gulp.parallel('styles', 'scripts', 'images')));
+gulp.task('default', gulp.parallel('styles', 'scripts', 'images'));
