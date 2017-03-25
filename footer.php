@@ -26,7 +26,7 @@
 				
 				</footer> <!-- end .footer -->
 			
-			</div>  <!-- end .main-content -->
+			</div>  <!-- end .off-canvas-content -->
 					
 		</div> <!-- end .off-canvas-wrapper -->
 		
