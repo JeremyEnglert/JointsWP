@@ -15,7 +15,7 @@ $grid_columns = 4; ?>
 <?php endif; ?> 
 
 		<!--Item: -->
-		<div class="large-3 medium-3 columns panel" data-equalizer-watch>
+		<div class="small-6 medium-3 large-3 columns panel" data-equalizer-watch>
 		
 			<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article">
 			
