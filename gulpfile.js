@@ -45,7 +45,7 @@ const SOURCE = {
 		'node_modules/foundation-sites/js/foundation.tooltip.js',
 
 		// Place custom JS here, files will be concantonated, minified if ran with --production
-		'scripts/js/**/*.js',	
+		'assets/scripts/js/**/*.js',	
     ],
    
 	// Scss files will be concantonated, minified if ran with --production
