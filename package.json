@@ -1,5 +1,5 @@
 {
-  "name": "JointsWP-sass",
+  "name": "jointswp-sass",
   "version": "5.0.0",
   "description": "A WordPress starter theme using Foundation 6",
   "repository": {
@@ -28,6 +28,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.5",
+    "gulp-wp-pot": "^2.0.4",
     "jshint-stylish": "^2.0.0",
     "motion-ui": "^1.2.2"
   },
