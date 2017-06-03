@@ -32,17 +32,13 @@
 
 		<?php wp_head(); ?>
 
-		<!-- Drop Google Analytics here -->
-		<!-- end analytics -->
-
 	</head>
-	
-	<!-- Uncomment this line if using the Off-Canvas Menu --> 
-		
+			
 	<body <?php body_class(); ?>>
 
 		<div class="off-canvas-wrapper">
-							
+			
+			<!-- Load off-canvas container. Feel free to remove if not using. -->			
 			<?php get_template_part( 'parts/content', 'offcanvas' ); ?>
 			
 			<div class="off-canvas-content" data-off-canvas-content>
