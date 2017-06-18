@@ -4,6 +4,8 @@ var gulp  = require('gulp'),
     gutil = require('gulp-util'),
     browserSync = require('browser-sync').create(),
     filter = require('gulp-filter'),
+    webpack = require("webpack"),
+    webpackStream = require('webpack-stream'),
     plugin = require('gulp-load-plugins')();
     
  
@@ -31,31 +33,36 @@ const SOURCE = {
 	scripts: [
 		// Lets grab what-input first
 	    'node_modules/what-input/dist/what-input.js',
+	    
 
+		// For testing
+		//FOUNDATION + '/js/entries/foundation.js',
+		//FOUNDATION + '/dist/js/foundation.js',
+		
 		// Foundation core - needed if you want to use any of the components below
-		FOUNDATION + '/js/foundation.core.js',
-		FOUNDATION + '/js/foundation.util.*.js',
+		FOUNDATION + '/js/entries/plugins/foundation.core.js',
+		FOUNDATION + '/js/entries/plugins/foundation.util.*.js',
 		
 		// Pick the components you need in your project
-		FOUNDATION + '/js/foundation.abide.js',
-		FOUNDATION + '/js/foundation.accordion.js',
-		FOUNDATION + '/js/foundation.accordionMenu.js',
-		FOUNDATION + '/js/foundation.drilldown.js',
-		FOUNDATION + '/js/foundation.dropdown.js',
-		FOUNDATION + '/js/foundation.dropdownMenu.js',
-		FOUNDATION + '/js/foundation.equalizer.js',
-		FOUNDATION + '/js/foundation.interchange.js',
-		FOUNDATION + '/js/foundation.magellan.js',
-		FOUNDATION + '/js/foundation.offcanvas.js',
-		FOUNDATION + '/js/foundation.orbit.js',
-		FOUNDATION + '/js/foundation.responsiveMenu.js',
-		FOUNDATION + '/js/foundation.responsiveToggle.js',
-		FOUNDATION + '/js/foundation.reveal.js',
-		FOUNDATION + '/js/foundation.slider.js',
-		FOUNDATION + '/js/foundation.sticky.js',
-		FOUNDATION + '/js/foundation.tabs.js',
-		FOUNDATION + '/js/foundation.toggler.js',
-		FOUNDATION + '/js/foundation.tooltip.js',
+		FOUNDATION + '/js/entries/plugins/foundation.abide.js',
+		FOUNDATION + '/js/entries/plugins/foundation.accordion.js',
+		FOUNDATION + '/js/entries/plugins/foundation.accordionMenu.js',
+		FOUNDATION + '/js/entries/plugins/foundation.drilldown.js',
+		FOUNDATION + '/js/entries/plugins/foundation.dropdown.js',
+		FOUNDATION + '/js/entries/plugins/foundation.dropdownMenu.js',
+		FOUNDATION + '/js/entries/plugins/foundation.equalizer.js',
+		FOUNDATION + '/js/entries/plugins/foundation.interchange.js',
+		FOUNDATION + '/js/entries/plugins/foundation.magellan.js',
+		FOUNDATION + '/js/entries/plugins/foundation.offcanvas.js',
+		FOUNDATION + '/js/entries/plugins/foundation.orbit.js',
+		FOUNDATION + '/js/entries/plugins/foundation.responsiveMenu.js',
+		FOUNDATION + '/js/entries/plugins/foundation.responsiveToggle.js',
+		FOUNDATION + '/js/entries/plugins/foundation.reveal.js',
+		FOUNDATION + '/js/entries/plugins/foundation.slider.js',
+		FOUNDATION + '/js/entries/plugins/foundation.sticky.js',
+		FOUNDATION + '/js/entries/plugins/foundation.tabs.js',
+		FOUNDATION + '/js/entries/plugins/foundation.toggler.js',
+		FOUNDATION + '/js/entries/plugins/foundation.tooltip.js',
 
 		// Place custom JS here, files will be concantonated, minified if ran with --production
 		'assets/scripts/js/**/*.js',	
@@ -77,9 +84,23 @@ const ASSETS = {
 	all: 'assets/'
 };
 
+
+let webpackConfig = {
+  rules: [
+    {
+      use: [
+        {
+          loader: 'babel-loader',
+        }
+      ]
+    }
+  ]
+}
+
 // GULP FUNCTIONS
 // JSHint, concat, and minify JavaScript 
 gulp.task('scripts', function() {
+	
 	const CUSTOMFILTER = filter(ASSETS.scripts + 'js/**/*.js', {restore: true});
 	
 	return gulp.src(SOURCE.scripts)
@@ -97,6 +118,7 @@ gulp.task('scripts', function() {
 			.pipe(plugin.jshint())
 			.pipe(plugin.jshint.reporter('jshint-stylish'))
 			.pipe(CUSTOMFILTER.restore)
+		//.pipe(webpackStream({module: webpackConfig}, webpack))
 		.pipe(plugin.concat('scripts.js'))
 		.pipe(plugin.uglify())
 		.pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS

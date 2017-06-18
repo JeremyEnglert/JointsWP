@@ -8,12 +8,12 @@
  */
 
 get_header(); ?>
-			
+	
 	<div id="content">
 	
-		<div id="inner-content" class="row">
+		<div id="inner-content" class="grid-x margin-gutters padding-gutters">
 	
-		    <main id="main" class="small-12 medium-8 large-8 columns" role="main">
+		    <main id="main" class="small-12 medium-8 large-8 cell" role="main">
 		    
 			    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 			 
