@@ -40,29 +40,29 @@ const SOURCE = {
 		//FOUNDATION + '/dist/js/foundation.js',
 		
 		// Foundation core - needed if you want to use any of the components below
-		FOUNDATION + '/js/entries/plugins/foundation.core.js',
-		FOUNDATION + '/js/entries/plugins/foundation.util.*.js',
+		FOUNDATION + '/dist/js/plugins/foundation.core.js',
+		FOUNDATION + '/dist/js/plugins/foundation.util.*.js',
 		
 		// Pick the components you need in your project
-		FOUNDATION + '/js/entries/plugins/foundation.abide.js',
-		FOUNDATION + '/js/entries/plugins/foundation.accordion.js',
-		FOUNDATION + '/js/entries/plugins/foundation.accordionMenu.js',
-		FOUNDATION + '/js/entries/plugins/foundation.drilldown.js',
-		FOUNDATION + '/js/entries/plugins/foundation.dropdown.js',
-		FOUNDATION + '/js/entries/plugins/foundation.dropdownMenu.js',
-		FOUNDATION + '/js/entries/plugins/foundation.equalizer.js',
-		FOUNDATION + '/js/entries/plugins/foundation.interchange.js',
-		FOUNDATION + '/js/entries/plugins/foundation.magellan.js',
-		FOUNDATION + '/js/entries/plugins/foundation.offcanvas.js',
-		FOUNDATION + '/js/entries/plugins/foundation.orbit.js',
-		FOUNDATION + '/js/entries/plugins/foundation.responsiveMenu.js',
-		FOUNDATION + '/js/entries/plugins/foundation.responsiveToggle.js',
-		FOUNDATION + '/js/entries/plugins/foundation.reveal.js',
-		FOUNDATION + '/js/entries/plugins/foundation.slider.js',
-		FOUNDATION + '/js/entries/plugins/foundation.sticky.js',
-		FOUNDATION + '/js/entries/plugins/foundation.tabs.js',
-		FOUNDATION + '/js/entries/plugins/foundation.toggler.js',
-		FOUNDATION + '/js/entries/plugins/foundation.tooltip.js',
+		FOUNDATION + '/dist/js/plugins/foundation.abide.js',
+		FOUNDATION + '/dist/js/plugins/foundation.accordion.js',
+		FOUNDATION + '/dist/js/plugins/foundation.accordionMenu.js',
+		FOUNDATION + '/dist/js/plugins/foundation.drilldown.js',
+		FOUNDATION + '/dist/js/plugins/foundation.dropdown.js',
+		FOUNDATION + '/dist/js/plugins/foundation.dropdownMenu.js',
+		FOUNDATION + '/dist/js/plugins/foundation.equalizer.js',
+		FOUNDATION + '/dist/js/plugins/foundation.interchange.js',
+		FOUNDATION + '/dist/js/plugins/foundation.magellan.js',
+		FOUNDATION + '/dist/js/plugins/foundation.offcanvas.js',
+		FOUNDATION + '/dist/js/plugins/foundation.orbit.js',
+		FOUNDATION + '/dist/js/plugins/foundation.responsiveMenu.js',
+		FOUNDATION + '/dist/js/plugins/foundation.responsiveToggle.js',
+		FOUNDATION + '/dist/js/plugins/foundation.reveal.js',
+		FOUNDATION + '/dist/js/plugins/foundation.slider.js',
+		FOUNDATION + '/dist/js/plugins/foundation.sticky.js',
+		FOUNDATION + '/dist/js/plugins/foundation.tabs.js',
+		FOUNDATION + '/dist/js/plugins/foundation.toggler.js',
+		FOUNDATION + '/dist/js/plugins/foundation.tooltip.js',
 
 		// Place custom JS here, files will be concantonated, minified if ran with --production
 		'assets/scripts/js/**/*.js',	
@@ -101,6 +101,7 @@ let webpackConfig = {
 // JSHint, concat, and minify JavaScript 
 gulp.task('scripts', function() {
 	
+	// Use a custom filter so we only lint custom JS
 	const CUSTOMFILTER = filter(ASSETS.scripts + 'js/**/*.js', {restore: true});
 	
 	return gulp.src(SOURCE.scripts)
