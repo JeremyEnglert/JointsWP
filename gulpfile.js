@@ -33,29 +33,31 @@ const SOURCE = {
 	    'node_modules/what-input/dist/what-input.js',
 
 		// Foundation core - needed if you want to use any of the components below
-		FOUNDATION + '/js/foundation.core.js',
-		FOUNDATION + '/js/foundation.util.*.js',
+		FOUNDATION + '/dist/js/plugins/foundation.core.js',
+		FOUNDATION + '/dist/js/plugins/foundation.util.*.js',
 		
 		// Pick the components you need in your project
-		FOUNDATION + '/js/foundation.abide.js',
-		FOUNDATION + '/js/foundation.accordion.js',
-		FOUNDATION + '/js/foundation.accordionMenu.js',
-		FOUNDATION + '/js/foundation.drilldown.js',
-		FOUNDATION + '/js/foundation.dropdown.js',
-		FOUNDATION + '/js/foundation.dropdownMenu.js',
-		FOUNDATION + '/js/foundation.equalizer.js',
-		FOUNDATION + '/js/foundation.interchange.js',
-		FOUNDATION + '/js/foundation.magellan.js',
-		FOUNDATION + '/js/foundation.offcanvas.js',
-		FOUNDATION + '/js/foundation.orbit.js',
-		FOUNDATION + '/js/foundation.responsiveMenu.js',
-		FOUNDATION + '/js/foundation.responsiveToggle.js',
-		FOUNDATION + '/js/foundation.reveal.js',
-		FOUNDATION + '/js/foundation.slider.js',
-		FOUNDATION + '/js/foundation.sticky.js',
-		FOUNDATION + '/js/foundation.tabs.js',
-		FOUNDATION + '/js/foundation.toggler.js',
-		FOUNDATION + '/js/foundation.tooltip.js',
+		FOUNDATION + '/dist/js/plugins/foundation.abide.js',
+		FOUNDATION + '/dist/js/plugins/foundation.accordion.js',
+		FOUNDATION + '/dist/js/plugins/foundation.accordionMenu.js',
+		FOUNDATION + '/dist/js/plugins/foundation.drilldown.js',
+		FOUNDATION + '/dist/js/plugins/foundation.dropdown.js',
+		FOUNDATION + '/dist/js/plugins/foundation.dropdownMenu.js',
+		FOUNDATION + '/dist/js/plugins/foundation.equalizer.js',
+		FOUNDATION + '/dist/js/plugins/foundation.interchange.js',
+		FOUNDATION + '/dist/js/plugins/foundation.magellan.js',
+		FOUNDATION + '/dist/js/plugins/foundation.offcanvas.js',
+		FOUNDATION + '/dist/js/plugins/foundation.orbit.js',
+		FOUNDATION + '/dist/js/plugins/foundation.responsiveAccordionTabs.js',
+		FOUNDATION + '/dist/js/plugins/foundation.responsiveMenu.js',
+		FOUNDATION + '/dist/js/plugins/foundation.responsiveToggle.js',
+		FOUNDATION + '/dist/js/plugins/foundation.reveal.js',
+		FOUNDATION + '/dist/js/plugins/foundation.slider.js',
+		FOUNDATION + '/dist/js/plugins/foundation.smoothScroll.js',
+		FOUNDATION + '/dist/js/plugins/foundation.sticky.js',
+		FOUNDATION + '/dist/js/plugins/foundation.tabs.js',
+		FOUNDATION + '/dist/js/plugins/foundation.toggler.js',
+		FOUNDATION + '/dist/js/plugins/foundation.tooltip.js',
 
 		// Place custom JS here, files will be concantonated, minified if ran with --production
 		'assets/scripts/js/**/*.js',	
@@ -80,6 +82,8 @@ const ASSETS = {
 // GULP FUNCTIONS
 // JSHint, concat, and minify JavaScript 
 gulp.task('scripts', function() {
+	
+	// Use a custom filter so we only lint custom JS
 	const CUSTOMFILTER = filter(ASSETS.scripts + 'js/**/*.js', {restore: true});
 	
 	return gulp.src(SOURCE.scripts)
