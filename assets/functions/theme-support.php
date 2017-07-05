@@ -8,7 +8,14 @@ function joints_theme_support() {
 	
 	// Default thumbnail size
 	set_post_thumbnail_size(125, 125, true);
-
+	
+	// Custom Logo Support since 4.5
+	add_theme_support( 'custom-logo', array(
+		'height'      => 240,
+		'width'       => 240,
+		'flex-height' => true,
+	) );
+	
 	// Add RSS Support
 	add_theme_support( 'automatic-feed-links' );
 	
@@ -40,7 +47,16 @@ function joints_theme_support() {
 	); 
 	
 	// Set the maximum allowed width for any content in the theme, like oEmbeds and images added to posts.
-	$GLOBALS['content_width'] = apply_filters( 'joints_theme_support', 1200 );	
+	$GLOBALS['content_width'] = apply_filters( 'joints_theme_support', 1200 );
+	
+	if ( ! function_exists( 'joints_the_custom_logo' ) ) :
+	
+	function joints_the_custom_logo() {
+		if ( function_exists( 'the_custom_logo' ) ) {
+			the_custom_logo();
+		}
+	}
+	endif;
 	
 } /* end theme support */
 
