@@ -30,7 +30,8 @@
     "gulp-util": "^3.0.5",
     "gulp-wp-pot": "^2.0.4",
     "jshint-stylish": "^2.0.0",
-    "motion-ui": "^1.2.2"
+    "motion-ui": "^1.2.2",
+	"what-input": "^4.1.1"	
   },
   "scripts": {
     "postinstall": "npm run build",
