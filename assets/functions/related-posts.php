@@ -4,26 +4,53 @@ function joints_related_posts() {
 	global $post;
 	$tag_arr = '';
 	$tags = wp_get_post_tags( $post->ID );
+	$tag_arr = '';
 	if($tags) {
 		foreach( $tags as $tag ) {
 			$tag_arr .= $tag->slug . ',';
 		}
 		$args = array(
 			'tag' => $tag_arr,
-			'numberposts' => 3, /* you can change this to show more */
+			'numberposts' => 5, /* you can change this to show more */
 			'post__not_in' => array($post->ID)
 		);
 		$related_posts = get_posts( $args );
-		if($related_posts) {
-		echo __( '<h4>Related Posts</h4>', 'jointswp' );
-		echo '<ul id="joints-related-posts">';
-			foreach ( $related_posts as $post ) : setup_postdata( $post ); ?>
-				<li class="related_post">
-					<a href="<?php the_permalink() ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
-					<?php get_template_part( 'parts/content', 'byline' ); ?>
-				</li>
-			<?php endforeach; }
-			}
+		if($related_posts) :?>
+			<div class="sidebar-posts related-posts">
+				<h3>Related Articles</h3>
+				<ul class="posts">
+					<?php foreach($related_posts as $post) : setup_postdata($post); ?>
+						<li class="related-post">
+							<div class="post-date">
+								<?php get_template_part( 'parts/content', 'byline' ); ?>
+							</div>
+							<a href="<?php the_permalink() ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
+						</li>
+					<?php endforeach;?>
+				</ul>
+			</div>
+		<?php endif; ?>
+
+		<?php
+	}
 	wp_reset_postdata();
-	echo '</ul>';
+	?>
+	<?php if(!$tags):?>
+		<div class="sidebar-posts related-posts">
+			<h3>Related Articles</h3>
+			<ul class="posts">
+				<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+					<li>
+						<div class="post-date">
+							<?php get_template_part( 'parts/content', 'byline' ); ?>
+						</div>
+						<a href="<?php the_permalink() ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
+					</li>
+
+				<?php endwhile; endif; ?>
+			</ul>
+		</div>
+	<?php endif; ?>
+
+	<?php
 } /* end joints related posts function */
