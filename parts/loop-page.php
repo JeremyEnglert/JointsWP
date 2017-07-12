@@ -4,7 +4,7 @@
 		<h1 class="page-title"><?php the_title(); ?></h1>
 	</header> <!-- end article header -->
 					
-    <section class="entry-content" itemprop="articleBody">
+    <section class="entry-content" itemprop="text">
 	    <?php the_content(); ?>
 	    <?php wp_link_pages(); ?>
 	</section> <!-- end article section -->
