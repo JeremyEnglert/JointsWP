@@ -79,6 +79,14 @@ const ASSETS = {
 	all: 'assets/'
 };
 
+const JSHINT_CONFIG = {
+	"node": true,
+	"globals": {
+		"document": true,
+		"jQuery": true
+	}
+};
+
 // GULP FUNCTIONS
 // JSHint, concat, and minify JavaScript 
 gulp.task('scripts', function() {
@@ -98,7 +106,7 @@ gulp.task('scripts', function() {
 			ignore: ['what-input.js']
 		}))
 		.pipe(CUSTOMFILTER)
-			.pipe(plugin.jshint())
+			.pipe(plugin.jshint(JSHINT_CONFIG))
 			.pipe(plugin.jshint.reporter('jshint-stylish'))
 			.pipe(CUSTOMFILTER.restore)
 		.pipe(plugin.concat('scripts.js'))
