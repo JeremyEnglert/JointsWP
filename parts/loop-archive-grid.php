@@ -10,12 +10,12 @@ $grid_columns = 4; ?>
 
 <?php if( 0 === ( $wp_query->current_post  )  % $grid_columns ): ?>
 
-    <div class="row archive-grid" data-equalizer> <!--Begin Row:--> 
+    <div class="grid-x grid-margin-x grid-padding-x archive-grid" data-equalizer> <!--Begin Grid--> 
 
 <?php endif; ?> 
 
 		<!--Item: -->
-		<div class="small-6 medium-3 large-3 columns panel" data-equalizer-watch>
+		<div class="small-6 medium-3 large-3 cell panel" data-equalizer-watch>
 		
 			<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article">
 			
@@ -38,7 +38,7 @@ $grid_columns = 4; ?>
 
 <?php if( 0 === ( $wp_query->current_post + 1 )  % $grid_columns ||  ( $wp_query->current_post + 1 ) ===  $wp_query->post_count ): ?>
 
-   </div>  <!--End Row: --> 
+   </div>  <!--End Grid --> 
 
 <?php endif; ?>
 

@@ -9,9 +9,9 @@ get_header(); ?>
 			
 	<div class="content">
 
-		<div class="inner-content row">
+		<div class="inner-content grid-x grid-margin-x grid-padding-x">
 	
-			<main class="main small-12 medium-8 large-8 columns" role="main">
+			<main class="main small-12 medium-8 large-8 cell" role="main">
 				<header>
 					<h1 class="archive-title"><?php _e( 'Search Results for:', 'jointswp' ); ?> <?php echo esc_attr(get_search_query()); ?></h1>
 				</header>
