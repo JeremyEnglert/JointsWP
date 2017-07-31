@@ -4,7 +4,7 @@
  */
 ?>
 
-<div id="post-not-found" class="hentry">
+<div class="post-not-found">
 	
 	<?php if ( is_search() ) : ?>
 		
