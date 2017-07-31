@@ -1,7 +1,7 @@
 <?php
 // Calling your own login css so you can style it
 function joints_login_css() {
-	wp_enqueue_style( 'joints_login_css', get_template_directory_uri() . '/assets/css/login.css', false );
+	wp_enqueue_style( 'joints_login_css', get_template_directory_uri() . '/assets/styles/login.css', false );
 }
 
 // changing the logo link from wordpress.org to your site
