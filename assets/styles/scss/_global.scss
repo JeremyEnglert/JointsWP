@@ -1,106 +1,12 @@
 /************************************************
 
-Stylesheet: Main Stylesheet
+Stylesheet: Global Stylesheet
 
 *************************************************/
 
 /*********************
-GENERAL STYLES
-*********************/
-
-/*********************
-LINK STYLES
-*********************/
-a, a:visited {
-
-	// Mobile tap color
-	&:link {
-		//Highlight links on iOS, Similar to :hover for mobile devices.
-		-webkit-tap-highlight-color : rgba( 0, 0, 0, 0.3 );
-	}
-}
-
-/*********************
-H1, H2, H3, H4, H5 P STYLES
-*********************/
-h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
-
-	// Removing text decoration from all headline links
-	a {
-		text-decoration: none;
-	}
-}
-
-h1, .h1 {
-
-}
-
-h2, .h2 {
-
-}
-
-h3, .h3 {
-
-}
-
-h4, .h4 {
-	
-}
-
-h5, .h5 {
-
-}
-
-/*********************
-HEADER STYLES
-*********************/
-.header {
-	ul.off-canvas-list li {
-		list-style: none;
-	}
-}
-    
-/*********************
-NAVIGATION STYLES
-*********************/
-.top-bar {
-	.title-area {
-		z-index: 1;
-	}
-} 
-
-.off-canvas-list {
-	ul {
-		margin-left: 0;
-		li {
-			a {
-				border-bottom: 0px;
-			}
-		}
-		.dropdown {
-			margin-left: 20px;
-		}
-	}
-}
-
-/*********************
 POSTS & CONTENT STYLES
 *********************/
-#content {
-	#inner-content {
-		padding: 1rem 0rem;
-	}
-}
-
-.single-title,
-.page-title {
-	
-}
-
-.single-title {
-	
-}
-
 .page-title {
 	
 	// Remove Foundation vcard styling from author page titles
@@ -108,10 +14,6 @@ POSTS & CONTENT STYLES
 		border: 0px;
 		padding: 0px;
 	}
-}
-
-.archive-title {
-
 }
 
 // Post meta  
@@ -469,9 +371,6 @@ COMMENT FORM STYLES
 	}
 }
 
-// comment submit button  
-#submit {}
-
 // comment form title  
 #comment-form-title {
 	margin: 0 0 1.1em;
@@ -504,12 +403,6 @@ SIDEBARS & ASIDES
 	}
 }
 
-#searchsubmit {
-}
-
-.widgettitle {
-}
-
 .widget {
 	ul {
 		margin: 0;
@@ -523,10 +416,6 @@ FOOTER STYLES
 	margin-top: 1em;
 }
 	
-/*********************
-FOUNDATION STYLES
-*********************/
-
 /*********************
 VISUAL EDITOR STYLES
 *********************/
