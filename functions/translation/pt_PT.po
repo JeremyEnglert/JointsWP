@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp theme bones\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-26 23:23+0100\n"
+"POT-Creation-Date: 2017-09-22 16:02+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
 "Language-Team: fulgor <frag.fulgor@gmail.com>\n"
@@ -13,9 +13,10 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
-"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;"
+"esc_html_x:1,2c\n"
 "X-Poedit-Basepath: ../..\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
@@ -123,7 +124,7 @@ msgstr "Procurar tipo de conteúdo"
 
 #: assets/functions/custom-post-type.php:32
 msgid "Nothing found in the Database."
-msgstr "Nada encontrado na base de dados"
+msgstr "Nada encontrado na base de dados."
 
 #: assets/functions/custom-post-type.php:33
 msgid "Nothing found in Trash"
@@ -131,7 +132,7 @@ msgstr "Nada encontrado no lixo"
 
 #: assets/functions/custom-post-type.php:36
 msgid "This is the example custom post type"
-msgstr "Este é o exemplo de tipo de contúdo personalizado"
+msgstr "Este é o exemplo de tipo de conteúdo personalizado"
 
 #: assets/functions/custom-post-type.php:73
 msgid "Custom Categories"
