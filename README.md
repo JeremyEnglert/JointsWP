@@ -1,6 +1,4 @@
-This is the development branch of JointsWP 5. This is not meant for production at this time. Be sure to check out the rest of the README for install instructions.
-
-Currently using Foundation 6.4.1.
+Currently using Foundation 6.4.3.
 
 ## JointsWP Requirements
 JointsWP requires [Node.js](https://nodejs.org) v6.9.x or newer. This doesn't mean you need to understand Node (or even Gulp) - it's just the steps we need to take to make sure all of our development tools are installed. 
