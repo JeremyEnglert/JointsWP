@@ -125,7 +125,11 @@ gulp.task('styles', function() {
 		.pipe(plugin.sourcemaps.init())
 		.pipe(plugin.sass())
 		.pipe(plugin.autoprefixer({
-		    browsers: ['last 2 versions'],
+		    browsers: [
+		    	'last 2 versions',
+		    	'ie >= 9',
+				'ios >= 7'
+		    ],
 		    cascade: false
 		}))
 		.pipe(plugin.cssnano())
@@ -139,7 +143,6 @@ gulp.task('styles', function() {
 // Optimize images, move into assets directory
 gulp.task('images', function() {
 	return gulp.src(SOURCE.images)
-		.pipe(plugin.newer(ASSETS.images))
 		.pipe(plugin.imagemin())
 		.pipe(gulp.dest(ASSETS.images))
 });
