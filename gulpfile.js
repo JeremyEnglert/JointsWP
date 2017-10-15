@@ -13,16 +13,6 @@ var gulp  = require('gulp'),
 // Set local URL if using Browser-Sync
 const LOCAL_URL = 'http://jointswp-github.dev/';
 
-const TRANSLATE = {
-	domain: 'WPGULP', // Your textdomain here
-	destFile: 'WPGULP.pot',
-	packageName:'WPGULP',
-	bugReport: 'https://AhmadAwais.com/contact/', // Where can users report bugs.
-	lastTranslator: 'Ahmad Awais <your_email@email.com>', // Last translator Email ID.
-	team: 'WPTie <your_email@email.com>', // Team's Email ID.
-	translatePath: './languages' // Where to save the translation files.
-};
-
 // Set path to Foundation files
 const FOUNDATION = 'node_modules/foundation-sites';
 
