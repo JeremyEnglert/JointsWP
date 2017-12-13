@@ -151,9 +151,6 @@ gulp.task('browsersync', function() {
     
     // Watch these files
     var files = [
-    	SOURCE.styles, 
-    	SOURCE.scripts,
-    	SOURCE.images,
     	SOURCE.php,
     ];
 
