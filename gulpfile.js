@@ -57,7 +57,7 @@ const SOURCE = {
 	styles: 'assets/styles/scss/**/*.scss',
 		
 	// Images placed here will be optimized
-	images: 'assets/images/**/*',
+	images: 'assets/images/src/**/*',
 	
 	php: '**/*.php'
 };
