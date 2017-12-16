@@ -13,6 +13,9 @@ function disable_wp_emoji() {
 
   // filter to remove TinyMCE emojis
   add_filter( 'tiny_mce_plugins', 'disable_emoji_tinymce' );
+  
+  // filter to remove DNS prefetch
+  add_filter( 'emoji_svg_url', '__return_false' );
 }
 add_action( 'init', 'disable_wp_emoji' );
 
