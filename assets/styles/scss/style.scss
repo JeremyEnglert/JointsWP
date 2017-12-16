@@ -22,11 +22,11 @@ CSS file.
 // Select the components you want to use
 @include foundation-global-styles;
 
-//Select the grid you would like to use
+// Select the grid you would like to use defaults to xy-grid
 // @include foundation-grid;
-
 // @include foundation-flex-grid;
 
+@include foundation-flex-classes; // Note: Provides flex classes to both flex-grid and xy-grid. #Reference - https://github.com/JeremyEnglert/JointsWP/issues/294
 @include foundation-xy-grid-classes;
 
 @include foundation-flex-classes;
