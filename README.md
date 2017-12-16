@@ -28,7 +28,7 @@ $ npm run browsersync
 ```
 This will watch the same files as `npm run watch`, but utilizes browsersync for live reloading and style injection. Be sure to update the `URL` variable in the `gulpfile.js` to your local install URL. 
 
-##Compile and Minify All Theme Assets
+## Compile and Minify All Theme Assets
 ```bash
 $ npm run build
 ```
