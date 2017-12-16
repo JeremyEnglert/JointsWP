@@ -22,11 +22,9 @@ CSS file.
 // Select the components you want to use
 @include foundation-global-styles;
 
-//Select the grid you would like to use
+// Select the grid you would like to use
 // @include foundation-grid;
-
 // @include foundation-flex-grid;
-
 @include foundation-xy-grid-classes;
 
 @include foundation-flex-classes;
