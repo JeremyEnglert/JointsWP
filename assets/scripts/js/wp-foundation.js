@@ -16,4 +16,4 @@ jQuery(document).ready(function() {
 		  jQuery(this).wrap("<div class='responsive-embed'/>");
 		}
 	});
-});
+}); 
