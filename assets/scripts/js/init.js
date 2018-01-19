@@ -89,6 +89,5 @@ appInit;
 
 // Import external plugins that do not utilize modules (e.g. Flickity).
 
-
 // Initialize Foundation.
 $(document).foundation();
