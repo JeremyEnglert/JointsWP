@@ -29,7 +29,6 @@ function joints_theme_support() {
 		'width'       => 400,
 		'flex-height' => true,
 		'flex-width'  => true,
-		'header-text' => array( 'site-title', 'site-description' ),
 	) );
 	
 	// Adding post format support

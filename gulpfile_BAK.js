@@ -1,8 +1,3 @@
-// GULP CONFIG
-// Customize your workflow in the config.js file
-const CONFIG = require('./config.js');
-
-
 // GULP PACKAGES
 // Most packages are lazy loaded
 var gulp  = require('gulp'),
@@ -13,13 +8,49 @@ var gulp  = require('gulp'),
     remember = require('gulp-remember'),
     fs = require('fs'),
     plugin = require('gulp-load-plugins')();
+   
+// Load settings from config.yml file.
+const { COMPATIBILITY, BROWSERSYNC, SCRIPTS } = loadConfig();   
 
+function loadConfig() {
+  let ymlFile = fs.readFileSync('config.yml', 'utf8');
+  return yaml.load(ymlFile);
+}
+ 
+// GULP VARIABLES   
+// Modify these variables to match your project needs   
+
+// Select Foundation components, remove components project will not use
+const SOURCE = {
+   
+	// Scss files will be concantonated, minified
+	styles: 'assets/styles/scss/**/*.scss',
+		
+	// Images placed here will be optimized
+	images: 'assets/images/**/*',
+	
+	php: '**/*.php'
+};
+
+const ASSETS = {
+	styles: 'assets/styles/',
+	scripts: 'assets/scripts/',
+	images: 'assets/images/',
+};
+
+const JSHINT_CONFIG = {
+	"node": true,
+	"globals": {
+		"document": true,
+		"jQuery": true
+	}
+};
 
 // GULP FUNCTIONS
 // JSHint, concat, and minify JavaScript 
 gulp.task('scripts', function() {
 	
-	return gulp.src(CONFIG.SOURCE.scripts, {since: gulp.lastRun('scripts')})
+	return gulp.src(SCRIPTS, {since: gulp.lastRun('scripts')})
 		.pipe(plugin.plumber(function(error) {
             gutil.log(gutil.colors.red(error.message));
             this.emit('end');
@@ -34,13 +65,13 @@ gulp.task('scripts', function() {
 		        
 		// Only lint modified files		
         .pipe(cached('scripts'))
-		.pipe(plugin.jshint(CONFIG.JSHINT_CONFIG))
+		.pipe(plugin.jshint(JSHINT_CONFIG))
 		.pipe(plugin.jshint.reporter('jshint-stylish'))
 		.pipe(remember('scripts'))
 		.pipe(plugin.concat('scripts.js'))
 		.pipe(plugin.uglify())
 		.pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
-		.pipe(gulp.dest(CONFIG.ASSETS.scripts))
+		.pipe(gulp.dest(ASSETS.scripts))
 });
 
 // Compile Sass, Autoprefix and minify
@@ -53,7 +84,7 @@ gulp.task('styles', function() {
 		.pipe(plugin.sourcemaps.init())
 		.pipe(plugin.sass())
 		.pipe(plugin.autoprefixer({
-		    browsers: config.compatibility,
+		    browsers: COMPATIBILITY,
 		    cascade: false
 		}))
 		.pipe(plugin.cssnano())
@@ -85,16 +116,16 @@ gulp.task('browsersync', function() {
     
     // Watch these files
     var files = [
-    	CONFIG.SOURCE.php,
+    	SOURCE.php,
     ];
 
     browserSync.init(files, {
-	    proxy: CONFIG.PROJECT_URL
+	    proxy: BROWSERSYNC.url
     });
     
-    gulp.watch(CONFIG.SOURCE.styles, gulp.parallel('styles'));
-    gulp.watch(CONFIG.SOURCE.scripts, gulp.parallel('scripts')).on('change', browserSync.reload);
-    gulp.watch(CONFIG.SOURCE.images, gulp.parallel('images'));
+    gulp.watch(SOURCE.styles, gulp.parallel('styles'));
+    gulp.watch(SOURCE.scripts, gulp.parallel('scripts')).on('change', browserSync.reload);
+    gulp.watch(SOURCE.images, gulp.parallel('images'));
 
 });
 
@@ -102,13 +133,13 @@ gulp.task('browsersync', function() {
 gulp.task('watch', function() {
 
 	// Watch .scss files
-	gulp.watch(CONFIG.SOURCE.styles, gulp.parallel('styles'));
+	gulp.watch(SOURCE.styles, gulp.parallel('styles'));
 	
 	// Watch scripts files
-	gulp.watch(CONFIG.SOURCE.scripts, gulp.parallel('scripts'));
+	gulp.watch(SCRIPTS, gulp.parallel('scripts'));
 	
 	// Watch images files
-	gulp.watch(CONFIG.SOURCE.images, gulp.parallel('images'));
+	gulp.watch(SOURCE.images, gulp.parallel('images'));
   
 }); 
 
