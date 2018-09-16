@@ -6,13 +6,10 @@ const CONFIG = require('./config.js');
 // GULP PACKAGES
 // Most packages are lazy loaded
 var gulp  = require('gulp'),
-    gutil = require('gulp-util'),
     browserSync = require('browser-sync').create(),
-    yaml = require('js-yaml'),
     cached = require('gulp-cached'),
     remember = require('gulp-remember'),
-    fs = require('fs'),
-    plugin = require('gulp-load-plugins')();
+    fs = require('fs');
 
 
 // GULP FUNCTIONS
@@ -74,7 +71,7 @@ gulp.task('images', function() {
  gulp.task( 'translate', function () {
      return gulp.src( SOURCE.php )
          .pipe(plugin.wpPot( {
-             domain: 'jointswp',
+             domain: '',
              package: 'Example project'
          } ))
         .pipe(gulp.dest('file.pot'));
