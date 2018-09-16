@@ -14,13 +14,13 @@ function joints_comments($comment, $args, $depth) {
 							// create variable
 							$bgauthemail = get_comment_author_email();
 						?>
-						<?php printf(__('%s', 'jointswp'), get_comment_author_link()) ?> on
-						<time datetime="<?php echo comment_time('Y-m-j'); ?>"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ) ?>"><?php comment_time(__(' F jS, Y - g:ia', 'jointswp')); ?> </a></time>
-						<?php edit_comment_link(__('(Edit)', 'jointswp'),'  ','') ?>
+						<?php printf(__('%s', 'textDomain'), get_comment_author_link()) ?> on
+						<time datetime="<?php echo comment_time('Y-m-j'); ?>"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ) ?>"><?php comment_time(__(' F jS, Y - g:ia', 'textDomain')); ?> </a></time>
+						<?php edit_comment_link(__('(Edit)', 'textDomain'),'  ','') ?>
 					</header>
 					<?php if ($comment->comment_approved == '0') : ?>
 						<div class="alert alert-info">
-							<p><?php _e('Your comment is awaiting moderation.', 'jointswp') ?></p>
+							<p><?php _e('Your comment is awaiting moderation.', 'textDomain') ?></p>
 						</div>
 					<?php endif; ?>
 					<section class="comment_content clearfix">

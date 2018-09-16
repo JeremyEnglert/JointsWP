@@ -15,7 +15,7 @@
 	<div class="top-bar-right">
 		<ul class="menu">
 			<!-- <li><button class="menu-icon" type="button" data-toggle="off-canvas"></button></li> -->
-			<li><a data-toggle="off-canvas"><?php _e( 'Menu', 'jointswp' ); ?></a></li>
+			<li><a data-toggle="off-canvas"><?php _e( 'Menu', 'textDomain' ); ?></a></li>
 		</ul>
 	</div>
 </div>
