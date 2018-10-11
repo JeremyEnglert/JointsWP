@@ -1,10 +1,10 @@
 <?php
 // SIDEBARS AND WIDGETIZED AREAS
-function joints_register_sidebars() {
+function theme_namespace_register_sidebars() {
 	register_sidebar(array(
 		'id' => 'sidebar1',
-		'name' => __('Sidebar 1', 'textDomain'),
-		'description' => __('The first (primary) sidebar.', 'textDomain'),
+		'name' => __('Sidebar 1', 'theme_namespace'),
+		'description' => __('The first (primary) sidebar.', 'theme_namespace'),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',
@@ -13,8 +13,8 @@ function joints_register_sidebars() {
 
 	register_sidebar(array(
 		'id' => 'offcanvas',
-		'name' => __('Offcanvas', 'textDomain'),
-		'description' => __('The offcanvas sidebar.', 'textDomain'),
+		'name' => __('Offcanvas', 'theme_namespace'),
+		'description' => __('The offcanvas sidebar.', 'theme_namespace'),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',
@@ -31,8 +31,8 @@ function joints_register_sidebars() {
 
 	register_sidebar(array(
 		'id' => 'sidebar2',
-		'name' => __('Sidebar 2', 'textDomain'),
-		'description' => __('The second (secondary) sidebar.', 'textDomain'),
+		'name' => __('Sidebar 2', 'theme_namespace'),
+		'description' => __('The second (secondary) sidebar.', 'theme_namespace'),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',

@@ -5,7 +5,7 @@ Template Name: Full Width (No Sidebar)
 
 get_header(); ?>
 			
-	<div class="content">
+	<div id="content">
 	
 		<div class="inner-content">
 	

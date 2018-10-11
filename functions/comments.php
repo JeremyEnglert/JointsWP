@@ -1,6 +1,6 @@
 <?php
 // Comment Layout
-function joints_comments($comment, $args, $depth) {
+function theme_namespace_comments($comment, $args, $depth) {
    $GLOBALS['comment'] = $comment; ?>
 	<li <?php comment_class('panel'); ?>>
 		<div class="media-object">
@@ -14,13 +14,13 @@ function joints_comments($comment, $args, $depth) {
 							// create variable
 							$bgauthemail = get_comment_author_email();
 						?>
-						<?php printf(__('%s', 'textDomain'), get_comment_author_link()) ?> on
-						<time datetime="<?php echo comment_time('Y-m-j'); ?>"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ) ?>"><?php comment_time(__(' F jS, Y - g:ia', 'textDomain')); ?> </a></time>
-						<?php edit_comment_link(__('(Edit)', 'textDomain'),'  ','') ?>
+						<?php printf(__('%s', 'theme_namespace'), get_comment_author_link()) ?> on
+						<time datetime="<?php echo comment_time('Y-m-j'); ?>"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ) ?>"><?php comment_time(__(' F jS, Y - g:ia', 'theme_namespace')); ?> </a></time>
+						<?php edit_comment_link(__('(Edit)', 'theme_namespace'),'  ','') ?>
 					</header>
 					<?php if ($comment->comment_approved == '0') : ?>
 						<div class="alert alert-info">
-							<p><?php _e('Your comment is awaiting moderation.', 'textDomain') ?></p>
+							<p><?php _e('Your comment is awaiting moderation.', 'theme_namespace') ?></p>
 						</div>
 					<?php endif; ?>
 					<section class="comment_content clearfix">

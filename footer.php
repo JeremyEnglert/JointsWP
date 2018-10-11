@@ -10,22 +10,20 @@
 					
 				<footer class="footer" role="contentinfo">
 					
-					<div class="inner-footer   ">
+					<div class="inner-footer">
 						
 						<nav role="navigation">
-							<?php joints_footer_links(); ?>
+							<?php theme_namespace_footer_links(); ?>
 						</nav>
 					
 						<p class="source-org copyright">&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>.</p>
 				
-					</div> <!-- end #inner-footer -->
+					</div> <!-- end .inner-footer -->
 				
 				</footer> <!-- end .footer -->
 			
-			</div>  <!-- end .off-canvas-content -->
-					
-		</div> <!-- end .off-canvas-wrapper -->
-		
+			</div>  <!-- end .site-wrapper -->
+							
 		<?php wp_footer(); ?>
 		
 	</body>

@@ -9,11 +9,11 @@
 
 get_header(); ?>
 			
-	<div class="content">
+	<div id="content">
 	
-		<div class="inner-content   ">
+		<div class="inner-content">
 	
-		    <main class="main " role="main">
+		    <main class="main" role="main">
 		    
 			    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 			 
@@ -22,7 +22,7 @@ get_header(); ?>
 				    
 				<?php endwhile; ?>	
 
-					<?php joints_page_navi(); ?>
+					<?php theme_namespace_page_navi(); ?>
 					
 				<?php else : ?>
 											

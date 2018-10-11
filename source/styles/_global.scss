@@ -2,51 +2,60 @@
 
 Stylesheet: Global Styles
 
-Place global styles here. 
-This file also includes the "necessary" WordPress CSS (image alignment, image sizing, etc).
+Place generic global styles here. 
+Also includes the "necessary" WordPress CSS (image alignment, image sizing, etc).
 
 *************************************************/
 
 /*********************
+ACCESSBIBILITY
+*********************/
+// Text meant only for screen readers.
+.screen-reader-text {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute !important;
+	width: 1px;
+	word-wrap: normal !important;
+  }
+
+/*********************
 POSTS & CONTENT STYLES
 *********************/
-// Entry content  
-.entry-content {
-	
-	img {
-		max-width: 100%;
-		height: auto;
-	}
+.alignleft, img.alignleft { 
+	margin-right: 1.5em; 
+	display: inline; 
+	float: left; 
+}
 
-	.alignleft, img.alignleft { 
-		margin-right: 1.5em; 
-		display: inline; 
-		float: left; 
-	}
-	.alignright, img.alignright { 
-		margin-left: 1.5em; 
-		display: inline; 
-		float: right; 
-	}
-	.aligncenter, img.aligncenter { 
-		margin-right: auto; 
-		margin-left: auto; 
-		display: block; 
-		clear: both; 
-	}
-			
-	video, object {
-		max-width: 100%;
-		height: auto;
-	}
+.alignright, img.alignright { 
+	margin-left: 1.5em; 
+	display: inline; 
+	float: right; 
+}
 
-	pre {
-		background: #eee;
-		border: 1px solid #cecece;
-		padding: 10px;
-	}
+.aligncenter, img.aligncenter { 
+	margin-right: auto; 
+	margin-left: auto; 
+	display: block; 
+	clear: both; 
+}
 
-} 
+video, object {
+	max-width: 100%;
+	height: auto;
+}
+
+pre {
+	background: #eee;
+	border: 1px solid #cecece;
+	padding: 10px;
+}
 
 .wp-caption {
 	max-width: 100%;
@@ -71,347 +80,48 @@ POSTS & CONTENT STYLES
 IMAGE GALLERY STYLES
 *********************/
 .gallery {
-	max-width: 100%;
-	margin-left: auto;
-	margin-right: auto;
-	margin-right: -15px;
-	margin-left: -15px; 
+	margin-bottom: 1.5em;
 }
-.gallery::before, .gallery::after {
-	content: ' ';
-	display: table; 
-}
-.gallery::after {
-	clear: both; 
-}
-.gallery.gallery-columns-1 > dl {
-	@include grid-column;
-}
-.gallery.gallery-columns-2 > dl {
-	@include grid-column(1 of 2);
-}
-.gallery.gallery-columns-3 > dl {
-	@include grid-column(1 of 3);
-}
-.gallery.gallery-columns-4 > dl {
-	@include grid-column(1 of 4);
-}
-.gallery.gallery-columns-5 > dl {
-	@include grid-column(1 of 5);
-}
-.gallery.gallery-columns-6 > dl {
-	@include grid-column(1 of 6);
-}
-.gallery.gallery-columns-7 > dl {
-	@include grid-column(1 of 7);
-}
-.gallery.gallery-columns-8 > dl {
-	@include grid-column(1 of 8);
-}
-.gallery dl {
+
+.gallery-item {
+	display: inline-block;
+	text-align: center;
+	vertical-align: top;
 	width: 100%;
-	float: left;
-	padding-left: 0.9375rem;
-	padding-right: 0.9375rem; 
-}
-.gallery dl:last-child:not(:first-child) {
-  float: right; 
- }
-
-// Gallery caption styles
-.gallery-caption {}
-.size-full {}
-.size-large {}
-.size-medium {}
-.size-thumbnail {}
-
-/*********************
-PAGE NAVI STYLES
-*********************/
-.page-navigation {
-	margin-top: 1rem;
 }
 
-/*********************
-COMMENT STYLES
-*********************/
-#comments {
-	.commentlist {
-		margin-left: 0px;
-	}
+.gallery-columns-2 .gallery-item {
+	max-width: 50%;
 }
 
-#respond {
-	ul {
-		margin-left: 0px;
-	}
+.gallery-columns-3 .gallery-item {
+	max-width: 33.33%;
 }
 
-.commentlist {
-	li {
-		position: relative;
-		clear: both;
-		overflow: hidden;
-		list-style-type: none;
-		margin-bottom: 1.5em;
-		padding: 0.7335em 10px;
-
-		&:last-child {
-			margin-bottom: 0;
-		}
-
-		ul.children {
-			margin: 0;
-
-			li {}
-
-			.comment {}
-			.alt {}
-			.odd {}
-			.even {}
-			.depth-1 {}           // Change number for different depth  
-			.byuser {}
-			.bypostauthor {}
-			.comment-author-admin {}
-
-		}
-	}
-
-	li[class*=depth-] {
-		margin-top: 1.1em;
-	}
-
-	li.depth-1 {
-		margin-left: 0;
-		margin-top: 0;
-	}
-
-	li:not(.depth-1) {
-		margin-left: 10px;
-		margin-top: 0;
-		padding-bottom: 0;
-	}
-
-	li.depth-2 {}
-	li.depth-3 {
-	}
-	li.depth-4 {}
-	li.depth-5 {}
-
-	// General comment classes  
-	.alt {}
-	.odd {
-	}
-	.even {
-	}
-	.parent {}
-	.comment {}
-	.children {}
-	.pingback {}
-	.bypostauthor {}
-	.comment-author {}
-	.comment-author-admin {}
-	.thread-alt {}
-	.thread-odd {}
-	.thread-even {}
-
-	// vcard  
-	.vcard {
-		margin-left: 50px;
-
-		cite.fn {
-			font-weight: 700;
-			font-style: normal;
-
-			a.url {}
-
-		}
-
-		time {
-			float: right;
-
-			a {
-				color: #999;
-				text-decoration: none;
-
-				&:hover {
-					text-decoration: underline;
-				}
-
-			}
-
-		}
-
-		img.photo {}
-
-		img.avatar {
-			position: absolute;
-			left: 10px;
-			padding: 2px;
-			border: 1px solid #cecece;
-			background: #fff;
-		}
-
-	} // end .commentlist .vcard  
-
-
-	// comment meta  
-	.comment-meta {
-
-		a {}
-
-	}
-
-	.commentmetadata {
-
-		a {}
-
-	}
-
-	// comment content  
-	.comment_content {
-
-		p {
-			margin: 0.7335em 0 1.5em;
-			font-size: 1em;
-			line-height: 1.5em;
-		}
-
-	} // end .commentlist .comment_content  
-
-	// comment reply link  
-	.comment-reply-link {
-		float: right;
-
-		&:hover,
-		&:focus {
-		
-		}
-
-	} // end .commentlist .comment-reply-link  
-
-} // end .commentlist  
-
-/*********************
-COMMENT FORM STYLES
-*********************/
-.respond-form {
-	margin: 1.5em 10px;
-	padding-bottom: 2.2em;
-
-	form {
-		margin: 0.75em 0;
-
-		li {
-			list-style-type: none;
-			clear: both;
-			margin-bottom: 0.7335em;
-
-			label,
-			small {
-				display: none;
-			}
-		}
-
-		input[type=text],
-		input[type=email],
-		input[type=url],
-		textarea {
-			padding: 3px 6px;
-			background: #efefef;
-			border: 2px solid #cecece;
-			line-height: 1.5em;
-
-			&:focus {
-				background: #fff;
-			}
-
-			// form validation  
-			&:invalid {
-				outline: none;
-				border-color: #fbc2c4;
-				background-color: #f6e7eb;
-				-webkit-box-shadow: none;
-				   -moz-box-shadow: none;
-				    -ms-box-shadow: none;
-						box-shadow: none;
-			}
-		}
-
-		input[type=text],
-		input[type=email],
-		input[type=url] {
-			max-width: 400px;
-			min-width: 250px;
-		}
-
-		textarea {
-			resize: none;
-			width: 97.3%;
-			height: 150px;
-		}
-
-	}
+.gallery-columns-4 .gallery-item {
+	max-width: 25%;
 }
 
-// comment form title  
-#comment-form-title {
-	margin: 0 0 1.1em;
+.gallery-columns-5 .gallery-item {
+	max-width: 20%;
 }
 
-// cancel comment reply link  
-#cancel-comment-reply {
-	a {}
+.gallery-columns-6 .gallery-item {
+	max-width: 16.66%;
 }
 
-// logged in comments  
-.comments-logged-in-as {}
-
-// allowed tags  
-#allowed_tags {
-	margin: 1.5em 10px 0.7335em 0;
+.gallery-columns-7 .gallery-item {
+	max-width: 14.28%;
 }
 
-// No comments  
-.nocomments {
-	margin: 0 20px 1.1em;
+.gallery-columns-8 .gallery-item {
+	max-width: 12.5%;
 }
 
-/*********************
-SIDEBARS & ASIDES
-*********************/
-.sidebar {
-	li{
-		list-style: none;
-	}
+.gallery-columns-9 .gallery-item {
+	max-width: 11.11%;
 }
 
-.widget {
-	ul {
-		margin: 0;
-	}
-}
-/*********************
-FOOTER STYLES
-*********************/
-.footer {
-	clear: both;
-	margin-top: 1em;
-}
-	
-/*********************
-VISUAL EDITOR STYLES
-*********************/
-// Makes content look better in visual editor
-body#tinymce {
-   	margin: 20px;
-}
-
-/*********************
-PLUGIN STYLES
-*********************/
-// Makes Gravity Forms play nice with Foundation Form styles
-.gform_body ul {
-    list-style: none outside none;
-    margin: 0;
+.gallery-caption {
+	display: block;
 }

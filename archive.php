@@ -7,7 +7,7 @@
 
 get_header(); ?>
 			
-	<div class="content">
+	<div id="content">
 	
 		<div class="inner-content   ">
 		
@@ -25,7 +25,7 @@ get_header(); ?>
 				    
 				<?php endwhile; ?>	
 
-					<?php joints_page_navi(); ?>
+					<?php theme_namespace_page_navi(); ?>
 					
 				<?php else : ?>
 											

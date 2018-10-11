@@ -7,20 +7,20 @@
 
 get_header(); ?>
 			
-	<div class="content">
+	<div id="content">
 
-		<div class="inner-content   ">
+		<div class="inner-content">
 	
 			<main class="main " role="main">
 
 				<article class="content-not-found">
 				
 					<header class="article-header">
-						<h1><?php _e( 'Epic 404 - Article Not Found', 'textDomain' ); ?></h1>
+						<h1><?php _e( 'Epic 404 - Article Not Found', 'theme_namespace' ); ?></h1>
 					</header> <!-- end article header -->
 			
 					<section class="entry-content">
-						<p><?php _e( 'The article you were looking for was not found, but maybe try looking again!', 'textDomain' ); ?></p>
+						<p><?php _e( 'The article you were looking for was not found, but maybe try looking again!', 'theme_namespace' ); ?></p>
 					</section> <!-- end article section -->
 
 					<section class="search">

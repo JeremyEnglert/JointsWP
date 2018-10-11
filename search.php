@@ -7,13 +7,13 @@
  	
 get_header(); ?>
 			
-	<div class="content">
+	<div id="content">
 
 		<div class="inner-content   ">
 	
 			<main class="main " role="main">
 				<header>
-					<h1 class="archive-title"><?php _e( 'Search Results for:', 'textDomain' ); ?> <?php echo esc_attr(get_search_query()); ?></h1>
+					<h1 class="archive-title"><?php _e( 'Search Results for:', 'theme_namespace' ); ?> <?php echo esc_attr(get_search_query()); ?></h1>
 				</header>
 
 				<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
@@ -23,7 +23,7 @@ get_header(); ?>
 				    
 				<?php endwhile; ?>	
 
-					<?php joints_page_navi(); ?>
+					<?php theme_namespace_page_navi(); ?>
 					
 				<?php else : ?>
 				

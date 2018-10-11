@@ -35,18 +35,13 @@
 	</head>
 			
 	<body <?php body_class(); ?>>
-
-		<div class="off-canvas-wrapper">
-			
-			<!-- Load off-canvas container. Feel free to remove if not using. -->			
-			<?php get_template_part( 'parts/content', 'offcanvas' ); ?>
-			
-			<div class="off-canvas-content" data-off-canvas-content>
 				
-				<header class="header" role="banner">
-							
-					 <!-- This navs will be applied to the topbar, above all content 
-						  To see additional nav styles, visit the /parts directory -->
-					 <?php get_template_part( 'parts/nav', 'offcanvas-topbar' ); ?>
-	 	
-				</header> <!-- end .header -->
+		<div class="site-wrapper">
+			
+			<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'jointswp' ); ?></a>
+
+			<header class="header" role="banner">
+						
+				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+
+			</header> <!-- end .header -->

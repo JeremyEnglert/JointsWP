@@ -5,7 +5,7 @@
 
 get_header(); ?>
 			
-<div class="content">
+<div id="content">
 
 	<div class="inner-content   ">
 
