@@ -19,7 +19,7 @@ $grid_columns = 4; ?>
 		
 			<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article">
 			
-				<section class="featured-image" itemprop="articleBody">
+				<section class="featured-image" itemprop="text">
 					<?php the_post_thumbnail('full'); ?>
 				</section> <!-- end article section -->
 			
@@ -28,7 +28,7 @@ $grid_columns = 4; ?>
 					<?php get_template_part( 'parts/content', 'byline' ); ?>				
 				</header> <!-- end article header -->	
 								
-				<section class="entry-content" itemprop="articleBody">
+				<section class="entry-content" itemprop="text">
 					<?php the_content('<button class="tiny">' . __( 'Read more...', 'jointswp' ) . '</button>'); ?> 
 				</section> <!-- end article section -->
 								    							
