@@ -45,4 +45,6 @@ function joints_register_sidebars() {
 	sidebar-sidebar2.php
 
 	*/
-} // don't remove this bracket!
+} /* end register sidebars */
+
+add_action( 'widgets_init', 'joints_register_sidebars' );
