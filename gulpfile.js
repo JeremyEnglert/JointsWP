@@ -122,7 +122,7 @@ gulp.task('styles', function() {
 		    ],
 		    cascade: false
 		}))
-		.pipe(plugin.cssnano())
+		.pipe(plugin.cssnano({safe: true, minifyFontValues: {removeQuotes: false}}))
 		.pipe(plugin.sourcemaps.write('.'))
 		.pipe(gulp.dest(ASSETS.styles))
 		.pipe(browserSync.reload({
