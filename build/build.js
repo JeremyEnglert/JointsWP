@@ -1,5 +1,5 @@
 /**
- * List prompt example
+ * Automated theme configuration
  */
 
 'use strict';
@@ -12,8 +12,8 @@ const inquirer = require('inquirer'),
 
 console.log(chalk.green.bold("JointsWP has been installed. Just a few more steps."));
 
-inquirer
-  .prompt([
+async function startTheme() {
+  const questions = [
     {
       type: 'input',
       name: 'themeName',
@@ -38,21 +38,31 @@ inquirer
         return val.toLowerCase();
       }
     }
-  ])
-  .then(answers => {
-    downloadFramework(answers.framework);
-    installFramework(answers.framework);
-    changeThemeName(answers.themeName);
-    changeNamespace(answers.themeNamespace);
-    changeLocalUrl(answers.themeLocalUrl);
-  })
+  ];
+  try {
+    const answers = await inquirer.prompt(questions);
+    const themeSetup = await Promise.all ([
+      downloadFramework(answers.framework),
+      installFramework(answers.framework),
+      changeThemeName(answers.themeName),
+      changeNamespace(answers.themeNamespace),
+      changeLocalUrl(answers.themeLocalUrl)
+    ])
+    console.log(chalk.green.bold("Install successful! Run 'npm build' to get started.")); // Only want this to happen after the above download is complete
+  } catch(error) {
+    console.log("Error");
+  }
+};
+  
+startTheme();
 
 function downloadFramework(frameworkChoice) {
+
   let frameworkName;
   let frameworkDisplayName;
 
   if(frameworkChoice === "none") {
-    console.log(chalk.green.bold("No framework selected."));
+    console.log(chalk.magenta.bold("No framework selected."));
     return;
   } else if (frameworkChoice == "foundation") {
     frameworkName = "foundation-sites";
@@ -62,39 +72,39 @@ function downloadFramework(frameworkChoice) {
     frameworkDisplayName = "Bootstrap";
   }
 
-  console.log(chalk.green.bold(`Downloading ${frameworkDisplayName}...`));
-  exec(`npm install ${frameworkName} --save-dev`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return;
-    }
-    console.log(`${stderr}`);
-    console.log(chalk.green.bold(`${frameworkDisplayName} successfully downloaded.`));
-  });
+  console.log(chalk.magenta.bold(`Downloading ${frameworkDisplayName}...`));
+
+  return new Promise(function(resolve, reject) {
+    exec(`npm install ${frameworkName} --save-dev`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`${error}`);
+        return;
+      }
+      console.log(chalk.magenta.bold(`${frameworkDisplayName} successfully downloaded.`));
+      resolve();
+    });
+  })
+
 }
 
 // Downloads files from repo to make selected framework work with WordPress
 function installFramework(frameworkChoice) {
-  let frameworkName;
-  let frameworkDisplayName;
 
   if(frameworkChoice === "none") {
     return;
-  } else if (frameworkChoice == "foundation") {
-    frameworkName = "jointswp-foundation";
-  } else if (frameworkChoice == "bootstrap") {
-    frameworkName = "jointswp-bootstrap";
-  }
+  } 
 
-  download(`jeremyenglert/${frameworkName}`, 'test/temp', function (error) {
-    console.log(error ? 'Error' : 'Success')
+  download(`jeremyenglert/jointswp-${frameworkChoice}`, 'test/temp', function (error) {
+    if(error) {
+      console.error(error);
+    }
   })
 }
 
 // Sets the Theme Name in style.css
 function changeThemeName(themeName) {
   if(themeName == "") {
-    console.log(chalk.green.bold('Theme Name not changed.'));
+    console.log(chalk.magenta.bold('Theme Name not changed.'));
     return;
   }
   const options = {
@@ -104,7 +114,7 @@ function changeThemeName(themeName) {
   };
   try {
     const changes = replace.sync(options);
-    console.log(chalk.green.bold('Theme Name updated in: ') + ('style.css'));
+    console.log(chalk.magenta.bold('Theme Name updated in: ') + ('style.css'));
   }
   catch (error) {
     console.error('Error occurred:', error);
@@ -113,7 +123,7 @@ function changeThemeName(themeName) {
 
 function changeNamespace(themeNamespace) {
   if(themeNamespace == "") {
-    console.log(chalk.green.bold('Namespace not changed.'));
+    console.log(chalk.magenta.bold('Namespace not changed.'));
     return;
   }
   const nameSpace = themeNamespace.toLowerCase().split(' ').join('_');
@@ -124,7 +134,7 @@ function changeNamespace(themeNamespace) {
   };
   try {
     const changes = replace.sync(options);
-    console.log(chalk.green.bold('Namespace & Text Domain updated in:'), changes.join(', '));
+    console.log(chalk.magenta.bold('Namespace & Text Domain updated in:'), changes.join(', '));
   }
   catch (error) {
     console.error('Error occurred:', error);
@@ -133,7 +143,7 @@ function changeNamespace(themeNamespace) {
 
 function changeLocalUrl(themeLocalUrl) {
   if(themeLocalUrl == "") {
-    console.log(chalk.green.bold('Local URL was not chnanged.'));
+    console.log(chalk.magenta.bold('Local URL was not chnanged.'));
     return;
   }
   const options = {
@@ -143,7 +153,7 @@ function changeLocalUrl(themeLocalUrl) {
   };
   try {
     const changes = replace.sync(options);
-    console.log(chalk.green.bold('Local URL updated in: ') + ('config.js'));
+    console.log(chalk.magenta.bold('Local URL updated in: ') + ('config.js'));
   }
   catch (error) {
     console.error('Error occurred:', error);
