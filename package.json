@@ -13,9 +13,11 @@
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "beeper": "^1.1.1",
+    "bootstrap": "^4.1.3",
     "browser-sync": "^2.11.0",
     "chalk": "^2.4.1",
     "download-git-repo": "^1.1.0",
+    "foundation-sites": "^6.5.0-rc.3",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-babel": "^8.0.0-beta.2",
@@ -30,7 +32,9 @@
     "gulp-uglify": "^3.0.1",
     "gulp-wp-pot": "^2.0.4",
     "inquirer": "^6.2.0",
-    "replace-in-file": "^3.4.2"
+    "pa11y": "^5.0.4",
+    "replace-in-file": "^3.4.2",
+    "undefined": "^0.1.0"
   },
   "scripts": {
     "postinstall": "node build/build.js",
@@ -39,8 +43,7 @@
     "styles": "gulp styles",
     "images": "gulp images",
     "watch": "gulp watch",
-    "browsersync": "gulp browsersync",
-    "update-foundation": "npm install foundation-sites"
+    "pa11y": "gulp pa11y"
   },
   "jshintConfig": {
     "globals": {
