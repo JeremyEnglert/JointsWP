@@ -37,7 +37,6 @@ const SOURCE = {
 		FOUNDATION + '/dist/js/plugins/foundation.interchange.js',
 		FOUNDATION + '/dist/js/plugins/foundation.offcanvas.js',
 		FOUNDATION + '/dist/js/plugins/foundation.orbit.js',
-		FOUNDATION + '/dist/js/plugins/foundation.responsiveAccordionTabs.js',
 		FOUNDATION + '/dist/js/plugins/foundation.responsiveMenu.js',
 		FOUNDATION + '/dist/js/plugins/foundation.responsiveToggle.js',
 		FOUNDATION + '/dist/js/plugins/foundation.reveal.js',
@@ -46,6 +45,7 @@ const SOURCE = {
 		FOUNDATION + '/dist/js/plugins/foundation.magellan.js',
 		FOUNDATION + '/dist/js/plugins/foundation.sticky.js',
 		FOUNDATION + '/dist/js/plugins/foundation.tabs.js',
+		FOUNDATION + '/dist/js/plugins/foundation.responsiveAccordionTabs.js',
 		FOUNDATION + '/dist/js/plugins/foundation.toggler.js',
 		FOUNDATION + '/dist/js/plugins/foundation.tooltip.js',
 
