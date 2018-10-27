@@ -73,7 +73,10 @@ const JSHINT_CONFIG = {
 	"node": true,
 	"globals": {
 		"document": true,
-		"jQuery": true
+		"window": true,
+		"jQuery": true,
+		"$": true,
+		"Foundation": true
 	}
 };
 

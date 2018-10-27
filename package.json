@@ -41,10 +41,5 @@
     "watch": "gulp watch",
     "browsersync": "gulp browsersync",
     "update-foundation": "npm install foundation-sites"
-  },
-  "jshintConfig": {
-    "globals": {
-      "jQuery": true
-    }
   }
 }
