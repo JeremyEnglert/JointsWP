@@ -43,5 +43,9 @@ module.exports = {
 		'last 2 iOS versions',
 		'last 2 Edge versions',
 		'last 2 Opera versions'
+	],
+
+	accessbilityTestUrls: [
+		'http://joints-github.local/'
 	]
 };
