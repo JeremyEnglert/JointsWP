@@ -31,8 +31,7 @@
     "gulp-wp-pot": "^2.0.4",
     "inquirer": "^6.2.0",
     "pa11y": "^5.0.4",
-    "replace-in-file": "^3.4.2",
-    "undefined": "^0.1.0"
+    "replace-in-file": "^3.4.2"
   },
   "scripts": {
     "postinstall": "node build/build.js",
@@ -43,13 +42,5 @@
     "watch": "gulp watch",
     "pa11y": "gulp pa11y",
     "translate": "gulp translate"
-  },
-  "jshintConfig": {
-    "globals": {
-      "jQuery": true
-    }
-  },
-  "dependencies": {
-    "@google-cloud/translate": "^2.1.2"
   }
 }
