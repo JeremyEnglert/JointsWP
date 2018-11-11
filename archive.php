@@ -25,7 +25,7 @@ get_header(); ?>
 				    
 				<?php endwhile; ?>	
 
-					<?php jointswp_page_navi(); ?>
+					<?php theme_namespace_page_navi(); ?>
 					
 				<?php else : ?>
 											
