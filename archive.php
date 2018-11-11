@@ -9,9 +9,9 @@ get_header(); ?>
 			
 	<div id="content">
 	
-		<div class="inner-content   ">
+		<div class="inner-content">
 		
-		    <main class="main " role="main">
+		    <main class="main" role="main">
 			    
 		    	<header>
 		    		<h1 class="page-title"><?php the_archive_title();?></h1>
@@ -25,7 +25,7 @@ get_header(); ?>
 				    
 				<?php endwhile; ?>	
 
-					<?php theme_namespace_page_navi(); ?>
+					<?php jointswp_page_navi(); ?>
 					
 				<?php else : ?>
 											

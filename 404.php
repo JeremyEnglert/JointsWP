@@ -11,7 +11,7 @@ get_header(); ?>
 
 		<div class="inner-content">
 	
-			<main class="main " role="main">
+			<main class="main" role="main">
 
 				<article class="content-not-found">
 				

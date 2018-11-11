@@ -9,7 +9,7 @@ get_header(); ?>
 	
 	<div id="content">
 	
-		<div class="inner-content   ">
+		<div class="inner-content">
 	
 		    <main class="main small-12 large-8 medium-8 cell" role="main">
 				

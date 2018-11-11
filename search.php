@@ -9,9 +9,9 @@ get_header(); ?>
 			
 	<div id="content">
 
-		<div class="inner-content   ">
+		<div class="inner-content">
 	
-			<main class="main " role="main">
+			<main class="main" role="main">
 				<header>
 					<h1 class="archive-title"><?php _e( 'Search Results for:', 'theme_namespace' ); ?> <?php echo esc_attr(get_search_query()); ?></h1>
 				</header>
