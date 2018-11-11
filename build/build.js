@@ -94,7 +94,7 @@ function installFramework(frameworkChoice) {
     return;
   } 
 
-  download(`jeremyenglert/jointswp-${frameworkChoice}`, 'test/temp', function (error) {
+  download(`jeremyenglert/jointswp-${frameworkChoice}`, '/', function (error) {
     if(error) {
       console.error(error);
     }
