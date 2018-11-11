@@ -18,7 +18,7 @@
     "chalk": "^2.4.1",
     "download-git-repo": "^1.1.0",
     "foundation-sites": "^6.5.0-rc.3",
-    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp": "^4.0",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-babel": "^8.0.0-beta.2",
     "gulp-clean-css": "^3.10.0",
@@ -43,11 +43,15 @@
     "styles": "gulp styles",
     "images": "gulp images",
     "watch": "gulp watch",
-    "pa11y": "gulp pa11y"
+    "pa11y": "gulp pa11y",
+    "translate": "gulp translate"
   },
   "jshintConfig": {
     "globals": {
       "jQuery": true
     }
+  },
+  "dependencies": {
+    "@google-cloud/translate": "^2.1.2"
   }
 }
