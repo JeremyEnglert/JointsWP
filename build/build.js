@@ -60,6 +60,7 @@ function downloadFramework(frameworkChoice) {
 
   let frameworkName;
   let frameworkDisplayName;
+  let peerDependencies;
 
   if(frameworkChoice === "none") {
     console.log(chalk.magenta.bold("No framework selected."));
@@ -67,6 +68,7 @@ function downloadFramework(frameworkChoice) {
   } else if (frameworkChoice == "foundation") {
     frameworkName = "foundation-sites";
     frameworkDisplayName = "Foundation for Sites";
+    peerDependencies = "jquery what-input motion-ui";
   } else if (frameworkChoice == "bootstrap") {
     frameworkName = "bootstrap";
     frameworkDisplayName = "Bootstrap";
@@ -75,7 +77,7 @@ function downloadFramework(frameworkChoice) {
   console.log(chalk.magenta.bold(`Downloading ${frameworkDisplayName}...`));
 
   return new Promise(function(resolve, reject) {
-    exec(`npm install ${frameworkName} --save-dev`, (error, stdout, stderr) => {
+    exec(`npm install ${frameworkName} ${peerDependencies} --save-dev`, (error, stdout, stderr) => {
       if (error) {
         console.error(`${error}`);
         return;
@@ -94,7 +96,7 @@ function installFramework(frameworkChoice) {
     return;
   } 
 
-  download(`jeremyenglert/jointswp-${frameworkChoice}`, '/', function (error) {
+  download(`jeremyenglert/jointswp-${frameworkChoice}`, './', function (error) {
     if(error) {
       console.error(error);
     }
