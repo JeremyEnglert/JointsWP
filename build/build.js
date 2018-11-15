@@ -72,6 +72,7 @@ function downloadFramework(frameworkChoice) {
   } else if (frameworkChoice == "bootstrap") {
     frameworkName = "bootstrap";
     frameworkDisplayName = "Bootstrap";
+    peerDependencies = "jquery popper.js";
   }
 
   console.log(chalk.magenta.bold(`Downloading ${frameworkDisplayName}...`));
