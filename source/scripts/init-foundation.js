@@ -1,11 +1,4 @@
-console.log("Gell");
+import Foundation from 'foundation-sites';
 
-
-(function($) {
-	
-    $(document).ready(function () {
-        // This ONLY works when .addToJquery is called above!
-        $(document).foundation();
-    });
-    
-})( jQuery );
+Foundation.addToJquery(jQuery);
+jQuery(document).foundation();
