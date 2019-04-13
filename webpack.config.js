@@ -62,24 +62,28 @@ module.exports = {
     ]
   },
   plugins: [
+    // Automatic browser refresh for CSS and JS changes
     new BrowserSyncPlugin({
-      // Browse to http://localhost:3000/ during development
       host: 'localhost',
       port: 3000,
-      // Link to local website
-      proxy: 'http://joints-github.local/'
+      // Local URL
+      proxy: 'http://joints-git.local/'
     }),
+
+    // Extract CSS to this location
+    new MiniCssExtractPlugin({
+      filename: './assets/styles/styles.css'
+    }),
+
+    // Optimize images
     new CopyWebpackPlugin([{
-      // Copy images from and optimize to
       from: 'source/images/',
       to: 'assets/images/'
     }]),
-    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
-    // Location of final CSS file
-    new MiniCssExtractPlugin({
-      filename: './assets/styles/styles.css'
-    })
+
+    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i })
   ],
+
   optimization: {
     minimizer: [
       // Enable the JS minification plugin
@@ -91,8 +95,10 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({})
     ]
   },
+
   // Enable source maps for JS and CSS
   devtool: "source-map",
+  
   // Cleaner Webpack console messages
   stats: {
     cached: false,
