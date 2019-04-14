@@ -85,6 +85,7 @@ function joints_footer_links_fallback() {
 function required_active_nav_class( $classes, $item ) {
 	if ( $item->current == 1 || $item->current_item_ancestor == true ) {
 		$classes[] = 'active';
+		$classes[] = 'is-active';
 	}
 	return $classes;
 }
