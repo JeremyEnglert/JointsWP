@@ -2,19 +2,9 @@
 // SIDEBARS AND WIDGETIZED AREAS
 function theme_namespace_register_sidebars() {
 	register_sidebar(array(
-		'id' => 'sidebar1',
-		'name' => __('Sidebar 1', 'theme_namespace'),
+		'id' => 'general-sidebar',
+		'name' => __('General Sidebar', 'theme_namespace'),
 		'description' => __('The first (primary) sidebar.', 'theme_namespace'),
-		'before_widget' => '<div id="%1$s" class="widget %2$s">',
-		'after_widget' => '</div>',
-		'before_title' => '<h4 class="widgettitle">',
-		'after_title' => '</h4>',
-	));
-
-	register_sidebar(array(
-		'id' => 'offcanvas',
-		'name' => __('Offcanvas', 'theme_namespace'),
-		'description' => __('The offcanvas sidebar.', 'theme_namespace'),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',
@@ -45,4 +35,4 @@ function theme_namespace_register_sidebars() {
 	sidebar-sidebar2.php
 
 	*/
-} // don't remove this bracket!
+}

@@ -37,11 +37,8 @@ require_once(get_template_directory().'/functions/translation/translation.php');
 // Related post function - no need to rely on plugins
 // require_once(get_template_directory().'/functions/related-posts.php'); 
 
-// Use this as a template for custom post types
-// require_once(get_template_directory().'/functions/custom-post-type.php');
-
 // Customize the WordPress login menu
 // require_once(get_template_directory().'/functions/login.php'); 
 
-// Customize the WordPress admin
-// require_once(get_template_directory().'/functions/admin.php'); 
+// Customize the WordPress admin (remove dashboard widgets, customize footer text)
+require_once(get_template_directory().'/functions/admin.php'); 
