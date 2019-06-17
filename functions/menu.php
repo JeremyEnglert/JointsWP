@@ -10,7 +10,8 @@ register_nav_menus(
 // The Top Menu
 function theme_namespace_top_nav() {
 	 wp_nav_menu(array(
-        'menu_class' => '',  // Adding custom nav class
+		'menu_class' => 'main-navigation',  // Adding custom nav class
+		'container' => false,
         'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
         'theme_location' => 'main-nav',  // Where it's located in the theme
     ));

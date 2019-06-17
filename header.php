@@ -36,4 +36,9 @@
 				
 			</header> <!-- end .header -->
 
-			<?php theme_namespace_top_nav(); ?>
+			<nav class="main-navigation-wrapper" role="navigation">
+
+				<?php theme_namespace_top_nav(); ?>
+				
+			</nav>
+

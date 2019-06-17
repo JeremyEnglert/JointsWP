@@ -1,0 +1,28 @@
+/************************************************
+
+Navigation
+
+Responsive, accessible navigation.
+
+*************************************************/
+
+.main-navigation-wrapper {
+    
+    .main-navigation {
+        display: flex; 
+        flex-direction: column; // Vertical on small
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        @include breakpoint(medium) {
+            flex-direction: row; // Horizontal on medium and up
+        }
+
+        .menu-item-has-children {
+            .sub-menu {
+                display: none;
+            }
+        }
+
+    }
+}

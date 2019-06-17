@@ -1,4 +1,13 @@
-// Import your custom styles
-@import "settings";
+/************************************************
+
+Styles
+
+Import all of your Sass partials here.
+
+*************************************************/
+
+@import "settings";  // Always import first to make variables available 
+@import "mixins";
 @import "wordpress";
+@import "navigation";
 @import "global";
