@@ -29,21 +29,10 @@ async function startTheme() {
       name: 'themeLocalUrl',
       message: 'What is your local URL for this install? (Example: https://jointswp.local)',
     },
-    {
-      type: 'list',
-      name: 'framework',
-      message: 'What framework would you like to install?',
-      choices: ['None', 'Foundation', 'Bootstrap'],
-      filter: function(val) {
-        return val.toLowerCase();
-      }
-    }
   ];
   try {
     const answers = await inquirer.prompt(questions);
     const themeSetup = await Promise.all ([
-      downloadFramework(answers.framework),
-      installFramework(answers.framework),
       changeThemeName(answers.themeName),
       changeNamespace(answers.themeNamespace),
       changeLocalUrl(answers.themeLocalUrl)
@@ -55,54 +44,6 @@ async function startTheme() {
 };
   
 startTheme();
-
-function downloadFramework(frameworkChoice) {
-
-  let frameworkName;
-  let frameworkDisplayName;
-  let peerDependencies;
-
-  if(frameworkChoice === "none") {
-    console.log(chalk.magenta.bold("No framework selected."));
-    return;
-  } else if (frameworkChoice == "foundation") {
-    frameworkName = "foundation-sites";
-    frameworkDisplayName = "Foundation for Sites";
-    peerDependencies = "jquery what-input motion-ui";
-  } else if (frameworkChoice == "bootstrap") {
-    frameworkName = "bootstrap";
-    frameworkDisplayName = "Bootstrap";
-    peerDependencies = "jquery popper.js";
-  }
-
-  console.log(chalk.magenta.bold(`Downloading ${frameworkDisplayName}...`));
-
-  return new Promise(function(resolve, reject) {
-    exec(`npm install ${frameworkName} ${peerDependencies} --save-dev`, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`${error}`);
-        return;
-      }
-      console.log(chalk.magenta.bold(`${frameworkDisplayName} successfully downloaded.`));
-      resolve();
-    });
-  })
-
-}
-
-// Downloads files from repo to make selected framework work with WordPress
-function installFramework(frameworkChoice) {
-
-  if(frameworkChoice === "none") {
-    return;
-  } 
-
-  download(`jeremyenglert/jointswp-${frameworkChoice}`, './', function (error) {
-    if(error) {
-      console.error(error);
-    }
-  })
-}
 
 // Sets the Theme Name in style.css
 function changeThemeName(themeName) {

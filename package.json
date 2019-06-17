@@ -40,6 +40,7 @@
   "scripts": {
     "build": "webpack --mode development",
     "production": "webpack --mode production",
-    "watch": "webpack --watch --mode development"
+    "watch": "webpack --watch --mode development",
+    "pa11y": "node build/pa11y"
   }
 }
