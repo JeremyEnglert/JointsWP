@@ -27,7 +27,7 @@ module.exports = {
         test: /\.js?$/,
         enforce: "pre",
         loader: "eslint-loader",
-        exclude: '', // Exclude files or directories from linting
+       // exclude: '', // Exclude files or directories from linting
         options: {
           emitWarning: true,
           configFile: "./.eslintrc.js"
@@ -36,7 +36,7 @@ module.exports = {
       {
         // Run JS through Babel for better browser support
         test: /\.js$/,
-        exclude: '', // Exclude files or directories from Babel
+       // exclude: '', // Exclude files or directories from Babel
         use: {
           loader: "babel-loader",
           options: {

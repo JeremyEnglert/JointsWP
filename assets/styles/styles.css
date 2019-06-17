@@ -186,6 +186,8 @@ Responsive, accessible navigation.
       flex-direction: row; } }
   .main-navigation-wrapper .main-navigation .menu-item-has-children .sub-menu {
     display: none; }
+  .main-navigation-wrapper .main-navigation .menu-item-has-children.open > .sub-menu {
+    display: block; }
 
 /************************************************
 

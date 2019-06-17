@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
 
-// You can also import "old school" JS files
-import './init-foundation.js';
+import mainNavigation from './mainNavigation';
+
+/* eslint-enable no-unused-vars */
