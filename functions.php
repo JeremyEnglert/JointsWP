@@ -25,20 +25,11 @@ require_once(get_template_directory().'/functions/comments.php');
 // Replace 'older/newer' post links with numbered navigation
 require_once(get_template_directory().'/functions/page-navi.php'); 
 
-// Adds support for multiple languages
-require_once(get_template_directory().'/functions/translation/translation.php'); 
-
-// Adds site styles to the WordPress editor
-// require_once(get_template_directory().'/functions/editor-styles.php'); 
-
 // Remove Emoji Support
-// require_once(get_template_directory().'/functions/disable-emoji.php'); 
-
-// Related post function - no need to rely on plugins
-// require_once(get_template_directory().'/functions/related-posts.php'); 
+require_once(get_template_directory().'/functions/disable-emoji.php'); 
 
 // Customize the WordPress login menu
-// require_once(get_template_directory().'/functions/login.php'); 
+require_once(get_template_directory().'/functions/login.php'); 
 
 // Customize the WordPress admin (remove dashboard widgets, customize footer text)
 require_once(get_template_directory().'/functions/admin.php'); 
