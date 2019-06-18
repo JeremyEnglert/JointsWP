@@ -10,7 +10,7 @@ async function runPa11y() {
 		// Run tests against multiple URLs
 		const pa11yTests = await Promise.all([
 			pa11y('http://example.com/'),
-			pa11y('http://example.com/otherpage/')
+			// pa11y('http://example.com/otherpage/')
     ]);
     
     // Format the errors

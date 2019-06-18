@@ -91,9 +91,9 @@ function changeLocalUrl(themeLocalUrl) {
     return;
   }
   const options = {
-    files: 'config.js',
-    from: /projectUrl: .{1,}/g,
-    to: `projectUrl: "${themeLocalUrl}"`,
+    files: 'webpack.config.js',
+    from: /proxy: .{1,}/g,
+    to: `proxy:: "${themeLocalUrl}"`,
   };
   try {
     const changes = replace.sync(options);
@@ -103,3 +103,4 @@ function changeLocalUrl(themeLocalUrl) {
     console.error('Error occurred:', error);
   }
 }
+
