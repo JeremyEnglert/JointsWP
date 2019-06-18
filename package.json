@@ -38,7 +38,7 @@
     "yarn": "^1.16.0"
   },
   "scripts": {
-    "preinstall": "node build/startup",
+    "postinstall": "node build/startup",
     "build": "webpack --mode development",
     "production": "webpack --mode production",
     "watch": "webpack --watch --mode development",
