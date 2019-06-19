@@ -35,6 +35,10 @@
 	</head>
 			
 	<body <?php body_class(); ?>>
+		
+		<?php if ( function_exists( 'wp_body_open' ) ) {
+			wp_body_open();
+		} ?>
 
 		<div class="off-canvas-wrapper">
 			
