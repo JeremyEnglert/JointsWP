@@ -19,6 +19,14 @@ Responsive, accessible navigation.
         }
 
         .menu-item-has-children {
+            > a {
+                position: relative;
+                &:after {
+                    content: "+";
+                    right: 5px;
+                    position: absolute;
+                }
+            }
             .sub-menu {
                 display: none;
             }

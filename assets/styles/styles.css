@@ -184,6 +184,12 @@ Responsive, accessible navigation.
   @media (min-width: 640px) {
     .main-navigation-wrapper .main-navigation {
       flex-direction: row; } }
+  .main-navigation-wrapper .main-navigation .menu-item-has-children > a {
+    position: relative; }
+    .main-navigation-wrapper .main-navigation .menu-item-has-children > a:after {
+      content: "+";
+      right: 5px;
+      position: absolute; }
   .main-navigation-wrapper .main-navigation .menu-item-has-children .sub-menu {
     display: none; }
   .main-navigation-wrapper .main-navigation .menu-item-has-children.open > .sub-menu {
