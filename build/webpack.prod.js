@@ -13,7 +13,7 @@ module.exports = merge(common, {
       new TerserPlugin( {
 				cache: true,
 				parallel: true,
-				sourceMap: false,
+				sourceMap: true,
 				terserOptions: {
 					compress: {
 						ecma: 5,

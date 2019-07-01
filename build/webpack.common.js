@@ -12,7 +12,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 //const settings = require( './webpack.settings.js' );
 
 module.exports = {
-  entry: ['./source/scripts/scripts.js', './source/styles/styles.scss'],
+  entry: [
+    './source/scripts/theme.js', 
+    './source/styles/theme.scss'
+  ],
   output: {
     filename: 'theme.js',
     path: path.resolve(__dirname, '../assets/scripts')
@@ -39,11 +42,12 @@ module.exports = {
       {
         // Run JS through Babel for better browser support
         test: /\.js$/,
-        // exclude: '', // Exclude files or directories from Babel
+        exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env']
+            presets: ['@babel/preset-env'],
+            sourceMap: true,
          }
         }
       },
@@ -52,7 +56,9 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-            MiniCssExtractPlugin.loader,
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
             {
                 loader: 'css-loader',
                 options: {
@@ -83,14 +89,22 @@ module.exports = {
       to: '../images/'
     }]),
 
-    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
+    new ImageminPlugin({ 
+      test: /\.(jpe?g|png|gif|svg)$/i 
+    }),
 
   ],
 
   optimization: {
     minimizer: [
       // Enable the css minification plugin
-      new OptimizeCSSAssetsPlugin({})
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {
+          map: {
+            inline: false
+          }
+        }
+      })
     ]
   },
 
