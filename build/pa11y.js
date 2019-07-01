@@ -9,23 +9,30 @@ async function runPa11y() {
 
 		// Run tests against multiple URLs
 		const pa11yTests = await Promise.all([
-			pa11y('http://localhost:3000/category/embeds/'),
+			pa11y('http://localhost:3000/category/embed'),
 			// pa11y('http://example.com/otherpage/')
-    ]);
-    
-    // Format the errors
+		]);
+		
+		// Format the errors
 		const printResult = (result) => {
-			result.issues.forEach(function(issue) {
-				console.log(`Page: ${result.pageUrl}`);
-				console.log(`Issue: ${issue.message}`);
-				console.log(`Code: ${issue.code}`);
-				console.log(`Context: ${issue.context}`);
-				console.log(`Selector: ${issue.selector}`);
-				console.log("--------------------------------");
-			});
+			if(result.issues.length < 1) {
+
+				console.log("No A11y Errors Detected");
+
+			} else {
+
+				result.issues.forEach(function(issue) {
+					console.log(`Page: ${result.pageUrl}`);
+					console.log(`Issue: ${issue.message}`);
+					console.log(`Code: ${issue.code}`);
+					console.log(`Context: ${issue.context}`);
+					console.log(`Selector: ${issue.selector}`);
+					console.log("--------------------------------");
+				});
+			}
 		};
 
-    // Output the raw result objects
+		// Output the raw result objects
 		pa11yTests.forEach(function(result) {
 			printResult(result); 
 		});

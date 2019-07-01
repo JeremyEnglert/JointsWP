@@ -41,11 +41,11 @@
   },
   "scripts": {
     "postinstall": "node build/startup",
-    "backstopReference": "backstop reference",
-    "backstopTest": "backstop test",
     "watch": "webpack --watch --config build/webpack.dev.js",
     "build-dev": "NODE_ENV=development webpack --config build/webpack.dev.js",
     "build-prod": "NODE_ENV=production webpack --config build/webpack.prod.js",
-    "test-a11y": "node build/pa11y"
+    "test-a11y": "node build/pa11y",
+    "test-visual": "backstop test",
+    "test-visual-ref": "backstop reference"
   }
 }
