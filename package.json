@@ -16,7 +16,6 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.6",
     "backstopjs": "^4.1.9",
-    "beeper": "^2.0.0",
     "browser-sync": "^2.26.7",
     "browser-sync-webpack-plugin": "^2.2.2",
     "chalk": "^2.4.2",
