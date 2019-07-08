@@ -3,21 +3,19 @@ const path = require('path');
 // Used to compile Sass into CSS
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
 
 // Used for image optimization
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Config files.
-//const settings = require( './webpack.settings.js' );
+const settings = require( './webpack.settings.js' );
 
 module.exports = {
-  entry: [
-    './source/scripts/theme.js', 
-    './source/styles/theme.scss'
-  ],
+  entry: settings.entries,
   output: {
-    filename: 'theme.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, '../assets/scripts')
   },
   externals: {
@@ -78,9 +76,12 @@ module.exports = {
   
   plugins: [
 
+    // Remove extra files created by webpack
+    new FixStyleOnlyEntriesPlugin(),
+
     // Extract CSS to this location
     new MiniCssExtractPlugin({
-      filename: '../styles/theme.css'
+      filename: '../styles/[name].css'
     }),
 
     // Optimize images
@@ -88,7 +89,6 @@ module.exports = {
       from: 'source/images/',
       to: '../images/'
     }]),
-
     new ImageminPlugin({ 
       test: /\.(jpe?g|png|gif|svg)$/i 
     }),

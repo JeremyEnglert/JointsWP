@@ -81,15 +81,15 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./source/scripts/theme/theme-scripts.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./source/scripts/mainNavigation.js":
-/*!******************************************!*\
-  !*** ./source/scripts/mainNavigation.js ***!
-  \******************************************/
+/***/ "./source/scripts/theme/main-navigation.js":
+/*!*************************************************!*\
+  !*** ./source/scripts/theme/main-navigation.js ***!
+  \*************************************************/
 /*! exports provided: mainNavigation */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -113,7 +113,7 @@ function mainNavigation() {
       return false;
     });
   });
-  console.log("hello!");
+  console.log("helloooouu");
 }
 
 mainNavigation();
@@ -121,45 +121,21 @@ mainNavigation();
 
 /***/ }),
 
-/***/ "./source/scripts/theme.js":
-/*!*********************************!*\
-  !*** ./source/scripts/theme.js ***!
-  \*********************************/
+/***/ "./source/scripts/theme/theme-scripts.js":
+/*!***********************************************!*\
+  !*** ./source/scripts/theme/theme-scripts.js ***!
+  \***********************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mainNavigation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mainNavigation */ "./source/scripts/mainNavigation.js");
+/* harmony import */ var _main_navigation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main-navigation */ "./source/scripts/theme/main-navigation.js");
 /* eslint-disable no-unused-vars */
 
 /* eslint-enable no-unused-vars */
 
-/***/ }),
-
-/***/ "./source/styles/theme.scss":
-/*!**********************************!*\
-  !*** ./source/styles/theme.scss ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ 0:
-/*!******************************************************************!*\
-  !*** multi ./source/scripts/theme.js ./source/styles/theme.scss ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(/*! ./source/scripts/theme.js */"./source/scripts/theme.js");
-module.exports = __webpack_require__(/*! ./source/styles/theme.scss */"./source/styles/theme.scss");
-
-
 /***/ })
 
 /******/ });
-//# sourceMappingURL=theme.js.map
+//# sourceMappingURL=theme-scripts.js.map

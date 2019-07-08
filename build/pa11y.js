@@ -9,7 +9,7 @@ async function runPa11y() {
 
 		// Run tests against multiple URLs
 		const pa11yTests = await Promise.all([
-			pa11y('http://localhost:3000/category/embed'),
+			pa11y('http://localhost:3000/'),
 			// pa11y('http://example.com/otherpage/')
 		]);
 		

@@ -16,7 +16,7 @@ function mainNavigation() {
             return false;
         });
     });
-    console.log("hello!");
+    console.log("helloooouu");
 }
 mainNavigation();
 
