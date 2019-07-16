@@ -96,24 +96,29 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mainNavigation", function() { return mainNavigation; });
+/**
+ * Adds accessibile dropdown functionality to main navigation.
+ * 
+ * Toggles open/closed on click, as click is better for accessbility.
+ * Hover does not show intent and can be problematic for some users.
+ */
 function mainNavigation() {
-  // Select all items that have a dropdown menu
+  // Select all menu items that have a dropdown menu
   var menuItems = document.querySelectorAll('li.menu-item-has-children');
   Array.prototype.forEach.call(menuItems, function (el) {
     el.querySelector('a').addEventListener("click", function (event) {
       if (this.parentNode.classList.contains("open")) {
         this.parentNode.classList.remove("open");
-        this.setAttribute('aria-expanded', "false");
+        this.setAttribute('aria-expanded', "false"); // Indicates to screen readers that a collapsible area is closed
       } else {
         this.parentNode.classList.add("open");
-        this.setAttribute('aria-expanded', "true");
+        this.setAttribute('aria-expanded', "true"); // Indicates to screen readers users that a collapsible area is opened
       }
 
       event.preventDefault();
       return false;
     });
   });
-  console.log("helloooouu");
 }
 
 mainNavigation();
@@ -131,9 +136,15 @@ mainNavigation();
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _main_navigation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main-navigation */ "./source/scripts/theme/main-navigation.js");
-/* eslint-disable no-unused-vars */
-
-/* eslint-enable no-unused-vars */
+/**
+ * Import all front-end JS scripts.
+ * 
+ * Compiles to assets/scripts/theme-scripts.js
+ */
+// Import ES6 modules (recommended)
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
+ // Or import entire JS files the "old school" way
+// import './test.js'
 
 /***/ })
 

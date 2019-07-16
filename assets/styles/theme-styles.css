@@ -1,14 +1,9 @@
-/************************************************
+/**
+ * Import all front-end CSS partials.
+ * 
+ * Compiles to assets/styles/theme-styles.css
+ */
 
-Styles
-
-Import all of your Sass partials here.
-
-@import "settings"; 
-@import "mixins";
-@import "navigation";
-
-*************************************************/
 
 /************************************************
 
@@ -18,17 +13,11 @@ Place generic, global styles here.
 
 *************************************************/
 
+
 * {  
 	box-sizing:border-box;
 }
 
-a {
-	color: red;
-}
-
-h2 a {
-		color: orange;
-	}
 
 /************************************************
 
@@ -39,21 +28,26 @@ Such as alignments and other default formatting options.
 
 *************************************************/
 
+
 /*********************
 Typography
 *********************/
+
 
 dfn, cite, em, i {
 	font-style: italic;
 }
 
+
 blockquote {
 	margin: 0 1.5em;
 }
 
+
 address {
 	margin: 0 0 1.5em;
 }
+
 
 pre {
 	background: #eee;
@@ -67,29 +61,35 @@ pre {
 	padding: 1.6em;
 }
 
+
 code, kbd, tt, var {
 	font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
 	font-size: 15px;
 	font-size: 0.9375rem;
 }
 
+
 abbr, acronym {
 	border-bottom: 1px dotted #666;
 	cursor: help;
 }
+
 
 mark, ins {
 	background: #fff9c0;
 	text-decoration: none;
 }
 
+
 big {
 	font-size: 125%;
 }
 
+
 /*********************
 ALIGNMENT & CONTENT STYLES
 *********************/
+
 
 .alignleft, img.alignleft { 
 	margin-right: 1.5em; 
@@ -97,11 +97,13 @@ ALIGNMENT & CONTENT STYLES
 	float: left; 
 }
 
+
 .alignright, img.alignright { 
 	margin-left: 1.5em; 
 	display: inline; 
 	float: right; 
 }
+
 
 .aligncenter, img.aligncenter { 
 	margin-right: auto; 
@@ -110,16 +112,19 @@ ALIGNMENT & CONTENT STYLES
 	clear: both; 
 }
 
+
 video, object {
 	max-width: 100%;
 	height: auto;
 }
+
 
 pre {
 	background: #eee;
 	border: 1px solid #cecece;
 	padding: 10px;
 }
+
 
 /*.wp-caption {
 	max-width: 100%;
@@ -139,13 +144,16 @@ pre {
 	}
 } */
 
+
 /*********************
 IMAGE GALLERY STYLES
 *********************/
 
+
 .gallery {
 	margin-bottom: 1.5em;
 }
+
 
 .gallery-item {
 	display: inline-block;
@@ -154,45 +162,56 @@ IMAGE GALLERY STYLES
 	width: 100%;
 }
 
+
 .gallery-columns-2 .gallery-item {
 	max-width: 50%;
 }
+
 
 .gallery-columns-3 .gallery-item {
 	max-width: 33.33%;
 }
 
+
 .gallery-columns-4 .gallery-item {
 	max-width: 25%;
 }
+
 
 .gallery-columns-5 .gallery-item {
 	max-width: 20%;
 }
 
+
 .gallery-columns-6 .gallery-item {
 	max-width: 16.66%;
 }
+
 
 .gallery-columns-7 .gallery-item {
 	max-width: 14.28%;
 }
 
+
 .gallery-columns-8 .gallery-item {
 	max-width: 12.5%;
 }
+
 
 .gallery-columns-9 .gallery-item {
 	max-width: 11.11%;
 }
 
+
 .gallery-caption {
 	display: block;
 }
 
+
 /*********************
 ACCESSBIBILITY
 *********************/
+
 
 .screen-reader-text {
 	border: 0;

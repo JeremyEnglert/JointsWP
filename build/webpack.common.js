@@ -74,7 +74,9 @@ module.exports = {
   plugins: [
 
     // Remove extra files created by webpack
-    new FixStyleOnlyEntriesPlugin(),
+    new FixStyleOnlyEntriesPlugin({
+      silent: true
+    }),
 
     // Extract CSS to this location
     new MiniCssExtractPlugin({
