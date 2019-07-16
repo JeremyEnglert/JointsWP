@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
+ * Compiles to assets/styles/theme-styles.css
 
 import mainNavigation from './main-navigation';
-
-/* eslint-enable no-unused-vars */
