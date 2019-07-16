@@ -87,12 +87,11 @@ pre {
 	padding: 10px;
 }
 
-.wp-caption {
+/*.wp-caption {
 	max-width: 100%;
 	background: #eee;
 	padding: 5px;
 
-	// Images inside wp-caption  
 	img {
 		max-width: 100%;
 		margin-bottom: 0;
@@ -104,7 +103,7 @@ pre {
 		margin: 4px 0 7px;
 		text-align: center;
 	}
-} 
+} */
 
 /*********************
 IMAGE GALLERY STYLES
@@ -159,7 +158,6 @@ IMAGE GALLERY STYLES
 /*********************
 ACCESSBIBILITY
 *********************/
-// Text meant only for screen readers.
 .screen-reader-text {
 	border: 0;
 	clip: rect(1px, 1px, 1px, 1px);

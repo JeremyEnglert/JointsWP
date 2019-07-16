@@ -10,7 +10,7 @@ const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Config files.
-const settings = require( './webpack.settings.js' );
+const settings = require( './project.config.js' );
 
 module.exports = {
   entry: settings.entries,
@@ -52,7 +52,7 @@ module.exports = {
 
       // Compile all .scss files into CSS
       {
-        test: /\.scss$/,
+        test: /\.css$/,
         use: [
             {
               loader: MiniCssExtractPlugin.loader,
@@ -64,10 +64,7 @@ module.exports = {
                 }
             },
             {
-                loader: 'sass-loader',
-                options: {
-                    sourceMap: true
-                }
+              loader: 'postcss-loader',
             }
         ]
       } 

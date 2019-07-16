@@ -1,0 +1,7 @@
+/**
+ * Import all front-end CSS partials.
+ */
+
+
+@import "global.css";
+@import "wordpress.css";
