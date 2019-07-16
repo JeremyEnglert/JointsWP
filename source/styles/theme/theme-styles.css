@@ -6,4 +6,11 @@
 
 
 @import "global.css";
-@import "wordpress.css";
+
+/* WordPress has a lot of necessary default styles.*/
+/* These will rarely need to be modied.*/
+@import "wordpress/alignment.css";
+@import "wordpress/gallery.css";
+@import "wordpress/media.css";
+@import "wordpress/screen-reader.css";
+@import "wordpress/typography.css";

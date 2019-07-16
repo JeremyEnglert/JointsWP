@@ -19,76 +19,15 @@ Place generic, global styles here.
 }
 
 
-/************************************************
-
-WordPress Styles
-
-This is where the "default" WordPress styles go.
-Such as alignments and other default formatting options.
-
-*************************************************/
+/* WordPress has a lot of necessary default styles.*/
 
 
-/*********************
-Typography
-*********************/
+/* These will rarely need to be modied.*/
 
 
-dfn, cite, em, i {
-	font-style: italic;
-}
-
-
-blockquote {
-	margin: 0 1.5em;
-}
-
-
-address {
-	margin: 0 0 1.5em;
-}
-
-
-pre {
-	background: #eee;
-	font-family: "Courier 10 Pitch", Courier, monospace;
-	font-size: 15px;
-	font-size: 0.9375rem;
-	line-height: 1.6;
-	margin-bottom: 1.6em;
-	max-width: 100%;
-	overflow: auto;
-	padding: 1.6em;
-}
-
-
-code, kbd, tt, var {
-	font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-	font-size: 15px;
-	font-size: 0.9375rem;
-}
-
-
-abbr, acronym {
-	border-bottom: 1px dotted #666;
-	cursor: help;
-}
-
-
-mark, ins {
-	background: #fff9c0;
-	text-decoration: none;
-}
-
-
-big {
-	font-size: 125%;
-}
-
-
-/*********************
-ALIGNMENT & CONTENT STYLES
-*********************/
+/**
+ * Default WordPress image alignment styles.
+ */
 
 
 .alignleft, img.alignleft { 
@@ -113,41 +52,9 @@ ALIGNMENT & CONTENT STYLES
 }
 
 
-video, object {
-	max-width: 100%;
-	height: auto;
-}
-
-
-pre {
-	background: #eee;
-	border: 1px solid #cecece;
-	padding: 10px;
-}
-
-
-/*.wp-caption {
-	max-width: 100%;
-	background: #eee;
-	padding: 5px;
-
-	img {
-		max-width: 100%;
-		margin-bottom: 0;
-		width: 100%;
-	}
-
-	p.wp-caption-text {
-		font-size: 0.85em;
-		margin: 4px 0 7px;
-		text-align: center;
-	}
-} */
-
-
-/*********************
-IMAGE GALLERY STYLES
-*********************/
+/**
+ * Default WordPress gallery styles.
+ */
 
 
 .gallery {
@@ -208,6 +115,40 @@ IMAGE GALLERY STYLES
 }
 
 
+video, object {
+	max-width: 100%;
+	height: auto;
+}
+
+
+pre {
+	background: #eee;
+	border: 1px solid #cecece;
+	padding: 10px;
+}
+
+
+.wp-caption {
+	max-width: 100%;
+	background: #eee;
+	padding: 5px
+}
+
+
+.wp-caption img {
+		max-width: 100%;
+		margin-bottom: 0;
+		width: 100%;
+	}
+
+
+.wp-caption p.wp-caption-text {
+		font-size: 0.85em;
+		margin: 4px 0 7px;
+		text-align: center;
+	}
+
+
 /*********************
 ACCESSBIBILITY
 *********************/
@@ -227,5 +168,61 @@ ACCESSBIBILITY
 	word-wrap: normal !important;
   }
 
+
+/*********************
+Typography
+*********************/
+
+
+dfn, cite, em, i {
+	font-style: italic;
+}
+
+
+blockquote {
+	margin: 0 1.5em;
+}
+
+
+address {
+	margin: 0 0 1.5em;
+}
+
+
+pre {
+	background: #eee;
+	font-family: "Courier 10 Pitch", Courier, monospace;
+	font-size: 15px;
+	font-size: 0.9375rem;
+	line-height: 1.6;
+	margin-bottom: 1.6em;
+	max-width: 100%;
+	overflow: auto;
+	padding: 1.6em;
+}
+
+
+code, kbd, tt, var {
+	font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+	font-size: 15px;
+	font-size: 0.9375rem;
+}
+
+
+abbr, acronym {
+	border-bottom: 1px dotted #666;
+	cursor: help;
+}
+
+
+mark, ins {
+	background: #fff9c0;
+	text-decoration: none;
+}
+
+
+big {
+	font-size: 125%;
+}
 
 /*# sourceMappingURL=theme-styles.css.map*/

@@ -2,3 +2,4 @@
 node_modules/
 backstop_data/
 npm-debug.log
+.vscode/
