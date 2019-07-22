@@ -2,47 +2,48 @@
  * Automated accessbility checks
  */
 
+/* eslint-disable no-console */
+
  const pa11y = require('pa11y');
+ const chalk = require('chalk');
 
-async function runPa11y() {
-	try {
+ // Config files.
+const settings = require( './project.config.js' );
 
-		// Run tests against multiple URLs
-		const pa11yTests = await Promise.all([
-			pa11y('http://localhost:3000/'),
-			// pa11y('http://example.com/otherpage/')
-		]);
-		
-		// Format the errors
-		const printResult = (result) => {
-			if(result.issues.length < 1) {
 
-				console.log("No A11y Errors Detected");
-
-			} else {
-
-				result.issues.forEach(function(issue) {
-					console.log(`Page: ${result.pageUrl}`);
-					console.log(`Issue: ${issue.message}`);
-					console.log(`Code: ${issue.code}`);
-					console.log(`Context: ${issue.context}`);
-					console.log(`Selector: ${issue.selector}`);
-					console.log("--------------------------------");
-				});
-			}
-		};
-
-		// Output the raw result objects
-		pa11yTests.forEach(function(result) {
-			printResult(result); 
-		});
-
-	} catch (error) {
-
-		// Output an error if it occurred
-		console.error(error.message);
-
+ // Set up the pa11y config options
+ const pa11yConfig = {
+	standard: settings.a11yTestConfig.standard,
+	hideElements: '#wpadminbar',
+	includeWarnings: settings.a11yTestConfig.includeWarnings,
+	ignore: [
+		'notice'
+	],
+	chromeLaunchConfig: {
+		ignoreHTTPSErrors: true
 	}
-}
+ };
+ 
+settings.a11yTestConfig.urls.forEach(function(url) {
+	pa11y(url, pa11yConfig).then((results) => {
+		if(results.issues.length < 1) {
+				
+			console.log(chalk.bold(`Page: `) + `${results.pageUrl}`);
+			console.log("No A11y Errors Detected");
+			console.log("--------------------------------");
 
-runPa11y();
+		} else {
+
+			results.issues.forEach(function(issue) {
+				console.log(chalk.bold(`Page: `) + `${results.pageUrl}`);
+				console.log(chalk.bold(`Type: `) + `${issue.type}`);
+				console.log(chalk.bold(`Issue: `) + `${issue.message}`);
+				console.log(chalk.bold(`Code: `) + `${issue.code}`);
+				console.log(chalk.bold(`Context: `) + `${issue.contect}`);
+				console.log(chalk.bold(`Selector: `) + `${issue.selector}`);
+				console.log("--------------------------------");
+			});
+		}
+	})
+ });
+
