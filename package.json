@@ -51,5 +51,8 @@
     "test-visual": "backstop test",
     "test-visual-ref": "backstop reference"
   },
-  "dependencies": {}
+  "browserslist": [
+    "last 2 versions",
+    "IE 11"
+  ]
 }
