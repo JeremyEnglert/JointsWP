@@ -141,6 +141,8 @@ __webpack_require__.r(__webpack_exports__);
  * 
  * Compiles to assets/scripts/theme-scripts.js
  */
+
+/* eslint-disable no-unused-vars */
 // Import ES6 modules (recommended)
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
  // Or import entire JS files the "old school" way
