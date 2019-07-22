@@ -2,7 +2,6 @@ module.exports = {
     "extends": "eslint:recommended",
     "rules": {
 		// View possible rules: https://eslint.org/docs/rules/
-		// "no-console": "off"
 	},
 	"globals": {
 		'document': true,
