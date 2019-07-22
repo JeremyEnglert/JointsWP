@@ -1,14 +1,22 @@
 /**
  * Import all front-end CSS partials.
  * 
+ * This theme uses postcss-preset-env which allows for future CSS syntax to be used.
+ * By default, all features are enabled.
+ * https://preset-env.cssdb.org/features
+ *
  * Compiles to assets/styles/theme-styles.css
  */
 
+ /* Set project variables such as colors, breakpoints, etc. */
+@import "settings/breakpoints.css";
+
 
 @import "global.css";
+@import "navigation.css";
 
 /* WordPress has a lot of necessary default styles.*/
-/* These will rarely need to be modied.*/
+/* These will rarely need to be modified.*/
 @import "wordpress/alignment.css";
 @import "wordpress/gallery.css";
 @import "wordpress/media.css";

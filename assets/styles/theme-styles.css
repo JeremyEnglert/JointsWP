@@ -1,11 +1,32 @@
 /**
  * Import all front-end CSS partials.
  * 
+ * This theme uses postcss-preset-env which allows for future CSS syntax to be used.
+ * By default, all features are enabled.
+ * https://preset-env.cssdb.org/features
+ *
  * Compiles to assets/styles/theme-styles.css
  */
 
+ /* Set project variables such as colors, breakpoints, etc. */
 
-/************************************************
+ /**
+ * Custom Breakpoints
+ * 
+ * Use: @media (--medium) {}
+ *
+ * Tip: You can nest media queries. 
+ * https://gist.github.com/JeremyEnglert/a48ef614dc4a193eb0a7c26d3376c13b
+ *
+ */
+
+ @media (min-width: 768px) {
+    a {
+        color: green; 
+    }
+}
+
+ /************************************************
 
 Global
 
@@ -13,148 +34,179 @@ Place generic, global styles here.
 
 *************************************************/
 
-
-* {  
-	box-sizing:border-box;
+ * {  
+	-webkit-box-sizing:border-box;  
+	        box-sizing:border-box;
 }
 
+ /**
+ * Main navigation styles.
+ * 
+ */
 
-/* WordPress has a lot of necessary default styles.*/
+ .main-navigation-wrapper .main-navigation {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex; 
+        -webkit-box-orient: vertical; 
+        -webkit-box-direction: normal; 
+            -ms-flex-direction: column; 
+                flex-direction: column; 
+        list-style: none;
+        margin: 0;
+        padding: 0
 
+    }
 
-/* These will rarely need to be modied.*/
+ @media (min-width: 768px) {
 
+ .main-navigation-wrapper .main-navigation {
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                    flex-direction: row
 
-/**
+    }
+        }
+
+ .main-navigation-wrapper .main-navigation .menu-item-has-children > a {
+                position: relative
+            }
+
+ .main-navigation-wrapper .main-navigation .menu-item-has-children > a:after {
+                    content: "+";
+                    right: 5px;
+                    position: absolute;
+                }
+
+ .main-navigation-wrapper .main-navigation .menu-item-has-children .sub-menu {
+                display: none;
+            }
+
+ .main-navigation-wrapper .main-navigation .menu-item-has-children.open > .sub-menu  {
+                display: block;
+            }
+
+ /* WordPress has a lot of necessary default styles.*/
+
+ /* These will rarely need to be modified.*/
+
+ /**
  * Default WordPress image alignment styles.
  */
 
-
-.alignleft, img.alignleft { 
+ .alignleft, img.alignleft { 
 	margin-right: 1.5em; 
 	display: inline; 
 	float: left; 
 }
 
-
-.alignright, img.alignright { 
+ .alignright, img.alignright { 
 	margin-left: 1.5em; 
 	display: inline; 
 	float: right; 
 }
 
-
-.aligncenter, img.aligncenter { 
+ .aligncenter, img.aligncenter { 
 	margin-right: auto; 
 	margin-left: auto; 
 	display: block; 
 	clear: both; 
 }
 
-
-/**
+ /**
  * Default WordPress gallery styles.
  */
 
-
-.gallery {
+ .gallery {
 	margin-bottom: 1.5em;
 }
 
-
-.gallery-item {
+ .gallery-item {
 	display: inline-block;
 	text-align: center;
 	vertical-align: top;
 	width: 100%;
 }
 
-
-.gallery-columns-2 .gallery-item {
+ .gallery-columns-2 .gallery-item {
 	max-width: 50%;
 }
 
-
-.gallery-columns-3 .gallery-item {
+ .gallery-columns-3 .gallery-item {
 	max-width: 33.33%;
 }
 
-
-.gallery-columns-4 .gallery-item {
+ .gallery-columns-4 .gallery-item {
 	max-width: 25%;
 }
 
-
-.gallery-columns-5 .gallery-item {
+ .gallery-columns-5 .gallery-item {
 	max-width: 20%;
 }
 
-
-.gallery-columns-6 .gallery-item {
+ .gallery-columns-6 .gallery-item {
 	max-width: 16.66%;
 }
 
-
-.gallery-columns-7 .gallery-item {
+ .gallery-columns-7 .gallery-item {
 	max-width: 14.28%;
 }
 
-
-.gallery-columns-8 .gallery-item {
+ .gallery-columns-8 .gallery-item {
 	max-width: 12.5%;
 }
 
-
-.gallery-columns-9 .gallery-item {
+ .gallery-columns-9 .gallery-item {
 	max-width: 11.11%;
 }
 
-
-.gallery-caption {
+ .gallery-caption {
 	display: block;
 }
 
+ /**
+ * Default WordPress media styles.
+ */
 
-video, object {
+ video, object {
 	max-width: 100%;
 	height: auto;
 }
 
-
-pre {
+ pre {
 	background: #eee;
 	border: 1px solid #cecece;
 	padding: 10px;
 }
 
-
-.wp-caption {
+ .wp-caption {
 	max-width: 100%;
 	background: #eee;
 	padding: 5px
 }
 
-
-.wp-caption img {
+ .wp-caption img {
 		max-width: 100%;
 		margin-bottom: 0;
 		width: 100%;
 	}
 
-
-.wp-caption p.wp-caption-text {
+ .wp-caption p.wp-caption-text {
 		font-size: 0.85em;
 		margin: 4px 0 7px;
 		text-align: center;
 	}
 
+ /**
+ * Screen Reader Text
+ *
+ * Hide text from vision that is only useful for screen readers users.
+ * https://make.wordpress.org/accessibility/handbook/markup/the-css-class-screen-reader-text/
+ *
+ */
 
-/*********************
-ACCESSBIBILITY
-*********************/
-
-
-.screen-reader-text {
+ .screen-reader-text {
 	border: 0;
 	clip: rect(1px, 1px, 1px, 1px);
 	-webkit-clip-path: inset(50%);
@@ -168,28 +220,41 @@ ACCESSBIBILITY
 	word-wrap: normal !important;
   }
 
+ .screen-reader-text:focus {
+	background-color: #eee;
+	clip: auto !important;
+	-webkit-clip-path: none;
+	        clip-path: none;
+	color: #444;
+	display: block;
+	font-size: 1em;
+	height: auto;
+	left: 5px;
+	line-height: normal;
+	padding: 15px 23px 14px;
+	text-decoration: none;
+	top: 5px;
+	width: auto;
+	z-index: 100000; /* Above WP toolbar. */
+}
 
-/*********************
-Typography
-*********************/
+ /**
+ * Default WordPress typography styles.
+ */
 
-
-dfn, cite, em, i {
+ dfn, cite, em, i {
 	font-style: italic;
 }
 
-
-blockquote {
+ blockquote {
 	margin: 0 1.5em;
 }
 
-
-address {
+ address {
 	margin: 0 0 1.5em;
 }
 
-
-pre {
+ pre {
 	background: #eee;
 	font-family: "Courier 10 Pitch", Courier, monospace;
 	font-size: 15px;
@@ -201,27 +266,23 @@ pre {
 	padding: 1.6em;
 }
 
-
-code, kbd, tt, var {
+ code, kbd, tt, var {
 	font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
 	font-size: 15px;
 	font-size: 0.9375rem;
 }
 
-
-abbr, acronym {
+ abbr, acronym {
 	border-bottom: 1px dotted #666;
 	cursor: help;
 }
 
-
-mark, ins {
+ mark, ins {
 	background: #fff9c0;
 	text-decoration: none;
 }
 
-
-big {
+ big {
 	font-size: 125%;
 }
 

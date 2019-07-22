@@ -1,3 +1,7 @@
+/**
+ * Default WordPress media styles.
+ */
+
 video, object {
 	max-width: 100%;
 	height: auto;

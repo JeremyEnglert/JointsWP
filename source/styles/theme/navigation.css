@@ -1,25 +1,23 @@
-/************************************************
-
-Navigation
-
-Responsive, accessible navigation.
-
-*************************************************/
+/**
+ * Main navigation styles.
+ * 
+ */
 
 .main-navigation-wrapper {
-    
-    .main-navigation {
+
+   & .main-navigation {
         display: flex; 
-        flex-direction: column; // Vertical on small
+        flex-direction: column; 
         list-style: none;
         margin: 0;
         padding: 0;
-        @include breakpoint(medium) {
-            flex-direction: row; // Horizontal on medium and up
+        
+        @media (--medium) {
+            flex-direction: row;
         }
 
-        .menu-item-has-children {
-            > a {
+       & .menu-item-has-children {
+           & > a {
                 position: relative;
                 &:after {
                     content: "+";
@@ -27,7 +25,7 @@ Responsive, accessible navigation.
                     position: absolute;
                 }
             }
-            .sub-menu {
+           & .sub-menu {
                 display: none;
             }
             &.open > .sub-menu  {

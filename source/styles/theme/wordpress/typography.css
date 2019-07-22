@@ -1,6 +1,7 @@
-/*********************
-Typography
-*********************/
+/**
+ * Default WordPress typography styles.
+ */
+
 dfn, cite, em, i {
 	font-style: italic;
 }

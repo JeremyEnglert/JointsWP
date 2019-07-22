@@ -1,0 +1,20 @@
+/**
+ * Custom Breakpoints
+ * 
+ * Use: @media (--medium) {}
+ *
+ * Tip: You can nest media queries. 
+ * https://gist.github.com/JeremyEnglert/a48ef614dc4a193eb0a7c26d3376c13b
+ *
+ */
+
+@custom-media --small (min-width: 576px);
+@custom-media --medium (min-width: 768px);
+@custom-media --large (min-width: 992px);
+@custom-media --xlarge (min-width: 1200px); 
+
+@media (--medium) {
+    a {
+        color: green; 
+    }
+}
