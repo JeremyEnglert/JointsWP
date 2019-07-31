@@ -35,8 +35,12 @@ settings.a11yTestConfig.urls.forEach(function(url) {
 		} else {
 
 			results.issues.forEach(function(issue) {
+				if(issue.type == 'warning') {
+					console.log(chalk.bold(`Type: `) + chalk.yellow(`${issue.type}`));
+				} else if (issue.type == 'error') { 
+					console.log(chalk.bold(`Type: `) + chalk.red(`${issue.type}`));
+				}
 				console.log(chalk.bold(`Page: `) + `${results.pageUrl}`);
-				console.log(chalk.bold(`Type: `) + `${issue.type}`);
 				console.log(chalk.bold(`Issue: `) + `${issue.message}`);
 				console.log(chalk.bold(`Code: `) + `${issue.code}`);
 				console.log(chalk.bold(`Context: `) + `${issue.contect}`);
