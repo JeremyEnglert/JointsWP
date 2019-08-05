@@ -1,22 +1,19 @@
-This is currently NOT MEANT FOR PRODUCTION SITES. 
+# JointsWP Starter Theme
 
 ## JointsWP Requirements
 
-JointsWP requires [Node.js](https://nodejs.org) v8.12.x or newer.
+JointsWP requires [Node.js](https://nodejs.org) v10.16.x or newer.
 
-## Download JointsWP and Run Build Process
+## Download JointsWP and Install Dependencies
 From your `wp-content/themes` directory, run the following. 
 ```bash
-$ git clone https://github.com/JeremyEnglert/JointsWP.git my-theme
+$ git clone --single-branch --branch 6.0-dev https://github.com/JeremyEnglert/JointsWP.git my-theme
 $ cd my-theme
-$ npm install 
+$ npm install (or npm install)
 ```
-`npm install` is what starts the build process.
 
-## Build Proecess
-When you run `npm install` the first time, you will trigger the automated build process. 
-
-![JointsWP build process running in terminal](https://user-images.githubusercontent.com/6110968/46832283-7ea08580-cd5a-11e8-82c8-4920e23f792c.gif)
+## Automated Startup 
+When you run `npm install` the first time, you will trigger the automated startup. 
 
 **"What is the name of your theme?"**
 
@@ -28,6 +25,21 @@ This will replace all of the function namespaces and translation textdomains wit
 
 **"What is your local URL for this install?"**
 
-This URL is used in the gulpfile.js for Browser Sync.
+This URL is used to configure BrowserSync to work with your local environment.
 
-**"What framework would you like to install?**
+## Commands
+
+`npm watch` - watches all JS, CSS and image source files for changes. 
+
+`npm build-dev` - compiles all JS, CSS and image source files.
+
+`npm build-dev` - compiles and minifies all JS, CSS and image source files.
+
+`npm test-a11y` - runs accessibility checks on URLs listed in `build/project.config.js`
+
+## Styles
+
+## Scripts
+
+## Accessibility Testing
+
