@@ -8,7 +8,7 @@
 
  // Import ES6 modules (recommended)
  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
-import mainNavigation from './main-navigation';
+import mainNavigation from './base/main-navigation';
 
 
 // Or import entire JS files the "old school" way
