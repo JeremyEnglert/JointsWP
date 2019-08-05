@@ -12,8 +12,8 @@
 @import "settings/breakpoints.css";
 
 
-@import "global.css";
-@import "navigation.css";
+@import "base/base.css";
+@import "base/navigation.css";
 
 /* WordPress has a lot of necessary default styles.*/
 /* These will rarely need to be modified.*/

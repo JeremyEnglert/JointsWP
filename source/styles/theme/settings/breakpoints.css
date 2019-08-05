@@ -12,9 +12,3 @@
 @custom-media --medium (min-width: 768px);
 @custom-media --large (min-width: 992px);
 @custom-media --xlarge (min-width: 1200px); 
-
-@media (--medium) {
-    a {
-        color: green; 
-    }
-}

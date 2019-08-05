@@ -1,0 +1,53 @@
+/**
+ * Main navigation styles.
+ * 
+ */
+
+.main-navigation-wrapper {
+
+    & .main-navigation {
+        display: flex; 
+        flex-direction: column; 
+        margin: 0;
+        padding: 0;       
+        @media (--medium) {
+            flex-direction: row;
+        }
+        & li {
+            list-style: none;
+        }
+        & a {
+            margin-right: 2rem;
+        }
+
+       & .menu-item-has-children {
+           & > a {
+                position: relative;
+                display: flex;
+                align-items: center;
+                &:after {
+                    content: "";
+                    display: inline-block;
+                    border-bottom: 1px solid #000;
+                    border-right: 1px solid #000;
+                    height: 0.25rem;
+                    width: 0.25rem;
+                    margin-left: 0.5rem;
+                    transform: rotate(45deg);
+                }
+            }
+           & .sub-menu {
+                display: none;
+            }
+            &.open > .sub-menu  {
+                display: block;
+            }
+        }
+
+       & button {
+            background: transparent;
+            border: 0;
+        }
+
+    }
+}

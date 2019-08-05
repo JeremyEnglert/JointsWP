@@ -20,12 +20,6 @@
  *
  */
 
- @media (min-width: 768px) {
-    a {
-        color: green; 
-    }
-}
-
  /************************************************
 
 Global
@@ -52,7 +46,6 @@ Place generic, global styles here.
         -webkit-box-direction: normal; 
             -ms-flex-direction: column; 
                 flex-direction: column; 
-        list-style: none;
         margin: 0;
         padding: 0
 
@@ -69,14 +62,34 @@ Place generic, global styles here.
     }
         }
 
+ .main-navigation-wrapper .main-navigation li {
+            list-style: none;
+        }
+
+ .main-navigation-wrapper .main-navigation a {
+            margin-right: 2rem;
+        }
+
  .main-navigation-wrapper .main-navigation .menu-item-has-children > a {
-                position: relative
+                position: relative;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                    -ms-flex-align: center;
+                        align-items: center
             }
 
  .main-navigation-wrapper .main-navigation .menu-item-has-children > a:after {
-                    content: "+";
-                    right: 5px;
-                    position: absolute;
+                    content: "";
+                    display: inline-block;
+                    border-bottom: 1px solid #000;
+                    border-right: 1px solid #000;
+                    height: 0.25rem;
+                    width: 0.25rem;
+                    margin-left: 0.5rem;
+                    -webkit-transform: rotate(45deg);
+                            transform: rotate(45deg);
                 }
 
  .main-navigation-wrapper .main-navigation .menu-item-has-children .sub-menu {
@@ -86,6 +99,11 @@ Place generic, global styles here.
  .main-navigation-wrapper .main-navigation .menu-item-has-children.open > .sub-menu  {
                 display: block;
             }
+
+ .main-navigation-wrapper .main-navigation button {
+            background: transparent;
+            border: 0;
+        }
 
  /* WordPress has a lot of necessary default styles.*/
 
