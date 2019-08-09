@@ -45,6 +45,7 @@
     "yarn": "^1.16.0"
   },
   "scripts": {
+    "postinstall": "node build/startup",
     "watch": "webpack --watch --config build/webpack.dev.js",
     "build-dev": "NODE_ENV=development webpack --config build/webpack.dev.js",
     "build-prod": "NODE_ENV=production webpack --config build/webpack.prod.js",
