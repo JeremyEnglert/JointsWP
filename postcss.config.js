@@ -1,6 +1,7 @@
 // Config files.
 const settings = require( './build/project.config.js' );
 
+// Update these setting variables in builde/project.config.js
 module.exports = {
   plugins: {
     'postcss-import': {},
