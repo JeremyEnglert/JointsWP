@@ -43,36 +43,4 @@ function dropdownKeyupHandler (event) {
     }
 }
 
-// Control menu with arrows
-function controlWithArrows(keyboardEvent, nodeList, currentIndex) {
-    switch (keyboardEvent.key) {
-      case 'ArrowUp':
-      case 'ArrowLeft':
-        console.log("hello");
-        keyboardEvent.preventDefault();
-        if (currentIndex > -1) {
-          var prevIndex = Math.max(0, currentIndex - 1);
-          nodeList[prevIndex].focus();
-        }
-        break;
-      case 'ArrowDown':
-      case 'ArrowRight':
-        keyboardEvent.preventDefault();
-        if (currentIndex > -1) {
-          var nextIndex = Math.min(nodeList.length - 1, currentIndex + 1);
-          nodeList[nextIndex].focus();
-        }
-        break;
-      case 'Home':
-        keyboardEvent.preventDefault();
-        nodeList[0].focus();
-        break;
-      case 'End':
-        keyboardEvent.preventDefault();
-        nodeList[nodeList.length - 1].focus();
-        break;
-    }
-}
-controlWithArrows();
-
 export { mainNavigation };
