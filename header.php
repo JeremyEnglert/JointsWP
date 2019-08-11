@@ -30,7 +30,7 @@
 			-->
 			<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to Content', 'theme_namespace' ); ?></a>
 
-			<header class="header" role="banner">
+			<header class="header">
 						
 				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
 				

@@ -11,7 +11,7 @@ get_header(); ?>
 	
 		<div class="inner-content">
 	
-		    <main class="main small-12 large-8 medium-8 cell" role="main">
+		    <main class="main">
 				
 				<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 

@@ -12,7 +12,7 @@
 					
 					<div class="inner-footer">
 						
-						<nav role="navigation">
+						<nav>
 							<?php theme_namespace_footer_links(); ?>
 						</nav>
 					

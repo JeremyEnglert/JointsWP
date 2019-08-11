@@ -6,7 +6,7 @@
  */
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article">					
+<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?>>					
 	
 	<header class="article-header">
 		<h2><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
@@ -15,7 +15,7 @@
 					
 	<section class="entry-content" itemprop="articleBody">
 		<?php the_post_thumbnail('full'); ?>
-		<?php the_content('<button class="tiny">' . __( 'Read more...', 'theme_namespace' ) . '</button>'); ?>
+		<?php the_content(); ?>
 	</section> <!-- end article section -->
 						
 	<footer class="article-footer">

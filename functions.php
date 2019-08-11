@@ -7,6 +7,9 @@
 // Theme support options
 require_once(get_template_directory().'/functions/theme-support.php'); 
 
+require_once(get_template_directory().'/functions/read-more.php'); 
+
+
 // WP Head and other cleanup functions
 require_once(get_template_directory().'/functions/cleanup.php'); 
 

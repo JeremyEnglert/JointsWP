@@ -4,20 +4,12 @@
  */
  ?>
 
-<div id="sidebar1" class="sidebar" role="complementary">
+<aside id="sidebar" class="sidebar">
 
-	<?php if ( is_active_sidebar( 'sidebar1' ) ) : ?>
+	<?php if ( is_active_sidebar( 'general-sidebar' ) ) : ?>
 
-		<?php dynamic_sidebar( 'sidebar1' ); ?>
-
-	<?php else : ?>
-
-	<!-- This content shows up if there are no widgets defined in the backend. -->
-						
-	<div class="alert help">
-		<p><?php _e( 'Please activate some Widgets.', 'theme_namespace' );  ?></p>
-	</div>
+		<?php dynamic_sidebar( 'general-sidebar' ); ?>
 
 	<?php endif; ?>
 
-</div>
+</aside>
