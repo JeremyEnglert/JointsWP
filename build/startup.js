@@ -5,10 +5,10 @@
 'use strict';
 
 const inquirer = require('inquirer'),
-      { exec } = require('child_process'),
-      chalk = require('chalk'),
-      download = require('download-git-repo'),
-      replace = require('replace-in-file');
+  { exec } = require('child_process'),
+  chalk = require('chalk'),
+  download = require('download-git-repo'),
+  replace = require('replace-in-file');
 
 console.log(chalk.green.bold("JointsWP has been installed. Just a few more steps."));
 
@@ -32,22 +32,22 @@ async function startTheme() {
   ];
   try {
     const answers = await inquirer.prompt(questions);
-    const themeSetup = await Promise.all ([
+    const themeSetup = await Promise.all([
       changeThemeName(answers.themeName),
       changeNamespace(answers.themeNamespace),
       changeLocalUrl(answers.themeLocalUrl)
     ])
     console.log(chalk.green.bold("Install successful! Run 'npm build' to get started.")); // Only want this to happen after the above download is complete
-  } catch(error) {
+  } catch (error) {
     console.log("Error");
   }
 };
-  
+
 startTheme();
 
 // Sets the Theme Name in style.css
 function changeThemeName(themeName) {
-  if(themeName == "") {
+  if (themeName == "") {
     console.log(chalk.magenta.bold('Theme Name not changed.'));
     return;
   }
@@ -66,7 +66,7 @@ function changeThemeName(themeName) {
 }
 
 function changeNamespace(themeNamespace) {
-  if(themeNamespace == "") {
+  if (themeNamespace == "") {
     console.log(chalk.magenta.bold('Namespace not changed.'));
     return;
   }
@@ -86,18 +86,18 @@ function changeNamespace(themeNamespace) {
 }
 
 function changeLocalUrl(themeLocalUrl) {
-  if(themeLocalUrl == "") {
+  if (themeLocalUrl == "") {
     console.log(chalk.magenta.bold('Local URL was not chnanged.'));
     return;
   }
   const options = {
-    files: 'webpack.config.js',
+    files: 'build/project.config.js',
     from: /proxy: .{1,}/g,
-    to: `proxy:: "${themeLocalUrl}"`,
+    to: `proxy: "${themeLocalUrl}",`,
   };
   try {
     const changes = replace.sync(options);
-    console.log(chalk.magenta.bold('Local URL updated in: ') + ('config.js'));
+    console.log(chalk.magenta.bold('Local URL updated in: ') + ('project.config.js'));
   }
   catch (error) {
     console.error('Error occurred:', error);
