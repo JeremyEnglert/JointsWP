@@ -5,7 +5,7 @@
 
 .main-navigation-wrapper {
 
-    & .main-navigation {
+    .main-navigation {
         display: flex; 
         flex-direction: column; 
         margin: 0;
@@ -13,14 +13,14 @@
         @media (--medium) {
             flex-direction: row;
         }
-        & li {
+        li {
             list-style: none;
         }
-        & a {
+        a {
             margin-right: 2rem;
         }
 
-       & .menu-item-has-children {
+       .menu-item-has-children {
            & > a {
                 position: relative;
                 display: flex;
@@ -36,7 +36,7 @@
                     transform: rotate(45deg);
                 }
             }
-           & .sub-menu {
+            .sub-menu {
                 display: none;
             }
             &.open > .sub-menu  {
@@ -44,7 +44,7 @@
             }
         }
 
-       & button {
+       button {
             background: transparent;
             border: 0;
         }

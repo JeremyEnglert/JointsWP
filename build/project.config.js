@@ -8,7 +8,7 @@ module.exports = {
 		'theme-scripts': './source/scripts/theme/theme-scripts.js',
 
 		// CSS entry points - a css file will be output for each entry point
-		'theme-styles': './source/styles/theme/theme-styles.css',
+		'theme-styles': './source/styles/theme/theme-styles.scss',
 	},
 
 
@@ -23,29 +23,13 @@ module.exports = {
 	},
 
 
-	/* PostCSS Settings */
-	PostCssConfig: {
-
-		// Determines which CSS features to polyfill
-		// https://github.com/csstools/postcss-preset-env#stage
-		// https://preset-env.cssdb.org/features
-		stage: 0,
-
-		// Enable CSS grid pollyfills
-		grid: true
-
-		// Adjust browser support in package.json
-
-	},
-
-
 	/* Accessbility Test Settings */ 
 	a11yTestConfig: {
 
 		// Local URLs to run accessibility tests on
 		urls: [
 			'http://joints-git.local/',
-			'http://joints-git.local/sticky/sticky/'
+			'http://joints-git.local/home/'
 		], 
 
 		// The accessibility standard to use when testing pages. 

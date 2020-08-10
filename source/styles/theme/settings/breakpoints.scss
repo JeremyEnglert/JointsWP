@@ -1,0 +1,30 @@
+/**
+ * Custom Breakpoints
+ * 
+ * Use: @include breakpoint() {}
+ *
+ */
+
+ $small:		"screen and (min-width: 36em)"; // 480px
+ $medium:	"screen and (min-width: 48em)";	// 768px
+ $large:		"screen and (min-width: 62em)";	// 1024px
+ $xlarge:	"screen and (min-width: 75em)";	// 1200px
+ $xxlarge:	"screen and (min-width: 90em)";	// 1440px
+ 
+ @mixin breakpoint($point) {
+     @if $point == xxlarge {
+         @media #{$xxlarge} { @content; }	// xxlarge screen content
+     }
+     @if $point == xlarge {
+         @media #{$xlarge} { @content; }		// xlarge screen content
+     }
+     @if $point == large {
+         @media #{$large} { @content; }		// large screen content
+     }
+     @if $point == medium {
+         @media #{$medium} { @content; }		// medium screen content
+     }
+     @if $point == small {
+         @media #{$small} { @content; }		// small screen content
+     }
+ }
