@@ -8,12 +8,11 @@
  * Compiles to assets/styles/theme-styles
  */
 
+ // CSS reset
+@import "../../../node_modules/normalize.css/normalize.css";
+
  /* Set project variables such as colors, breakpoints, etc. */
 @import "settings/breakpoints";
-
-
-@import "base/base";
-@import "base/navigation";
 
 /* WordPress has a lot of necessary default styles.*/
 /* These will rarely need to be modified.*/
@@ -22,3 +21,15 @@
 @import "wordpress/media";
 @import "wordpress/screen-reader";
 @import "wordpress/typography";
+
+// Import base styles
+@import "./base/**/*";
+
+// WordPress has a lot of necessary default styles
+@import "./wordpress/**/*";
+
+// Template specific styles
+// @import "./templates/**/*";
+
+// Import block styles
+@import "../../../blocks/**/*.scss";

@@ -1,0 +1,51 @@
+.side-by-side {
+    padding: 5rem 0;
+    & .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        @include breakpoint(medium) {
+            flex-direction: row;
+        }
+    }
+    & .image, & .text {
+        flex: 1 1 0;
+    }
+    & .image {
+        text-align: center;
+        margin-bottom: 1rem;
+        @include breakpoint(medium) {
+            margin-right: 2rem;
+            margin-bottom: 0;
+        }
+        img {
+            width: rem-calc(300);
+            height: auto;
+            @include breakpoint(medium) {
+                width: rem-calc(450);
+            }
+        }
+    }
+    & .text {
+        & h2 {
+            margin: 0;
+        }
+        & p {
+            font-size: rem-calc(16);
+            line-height: 1.5;
+            @include breakpoint(medium) {
+                font-size: rem-calc(24);
+            }
+        }
+    }
+    &.image-right {
+        & .image {
+            @include breakpoint(medium) {
+                order: 2;
+                margin-right: 0;
+                margin-left: 2rem;
+            }
+        }
+
+    }
+}
