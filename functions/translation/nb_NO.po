@@ -1,0 +1,367 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: JointsWP - Sass\n"
+"POT-Creation-Date: 2020-10-01 22:57+0200\n"
+"PO-Revision-Date: 2020-10-01 23:19+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.1\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: style.css\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: \n"
+"Language: nb\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: 404.php:19
+msgid "Epic 404 - Article Not Found"
+msgstr "Episk 404 - Siden ble ikke funnet"
+
+#: 404.php:23
+msgid ""
+"The article you were looking for was not found, but maybe try looking again!"
+msgstr "Siden du leter etter, finnes ikke. Prøv igjen!"
+
+#: comments.php:21
+#, php-format
+msgctxt "comments title"
+msgid "One comment on &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s comments on &ldquo;%2$s&rdquo;"
+msgstr[0] "En kommentar på &ldquo;%2$s&rdquo;"
+msgstr[1] "%1$s kommentarer på &ldquo;%2$s&rdquo;"
+
+#: comments.php:30 comments.php:46
+msgid "Comment navigation"
+msgstr "Kommentar navigasjon"
+
+#: comments.php:33 comments.php:49
+msgid "Older Comments"
+msgstr "Eldre kommentarer"
+
+#: comments.php:34 comments.php:50
+msgid "Newer Comments"
+msgstr "Nyere kommentarer"
+
+#: comments.php:62
+msgid "Comments are closed."
+msgstr "Kommentarfeltet er stengt."
+
+#: functions/admin.php:35
+msgid "The RSS Feed is either empty or unavailable."
+msgstr "RSS-feeden er tom eller utilgjengelig."
+
+#: functions/admin.php:39
+msgid "j F Y @ g:i a"
+msgstr "j F Y @ g:i a"
+
+#: functions/admin.php:51
+msgid "Custom RSS Feed (Customize in admin.php)"
+msgstr "Tilpasset RSS-feed (tilpass i admin.php)"
+
+#: functions/admin.php:65
+msgid ""
+"<span id=\"footer-thankyou\">Developed by <a href=\"#\" target=\"_blank"
+"\">Your Site Name</a></span>."
+msgstr ""
+"<span id=\"footer-thankyou\">Utviklet av <a href=\"https://www.dittnettsted."
+"no\" target=\"_blank\">Ditt nettsted</a></span>."
+
+#: functions/cleanup.php:71
+msgid "Read"
+msgstr "Les"
+
+#: functions/cleanup.php:71
+msgid "... Read more &raquo;"
+msgstr "… Les mer &raquo;"
+
+#: functions/cleanup.php:93
+#, php-format
+msgid "Posts by %s"
+msgstr "Publisert av %s"
+
+#: functions/comments.php:17
+#, php-format
+msgid "%s"
+msgstr "%s"
+
+#: functions/comments.php:18
+msgid " F jS, Y - g:ia"
+msgstr " F jS, Y - g:ia"
+
+#: functions/comments.php:19
+msgid "(Edit)"
+msgstr "(Rediger)"
+
+#: functions/comments.php:23
+msgid "Your comment is awaiting moderation."
+msgstr "Din kommentar ligger til godkjenning."
+
+#: functions/custom-post-type.php:22
+msgid "Custom Types"
+msgstr "Egendefinerte inlegg"
+
+#: functions/custom-post-type.php:23
+msgid "Custom Post"
+msgstr "Egendefinert innlegg"
+
+#: functions/custom-post-type.php:24
+msgid "All Custom Posts"
+msgstr "Alle egendefinerte innlegg"
+
+#: functions/custom-post-type.php:25
+msgid "Add New"
+msgstr "Legg til ny"
+
+#: functions/custom-post-type.php:26
+msgid "Add New Custom Type"
+msgstr "Legg til nytt egendefinert innlegg"
+
+#: functions/custom-post-type.php:27
+msgid "Edit"
+msgstr "Rediger"
+
+#: functions/custom-post-type.php:28
+msgid "Edit Post Types"
+msgstr "Endre egendefinert innlegg"
+
+#: functions/custom-post-type.php:29
+msgid "New Post Type"
+msgstr "Nytt egendefinert innlegg"
+
+#: functions/custom-post-type.php:30
+msgid "View Post Type"
+msgstr "Vis egendefinert innlegg"
+
+#: functions/custom-post-type.php:31
+msgid "Search Post Type"
+msgstr "Søk etter egendefinerte innlegg"
+
+#: functions/custom-post-type.php:32
+msgid "Nothing found in the Database."
+msgstr "Ingen treff i databasen."
+
+#: functions/custom-post-type.php:33
+msgid "Nothing found in Trash"
+msgstr "Ingen treff i papirkurven"
+
+#: functions/custom-post-type.php:36
+msgid "This is the example custom post type"
+msgstr "Dette er et eksempel på en egendefinert innleggstype"
+
+#: functions/custom-post-type.php:73
+msgid "Custom Categories"
+msgstr "Egendefinerte kategorier"
+
+#: functions/custom-post-type.php:74
+msgid "Custom Category"
+msgstr "Egendefinert kategori"
+
+#: functions/custom-post-type.php:75
+msgid "Search Custom Categories"
+msgstr "Søk i egendefinerte kategorier"
+
+#: functions/custom-post-type.php:76
+msgid "All Custom Categories"
+msgstr "Alle egendefinerte kategorier"
+
+#: functions/custom-post-type.php:77
+msgid "Parent Custom Category"
+msgstr "Forelder til egendefinert kategori"
+
+#: functions/custom-post-type.php:78
+msgid "Parent Custom Category:"
+msgstr "Forelder til egendefinert kategori:"
+
+#: functions/custom-post-type.php:79
+msgid "Edit Custom Category"
+msgstr "Endre egendefinert kategori"
+
+#: functions/custom-post-type.php:80
+msgid "Update Custom Category"
+msgstr "Oppdater egendefinert kategori"
+
+#: functions/custom-post-type.php:81
+msgid "Add New Custom Category"
+msgstr "Legg til ny egendefinert kategori"
+
+#: functions/custom-post-type.php:82
+msgid "New Custom Category Name"
+msgstr "Navn på ny egendefinert kategori"
+
+#: functions/custom-post-type.php:96
+msgid "Custom Tags"
+msgstr "Egendefinerte stikkord"
+
+#: functions/custom-post-type.php:97
+msgid "Custom Tag"
+msgstr "Egendefinert stikkord"
+
+#: functions/custom-post-type.php:98
+msgid "Search Custom Tags"
+msgstr "Søk i egendefinerte stikkord"
+
+#: functions/custom-post-type.php:99
+msgid "All Custom Tags"
+msgstr "Alle egendefinerte stikkord"
+
+#: functions/custom-post-type.php:100
+msgid "Parent Custom Tag"
+msgstr "Forelder til egendefinert stikkord"
+
+#: functions/custom-post-type.php:101
+msgid "Parent Custom Tag:"
+msgstr "Forelder til egendefinert stikkord:"
+
+#: functions/custom-post-type.php:102
+msgid "Edit Custom Tag"
+msgstr "Endre egendefinert stikkord"
+
+#: functions/custom-post-type.php:103
+msgid "Update Custom Tag"
+msgstr "Oppdater egendefinert stikkord"
+
+#: functions/custom-post-type.php:104
+msgid "Add New Custom Tag"
+msgstr "Legg til ny egendefinert stikkord"
+
+#: functions/custom-post-type.php:105
+msgid "New Custom Tag Name"
+msgstr "Navn på nytt egendefinert stikkord"
+
+#: functions/menu.php:5
+msgid "The Main Menu"
+msgstr "Hovedmeny"
+
+#: functions/menu.php:6
+msgid "The Off-Canvas Menu"
+msgstr "Utenfor-skjermen-menyen"
+
+#: functions/menu.php:7
+msgid "Footer Links"
+msgstr "Lenker i footer"
+
+#: functions/page-navi.php:13
+msgid "&laquo;"
+msgstr "&laquo;"
+
+#: functions/page-navi.php:14
+msgid "&raquo;"
+msgstr "&raquo;"
+
+#: functions/related-posts.php:18
+msgid "<h4>Related Posts</h4>"
+msgstr "<h4>Relaterte artikler</h4>"
+
+#: functions/sidebar.php:6
+msgid "Sidebar 1"
+msgstr "Sidekolonne 1"
+
+#: functions/sidebar.php:7
+msgid "The first (primary) sidebar."
+msgstr "Den første (primære) sidekolonnen."
+
+#: functions/sidebar.php:16
+msgid "Offcanvas"
+msgstr "Utenfor-skjermen"
+
+#: functions/sidebar.php:17
+msgid "The offcanvas sidebar."
+msgstr "Utenfor-skjermen-sidekolonne."
+
+#: parts/content-byline.php:9
+#, php-format
+msgid "Posted on %1$s by %2$s - %3$s"
+msgstr "Skrevet den %1$s av %2$s - %3$s"
+
+#: parts/content-byline.php:10
+msgid "F j, Y"
+msgstr "j. F Y"
+
+#: parts/content-missing.php:12
+msgid "Sorry, No Results."
+msgstr "Beklager, ingen resultater."
+
+#: parts/content-missing.php:16
+msgid "Try your search again."
+msgstr "Prøv å søke på nytt."
+
+#: parts/content-missing.php:24 parts/content-missing.php:42
+msgid "This is the error message in the parts/content-missing.php template."
+msgstr "Denne feilmeldingen finner du i parts/content-missing.php-malen."
+
+#: parts/content-missing.php:30
+msgid "Oops, Post Not Found!"
+msgstr "Oops, finner ikke innlegget!"
+
+#: parts/content-missing.php:34
+msgid "Uh Oh. Something is missing. Try double checking things."
+msgstr "Å nei, noe mangler. Prøv å dobbeltsjekke ting."
+
+#: parts/loop-archive-grid.php:32 parts/loop-archive.php:18
+msgid "Read more..."
+msgstr "Les mer…"
+
+#: parts/loop-archive.php:22 parts/loop-single.php:21
+msgid "Tags:"
+msgstr "Stikkord:"
+
+#: parts/loop-single.php:20
+msgid "Pages:"
+msgstr "Sider:"
+
+#: parts/nav-offcanvas-topbar.php:21 parts/nav-offcanvas.php:18
+#: parts/nav-title-bar.php:7
+msgid "Menu"
+msgstr "Meny"
+
+#: search.php:16
+msgid "Search Results for:"
+msgstr "Søkeresultater for:"
+
+#: searchform.php:9
+msgctxt "label"
+msgid "Search for:"
+msgstr "Søk etter:"
+
+#: searchform.php:10
+msgctxt "jointswp"
+msgid "Search..."
+msgstr "Søk…"
+
+#: searchform.php:10
+msgctxt "jointswp"
+msgid "Search for:"
+msgstr "Søk etter:"
+
+#: searchform.php:12
+msgctxt "jointswp"
+msgid "Search"
+msgstr "Søk"
+
+#. Theme Name of the plugin/theme
+msgid "JointsWP - Sass"
+msgstr "JoinstWP - Sass"
+
+#. Theme URI of the plugin/theme
+msgid "http://www.jointswp.com"
+msgstr "http://www.jointswp.com"
+
+#. Author of the plugin/theme
+msgid "Your Name Here"
+msgstr "Ditt navn her"
+
+#. Author URI of the plugin/theme
+msgid "http://www.yoururlhere.com"
+msgstr "http://www.dittnettsted.no"
+
+#. Template Name of the plugin/theme
+msgid "Full Width (No Sidebar)"
+msgstr "Full bredde (ingen sidekolonne)"
